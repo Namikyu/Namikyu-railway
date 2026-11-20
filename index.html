@@ -23,10 +23,7 @@
       color: #24364b;
     }
 
-    /* =========================
-       ヘッダー
-    ========================= */
-
+    /* ヘッダー */
     .header {
       position: relative;
       z-index: 10;
@@ -66,10 +63,7 @@
       opacity: 0.9;
     }
 
-    /* =========================
-       ナビゲーション
-    ========================= */
-
+    /* ナビゲーション */
     .navigation {
       display: flex;
       align-items: center;
@@ -99,10 +93,7 @@
       background: rgba(255,255,255,0.2);
     }
 
-    /* =========================
-       メイン画像エリア
-    ========================= */
-
+    /* メイン画像 */
     .hero {
       position: relative;
       z-index: 1;
@@ -113,7 +104,6 @@
       background: #dce8f2;
     }
 
-    /* 背景画像を一番後ろに配置 */
     .hero-image {
       position: absolute;
       z-index: 0;
@@ -126,40 +116,33 @@
       object-position: center;
     }
 
-    /* =========================
-       説明ボックス
-    ========================= */
-
+    /* 説明ボックス */
     .description-box {
       position: absolute;
       z-index: 5;
-
       left: 50%;
       top: 55%;
       transform: translate(-50%, -50%);
 
-      display: block;
-      visibility: visible;
-      opacity: 1;
-
       width: min(760px, calc(100% - 60px));
       padding: 30px 36px;
 
-      background: rgba(255, 255, 255, 0.90);
-      border: 1px solid rgba(255, 255, 255, 0.95);
+      /* 白色の透明度25%、ぼかしなし */
+      background: rgba(255, 255, 255, 0.25);
+
+      border: 1px solid rgba(255, 255, 255, 0.35);
       border-radius: 16px;
 
-      box-shadow: 0 8px 30px rgba(20, 43, 73, 0.20);
+      box-shadow: 0 5px 20px rgba(20, 43, 73, 0.08);
 
-      color: #24364b;
+      color: #142b49;
     }
 
     .description-title {
       display: block;
       margin: 0 0 16px;
       padding: 0 0 12px;
-
-      border-bottom: 2px solid #d4e5f2;
+      border-bottom: 2px solid rgba(255,255,255,0.55);
 
       color: #142b49;
       font-size: 25px;
@@ -170,12 +153,10 @@
     .description-text {
       display: block;
       margin: 0;
-
-      color: #24364b;
+      color: #142b49;
       font-size: 16px;
-      font-weight: normal;
+      font-weight: 500;
       line-height: 2;
-
       overflow-wrap: anywhere;
     }
 
@@ -187,10 +168,7 @@
       margin-bottom: 0;
     }
 
-    /* =========================
-       タブレット・スマートフォン
-    ========================= */
-
+    /* タブレット・スマートフォン */
     @media (max-width: 900px) {
       .header {
         height: 150px;
@@ -328,7 +306,6 @@
   <!-- メイン画像 -->
   <main class="hero">
 
-    <!-- 背景画像 -->
     <img
       src="./home.png"
       alt="波急サーバーのメイン画像"
