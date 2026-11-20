@@ -26,7 +26,7 @@
       font-family: "Yu Gothic UI", "Meiryo", sans-serif;
     }
 
-    /* ホーム画面と共通のヘッダー */
+    /* 共通ヘッダー */
     .header {
       width: 100%;
       height: 120px;
@@ -118,9 +118,9 @@
       background: rgba(255, 255, 255, 0.28);
     }
 
-    /* ページ見出し */
+    /* メイン */
     main {
-      width: min(100% - 40px, 1100px);
+      width: min(1100px, calc(100% - 40px));
       margin: 35px auto 60px;
     }
 
@@ -151,7 +151,7 @@
       line-height: 1.9;
     }
 
-    /* 運営メンバー一覧 */
+    /* メンバーカード一覧 */
     .staff-list {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -170,6 +170,7 @@
       box-shadow: 0 4px 15px rgba(20, 43, 73, 0.07);
     }
 
+    /* スキン画像 */
     .skin-frame {
       width: 130px;
       flex: 0 0 130px;
@@ -190,35 +191,65 @@
       object-fit: contain;
     }
 
+    /* メンバー情報 */
     .staff-info {
       min-width: 0;
       flex: 1;
     }
 
-    .staff-role {
-      display: inline-block;
-      margin-bottom: 9px;
-      padding: 5px 11px;
-      color: #087fc4;
-      background: #eaf5fc;
-      border-radius: 5px;
-      font-size: 12px;
-      font-weight: bold;
+    .staff-identity {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 7px;
     }
 
     .staff-name {
-      margin: 0 0 4px;
+      margin: 0;
       color: #142b49;
-      font-size: 21px;
+      font-size: 20px;
       font-weight: 800;
       overflow-wrap: anywhere;
     }
 
     .staff-display-name {
-      margin: 0 0 15px;
+      margin: 0 0 13px;
       color: #668098;
       font-size: 15px;
       font-weight: bold;
+    }
+
+    /* 役職バッジ */
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 5px 11px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .role-owner {
+      color: #795000;
+      background: #ffe08a;
+      border: 1px solid #f1c85d;
+    }
+
+    .role-developer {
+      color: #842c73;
+      background: #f3c4ec;
+      border: 1px solid #e5a5d9;
+    }
+
+    .role-moderator {
+      color: #a34470;
+      background: #fbd8e7;
+      border: 1px solid #efb8cf;
     }
 
     .staff-description {
@@ -252,7 +283,7 @@
       }
     }
 
-    /* スマートフォン用ヘッダー */
+    /* スマートフォン */
     @media (max-width: 650px) {
       .header {
         height: 150px;
@@ -296,7 +327,7 @@
       }
     }
 
-    /* 小さなスマートフォン */
+    /* 小型スマートフォン */
     @media (max-width: 480px) {
       .staff-card {
         gap: 15px;
@@ -309,7 +340,7 @@
       }
 
       .staff-name {
-        font-size: 18px;
+        font-size: 17px;
       }
 
       .staff-display-name {
@@ -323,6 +354,11 @@
 
       .intro {
         padding: 17px;
+      }
+
+      .role-badge {
+        padding: 4px 9px;
+        font-size: 11px;
       }
     }
   </style>
@@ -358,7 +394,7 @@
 
     <div class="intro">
       波急サーバーを運営しているメンバーを紹介します。
-      各メンバーのスキン画像と紹介文を掲載しています。
+      各メンバーのスキン画像や役職、紹介文を掲載しています。
     </div>
 
     <div class="staff-list">
@@ -376,12 +412,16 @@
         </div>
 
         <div class="staff-info">
-          <span class="staff-role">運営メンバー</span>
-          <h2 class="staff-name">kou20230831</h2>
+          <div class="staff-identity">
+            <h2 class="staff-name">kou20230831</h2>
+            <span class="role-badge role-owner">オーナー</span>
+          </div>
+
           <p class="staff-display-name">コウミン</p>
+
           <p class="staff-description">
-            波急サーバーの運営メンバーです。
-            サーバーの運営や管理に関する活動を行っています。
+            波急サーバーのオーナーです。
+            サーバー全体の運営や管理を担当しています。
           </p>
         </div>
       </section>
@@ -399,12 +439,16 @@
         </div>
 
         <div class="staff-info">
-          <span class="staff-role">運営メンバー</span>
-          <h2 class="staff-name">Primeactor79704</h2>
+          <div class="staff-identity">
+            <h2 class="staff-name">Primeactor79704</h2>
+            <span class="role-badge role-developer">デベロッパー</span>
+          </div>
+
           <p class="staff-display-name">プライム</p>
+
           <p class="staff-description">
-            波急サーバーの運営メンバーです。
-            サーバーの運営や管理に関する活動を行っています。
+            波急サーバーのデベロッパーです。
+            サーバーの開発に関する活動を担当しています。
           </p>
         </div>
       </section>
@@ -422,12 +466,16 @@
         </div>
 
         <div class="staff-info">
-          <span class="staff-role">運営メンバー</span>
-          <h2 class="staff-name">StarBard173641</h2>
+          <div class="staff-identity">
+            <h2 class="staff-name">StarBard173641</h2>
+            <span class="role-badge role-developer">デベロッパー</span>
+          </div>
+
           <p class="staff-display-name">ゆうず</p>
+
           <p class="staff-description">
-            波急サーバーの運営メンバーです。
-            サーバーの運営や管理に関する活動を行っています。
+            波急サーバーのデベロッパーです。
+            サーバーの開発に関する活動を担当しています。
           </p>
         </div>
       </section>
@@ -445,12 +493,16 @@
         </div>
 
         <div class="staff-info">
-          <span class="staff-role">運営メンバー</span>
-          <h2 class="staff-name">Naginagi151229</h2>
+          <div class="staff-identity">
+            <h2 class="staff-name">Naginagi151229</h2>
+            <span class="role-badge role-moderator">モデレーター</span>
+          </div>
+
           <p class="staff-display-name">ナギ</p>
+
           <p class="staff-description">
-            波急サーバーの運営メンバーです。
-            サーバーの運営や管理に関する活動を行っています。
+            波急サーバーのモデレーターです。
+            サーバー内の管理や利用者のサポートを担当しています。
           </p>
         </div>
       </section>
