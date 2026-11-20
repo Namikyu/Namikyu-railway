@@ -36,10 +36,6 @@
       --border: #d8e8f3;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       margin: 0;
       font-family:
@@ -78,7 +74,6 @@
     .header-top {
       display: flex;
       align-items: center;
-      gap: 22px;
       min-height: 105px;
       padding-bottom: 17px;
     }
@@ -114,7 +109,7 @@
     }
 
     /* =========================
-       横並びページ選択ボタン
+       ページ選択ボタン
     ========================= */
 
     .navigation {
@@ -163,100 +158,6 @@
       max-height: 680px;
       object-fit: cover;
       display: block;
-    }
-
-    /* =========================
-       メインコンテンツ
-    ========================= */
-
-    .main-container {
-      max-width: 1150px;
-      margin: 0 auto;
-      padding: 48px 25px 75px;
-    }
-
-    .section {
-      margin-bottom: 48px;
-    }
-
-    .section-heading {
-      margin-bottom: 22px;
-    }
-
-    .section-heading h2 {
-      font-size: 24px;
-      font-weight: 900;
-      color: var(--navy);
-      margin: 0;
-    }
-
-    .section-heading p {
-      color: var(--muted);
-      font-size: 13px;
-      margin: 3px 0 0;
-    }
-
-    .heading-line {
-      width: 48px;
-      height: 4px;
-      background: var(--main-blue);
-      margin-top: 10px;
-      border-radius: 3px;
-    }
-
-    /* =========================
-       メニューカード
-    ========================= */
-
-    .category-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    .category-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 25px;
-      display: flex;
-      flex-direction: column;
-      min-height: 150px;
-      transition: 0.2s;
-      box-shadow: 0 3px 12px rgba(15, 75, 120, 0.04);
-    }
-
-    .category-card:hover {
-      border-color: var(--main-blue);
-      transform: translateY(-3px);
-      box-shadow: 0 7px 20px rgba(15, 75, 120, 0.11);
-    }
-
-    .category-label {
-      font-size: 10px;
-      font-weight: 900;
-      color: var(--main-blue);
-      letter-spacing: 0.13em;
-    }
-
-    .category-title {
-      color: var(--navy);
-      font-size: 18px;
-      font-weight: 900;
-      margin-top: 5px;
-    }
-
-    .category-description {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
-    .category-arrow {
-      color: var(--main-blue);
-      font-size: 20px;
-      text-align: right;
-      margin-top: auto;
     }
 
     /* =========================
@@ -328,24 +229,6 @@
         aspect-ratio: 16 / 9;
         min-height: 220px;
       }
-
-      .main-container {
-        padding: 32px 16px 50px;
-      }
-
-      .section-heading h2 {
-        font-size: 21px;
-      }
-
-      .category-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .category-card {
-        min-height: 130px;
-        padding: 20px;
-      }
     }
   </style>
 </head>
@@ -353,7 +236,7 @@
 <body>
 
   <!-- =========================
-       ヘッダー
+       青いヘッダー
   ========================= -->
 
   <header class="header">
@@ -382,7 +265,7 @@
 
     </div>
 
-    <!-- ページ選択ボタン -->
+    <!-- 青い部分にページ選択ボタンを集約 -->
 
     <nav class="navigation">
 
@@ -424,89 +307,6 @@
     >
 
   </section>
-
-
-  <!-- =========================
-       メインメニュー
-  ========================= -->
-
-  <main class="main-container">
-
-    <section class="section">
-
-      <div class="section-heading">
-
-        <h2>各種メニュー</h2>
-
-        <div class="heading-line"></div>
-
-        <p>
-          ご利用目的に合わせて各ページをご覧ください。
-        </p>
-
-      </div>
-
-      <div class="category-grid">
-
-        <a href="./join.html" class="category-card">
-
-          <span class="category-label">
-            JOIN THE SERVER
-          </span>
-
-          <span class="category-title">
-            サーバーへの参加
-          </span>
-
-          <span class="category-description">
-            波急サーバーへの参加方法をご案内します。
-          </span>
-
-          <span class="category-arrow">→</span>
-
-        </a>
-
-        <a href="./status.html" class="category-card">
-
-          <span class="category-label">
-            LIVE STATUS
-          </span>
-
-          <span class="category-title">
-            在線位置
-          </span>
-
-          <span class="category-description">
-            サーバーの在線位置を確認できます。
-          </span>
-
-          <span class="category-arrow">→</span>
-
-        </a>
-
-        <a href="./staff.html" class="category-card">
-
-          <span class="category-label">
-            STAFF
-          </span>
-
-          <span class="category-title">
-            運営メンバー
-          </span>
-
-          <span class="category-description">
-            波急サーバーの運営メンバーをご紹介します。
-          </span>
-
-          <span class="category-arrow">→</span>
-
-        </a>
-
-      </div>
-
-    </section>
-
-  </main>
 
 
   <!-- =========================
