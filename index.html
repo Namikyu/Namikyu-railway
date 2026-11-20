@@ -4,44 +4,274 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>〇〇鉄道サーバー 公式サイト</title>
+  
+  <!-- ▼ アイコン画像の設定（icon.pngをアップロードした場合に反映） ▼ -->
+  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon.png">
+
   <style>
-    body { font-family: sans-serif; margin: 0; background: #f4f6f9; color: #333; }
-    header { background: #1e3a8a; color: white; padding: 20px; text-align: center; }
-    .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
-    .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    h2 { border-left: 5px solid #1e3a8a; padding-left: 10px; }
-    .train-box { background: #eef2ff; padding: 15px; border-radius: 6px; font-weight: bold; }
+    /* 全体の基本デザイン */
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      margin: 0;
+      background-color: #f0f4f8;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* 上部メニューバー（ナビゲーション） */
+    nav {
+      background-color: #0f2350;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-logo img {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+    }
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 15px;
+      font-size: 0.9rem;
+    }
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* ヒーローヘッダー（タイトル部分） */
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0 0 10px 0;
+      font-size: 2rem;
+    }
+    header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    /* メインコンテンツの枠 */
+    .container {
+      max-width: 860px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    /* 各セクションの白いカード */
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    h2 {
+      border-left: 5px solid #1e3a8a;
+      padding-left: 12px;
+      margin-top: 0;
+      color: #1e3a8a;
+      font-size: 1.3rem;
+    }
+
+    /* リアルタイム在線位置の枠 */
+    .train-status-box {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .train-item {
+      background: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid #10b981;
+    }
+    .train-item:last-child { margin-bottom: 0; }
+
+    /* IPアドレスコピー欄 */
+    .ip-box {
+      background: #1e293b;
+      color: #38bdf8;
+      padding: 12px 15px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .copy-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .copy-btn:hover { background: #1d4ed8; }
+
+    /* テーブル（路線一覧など） */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 12px 10px;
+      text-align: left;
+    }
+    th { background-color: #f8fafc; color: #475569; }
+
+    /* フッター（一番下の著作権表示） */
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+      font-size: 0.85rem;
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>〇〇鉄道サーバー 公式サイト</h1>
-  <p>本格鉄道運転・街づくりMinecraftサーバー</p>
-</header>
-
-<div class="container">
-  <div class="card">
-    <h2>🚆 リアルタイム在線位置</h2>
-    <div id="train-status" class="train-box">
-      現在、列車データを読み込み中...（ここにプログラムを組み込みます）
+  <!-- 上部メニューバー -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <!-- icon.pngがない場合はこのimgタグを消してもOK -->
+      <img src="icon.png" alt="" onerror="this.style.display='none'">
+      <span>〇〇鉄道サーバー</span>
+    </a>
+    <div class="nav-links">
+      <a href="#status">在線位置</a>
+      <a href="#about">概要</a>
+      <a href="#join">参加方法</a>
+      <a href="#lines">路線案内</a>
     </div>
+  </nav>
+
+  <!-- ヘッダー -->
+  <header>
+    <h1>〇〇鉄道サーバー 公式サイト</h1>
+    <p>リアルなダイヤ運行と街づくりが楽しめるMinecraft鉄道サーバー</p>
+  </header>
+
+  <!-- メインエリア -->
+  <div class="container">
+
+    <!-- 1. リアルタイム在線位置 -->
+    <section id="status" class="card">
+      <h2>🚆 リアルタイム在線位置</h2>
+      <p>現在サーバー内を走行中の列車情報です。（※マイクラの座標と連動予定）</p>
+      
+      <div id="train-list" class="train-status-box">
+        <!-- ここは後でJavaScriptで自動書き換えします（今は仮の表示） -->
+        <div class="train-item">
+          <span><strong>[普通]</strong> 中央線（下り）</span>
+          <span>中央駅 停車中</span>
+        </div>
+        <div class="train-item">
+          <span><strong>[快速]</strong> 湾岸線（上り）</span>
+          <span>桜ヶ丘駅 ～ 海浜公園駅 走行中</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. サーバー概要 -->
+    <section id="about" class="card">
+      <h2>📖 サーバー概要</h2>
+      <p>当サーバーは、複数の鉄道会社・路線が乗り入れる本格鉄道Minecraftサーバーです。乗客として列車旅を楽しむだけでなく、運転士試験を受けて乗務したり、沿線の街づくりに参加したりできます。</p>
+    </section>
+
+    <!-- 3. 参加方法 -->
+    <section id="join" class="card">
+      <h2>🎮 参加方法</h2>
+      <p>以下のサーバーアドレスをMinecraftのマルチプレイに追加してご参加ください。</p>
+      
+      <div class="ip-box">
+        <span id="server-ip">://example.com</span>
+        <button class="copy-btn" onclick="copyIP()">IPをコピー</button>
+      </div>
+
+      <ul>
+        <li><strong>対応エディション：</strong> Minecraft Java版</li>
+        <li><strong>推奨バージョン：</strong> 1.20.4</li>
+        <li><strong>必須Mod：</strong> なし（バニラ状態で参加可能）</li>
+        <li><strong>公式Discord：</strong> <a href="#">こちらから参加（URLを貼る）</a></li>
+      </ul>
+    </section>
+
+    <!-- 4. 路線案内 -->
+    <section id="lines" class="card">
+      <h2>🗺️ 運行路線一覧</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>路線名</th>
+            <th>区間</th>
+            <th>運行状況</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>中央線</strong></td>
+            <td>中央駅 ～ 新都心駅</td>
+            <td style="color: #10b981; font-weight: bold;">平常運転</td>
+          </tr>
+          <tr>
+            <td><strong>湾岸線</strong></td>
+            <td>中央駅 ～ 海浜公園駅</td>
+            <td style="color: #10b981; font-weight: bold;">平常運転</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
   </div>
 
-  <div class="card">
-    <h2>📖 サーバー概要</h2>
-    <p>当サーバーは、リアルな運行ダイヤと自動信号システムを備えた鉄道サーバーです。</p>
-  </div>
+  <!-- フッター -->
+  <footer>
+    &copy; 2026 〇〇鉄道サーバー All Rights Reserved.
+  </footer>
 
-  <div class="card">
-    <h2>🎮 参加方法</h2>
-    <ul>
-      <li><strong>バージョン：</strong> Java版 1.20.4</li>
-      <li><strong>サーバーIP：</strong> ://example.com</li>
-      <li><strong>必須Mod：</strong> なし（バニラで参加可能）</li>
-    </ul>
-  </div>
-</div>
+  <!-- ページ内の動きを作るプログラム（JavaScript） -->
+  <script>
+    // IPアドレスをクリップボードにコピーする機能
+    function copyIP() {
+      const ipText = document.getElementById("server-ip").innerText;
+      navigator.clipboard.writeText(ipText).then(() => {
+        alert("サーバーIP「" + ipText + "」をコピーしました！");
+      });
+    }
+
+    // ★ここに今後「マイクラの座標から在線位置を計算するプログラム」を追加します
+  </script>
 
 </body>
 </html>
