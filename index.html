@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>波急サーバー | NAMIKYU RAILWAY</title>
+  <title>ホーム | 波急サーバー</title>
 
   <link rel="icon" href="./icon.png">
   <link rel="apple-touch-icon" href="./icon.png">
@@ -27,7 +27,7 @@
     }
 
     /* =========================
-       ヘッダー：他ページと共通
+       ヘッダー：news.htmlと完全共通
     ========================= */
 
     .header {
@@ -127,7 +127,7 @@
     }
 
     /* =========================
-       メイン画像
+       ホーム画面
     ========================= */
 
     .hero {
@@ -159,27 +159,25 @@
       position: absolute;
       z-index: 5;
       left: 50%;
-      bottom: 35px;
+      bottom: 2%;
       transform: translateX(-50%);
       width: min(760px, calc(100% - 60px));
-      padding: 25px 32px;
+      padding: 28px 34px;
 
-      /* 白背景は10%だけ表示 */
-      background: rgba(255, 255, 255, 0.10);
+      /* 白背景の透明度20%・ぼかしなし */
+      background: rgba(255, 255, 255, 0.20);
 
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(20, 43, 73, 0.08);
 
-      /* ぼかしなし */
       color: #142b49;
-      box-shadow: 0 5px 20px rgba(20, 43, 73, 0.05);
     }
 
     .description-title {
-      display: block;
-      margin: 0 0 14px;
-      padding: 0 0 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+      margin: 0 0 15px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(8, 127, 196, 0.25);
       color: #142b49;
       font-size: 25px;
       font-weight: bold;
@@ -187,13 +185,12 @@
     }
 
     .description-text {
-      display: block;
       margin: 0;
-      color: #142b49;
+      color: #24364b;
       font-size: 16px;
       font-weight: 600;
-      line-height: 1.9;
-      overflow-wrap: anywhere;
+      line-height: 2;
+      overflow-wrap: break-word;
     }
 
     .description-text p {
@@ -205,13 +202,13 @@
     }
 
     /* =========================
-       タブレット・スマートフォン
+       タブレット
     ========================= */
 
     @media (max-width: 900px) {
       .description-box {
         width: calc(100% - 36px);
-        padding: 19px 22px;
+        padding: 20px 22px;
       }
 
       .description-title {
@@ -220,13 +217,13 @@
 
       .description-text {
         font-size: 14px;
-        line-height: 1.8;
+        line-height: 1.85;
       }
     }
 
     /* =========================
-       スマートフォン用ヘッダー
-       他ページと同じ650px
+       スマートフォン
+       ヘッダーはnews.htmlと完全共通
     ========================= */
 
     @media (max-width: 650px) {
@@ -277,21 +274,21 @@
       }
 
       .description-box {
-        bottom: 20px;
+        bottom: 2%;
         width: calc(100% - 24px);
         padding: 15px 17px;
         border-radius: 12px;
       }
 
       .description-title {
-        margin-bottom: 8px;
-        padding-bottom: 7px;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
         font-size: 18px;
       }
 
       .description-text {
         font-size: 12px;
-        line-height: 1.7;
+        line-height: 1.75;
       }
 
       .description-text p {
@@ -305,23 +302,19 @@
 
     @media (max-height: 650px) and (min-width: 651px) {
       .description-box {
-        bottom: 15px;
-        padding: 16px 24px;
+        bottom: 1%;
+        padding: 18px 26px;
       }
 
       .description-title {
-        margin-bottom: 7px;
-        padding-bottom: 6px;
+        margin-bottom: 8px;
+        padding-bottom: 7px;
         font-size: 21px;
       }
 
       .description-text {
         font-size: 14px;
-        line-height: 1.6;
-      }
-
-      .description-text p {
-        margin-bottom: 5px;
+        line-height: 1.7;
       }
     }
   </style>
@@ -329,11 +322,10 @@
 
 <body>
 
-  <!-- ヘッダー -->
+  <!-- ヘッダー：news.htmlと同じHTML構造 -->
   <header class="header">
 
     <div class="header-top">
-
       <img
         class="logo"
         src="./icon.png"
@@ -344,7 +336,6 @@
         <h1 class="brand-title">波急サーバー</h1>
         <div class="brand-subtitle">NAMIKYU RAILWAY</div>
       </div>
-
     </div>
 
     <nav class="navigation">
