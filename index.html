@@ -2,239 +2,104 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <!-- OGP設定 -->
-  <meta property="og:title" content="波急サーバー 公式サイト">
-  <meta property="og:description" content="波急サーバーの公式サイト。鉄道運行や街づくりを楽しめるMinecraftサーバーです。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://example.com/">
-  <meta property="og:image" content="https://example.com/icon.png">
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <meta property="og:title" content="波急サーバー 公式サイト">
+  <meta property="og:description" content="波急サーバーの公式サイトです。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://namikyu.github.io/Namikyu-railway/">
+  <meta property="og:image" content="https://namikyu.github.io/Namikyu-railway/icon.png">
+
   <title>波急サーバー | 公式サイト</title>
 
-  <!-- アイコン設定 -->
   <link rel="icon" href="icon.png" type="image/png">
   <link rel="apple-touch-icon" href="icon.png">
 
   <style>
-    :root {
-      --navy: #142b49;
-      --blue: #2878c8;
-      --light-blue: #edf5fc;
-      --background: #f5f7fa;
-      --text: #26374a;
-      --muted: #718096;
-      --border: #e3e9ef;
-      --white: #ffffff;
-    }
-
     * {
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 85px;
+    :root {
+      --navy: #142b49;
+      --blue: #2878c8;
+      --text: #26374a;
+      --muted: #718096;
+      --border: #e5eaf0;
+      --background: #f4f6f9;
     }
 
     body {
       margin: 0;
-      font-family:
-        "Yu Gothic UI",
-        "Yu Gothic",
-        "Hiragino Kaku Gothic ProN",
-        Meiryo,
-        sans-serif;
-      color: var(--text);
+      font-family: "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
       background: var(--background);
+      color: var(--text);
       line-height: 1.8;
     }
 
     a {
-      color: inherit;
       text-decoration: none;
+      color: inherit;
     }
 
-    /* ナビゲーション */
+    /* 上部タイトルエリア */
 
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      height: 68px;
-      background: rgba(255,255,255,0.97);
+    .header {
+      background: #ffffff;
       border-bottom: 1px solid var(--border);
+      padding: 55px 24px 35px;
     }
 
-    .nav-inner {
-      max-width: 1120px;
-      height: 100%;
-      margin: auto;
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--navy);
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-    }
-
-    .logo img {
-      width: 34px;
-      height: 34px;
-      object-fit: contain;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #526174;
-    }
-
-    .nav-links a:hover {
-      color: var(--blue);
-    }
-
-    /* メインビジュアル */
-
-    .hero {
-      background: var(--navy);
-      color: white;
-      padding: 90px 24px 95px;
-    }
-
-    .hero-inner {
-      max-width: 1120px;
+    .header-inner {
+      max-width: 1050px;
       margin: auto;
     }
 
-    .hero-label {
-      display: inline-block;
-      font-size: 12px;
-      letter-spacing: 0.16em;
-      color: #b9d9f8;
-      margin-bottom: 18px;
-      font-weight: 700;
-    }
-
-    .hero h1 {
-      font-size: clamp(34px, 6vw, 58px);
-      line-height: 1.35;
-      margin: 0 0 18px;
-      letter-spacing: 0.04em;
-    }
-
-    .hero p {
-      margin: 0;
-      color: #d5e1ef;
-      font-size: 15px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 32px;
-    }
-
-    .hero-button {
-      display: inline-block;
-      padding: 11px 25px;
-      border-radius: 4px;
-      font-size: 13px;
-      font-weight: 700;
-      transition: 0.2s;
-    }
-
-    .button-primary {
-      background: var(--blue);
-      color: white;
-    }
-
-    .button-primary:hover {
-      background: #398de0;
-    }
-
-    .button-secondary {
-      border: 1px solid #8298b2;
-      color: white;
-    }
-
-    .button-secondary:hover {
-      background: rgba(255,255,255,0.1);
-    }
-
-    /* メインコンテンツ */
-
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 55px 24px 70px;
-    }
-
-    .section {
-      margin-bottom: 65px;
-      scroll-margin-top: 85px;
-    }
-
-    .section-heading {
-      margin-bottom: 24px;
-    }
-
-    .section-label {
-      display: block;
-      color: var(--blue);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.15em;
-      margin-bottom: 4px;
-    }
-
-    .section-heading h2 {
+    .site-title {
       color: var(--navy);
-      font-size: 25px;
-      margin: 0;
+      font-size: 36px;
       font-weight: 800;
+      margin: 0;
+      letter-spacing: 0.06em;
     }
 
-    .section-description {
-      margin: 8px 0 0;
+    .site-description {
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
+      margin: 8px 0 0;
     }
 
-    /* お知らせ */
+    /* お知らせ・トピック */
 
-    .news-list {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
+    .information {
+      background: #ffffff;
+      padding: 0 24px 35px;
+    }
+
+    .information-inner {
+      max-width: 1050px;
+      margin: auto;
+    }
+
+    .info-section {
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .info-title {
+      color: var(--navy);
+      font-size: 17px;
+      font-weight: 800;
+      margin: 0 0 12px;
     }
 
     .news-item {
       display: flex;
-      align-items: center;
       gap: 20px;
-      padding: 17px 22px;
-      border-bottom: 1px solid var(--border);
+      align-items: center;
       font-size: 13px;
-    }
-
-    .news-item:last-child {
-      border-bottom: none;
+      padding: 7px 0;
     }
 
     .news-date {
@@ -242,287 +107,130 @@
       white-space: nowrap;
     }
 
-    .news-category {
-      color: var(--blue);
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
     .news-text {
       color: var(--text);
     }
 
-    /* 概要 */
-
-    .about-box {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 30px;
-    }
-
-    .about-box p {
+    .topic-text {
+      color: var(--muted);
+      font-size: 13px;
       margin: 0;
-      font-size: 14px;
-      line-height: 2;
     }
 
-    /* 特徴 */
+    /* ホーム画像 */
 
-    .feature-grid {
+    .home {
+      max-width: 1050px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .home-image {
+      width: 100%;
+      height: 330px;
+      object-fit: cover;
+      display: block;
+      border-radius: 6px;
+      background: #dce5ef;
+    }
+
+    /* メニューボタン */
+
+    .menu-title {
+      color: var(--navy);
+      font-size: 21px;
+      margin: 30px 0 18px;
+      font-weight: 800;
+    }
+
+    .menu-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
     }
 
-    .feature {
+    .menu-button {
       background: white;
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 25px 22px;
+      border-radius: 5px;
+      padding: 23px 20px;
+      display: block;
+      transition: 0.2s;
     }
 
-    .feature-number {
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.1em;
+    .menu-button:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(20,43,73,0.07);
     }
 
-    .feature h3 {
-      margin: 10px 0 8px;
-      color: var(--navy);
-      font-size: 17px;
-    }
-
-    .feature p {
-      color: var(--muted);
-      font-size: 13px;
-      margin: 0;
-    }
-
-    /* 在線情報 */
-
-    .status-box {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 25px;
-    }
-
-    .status-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .status-header h3 {
-      margin: 0;
+    .menu-name {
+      display: block;
       color: var(--navy);
       font-size: 16px;
+      font-weight: 800;
     }
 
-    .status-label {
-      font-size: 11px;
-      color: #8a6a2d;
-      background: #fff7e6;
-      padding: 4px 10px;
-      border-radius: 3px;
-    }
-
-    .status-message {
-      text-align: center;
-      padding: 25px 10px;
-      background: #f7f9fc;
+    .menu-description {
+      display: block;
       color: var(--muted);
-      font-size: 13px;
-      border-radius: 4px;
-    }
-
-    /* 路線案内 */
-
-    .line-list {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .line-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 22px;
-      gap: 15px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .line-item:last-child {
-      border-bottom: none;
-    }
-
-    .line-name {
-      font-weight: 700;
-      color: var(--navy);
-      font-size: 15px;
-    }
-
-    .line-description {
       font-size: 12px;
-      color: var(--muted);
+      margin-top: 5px;
     }
 
-    .line-status {
-      color: #8290a0;
-      font-size: 11px;
-      white-space: nowrap;
-    }
-
-    /* 参加案内 */
-
-    .join-box {
-      background: var(--navy);
-      color: white;
-      border-radius: 6px;
-      padding: 35px;
-    }
-
-    .join-box h2 {
-      margin: 0 0 8px;
-      font-size: 23px;
-    }
-
-    .join-box > p {
-      color: #d0dceb;
-      font-size: 13px;
-      margin: 0 0 24px;
-    }
-
-    .server-address {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 12px 15px;
-      background: #0d2038;
-      border: 1px solid #3b5270;
-      border-radius: 4px;
-    }
-
-    .server-ip {
-      color: #b9d9f8;
-      font-family: Consolas, monospace;
-      font-size: 15px;
-      overflow-wrap: anywhere;
-    }
-
-    .copy-button {
-      border: none;
-      background: var(--blue);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .copy-button:hover {
-      background: #398de0;
-    }
-
-    .join-note {
-      color: #bdcbdc;
-      font-size: 12px;
-      margin-top: 15px;
+    .menu-arrow {
+      display: block;
+      color: var(--blue);
+      font-size: 19px;
+      text-align: right;
+      margin-top: 8px;
     }
 
     /* フッター */
 
     footer {
-      background: white;
+      background: #ffffff;
       border-top: 1px solid var(--border);
-      padding: 28px 24px;
-    }
-
-    .footer-inner {
-      max-width: 1120px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .footer-name {
-      color: var(--navy);
-      font-weight: 800;
-      font-size: 14px;
-    }
-
-    .copyright {
+      padding: 22px 24px;
+      text-align: center;
       color: var(--muted);
       font-size: 11px;
     }
 
-    /* スマートフォン対応 */
-
     @media (max-width: 700px) {
-      .navbar {
-        height: auto;
+      .header {
+        padding: 40px 20px 28px;
       }
 
-      .nav-inner {
-        padding: 12px 16px;
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 10px;
+      .site-title {
+        font-size: 29px;
       }
 
-      .nav-links {
-        width: 100%;
-        gap: 20px;
-        overflow-x: auto;
-        white-space: nowrap;
-        padding-bottom: 3px;
-      }
-
-      .hero {
-        padding: 65px 20px 70px;
-      }
-
-      .container {
-        padding: 40px 16px 50px;
-      }
-
-      .feature-grid {
-        grid-template-columns: 1fr;
+      .information {
+        padding: 0 20px 25px;
       }
 
       .news-item {
-        flex-wrap: wrap;
-        gap: 5px 12px;
-        padding: 14px;
-      }
-
-      .news-text {
-        width: 100%;
-      }
-
-      .about-box {
-        padding: 22px;
-      }
-
-      .join-box {
-        padding: 25px 18px;
-      }
-
-      .footer-inner {
-        flex-direction: column;
+        gap: 10px;
         align-items: flex-start;
+      }
+
+      .home {
+        margin: 25px auto;
+        padding: 0 16px;
+      }
+
+      .home-image {
+        height: 210px;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .menu-button {
+        padding: 18px;
       }
     }
   </style>
@@ -530,230 +238,88 @@
 
 <body>
 
-  <!-- ナビゲーション -->
-  <nav class="navbar">
-    <div class="nav-inner">
-      <a href="#" class="logo">
-        <img src="icon.png" alt="波急">
-        <span>波急サーバー</span>
-      </a>
-
-      <div class="nav-links">
-        <a href="#news">お知らせ</a>
-        <a href="#about">サーバー概要</a>
-        <a href="#status">在線情報</a>
-        <a href="#lines">路線案内</a>
-        <a href="#join">参加方法</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- メインビジュアル -->
-  <header class="hero">
-    <div class="hero-inner">
-      <span class="hero-label">NAMIKYU SERVER OFFICIAL WEBSITE</span>
-
-      <h1>波急サーバー</h1>
-
-      <p>
-        鉄道と街がつながる、新しいMinecraftの世界。
+  <!-- タイトル・説明 -->
+  <header class="header">
+    <div class="header-inner">
+      <h1 class="site-title">波急サーバー</h1>
+      <p class="site-description">
+        鉄道と街がつながる、Minecraftの世界。
       </p>
-
-      <div class="hero-buttons">
-        <a href="#about" class="hero-button button-primary">
-          サーバーについて
-        </a>
-
-        <a href="#join" class="hero-button button-secondary">
-          参加方法
-        </a>
-      </div>
     </div>
   </header>
 
-  <main class="container">
+  <!-- お知らせ・トピック -->
+  <section class="information">
+    <div class="information-inner">
 
-    <!-- お知らせ -->
-    <section class="section" id="news">
-      <div class="section-heading">
-        <span class="section-label">INFORMATION</span>
-        <h2>お知らせ</h2>
-        <p class="section-description">
-          波急サーバーからのお知らせを掲載します。
-        </p>
-      </div>
+      <div class="info-section">
+        <h2 class="info-title">お知らせ</h2>
 
-      <div class="news-list">
         <div class="news-item">
           <span class="news-date">2026.11.20</span>
-          <span class="news-category">お知らせ</span>
           <span class="news-text">
             公式サイトを公開しました。
           </span>
         </div>
       </div>
-    </section>
 
-    <!-- サーバー概要 -->
-    <section class="section" id="about">
-      <div class="section-heading">
-        <span class="section-label">ABOUT</span>
-        <h2>波急サーバーについて</h2>
-      </div>
+      <div class="info-section">
+        <h2 class="info-title">Topics</h2>
 
-      <div class="about-box">
-        <p>
-          波急サーバーは、Minecraftの世界で鉄道や街づくりを楽しむサーバーです。
-          鉄道路線の整備、列車の運行、駅や街の開発など、
-          さまざまな活動を通して世界を広げていきます。
-        </p>
-      </div>
-    </section>
-
-    <!-- サーバーの特徴 -->
-    <section class="section">
-      <div class="section-heading">
-        <span class="section-label">FEATURES</span>
-        <h2>サーバーの特徴</h2>
-      </div>
-
-      <div class="feature-grid">
-
-        <div class="feature">
-          <span class="feature-number">01 / RAILWAY</span>
-          <h3>鉄道運行</h3>
-          <p>
-            鉄道路線や駅を整備し、列車の運行を楽しめます。
-          </p>
-        </div>
-
-        <div class="feature">
-          <span class="feature-number">02 / CITY</span>
-          <h3>街づくり</h3>
-          <p>
-            駅周辺の開発や建築を通して、街を発展させます。
-          </p>
-        </div>
-
-        <div class="feature">
-          <span class="feature-number">03 / COMMUNITY</span>
-          <h3>コミュニティ</h3>
-          <p>
-            メンバー同士で協力しながら、さまざまな活動に参加できます。
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 在線情報 -->
-    <section class="section" id="status">
-      <div class="section-heading">
-        <span class="section-label">TRAIN STATUS</span>
-        <h2>列車在線情報</h2>
-        <p class="section-description">
-          サーバー内を走行する列車の位置情報を掲載する予定です。
+        <p class="topic-text">
+          波急サーバーの最新情報や注目トピックを掲載します。
         </p>
       </div>
 
-      <div class="status-box">
-        <div class="status-header">
-          <h3>リアルタイム運行状況</h3>
-          <span class="status-label">準備中</span>
-        </div>
+    </div>
+  </section>
 
-        <div class="status-message">
-          現在、在線情報システムは準備中です。
-        </div>
-      </div>
-    </section>
+  <!-- ホーム画像・メニュー -->
+  <main class="home">
 
-    <!-- 路線案内 -->
-    <section class="section" id="lines">
-      <div class="section-heading">
-        <span class="section-label">RAILWAY NETWORK</span>
-        <h2>路線案内</h2>
-        <p class="section-description">
-          波急サーバー内の鉄道路線をご案内します。
-        </p>
-      </div>
+    <!-- ホーム画像を変更する場合は src を変更 -->
+    <img
+      class="home-image"
+      src="home.png"
+      alt="波急サーバーのホーム画像"
+    >
 
-      <div class="line-list">
-        <div class="line-item">
-          <div>
-            <div class="line-name">路線情報</div>
-            <div class="line-description">
-              路線名・運行区間などは順次公開予定です。
-            </div>
-          </div>
+    <h2 class="menu-title">MENU</h2>
 
-          <span class="line-status">準備中</span>
-        </div>
-      </div>
-    </section>
+    <div class="menu-grid">
 
-    <!-- 参加方法 -->
-    <section class="section" id="join">
-      <div class="join-box">
-        <h2>波急サーバーに参加する</h2>
+      <a href="join.html" class="menu-button">
+        <span class="menu-name">サーバーへの参加</span>
+        <span class="menu-description">
+          接続方法・参加案内はこちら
+        </span>
+        <span class="menu-arrow">→</span>
+      </a>
 
-        <p>
-          サーバーへの参加方法や接続情報はこちらをご確認ください。
-        </p>
+      <a href="status.html" class="menu-button">
+        <span class="menu-name">在線位置</span>
+        <span class="menu-description">
+          列車の現在位置を確認
+        </span>
+        <span class="menu-arrow">→</span>
+      </a>
 
-        <div class="server-address">
-          <span class="server-ip" id="server-ip">
-            サーバーアドレス未設定
-          </span>
+      <a href="staff.html" class="menu-button">
+        <span class="menu-name">運営メンバー</span>
+        <span class="menu-description">
+          波急サーバーの運営スタッフ紹介
+        </span>
+        <span class="menu-arrow">→</span>
+      </a>
 
-          <button class="copy-button" onclick="copyIP()">
-            コピー
-          </button>
-        </div>
-
-        <div class="join-note">
-          ※参加条件・対応バージョン・接続方法は順次掲載予定です。
-        </div>
-      </div>
-    </section>
+    </div>
 
   </main>
 
   <!-- フッター -->
   <footer>
-    <div class="footer-inner">
-      <div class="footer-name">波急サーバー</div>
-
-      <div class="copyright">
-        &copy; 2026 Namikyu Server. All Rights Reserved.
-      </div>
-    </div>
+    &copy; 2026 Namikyu Server. All Rights Reserved.
   </footer>
-
-  <script>
-    // サーバーアドレスのコピー
-    function copyIP() {
-      const ipText = document
-        .getElementById("server-ip")
-        .innerText.trim();
-
-      if (
-        !ipText ||
-        ipText === "サーバーアドレス未設定"
-      ) {
-        alert("サーバーアドレスがまだ設定されていません。");
-        return;
-      }
-
-      navigator.clipboard.writeText(ipText)
-        .then(() => {
-          alert("サーバーアドレスをコピーしました。");
-        })
-        .catch(() => {
-          alert("コピーできませんでした。");
-        });
-    }
-  </script>
 
 </body>
 </html>
