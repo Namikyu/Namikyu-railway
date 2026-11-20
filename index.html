@@ -1,224 +1,114 @@
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+  background: #075d9b;
+}
 
-  <title>波急電鉄 ホームページ</title>
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="波急電鉄・波急サーバー公式ホームページ">
+body {
+  overflow: hidden;
+}
 
-  <link rel="icon" href="./icon.png">
-  <link rel="apple-touch-icon" href="./icon.png">
+/* 青いヘッダーをさらにコンパクトに */
+.header {
+  width: 100%;
+  height: 105px;
+  min-height: 105px;
+  padding: 10px 3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  overflow: hidden;
+  background: linear-gradient(
+    110deg,
+    #075d9b 0%,
+    #087fc4 55%,
+    #129bd2 100%
+  );
+}
 
-  <meta property="og:title" content="波急電鉄 ホームページ">
-  <meta property="og:description" content="波急サーバー公式ホームページ">
-  <meta property="og:url" content="https://namikyu.github.io/Namikyu-railway/">
-  <meta property="og:image" content="https://namikyu.github.io/Namikyu-railway/home.png">
+/* ロゴとタイトル */
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex: 1 1 42%;
+  min-width: 0;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+.logo {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
-      font-family: "Yu Gothic UI", "Meiryo", sans-serif;
-      background: #075d9b;
-    }
+.brand-title {
+  margin: 0;
+  color: white;
+  font-size: clamp(27px, 3.2vw, 42px);
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
 
-    /* 青いヘッダー */
-    .header {
-      width: 100%;
-      min-height: 145px;
-      padding: 18px 4%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 25px;
-      background: linear-gradient(
-        110deg,
-        #075d9b 0%,
-        #087fc4 55%,
-        #129bd2 100%
-      );
-    }
+/* 右側のボタン */
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 58%;
+  gap: 9px;
+}
 
-    /* 左側のロゴ・タイトル */
-    .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 18px;
-      flex: 1 1 42%;
-      min-width: 0;
-    }
+.navigation a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 7px;
+  color: white;
+  text-decoration: none;
+  font-size: clamp(10px, 0.95vw, 13px);
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 7px;
+  background: rgba(255,255,255,0.12);
+}
 
-    .logo {
-      width: 75px;
-      height: 75px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
+/* 画像は元の横幅・縦横比を維持 */
+.hero {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  overflow: hidden;
+}
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+.hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
 
-    .brand-title {
-      margin: 0;
-      color: white;
-      font-size: clamp(30px, 3.5vw, 48px);
-      font-weight: 800;
-      letter-spacing: 0.07em;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
-
-    .brand-subtitle {
-      margin-top: 5px;
-      color: white;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.25em;
-      white-space: nowrap;
-    }
-
-    /* 右側のページボタン */
-    .navigation {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 1 1 58%;
-      gap: 10px;
-    }
-
-    .navigation a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 1 1 0;
-      min-width: 0;
-      min-height: 44px;
-      padding: 10px 9px;
-      color: white;
-      text-decoration: none;
-      font-size: clamp(11px, 1vw, 14px);
-      font-weight: 700;
-      white-space: nowrap;
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 7px;
-      background: rgba(255,255,255,0.12);
-      transition: background 0.2s;
-    }
-
-    .navigation a:hover {
-      background: rgba(255,255,255,0.28);
-    }
-
-    /* メイン画像 */
-    .hero {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      line-height: 0;
-      background: #075d9b;
-    }
-
-    .hero img {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-width: none;
-      object-fit: fill;
-      margin: 0;
-      padding: 0;
-      border: 0;
-    }
-
-    /* 画面が狭い場合 */
-    @media (max-width: 900px) {
-      .header {
-        flex-direction: column;
-        justify-content: center;
-        gap: 15px;
-        padding: 14px 3%;
-      }
-
-      .header-top {
-        flex: none;
-      }
-
-      .navigation {
-        width: 100%;
-        flex: none;
-      }
-
-      .navigation a {
-        font-size: 12px;
-      }
-    }
-
-    @media (max-width: 550px) {
-      .logo {
-        width: 55px;
-        height: 55px;
-      }
-
-      .brand-title {
-        font-size: 27px;
-      }
-
-      .brand-subtitle {
-        font-size: 9px;
-      }
-
-      .navigation {
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-
-      .navigation a {
-        flex: 1 1 28%;
-        padding: 9px 4px;
-        font-size: 11px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <header class="header">
-
-    <div class="header-top">
-      <img class="logo" src="./icon.png" alt="波急電鉄ロゴ">
-
-      <div class="brand-text">
-        <h1 class="brand-title">波急サーバー</h1>
-        <div class="brand-subtitle">NAMIKYU RAILWAY</div>
-      </div>
-    </div>
-
-    <nav class="navigation">
-      <a href="./index.html">ホーム</a>
-      <a href="./news.html">お知らせ</a>
-      <a href="./join.html">サーバー参加</a>
-      <a href="./status.html">在線位置</a>
-      <a href="./staff.html">運営メンバー</a>
-    </nav>
-
-  </header>
-
-  <main class="hero">
-    <img src="./home.png" alt="波急電鉄 メインビジュアル">
-  </main>
-
-</body>
-</html>
+/* ページ全体のスクロールを禁止 */
+.page {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
