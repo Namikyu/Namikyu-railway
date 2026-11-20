@@ -26,32 +26,44 @@
     body {
       width: 100%;
       height: 100%;
+      min-height: 0;
       margin: 0;
       padding: 0;
       overflow: hidden !important;
       overscroll-behavior: none;
+      touch-action: none;
       font-family: "Yu Gothic UI", "Meiryo", sans-serif;
       background: #075d9b;
     }
 
     body {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
     }
 
+    /* 画面全体を固定 */
     .page {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       width: 100%;
       height: 100%;
       height: 100dvh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow: hidden !important;
+      overscroll-behavior: none;
     }
 
-    /* 青いヘッダー：約2倍の高さ */
+    /* 青いヘッダー */
     .header {
+      position: relative;
+      z-index: 2;
       width: 100%;
       height: 120px;
       min-height: 120px;
@@ -63,7 +75,6 @@
       justify-content: space-between;
       gap: 18px;
       overflow: hidden;
-      color: white;
       background: linear-gradient(
         110deg,
         #075d9b 0%,
@@ -72,7 +83,7 @@
       );
     }
 
-    /* 左側：ロゴとタイトル */
+    /* ロゴとタイトル */
     .header-top {
       display: flex;
       align-items: center;
@@ -117,7 +128,7 @@
       white-space: nowrap;
     }
 
-    /* 右側：大きくしたページボタン */
+    /* ページボタン */
     .navigation {
       display: flex;
       justify-content: center;
@@ -151,19 +162,23 @@
       background: rgba(255, 255, 255, 0.28);
     }
 
-    /* 画像部分：ヘッダーと重ねない */
+    /* 画像表示領域：残りの画面だけを使用 */
     .hero {
-      flex: 1 1 auto;
+      position: relative;
+      z-index: 1;
+      flex: 1 1 0;
+      min-width: 0;
       min-height: 0;
       width: 100%;
       margin: 0;
       padding: 0;
-      overflow: hidden;
+      overflow: hidden !important;
+      overscroll-behavior: none;
       line-height: 0;
       background: #075d9b;
     }
 
-    /* 画像は縮小せず、上側を見切らせる */
+    /* 画像は横幅に合わせ、下側を見切れさせる */
     .hero img {
       display: block;
       width: 100%;
@@ -225,7 +240,6 @@
   <div class="page">
 
     <header class="header">
-
       <div class="header-top">
         <img
           class="logo"
@@ -246,7 +260,6 @@
         <a href="./status.html">在線位置</a>
         <a href="./staff.html">運営メンバー</a>
       </nav>
-
     </header>
 
     <main class="hero">
