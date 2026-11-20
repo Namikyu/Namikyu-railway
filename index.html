@@ -1,282 +1,758 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta property="og:title" content="〇〇鉄道サーバー 公式サイト">
-<meta property="og:description" content="本格鉄道運転・街づくりMinecraftサーバーの公式サイト・在線位置案内">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://github.io">
-<meta property="og:image" content="https://github.ioicon.png">
+  <!-- OGP設定 -->
+  <meta property="og:title" content="波急サーバー 公式サイト">
+  <meta property="og:description" content="波急サーバーの公式サイト。鉄道運行や街づくりを楽しめるMinecraftサーバーです。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/">
+  <meta property="og:image" content="https://example.com/icon.png">
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>〇〇鉄道サーバー 公式サイト</title>
-  
-  <!-- ▼ アイコン画像の設定（icon.pngをアップロードした場合に反映） ▼ -->
+
+  <title>波急サーバー | 公式サイト</title>
+
+  <!-- アイコン設定 -->
   <link rel="icon" href="icon.png" type="image/png">
   <link rel="apple-touch-icon" href="icon.png">
 
   <style>
-    /* 全体の基本デザイン */
-    * { box-sizing: border-box; }
-    body {
-      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-      margin: 0;
-      background-color: #f0f4f8;
-      color: #333;
-      line-height: 1.6;
+    :root {
+      --navy: #142b49;
+      --blue: #2878c8;
+      --light-blue: #edf5fc;
+      --background: #f5f7fa;
+      --text: #26374a;
+      --muted: #718096;
+      --border: #e3e9ef;
+      --white: #ffffff;
     }
 
-    /* 上部メニューバー（ナビゲーション） */
-    nav {
-      background-color: #0f2350;
-      padding: 10px 20px;
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 85px;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        "Yu Gothic UI",
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        Meiryo,
+        sans-serif;
+      color: var(--text);
+      background: var(--background);
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ナビゲーション */
+
+    .navbar {
       position: sticky;
       top: 0;
       z-index: 100;
+      height: 68px;
+      background: rgba(255,255,255,0.97);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      height: 100%;
+      margin: auto;
+      padding: 0 24px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
     }
-    .nav-logo {
-      color: #fff;
-      font-weight: bold;
-      font-size: 1.1rem;
-      text-decoration: none;
+
+    .logo {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      color: var(--navy);
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
     }
-    .nav-logo img {
-      width: 28px;
-      height: 28px;
-      border-radius: 4px;
+
+    .logo img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
     }
-    .nav-links a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 15px;
-      font-size: 0.9rem;
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #526174;
     }
+
     .nav-links a:hover {
-      text-decoration: underline;
+      color: var(--blue);
     }
 
-    /* ヒーローヘッダー（タイトル部分） */
-    header {
-      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    /* メインビジュアル */
+
+    .hero {
+      background: var(--navy);
       color: white;
-      padding: 50px 20px;
-      text-align: center;
+      padding: 90px 24px 95px;
     }
-    header h1 {
-      margin: 0 0 10px 0;
-      font-size: 2rem;
+
+    .hero-inner {
+      max-width: 1120px;
+      margin: auto;
     }
-    header p {
+
+    .hero-label {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      color: #b9d9f8;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 6vw, 58px);
+      line-height: 1.35;
+      margin: 0 0 18px;
+      letter-spacing: 0.04em;
+    }
+
+    .hero p {
       margin: 0;
-      opacity: 0.9;
+      color: #d5e1ef;
+      font-size: 15px;
     }
 
-    /* メインコンテンツの枠 */
-    .container {
-      max-width: 860px;
-      margin: 25px auto;
-      padding: 0 15px;
-    }
-
-    /* 各セクションの白いカード */
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
-      margin-bottom: 25px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    h2 {
-      border-left: 5px solid #1e3a8a;
-      padding-left: 12px;
-      margin-top: 0;
-      color: #1e3a8a;
-      font-size: 1.3rem;
-    }
-
-    /* リアルタイム在線位置の枠 */
-    .train-status-box {
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
-      padding: 15px;
-      border-radius: 8px;
-    }
-    .train-item {
-      background: white;
-      padding: 10px 15px;
-      border-radius: 6px;
-      margin-bottom: 8px;
+    .hero-buttons {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-left: 4px solid #10b981;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
     }
-    .train-item:last-child { margin-bottom: 0; }
 
-    /* IPアドレスコピー欄 */
-    .ip-box {
-      background: #1e293b;
-      color: #38bdf8;
-      padding: 12px 15px;
-      border-radius: 6px;
-      font-family: monospace;
-      font-size: 1.1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 10px 0;
-    }
-    .copy-btn {
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 6px 12px;
+    .hero-button {
+      display: inline-block;
+      padding: 11px 25px;
       border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 13px;
+      font-weight: 700;
+      transition: 0.2s;
     }
-    .copy-btn:hover { background: #1d4ed8; }
 
-    /* テーブル（路線一覧など） */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
+    .button-primary {
+      background: var(--blue);
+      color: white;
     }
-    th, td {
-      border-bottom: 1px solid #e2e8f0;
-      padding: 12px 10px;
-      text-align: left;
-    }
-    th { background-color: #f8fafc; color: #475569; }
 
-    /* フッター（一番下の著作権表示） */
-    footer {
+    .button-primary:hover {
+      background: #398de0;
+    }
+
+    .button-secondary {
+      border: 1px solid #8298b2;
+      color: white;
+    }
+
+    .button-secondary:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* メインコンテンツ */
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 55px 24px 70px;
+    }
+
+    .section {
+      margin-bottom: 65px;
+      scroll-margin-top: 85px;
+    }
+
+    .section-heading {
+      margin-bottom: 24px;
+    }
+
+    .section-label {
+      display: block;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      margin-bottom: 4px;
+    }
+
+    .section-heading h2 {
+      color: var(--navy);
+      font-size: 25px;
+      margin: 0;
+      font-weight: 800;
+    }
+
+    .section-description {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* お知らせ */
+
+    .news-list {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .news-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 17px 22px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+    }
+
+    .news-date {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .news-category {
+      color: var(--blue);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .news-text {
+      color: var(--text);
+    }
+
+    /* 概要 */
+
+    .about-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 30px;
+    }
+
+    .about-box p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 2;
+    }
+
+    /* 特徴 */
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 25px 22px;
+    }
+
+    .feature-number {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+    }
+
+    .feature h3 {
+      margin: 10px 0 8px;
+      color: var(--navy);
+      font-size: 17px;
+    }
+
+    .feature p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* 在線情報 */
+
+    .status-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 25px;
+    }
+
+    .status-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .status-header h3 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 16px;
+    }
+
+    .status-label {
+      font-size: 11px;
+      color: #8a6a2d;
+      background: #fff7e6;
+      padding: 4px 10px;
+      border-radius: 3px;
+    }
+
+    .status-message {
       text-align: center;
-      padding: 20px;
-      color: #64748b;
-      font-size: 0.85rem;
+      padding: 25px 10px;
+      background: #f7f9fc;
+      color: var(--muted);
+      font-size: 13px;
+      border-radius: 4px;
+    }
+
+    /* 路線案内 */
+
+    .line-list {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .line-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      gap: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .line-item:last-child {
+      border-bottom: none;
+    }
+
+    .line-name {
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .line-description {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .line-status {
+      color: #8290a0;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    /* 参加案内 */
+
+    .join-box {
+      background: var(--navy);
+      color: white;
+      border-radius: 6px;
+      padding: 35px;
+    }
+
+    .join-box h2 {
+      margin: 0 0 8px;
+      font-size: 23px;
+    }
+
+    .join-box > p {
+      color: #d0dceb;
+      font-size: 13px;
+      margin: 0 0 24px;
+    }
+
+    .server-address {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 12px 15px;
+      background: #0d2038;
+      border: 1px solid #3b5270;
+      border-radius: 4px;
+    }
+
+    .server-ip {
+      color: #b9d9f8;
+      font-family: Consolas, monospace;
+      font-size: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    .copy-button {
+      border: none;
+      background: var(--blue);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .copy-button:hover {
+      background: #398de0;
+    }
+
+    .join-note {
+      color: #bdcbdc;
+      font-size: 12px;
+      margin-top: 15px;
+    }
+
+    /* フッター */
+
+    footer {
+      background: white;
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .footer-name {
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .copyright {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* スマートフォン対応 */
+
+    @media (max-width: 700px) {
+      .navbar {
+        height: auto;
+      }
+
+      .nav-inner {
+        padding: 12px 16px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        width: 100%;
+        gap: 20px;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 3px;
+      }
+
+      .hero {
+        padding: 65px 20px 70px;
+      }
+
+      .container {
+        padding: 40px 16px 50px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .news-item {
+        flex-wrap: wrap;
+        gap: 5px 12px;
+        padding: 14px;
+      }
+
+      .news-text {
+        width: 100%;
+      }
+
+      .about-box {
+        padding: 22px;
+      }
+
+      .join-box {
+        padding: 25px 18px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <!-- 上部メニューバー -->
-  <nav>
-    <a href="#" class="nav-logo">
-      <!-- icon.pngがない場合はこのimgタグを消してもOK -->
-      <img src="icon.png" alt="" onerror="this.style.display='none'">
-      <span>〇〇鉄道サーバー</span>
-    </a>
-    <div class="nav-links">
-      <a href="#status">在線位置</a>
-      <a href="#about">概要</a>
-      <a href="#join">参加方法</a>
-      <a href="#lines">路線案内</a>
+  <!-- ナビゲーション -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <img src="icon.png" alt="波急">
+        <span>波急サーバー</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#news">お知らせ</a>
+        <a href="#about">サーバー概要</a>
+        <a href="#status">在線情報</a>
+        <a href="#lines">路線案内</a>
+        <a href="#join">参加方法</a>
+      </div>
     </div>
   </nav>
 
-  <!-- ヘッダー -->
-  <header>
-    <h1>〇〇鉄道サーバー 公式サイト</h1>
-    <p>リアルなダイヤ運行と街づくりが楽しめるMinecraft鉄道サーバー</p>
+  <!-- メインビジュアル -->
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="hero-label">NAMIKYU SERVER OFFICIAL WEBSITE</span>
+
+      <h1>波急サーバー</h1>
+
+      <p>
+        鉄道と街がつながる、新しいMinecraftの世界。
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#about" class="hero-button button-primary">
+          サーバーについて
+        </a>
+
+        <a href="#join" class="hero-button button-secondary">
+          参加方法
+        </a>
+      </div>
+    </div>
   </header>
 
-  <!-- メインエリア -->
-  <div class="container">
+  <main class="container">
 
-    <!-- 1. リアルタイム在線位置 -->
-    <section id="status" class="card">
-      <h2>🚆 リアルタイム在線位置</h2>
-      <p>現在サーバー内を走行中の列車情報です。（※マイクラの座標と連動予定）</p>
-      
-      <div id="train-list" class="train-status-box">
-        <!-- ここは後でJavaScriptで自動書き換えします（今は仮の表示） -->
-        <div class="train-item">
-          <span><strong>[普通]</strong> 中央線（下り）</span>
-          <span>中央駅 停車中</span>
-        </div>
-        <div class="train-item">
-          <span><strong>[快速]</strong> 湾岸線（上り）</span>
-          <span>桜ヶ丘駅 ～ 海浜公園駅 走行中</span>
+    <!-- お知らせ -->
+    <section class="section" id="news">
+      <div class="section-heading">
+        <span class="section-label">INFORMATION</span>
+        <h2>お知らせ</h2>
+        <p class="section-description">
+          波急サーバーからのお知らせを掲載します。
+        </p>
+      </div>
+
+      <div class="news-list">
+        <div class="news-item">
+          <span class="news-date">2026.11.20</span>
+          <span class="news-category">お知らせ</span>
+          <span class="news-text">
+            公式サイトを公開しました。
+          </span>
         </div>
       </div>
     </section>
 
-    <!-- 2. サーバー概要 -->
-    <section id="about" class="card">
-      <h2>📖 サーバー概要</h2>
-      <p>当サーバーは、複数の鉄道会社・路線が乗り入れる本格鉄道Minecraftサーバーです。乗客として列車旅を楽しむだけでなく、運転士試験を受けて乗務したり、沿線の街づくりに参加したりできます。</p>
-    </section>
-
-    <!-- 3. 参加方法 -->
-    <section id="join" class="card">
-      <h2>🎮 参加方法</h2>
-      <p>以下のサーバーアドレスをMinecraftのマルチプレイに追加してご参加ください。</p>
-      
-      <div class="ip-box">
-        <span id="server-ip">://example.com</span>
-        <button class="copy-btn" onclick="copyIP()">IPをコピー</button>
+    <!-- サーバー概要 -->
+    <section class="section" id="about">
+      <div class="section-heading">
+        <span class="section-label">ABOUT</span>
+        <h2>波急サーバーについて</h2>
       </div>
 
-      <ul>
-        <li><strong>対応エディション：</strong> Minecraft Java版</li>
-        <li><strong>推奨バージョン：</strong> 1.20.4</li>
-        <li><strong>必須Mod：</strong> なし（バニラ状態で参加可能）</li>
-        <li><strong>公式Discord：</strong> <a href="#">こちらから参加（URLを貼る）</a></li>
-      </ul>
+      <div class="about-box">
+        <p>
+          波急サーバーは、Minecraftの世界で鉄道や街づくりを楽しむサーバーです。
+          鉄道路線の整備、列車の運行、駅や街の開発など、
+          さまざまな活動を通して世界を広げていきます。
+        </p>
+      </div>
     </section>
 
-    <!-- 4. 路線案内 -->
-    <section id="lines" class="card">
-      <h2>🗺️ 運行路線一覧</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>路線名</th>
-            <th>区間</th>
-            <th>運行状況</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>中央線</strong></td>
-            <td>中央駅 ～ 新都心駅</td>
-            <td style="color: #10b981; font-weight: bold;">平常運転</td>
-          </tr>
-          <tr>
-            <td><strong>湾岸線</strong></td>
-            <td>中央駅 ～ 海浜公園駅</td>
-            <td style="color: #10b981; font-weight: bold;">平常運転</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- サーバーの特徴 -->
+    <section class="section">
+      <div class="section-heading">
+        <span class="section-label">FEATURES</span>
+        <h2>サーバーの特徴</h2>
+      </div>
+
+      <div class="feature-grid">
+
+        <div class="feature">
+          <span class="feature-number">01 / RAILWAY</span>
+          <h3>鉄道運行</h3>
+          <p>
+            鉄道路線や駅を整備し、列車の運行を楽しめます。
+          </p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-number">02 / CITY</span>
+          <h3>街づくり</h3>
+          <p>
+            駅周辺の開発や建築を通して、街を発展させます。
+          </p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-number">03 / COMMUNITY</span>
+          <h3>コミュニティ</h3>
+          <p>
+            メンバー同士で協力しながら、さまざまな活動に参加できます。
+          </p>
+        </div>
+
+      </div>
     </section>
 
-  </div>
+    <!-- 在線情報 -->
+    <section class="section" id="status">
+      <div class="section-heading">
+        <span class="section-label">TRAIN STATUS</span>
+        <h2>列車在線情報</h2>
+        <p class="section-description">
+          サーバー内を走行する列車の位置情報を掲載する予定です。
+        </p>
+      </div>
+
+      <div class="status-box">
+        <div class="status-header">
+          <h3>リアルタイム運行状況</h3>
+          <span class="status-label">準備中</span>
+        </div>
+
+        <div class="status-message">
+          現在、在線情報システムは準備中です。
+        </div>
+      </div>
+    </section>
+
+    <!-- 路線案内 -->
+    <section class="section" id="lines">
+      <div class="section-heading">
+        <span class="section-label">RAILWAY NETWORK</span>
+        <h2>路線案内</h2>
+        <p class="section-description">
+          波急サーバー内の鉄道路線をご案内します。
+        </p>
+      </div>
+
+      <div class="line-list">
+        <div class="line-item">
+          <div>
+            <div class="line-name">路線情報</div>
+            <div class="line-description">
+              路線名・運行区間などは順次公開予定です。
+            </div>
+          </div>
+
+          <span class="line-status">準備中</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 参加方法 -->
+    <section class="section" id="join">
+      <div class="join-box">
+        <h2>波急サーバーに参加する</h2>
+
+        <p>
+          サーバーへの参加方法や接続情報はこちらをご確認ください。
+        </p>
+
+        <div class="server-address">
+          <span class="server-ip" id="server-ip">
+            サーバーアドレス未設定
+          </span>
+
+          <button class="copy-button" onclick="copyIP()">
+            コピー
+          </button>
+        </div>
+
+        <div class="join-note">
+          ※参加条件・対応バージョン・接続方法は順次掲載予定です。
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <!-- フッター -->
   <footer>
-    &copy; 2026 〇〇鉄道サーバー All Rights Reserved.
+    <div class="footer-inner">
+      <div class="footer-name">波急サーバー</div>
+
+      <div class="copyright">
+        &copy; 2026 Namikyu Server. All Rights Reserved.
+      </div>
+    </div>
   </footer>
 
-  <!-- ページ内の動きを作るプログラム（JavaScript） -->
   <script>
-    // IPアドレスをクリップボードにコピーする機能
+    // サーバーアドレスのコピー
     function copyIP() {
-      const ipText = document.getElementById("server-ip").innerText;
-      navigator.clipboard.writeText(ipText).then(() => {
-        alert("サーバーIP「" + ipText + "」をコピーしました！");
-      });
-    }
+      const ipText = document
+        .getElementById("server-ip")
+        .innerText.trim();
 
-    // ★ここに今後「マイクラの座標から在線位置を計算するプログラム」を追加します
+      if (
+        !ipText ||
+        ipText === "サーバーアドレス未設定"
+      ) {
+        alert("サーバーアドレスがまだ設定されていません。");
+        return;
+      }
+
+      navigator.clipboard.writeText(ipText)
+        .then(() => {
+          alert("サーバーアドレスをコピーしました。");
+        })
+        .catch(() => {
+          alert("コピーできませんでした。");
+        });
+    }
   </script>
 
 </body>
