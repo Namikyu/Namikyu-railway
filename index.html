@@ -22,14 +22,14 @@
       box-sizing: border-box;
     }
 
-    /* このホームページだけスクロール禁止 */
+    /* ホーム画面だけスクロール禁止 */
     html,
     body {
-      margin: 0;
-      padding: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      overflow: hidden !important;
       overscroll-behavior: none;
       font-family: "Yu Gothic UI", "Meiryo", sans-serif;
       background: #075d9b;
@@ -37,32 +37,35 @@
 
     body {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
     }
 
     /* ページ全体 */
     .page {
+      position: fixed;
+      inset: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
-    /* 青いヘッダー */
+    /* 青いヘッダー：高さ60px */
     .header {
       width: 100%;
-      height: 80px;
-      min-height: 80px;
-      max-height: 80px;
-      padding: 5px 3%;
+      height: 60px;
+      min-height: 60px;
+      max-height: 60px;
+      flex: 0 0 60px;
+      padding: 2px 2%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      flex-shrink: 0;
+      gap: 8px;
       overflow: hidden;
-      color: white;
       background: linear-gradient(
         110deg,
         #075d9b 0%,
@@ -71,21 +74,21 @@
       );
     }
 
-    /* 左側のロゴとタイトル */
+    /* 左側：ロゴとタイトル */
     .header-top {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      flex: 1 1 42%;
+      gap: 7px;
+      flex: 0 1 40%;
       min-width: 0;
       margin: 0;
     }
 
     .logo {
       display: block;
-      width: 55px;
-      height: 55px;
+      width: 40px;
+      height: 40px;
       object-fit: contain;
       flex-shrink: 0;
     }
@@ -100,30 +103,32 @@
     .brand-title {
       margin: 0;
       color: white;
-      font-size: clamp(24px, 3vw, 36px);
+      font-size: clamp(19px, 2.5vw, 29px);
       font-weight: 800;
-      letter-spacing: 0.07em;
-      line-height: 1.2;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
       white-space: nowrap;
     }
 
     .brand-subtitle {
       margin-top: 2px;
       color: white;
-      font-size: 10px;
+      font-size: 8px;
       font-weight: 600;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.15em;
+      line-height: 1;
       white-space: nowrap;
     }
 
-    /* 右側のページ選択ボタン */
+    /* 右側：ページボタン */
     .navigation {
       display: flex;
       justify-content: center;
       align-items: center;
-      flex: 1 1 58%;
-      gap: 7px;
+      flex: 1 1 60%;
       min-width: 0;
+      gap: 5px;
+      margin: 0;
     }
 
     .navigation a {
@@ -132,31 +137,30 @@
       align-items: center;
       flex: 1 1 0;
       min-width: 0;
-      min-height: 36px;
-      padding: 6px 5px;
+      height: 30px;
+      padding: 2px 4px;
       color: white;
       text-decoration: none;
-      font-size: clamp(9px, 0.9vw, 12px);
+      font-size: clamp(9px, 0.85vw, 12px);
       font-weight: 700;
       white-space: nowrap;
       border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 6px;
+      border-radius: 5px;
       background: rgba(255, 255, 255, 0.12);
-      transition: background 0.2s;
     }
 
     .navigation a:hover {
       background: rgba(255, 255, 255, 0.28);
     }
 
-    /* メイン画像 */
+    /* 画像：縮小せず、画面下で見切る */
     .hero {
-      width: 100%;
       flex: 1 1 auto;
       min-height: 0;
-      overflow: hidden;
+      width: 100%;
       margin: 0;
       padding: 0;
+      overflow: hidden;
       line-height: 0;
       background: #075d9b;
     }
@@ -171,83 +175,47 @@
       border: 0;
     }
 
-    /* 画面が狭い場合 */
-    @media (max-width: 900px) {
+    /* 狭い画面 */
+    @media (max-width: 650px) {
       .header {
-        gap: 6px;
-        padding-left: 2%;
-        padding-right: 2%;
-      }
-
-      .header-top {
-        gap: 6px;
-        flex: 0 1 40%;
-      }
-
-      .logo {
-        width: 45px;
-        height: 45px;
-      }
-
-      .brand-title {
-        font-size: clamp(18px, 2.8vw, 27px);
-      }
-
-      .brand-subtitle {
-        font-size: 8px;
-      }
-
-      .navigation {
-        flex: 1 1 60%;
-        gap: 4px;
-      }
-
-      .navigation a {
-        font-size: 10px;
-        padding: 5px 3px;
-      }
-    }
-
-    /* スマートフォン */
-    @media (max-width: 550px) {
-      .header {
-        height: 110px;
-        min-height: 110px;
-        max-height: 110px;
+        height: 88px;
+        min-height: 88px;
+        max-height: 88px;
+        flex-basis: 88px;
         flex-direction: column;
         justify-content: center;
-        gap: 7px;
-        padding: 5px 2%;
+        gap: 4px;
+        padding: 3px 2%;
       }
 
       .header-top {
-        flex: none;
-        gap: 7px;
+        flex: 0 0 auto;
+        gap: 5px;
       }
 
       .logo {
-        width: 38px;
-        height: 38px;
+        width: 32px;
+        height: 32px;
       }
 
       .brand-title {
-        font-size: 22px;
+        font-size: 19px;
       }
 
       .brand-subtitle {
-        font-size: 8px;
+        font-size: 7px;
       }
 
       .navigation {
+        flex: 0 0 auto;
         width: 100%;
-        flex: none;
         gap: 4px;
       }
 
       .navigation a {
-        min-height: 32px;
+        height: 28px;
         font-size: 9px;
-        padding: 4px 2px;
+        padding: 2px;
       }
     }
   </style>
@@ -256,10 +224,8 @@
 <body>
   <div class="page">
 
-    <!-- 青いヘッダー -->
     <header class="header">
 
-      <!-- 中央左：ロゴと波急サーバー -->
       <div class="header-top">
         <img
           class="logo"
@@ -273,7 +239,6 @@
         </div>
       </div>
 
-      <!-- 中央右：各種ページボタン -->
       <nav class="navigation">
         <a href="./index.html">ホーム</a>
         <a href="./news.html">お知らせ</a>
@@ -284,12 +249,8 @@
 
     </header>
 
-    <!-- メイン画像：画面下ではみ出した部分は隠す -->
     <main class="hero">
-      <img
-        src="./home.png"
-        alt="波急電鉄 メインビジュアル"
-      >
+      <img src="./home.png" alt="波急電鉄 メインビジュアル">
     </main>
 
   </div>
