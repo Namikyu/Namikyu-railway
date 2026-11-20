@@ -27,7 +27,7 @@
     }
 
     /* =========================
-       ヘッダー：news.htmlと完全共通
+       ヘッダー：他ページと共通
     ========================= */
 
     .header {
@@ -164,8 +164,8 @@
       width: min(760px, calc(100% - 60px));
       padding: 28px 34px;
 
-      /* 白背景の透明度20%・ぼかしなし */
-      background: rgba(255, 255, 255, 0.20);
+      /* 白背景の透明度32%、ぼかしなし */
+      background: rgba(255, 255, 255, 0.32);
 
       border: 1px solid rgba(255, 255, 255, 0.35);
       border-radius: 16px;
@@ -223,7 +223,7 @@
 
     /* =========================
        スマートフォン
-       ヘッダーはnews.htmlと完全共通
+       ヘッダーは他ページと共通
     ========================= */
 
     @media (max-width: 650px) {
@@ -316,16 +316,21 @@
         font-size: 14px;
         line-height: 1.7;
       }
+
+      .description-text p {
+        margin-bottom: 5px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ヘッダー：news.htmlと同じHTML構造 -->
+  <!-- ヘッダー -->
   <header class="header">
 
     <div class="header-top">
+
       <img
         class="logo"
         src="./icon.png"
@@ -336,6 +341,7 @@
         <h1 class="brand-title">波急サーバー</h1>
         <div class="brand-subtitle">NAMIKYU RAILWAY</div>
       </div>
+
     </div>
 
     <nav class="navigation">
