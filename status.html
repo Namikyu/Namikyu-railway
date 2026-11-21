@@ -49,7 +49,7 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 .player-marker:focus-visible,.train-marker:focus-visible{opacity:.8}
 .player-face{image-rendering:pixelated;pointer-events:none}
 
-/* 列車文字は絶対に回転させない */
+/* 列車文字は常に画面に対して水平 */
 .train-label{
   font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
   font-weight:900;
@@ -569,7 +569,7 @@ function normalizeCollection(value) {
   if (value && typeof value === "object") {
     return Object.entries(value).map(([key, item]) => {
       if (item && typeof item === "object") {
-        return { id: item.id ?? key, ...item };
+        return { ...item, id: item.id ?? key };
       }
       return { id: key, value: item };
     });
@@ -606,6 +606,7 @@ function extractDataLists(data) {
 async function loadStaff() {
   try {
     const response = await fetch("./staff.html", {
+      method: "GET",
       cache: "no-store"
     });
 
@@ -784,10 +785,10 @@ function applyView(renderMarkerLayer = true) {
 ========================================= */
 
 /*
-  列車全体は座標位置へ移動する。
+  マーカー全体を座標へ移動する。
   図形だけを進行方向に回転する。
-  文字は回転グループの外に置くため、
-  どの方向でも画面に対して水平になる。
+  文字は回転グループの外側に置く。
+  そのため文字は常に画面に対して水平になる。
 */
 
 function makeTrainMarker(train, index, scale) {
@@ -838,7 +839,6 @@ function makeTrainMarker(train, index, scale) {
         x="0"
         y="0"
         font-size="${fontSize}"
-        transform="none"
       >${escapeHtml(type.label)}</text>
     </g>
   `;
@@ -849,8 +849,6 @@ function makePlayerMarker(player, index, scale) {
   const y = -z;
 
   const name = getName(player);
-  const role = getPlayerRole(player);
-
   const faceSize = 19.2 * scale;
   const nameSize = 10.5 * scale;
 
@@ -889,7 +887,6 @@ function makePlayerMarker(player, index, scale) {
         x="0"
         y="${faceSize * .95}"
         font-size="${nameSize}"
-        transform="none"
       >${escapeHtml(name)}</text>
     </g>
   `;
@@ -1188,12 +1185,17 @@ async function fetchStatus() {
   isFetching = true;
 
   try {
+    /*
+      CORS対策：
+      独自のリクエストヘッダーを一切追加しない。
+      Cache-ControlやAcceptもheadersには指定しない。
+      cache:"no-store"はブラウザ側のキャッシュ制御。
+    */
+
     const response = await fetch(API_URL, {
       method: "GET",
-      cache: "no-store",
-      headers: {
-        "Accept": "application/json"
-      }
+      mode: "cors",
+      cache: "no-store"
     });
 
     if (!response.ok) {
@@ -1221,12 +1223,13 @@ async function fetchStatus() {
   } catch (error) {
     console.warn("在線データ取得エラー:", error);
     setOffline();
+
   } finally {
     isFetching = false;
 
     if (fetchAgainRequested) {
       fetchAgainRequested = false;
-      queueMicrotask(fetchStatus);
+      queueMicrotask(() => fetchStatus());
     }
   }
 }
@@ -1243,6 +1246,7 @@ function scheduleRefresh() {
   }
 
   refreshTimer = setTimeout(async () => {
+    refreshTimer = null;
     await fetchStatus();
     scheduleRefresh();
   }, REFRESH_MS);
