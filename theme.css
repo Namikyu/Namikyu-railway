@@ -368,3 +368,15 @@ html[data-theme="dark"] .header {
     #129bd2 100%
   );
 }
+
+/* サーバー参加ページ：紺色文字の修正 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .section h2,
+html[data-theme="dark"]:not([data-theme-static="true"]) .connection-item *,
+html[data-theme="dark"]:not([data-theme-static="true"]) .step *,
+html[data-theme="dark"]:not([data-theme-static="true"]) .page-heading h1 {
+  color: #eaf3ff !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .page-heading p {
+  color: #a8bfd5 !important;
+}
