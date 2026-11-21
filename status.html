@@ -3,148 +3,229 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#087fc4">
 <title>在線位置 | 波急サーバー</title>
 <link rel="icon" href="./icon.png">
-<link rel="apple-touch-icon" href="./icon.png">
 
 <style>
 *{box-sizing:border-box}
-html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;color:#24364b;background:#eef2f7}
-button{font:inherit}
+html,body{
+  width:100%;height:100%;margin:0;padding:0;
+  overflow:hidden;overscroll-behavior:none;
+  font-family:"Yu Gothic UI","Meiryo",sans-serif;
+  color:#24364b;background:#eef2f7
+}
+button{font:inherit;cursor:pointer}
 
 /* ヘッダー */
-.header{height:120px;min-height:120px;padding:8px 3%;display:flex;align-items:center;justify-content:space-between;gap:18px;background:linear-gradient(110deg,#075d9b,#087fc4 55%,#129bd2);overflow:hidden}
-.header-top{display:flex;align-items:center;gap:14px;flex:0 1 42%;min-width:0}
-.logo{width:80px;height:80px;object-fit:contain;flex-shrink:0}
-.brand-text{display:flex;flex-direction:column;min-width:0}
-.brand-title{margin:0;color:white;font-size:clamp(30px,3.5vw,44px);font-weight:800;letter-spacing:.06em;line-height:1.15;white-space:nowrap}
-.brand-subtitle{margin-top:5px;color:white;font-size:13px;font-weight:600;letter-spacing:.2em;white-space:nowrap}
-.navigation{display:flex;justify-content:center;align-items:center;flex:1 1 58%;min-width:0;gap:9px}
-.navigation a{display:flex;justify-content:center;align-items:center;flex:1 1 0;min-width:0;height:52px;padding:8px 7px;color:white;text-decoration:none;font-size:clamp(11px,1.1vw,15px);font-weight:700;white-space:nowrap;border:1px solid rgba(255,255,255,.45);border-radius:7px;background:rgba(255,255,255,.12);transition:background .2s}
-.navigation a:hover,.navigation a.active{background:rgba(255,255,255,.28)}
+header{
+  height:110px;display:flex;align-items:center;justify-content:space-between;
+  padding:8px 3%;gap:18px;color:white;
+  background:linear-gradient(110deg,#075d9b,#087fc4 60%,#129bd2);
+  overflow:hidden
+}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand img{width:72px;height:72px;object-fit:contain;flex-shrink:0}
+.brand h1{margin:0;font-size:clamp(24px,3vw,40px);white-space:nowrap}
+.brand small{display:block;font-size:11px;letter-spacing:3px}
+nav{display:flex;gap:8px;align-items:center;min-width:0}
+nav a{
+  color:white;text-decoration:none;font-size:13px;font-weight:bold;
+  padding:12px 14px;border:1px solid #ffffff66;border-radius:7px;
+  background:#ffffff18;white-space:nowrap
+}
+nav a:hover,nav a.active{background:#ffffff40}
 
 /* メイン */
-main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:flex;flex-direction:column;overflow:hidden}
-.page-title{flex-shrink:0;margin:0 0 2px;color:#142b49;font-size:21px;font-weight:800}
-.page-subtitle{flex-shrink:0;margin:0 0 10px;color:#8295a8;font-size:9px;letter-spacing:2px;font-weight:800}
-.status-line{flex-shrink:0;display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-bottom:8px;padding:10px 13px;background:#fff;border:1px solid #e1e9f1;border-radius:9px;box-shadow:0 2px 8px #142b490b;font-size:11px;color:#61768b}
-.status-line strong{color:#263e58;font-size:11px;font-weight:800}
-.status-dot{width:8px;height:8px;border-radius:50%;background:#999;flex-shrink:0}
-.status-dot.online{background:#20a464;box-shadow:0 0 0 3px #20a46420}
-.status-dot.offline{background:#d33;box-shadow:0 0 0 3px #d3323220}
-.legend{flex-shrink:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 15px;margin:5px 0 9px;font-size:10px;font-weight:600;color:#536b82}
-.legend span{display:flex;align-items:center;gap:5px;white-space:nowrap}
-.legend i{width:9px;height:9px;border-radius:3px;display:inline-block}
+main{
+  height:calc(100dvh - 110px);padding:12px 16px 15px;
+  display:flex;flex-direction:column;min-height:0;overflow:hidden
+}
+h2{margin:0;color:#142b49;font-size:21px}
+.subtitle{margin:2px 0 9px;color:#8295a8;font-size:9px;letter-spacing:2px}
+.status{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px 13px;
+  padding:9px 12px;margin-bottom:7px;background:white;
+  border:1px solid #e1e9f1;border-radius:8px;font-size:11px;color:#61768b
+}
+.status strong{color:#263e58}
+.dot{width:8px;height:8px;border-radius:50%;background:#999;flex-shrink:0}
+.dot.online{background:#20a464;box-shadow:0 0 0 3px #20a46420}
+.dot.offline{background:#d33}
+.legend{display:flex;flex-wrap:wrap;gap:8px 15px;margin:4px 0 8px;font-size:10px;color:#536b82}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:3px}
 
 /* マップ */
-#mapArea{position:relative;width:100%;flex:1 1 0;min-height:0;overflow:hidden;border:1px solid #dce5ed;border-radius:10px;background:linear-gradient(#ffffffa6,#ffffffa6),#f3f7fb;box-shadow:0 3px 14px #142b4910}
-#map{width:100%;height:100%;display:block;cursor:grab;touch-action:none;overflow:hidden;user-select:none}
+#mapArea{
+  position:relative;flex:1;min-height:0;overflow:hidden;
+  border:1px solid #dce5ed;border-radius:10px;
+  background:#f5f8fb;box-shadow:0 3px 14px #142b4910;
+  overscroll-behavior:contain
+}
+#map{
+  width:100%;height:100%;display:block;
+  cursor:grab;touch-action:none;user-select:none
+}
 #map.dragging{cursor:grabbing}
-.grid-line{stroke:#dce5ed;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
-.marker-layer{pointer-events:none}
-.player-marker,.train-marker{cursor:pointer;pointer-events:all;outline:none}
-.player-marker:focus-visible,.train-marker:focus-visible{opacity:.8}
+.grid-line{
+  stroke:#dce5ed;stroke-width:1;
+  vector-effect:non-scaling-stroke;pointer-events:none
+}
+.train-marker,.player-marker{cursor:pointer;pointer-events:all}
+.train-marker:focus,.player-marker:focus{outline:none;opacity:.85}
+.train-body{pointer-events:none}
+.train-label{
+  fill:white;stroke:#26364a66;stroke-width:2px;paint-order:stroke fill;
+  font-weight:900;text-anchor:middle;dominant-baseline:central;
+  pointer-events:none;user-select:none
+}
+.player-name-label{
+  fill:#263e58;stroke:white;stroke-width:3px;paint-order:stroke fill;
+  font-weight:800;text-anchor:middle;dominant-baseline:central;
+  pointer-events:none;user-select:none
+}
 .player-face{image-rendering:pixelated;pointer-events:none}
-.train-label{font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:900;text-anchor:middle;dominant-baseline:central;fill:#fff;stroke:rgba(0,0,0,.25);stroke-width:2px;paint-order:stroke fill;pointer-events:none;user-select:none}
-.player-name-label{font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;fill:#263e58;stroke:#fff;stroke-width:3px;paint-order:stroke fill;pointer-events:none;user-select:none}
-.train-marker:hover .train-body{filter:brightness(1.12)}
-.player-marker:hover image{filter:brightness(1.12)}
 
-/* 方角 */
-.map-compass{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:3;display:grid;grid-template-columns:30px 30px 30px;grid-template-rows:22px 22px 22px;align-items:center;justify-items:center;pointer-events:none;color:#60778e;font-size:10px;font-weight:800;text-shadow:0 1px 2px white}
-.compass-top{grid-column:2;grid-row:1}
-.compass-left{grid-column:1;grid-row:2}
-.compass-center{grid-column:2;grid-row:2;color:#9aabba}
-.compass-right{grid-column:3;grid-row:2}
-.compass-bottom{grid-column:2;grid-row:3}
+/* 方角表示 */
+.compass{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  z-index:3;display:grid;grid-template-columns:28px 28px 28px;
+  grid-template-rows:20px 20px 20px;align-items:center;
+  justify-items:center;pointer-events:none;color:#60778e;
+  font-size:10px;font-weight:800;text-shadow:0 1px 2px white
+}
+.compass .north{grid-column:2;grid-row:1}
+.compass .west{grid-column:1;grid-row:2}
+.compass .center{grid-column:2;grid-row:2;color:#9aabba}
+.compass .east{grid-column:3;grid-row:2}
+.compass .south{grid-column:2;grid-row:3}
 
 /* 操作ボタン */
-.map-controls{position:absolute;right:13px;top:13px;z-index:4;display:flex;flex-direction:column;gap:6px}
-.map-controls button{width:36px;height:36px;border:1px solid #d8e2ec;border-radius:8px;background:#fffffff2;color:#284967;font-size:19px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px #142b4914}
+.map-controls{
+  position:absolute;right:12px;top:12px;z-index:5;
+  display:flex;flex-direction:column;gap:6px
+}
+.map-controls button{
+  width:36px;height:36px;border:1px solid #d8e2ec;
+  border-radius:8px;background:#fffffff2;color:#284967;
+  font-size:19px;font-weight:800;box-shadow:0 2px 6px #142b4914
+}
 .map-controls button:hover{background:#eaf5fc}
 .map-controls button:active{transform:scale(.96)}
-.map-help{position:absolute;right:13px;bottom:10px;z-index:2;padding:5px 8px;border-radius:5px;background:#ffffffcc;color:#8093a5;font-size:9px;pointer-events:none}
+.map-help{
+  position:absolute;right:12px;bottom:9px;z-index:2;
+  padding:5px 8px;border-radius:5px;background:#ffffffdd;
+  color:#8093a5;font-size:9px;pointer-events:none
+}
 
 /* プレイヤー一覧 */
-.player-panel{position:absolute;left:12px;top:12px;z-index:4;width:205px;max-height:calc(100% - 24px);display:flex;flex-direction:column;background:#fffffff0;border:1px solid #dce5ed;border-radius:9px;box-shadow:0 3px 12px #142b4917;overflow:hidden;transition:width .18s}
+.player-panel{
+  position:absolute;left:12px;top:12px;z-index:5;
+  width:205px;max-height:calc(100% - 24px);
+  display:flex;flex-direction:column;
+  background:#fffffff2;border:1px solid #dce5ed;
+  border-radius:9px;box-shadow:0 3px 12px #142b4917;overflow:hidden
+}
 .player-panel.collapsed{width:112px}
-.player-panel-head{height:38px;min-height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border-bottom:1px solid #e8eef4;color:#29445f;font-size:11px;font-weight:800}
-.player-panel-head button{border:0;background:transparent;color:#55718b;cursor:pointer;font-size:14px}
-.player-list{padding:5px 7px;overflow:auto;min-height:0}
-.player-row{display:flex;align-items:center;gap:7px;width:100%;padding:5px 3px;border:0;border-radius:5px;background:transparent;text-align:left;color:#334d67;font-size:10px;cursor:pointer}
+.player-panel-head{
+  height:38px;min-height:38px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 10px;
+  border-bottom:1px solid #e8eef4;color:#29445f;font-size:11px;font-weight:800
+}
+.player-panel-head button{border:0;background:transparent;color:#55718b;font-size:14px}
+.player-list{padding:5px 7px;overflow-y:auto;min-height:0;overscroll-behavior:contain}
+.player-row{
+  display:flex;align-items:center;gap:7px;width:100%;
+  padding:5px 3px;border:0;border-radius:5px;background:transparent;
+  text-align:left;color:#334d67;font-size:10px
+}
 .player-row:hover{background:#edf6fc}
-.player-row img{width:23px;height:23px;image-rendering:pixelated;border-radius:4px}
+.player-row img{width:23px;height:23px;flex-shrink:0;image-rendering:pixelated;border-radius:4px}
 .player-row-info{min-width:0;display:flex;flex-direction:column}
-.player-row-name{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.player-row-name{font-weight:800;overflow-wrap:anywhere;word-break:break-word}
 .player-row-role{font-size:9px;color:#8799aa}
 .player-panel.collapsed .player-list{display:none}
 
-/* モーダル */
-.modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:#0d1f327a;backdrop-filter:blur(3px)}
+/* 詳細モーダル */
+.modal{
+  position:fixed;inset:0;z-index:20;display:none;
+  align-items:center;justify-content:center;padding:18px;
+  background:#0d1f327a;backdrop-filter:blur(3px)
+}
 .modal.open{display:flex}
-.modal-card{width:min(420px,100%);max-height:85vh;overflow:auto;padding:20px;background:white;border:1px solid #dce5ed;border-radius:13px;box-shadow:0 15px 50px #0003}
+.modal-card{
+  width:min(440px,100%);max-height:85vh;overflow:auto;
+  padding:20px;background:white;border:1px solid #dce5ed;
+  border-radius:13px;box-shadow:0 15px 50px #0003;
+  overscroll-behavior:contain
+}
 .modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}
 .modal-title{margin:0;color:#142b49;font-size:17px;font-weight:900}
-.modal-close{width:30px;height:30px;border:0;border-radius:7px;background:#edf2f6;color:#49647e;font-size:18px;cursor:pointer}
+.modal-close{
+  width:30px;height:30px;border:0;border-radius:7px;
+  background:#edf2f6;color:#49647e;font-size:18px
+}
 .detail-player{display:flex;align-items:center;gap:13px;margin-bottom:15px}
 .detail-player img{width:56px;height:56px;border-radius:8px;image-rendering:pixelated}
-.detail-player-name{font-size:17px;font-weight:900;color:#203c58}
+.detail-player-name{font-size:17px;font-weight:900;color:#203c58;overflow-wrap:anywhere}
 .detail-player-role{margin-top:3px;color:#8193a5;font-size:11px}
-.train-summary{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0 17px;padding:17px 10px;border:2px solid #2878c8;border-radius:9px}
-.train-type{font-size:19px;font-weight:900;color:white;background:#2878c8;border-radius:6px;padding:7px 13px;white-space:nowrap}
+.train-summary{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  margin:8px 0 17px;padding:17px 10px;
+  border:2px solid #2878c8;border-radius:9px;flex-wrap:wrap
+}
+.train-type{font-size:19px;font-weight:900;color:white;background:#2878c8;border-radius:6px;padding:7px 13px}
 .train-destination{font-size:17px;font-weight:900;color:#263f58;text-align:center}
 .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.detail-item{padding:10px;border:1px solid #e4ebf1;border-radius:7px;background:#f8fafc}
+.detail-item{padding:10px;border:1px solid #e4ebf1;border-radius:7px;background:#f8fafc;min-width:0}
 .detail-label{font-size:9px;color:#899aab;font-weight:700}
-.detail-value{margin-top:4px;font-size:13px;color:#29445f;font-weight:800;overflow-wrap:anywhere}
+.detail-value{margin-top:4px;font-size:13px;color:#29445f;font-weight:800;overflow-wrap:anywhere;word-break:break-word}
 .detail-note{margin-top:12px;font-size:10px;color:#8a9aaa}
 
-/* スマートフォン */
+/* 小さい画面 */
 @media(max-width:760px){
- .header{height:92px;min-height:92px;padding:7px 10px;gap:8px}
- .header-top{gap:7px;flex:0 1 auto}
- .logo{width:48px;height:48px}
- .brand-title{font-size:clamp(19px,5vw,28px)}
- .brand-subtitle{font-size:8px;letter-spacing:.1em}
- .navigation{gap:4px}
- .navigation a{height:39px;padding:4px 3px;font-size:9px;border-radius:5px}
- main{height:calc(100dvh - 92px);padding:9px}
- .page-title{font-size:17px}
- .page-subtitle{font-size:8px;margin-bottom:7px}
- .status-line{padding:8px;margin-bottom:5px;gap:6px;font-size:9px}
- .legend{gap:6px 9px;font-size:9px;margin:4px 0 7px}
- .player-panel{width:145px;left:7px;top:7px;max-height:48%}
- .player-panel.collapsed{width:105px}
- .map-controls{right:7px;top:7px}
- .map-controls button{width:32px;height:32px}
- .map-help{right:7px;bottom:6px;font-size:8px}
- .map-compass{top:48px}
+  header{height:90px;padding:6px 9px;gap:7px}
+  .brand{gap:6px}
+  .brand img{width:45px;height:45px}
+  .brand h1{font-size:clamp(17px,4vw,26px)}
+  .brand small{font-size:7px;letter-spacing:1px}
+  nav{gap:3px}
+  nav a{font-size:9px;padding:9px 5px}
+  main{height:calc(100dvh - 90px);padding:9px}
+  h2{font-size:17px}
+  .subtitle{font-size:8px;margin-bottom:7px}
+  .status{padding:8px;margin-bottom:5px;gap:6px;font-size:9px}
+  .legend{gap:6px 9px;font-size:9px;margin:4px 0 7px}
+  .player-panel{width:145px;left:7px;top:7px;max-height:48%}
+  .player-panel.collapsed{width:105px}
+  .map-controls{right:7px;top:7px}
+  .map-controls button{width:32px;height:32px}
+  .map-help{right:7px;bottom:6px;font-size:8px}
 }
 @media(max-width:430px){
- .header{height:84px;min-height:84px}
- .logo{width:39px;height:39px}
- .brand-title{font-size:18px}
- .brand-subtitle{font-size:7px}
- .navigation{gap:3px}
- .navigation a{font-size:8px;height:34px}
- main{height:calc(100dvh - 84px)}
+  header{height:78px}
+  .brand img{width:36px;height:36px}
+  .brand h1{font-size:16px}
+  .brand small{font-size:6px}
+  nav{gap:2px}
+  nav a{font-size:8px;padding:8px 3px}
+  main{height:calc(100dvh - 78px);padding:7px}
 }
 </style>
 </head>
 
 <body>
-<header class="header">
-  <div class="header-top">
-    <img class="logo" src="./icon.png" alt="波急">
-    <div class="brand-text">
-      <h1 class="brand-title">波急サーバー</h1>
-      <div class="brand-subtitle">NAMIKYU SERVER</div>
+<header>
+  <div class="brand">
+    <img src="./icon.png" alt="波急">
+    <div>
+      <h1>波急サーバー</h1>
+      <small>NAMIKYU SERVER</small>
     </div>
   </div>
-  <nav class="navigation">
+  <nav>
     <a href="./index.html">ホーム</a>
     <a href="./news.html">お知らせ</a>
     <a href="./join.html">参加方法</a>
@@ -154,12 +235,12 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 </header>
 
 <main>
-  <h2 class="page-title">在線位置</h2>
-  <p class="page-subtitle">REAL-TIME PLAYER & TRAIN POSITION</p>
+  <h2>在線位置</h2>
+  <p class="subtitle">REAL-TIME PLAYER &amp; TRAIN POSITION</p>
 
-  <div class="status-line">
-    <span id="connectionDot" class="status-dot"></span>
-    <strong id="connectionText">サーバーに接続しています...</strong>
+  <div class="status">
+    <span id="connectionDot" class="dot"></span>
+    <strong id="connectionText">接続しています...</strong>
     <span id="lastUpdated">最終更新：--:--:--</span>
     <span id="worldTime">ワールド時刻：--</span>
     <span id="weatherText">天候：--</span>
@@ -174,28 +255,28 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
     <span><i style="background:#16a34a"></i>準急</span>
     <span><i style="background:#2878c8"></i>各駅停車</span>
     <span><i style="background:#888"></i>水山線</span>
-    <span><i style="background:#111"></i>その他</span>
+    <span><i style="background:#222"></i>その他</span>
     <span>顔マーク：プレイヤー</span>
   </div>
 
   <section id="mapArea">
-    <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="サーバー在線位置マップ">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ">
       <g id="gridLayer"></g>
-      <g id="markerLayer" class="marker-layer"></g>
+      <g id="markerLayer"></g>
     </svg>
 
-    <div class="map-compass">
-      <span class="compass-top">Z−</span>
-      <span class="compass-left">X−</span>
-      <span class="compass-center">＋</span>
-      <span class="compass-right">X＋</span>
-      <span class="compass-bottom">Z＋</span>
+    <div class="compass">
+      <span class="north">Z−</span>
+      <span class="west">X−</span>
+      <span class="center">＋</span>
+      <span class="east">X＋</span>
+      <span class="south">Z＋</span>
     </div>
 
     <div class="player-panel" id="playerPanel">
       <div class="player-panel-head">
         <span>オンライン</span>
-        <button id="collapsePlayers" type="button" aria-label="一覧を折りたたむ">−</button>
+        <button id="collapsePlayers" type="button">−</button>
       </div>
       <div class="player-list" id="playerList"></div>
     </div>
@@ -206,15 +287,15 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
       <button id="resetView" type="button" title="全体表示">⌂</button>
     </div>
 
-    <div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小 / 矢印キー：移動</div>
+    <div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小</div>
   </section>
 </main>
 
-<div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal" id="detailModal" role="dialog" aria-modal="true">
   <div class="modal-card">
     <div class="modal-head">
       <h3 class="modal-title" id="modalTitle">詳細情報</h3>
-      <button class="modal-close" id="closeModal" type="button" aria-label="閉じる">×</button>
+      <button class="modal-close" id="closeModal" type="button">×</button>
     </div>
     <div id="modalContent"></div>
   </div>
@@ -223,17 +304,15 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 <script>
 "use strict";
 
-/* =========================================
-   基本設定
-========================================= */
+/* ======================================
+   設定
+====================================== */
 
 const API_URL = "https://namikyu-status.kou20230831.workers.dev/api/status";
 const REFRESH_MS = 1000;
 
 const MIN_VIEW_WIDTH = 500;
 const MAX_VIEW_WIDTH = 50000;
-const GRID_TARGET_PIXELS = 90;
-const GRID_MAX_LINES = 120;
 
 const map = document.getElementById("map");
 const mapArea = document.getElementById("mapArea");
@@ -259,46 +338,44 @@ let latestData = null;
 let players = [];
 let trains = [];
 let staffMap = new Map();
-let selectedEntityKey = null;
-
-let isFetching = false;
-let fetchAgainRequested = false;
-let lastSuccessfulFetch = 0;
 
 let view = {
-  x: -5000,
-  y: -5000,
-  w: 10000,
-  h: 10000
+  x:-5000,
+  y:-5000,
+  w:10000,
+  h:10000
 };
 
 let dragging = false;
 let dragStart = null;
 let dragMoved = false;
 let dragResetTimer = null;
+let isFetching = false;
+let refreshTimer = null;
+let lastSuccessfulFetch = 0;
+let selectedEntityKey = null;
 
-/* =========================================
-   共通処理
-========================================= */
+/* ======================================
+   共通関数
+====================================== */
 
 function escapeHtml(value) {
   return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
-function toNumber(value, fallback = 0) {
-  const number = Number(value);
-  return Number.isFinite(number) ? number : fallback;
+function numberValue(value,fallback=0) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
 }
 
-function formatNumber(value, digits = 1) {
-  const number = Number(value);
-  if (!Number.isFinite(number)) return "--";
-  return number.toFixed(digits);
+function formatNumber(value,digits=1) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n.toFixed(digits) : "--";
 }
 
 function getName(entity) {
@@ -313,23 +390,10 @@ function getName(entity) {
 
 function getCoordinates(entity) {
   const location = entity?.location ?? entity?.position ?? entity ?? {};
-
   return {
-    x: toNumber(location.x, 0),
-    z: toNumber(location.z, 0)
+    x:numberValue(location.x,0),
+    z:numberValue(location.z,0)
   };
-}
-
-function getMapSize() {
-  const rect = map.getBoundingClientRect();
-  const width = Math.max(1, rect.width);
-  const height = Math.max(1, rect.height);
-
-  return { width, height, aspect: width / height };
-}
-
-function getScale() {
-  return view.w / getMapSize().width;
 }
 
 function normalizeTags(entity) {
@@ -348,20 +412,50 @@ function normalizeTags(entity) {
   return [];
 }
 
-/* =========================================
+function normalizeCollection(value) {
+  if (Array.isArray(value)) return value;
+
+  if (value && typeof value === "object") {
+    return Object.entries(value).map(([key,item]) => {
+      if (item && typeof item === "object") {
+        return {...item,id:item.id ?? key};
+      }
+      return {id:key,value:item};
+    });
+  }
+
+  return [];
+}
+
+function getMapSize() {
+  const rect = map.getBoundingClientRect();
+  const width = Math.max(1,rect.width);
+  const height = Math.max(1,rect.height);
+  return {width,height,aspect:width/height};
+}
+
+function getScale() {
+  return view.w / getMapSize().width;
+}
+
+function clamp(value,min,max) {
+  return Math.max(min,Math.min(max,value));
+}
+
+/* ======================================
    種別判定
-========================================= */
+====================================== */
 
 function getTrainType(train) {
   const tags = normalizeTags(train);
-  const { x, z } = getCoordinates(train);
+  const {x,z} = getCoordinates(train);
 
   if (tags.includes("ltd")) {
-    return { key:"ltd", name:"特急", label:"特", color:"#f97316" };
+    return {key:"ltd",name:"特急",label:"特",color:"#f97316"};
   }
 
   if (tags.includes("exp")) {
-    return { key:"exp", name:"急行", label:"急", color:"#dc2626" };
+    return {key:"exp",name:"急行",label:"急",color:"#dc2626"};
   }
 
   if (tags.includes("sexp")) {
@@ -375,7 +469,7 @@ function getTrainType(train) {
       };
     }
 
-    return { key:"sexp", name:"準急", label:"準", color:"#16a34a" };
+    return {key:"sexp",name:"準急",label:"準",color:"#16a34a"};
   }
 
   if (tags.includes("local2")) {
@@ -389,7 +483,7 @@ function getTrainType(train) {
   }
 
   if (tags.includes("local")) {
-    return { key:"local", name:"各駅停車", label:"各", color:"#2878c8" };
+    return {key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
   }
 
   if (x >= -608 && x <= 692 && z >= 3957 && z <= 5257) {
@@ -402,12 +496,12 @@ function getTrainType(train) {
     };
   }
 
-  return { key:"unknown", name:"その他", label:"不", color:"#222222" };
+  return {key:"unknown",name:"その他",label:"不",color:"#222222"};
 }
 
-/* =========================================
-   進行方向判定
-========================================= */
+/* ======================================
+   進行方向
+====================================== */
 
 function getTrainDirection(train) {
   const tags = normalizeTags(train);
@@ -424,16 +518,16 @@ function getTrainDirection(train) {
 }
 
 /*
-  SVGの座標は右がX＋、下がY＋。
-  MinecraftのZ座標をそのまま画面Yに使うため、
-  Z−は上、Z＋は下になる。
+  右向きの矢印を基準に回転させる。
+  X＋=右0度、Z＋=下90度、
+  X−=左180度、Z−=上−90度。
 */
 function getDirectionAngle(train) {
   switch (getTrainDirection(train)) {
-    case "z-": return -90;
+    case "x+": return 0;
     case "z+": return 90;
     case "x-": return 180;
-    case "x+": return 0;
+    case "z-": return -90;
     default: return 0;
   }
 }
@@ -443,9 +537,9 @@ function isPositiveDirection(train) {
   return direction === "z+" || direction === "x+";
 }
 
-/* =========================================
-   行先判定
-========================================= */
+/* ======================================
+   行先
+====================================== */
 
 function getTrainDestination(train) {
   const type = getTrainType(train);
@@ -464,14 +558,13 @@ function getTrainDestination(train) {
   return "不明";
 }
 
-/* =========================================
-   速度表示
-========================================= */
+/* ======================================
+   速度
+====================================== */
 
 function getDisplaySpeed(train) {
-  const sokudo = Number(train?.sokudo);
-
-  if (sokudo === 59) return 120;
+  const special = Number(train?.sokudo);
+  if (special === 59) return 120;
 
   const raw = train?.speed;
 
@@ -480,29 +573,51 @@ function getDisplaySpeed(train) {
   }
 
   const speed = Number(raw);
-
   if (!Number.isFinite(speed) || speed < 0) return 0;
+
   return speed;
 }
 
-/* =========================================
-   データ形式の吸収
-========================================= */
+/* ======================================
+   スタッフ情報
+====================================== */
 
-function normalizeCollection(value) {
-  if (Array.isArray(value)) return value;
+async function loadStaff() {
+  try {
+    const response = await fetch("./staff.html",{cache:"no-store"});
+    if (!response.ok) return;
 
-  if (value && typeof value === "object") {
-    return Object.entries(value).map(([key, item]) => {
-      if (item && typeof item === "object") {
-        return { ...item, id:item.id ?? key };
-      }
-      return { id:key, value:item };
+    const html = await response.text();
+    const doc = new DOMParser().parseFromString(html,"text/html");
+    const nextMap = new Map();
+
+    doc.querySelectorAll(".staff-card").forEach(card => {
+      const nameElement = card.querySelector(".staff-name");
+      if (!nameElement) return;
+
+      const name = nameElement.textContent.trim();
+      if (!name) return;
+
+      const roles = Array.from(card.querySelectorAll(".role-badge"))
+        .map(element => element.textContent.trim())
+        .filter(Boolean);
+
+      nextMap.set(name.toLowerCase(),roles.join(" / ") || "運営");
     });
-  }
 
-  return [];
+    staffMap = nextMap;
+  } catch (error) {
+    console.warn("スタッフ情報の取得に失敗:",error);
+  }
 }
+
+function getPlayerRole(player) {
+  return staffMap.get(getName(player).toLowerCase()) || "";
+}
+
+/* ======================================
+   APIデータ整理
+====================================== */
 
 function extractDataLists(data) {
   const root = data?.data ?? data?.status ?? data ?? {};
@@ -518,64 +633,33 @@ function extractDataLists(data) {
   return root;
 }
 
-/* =========================================
-   運営メンバー情報
-========================================= */
+/* ======================================
+   マップ座標
+====================================== */
 
-async function loadStaff() {
-  try {
-    const response = await fetch("./staff.html", {
-      method:"GET",
-      cache:"no-store"
-    });
+/*
+  重要：
+  SVGはY＋が画面下方向。
+  MinecraftのZ＋も画面下方向として扱う。
+  よってY座標はZをそのまま使う。
 
-    if (!response.ok) throw new Error("スタッフ一覧を取得できません");
-
-    const html = await response.text();
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    const nextMap = new Map();
-
-    doc.querySelectorAll(".staff-card").forEach(card => {
-      const nameElement = card.querySelector(".staff-name");
-      if (!nameElement) return;
-
-      const name = nameElement.textContent.trim();
-      if (!name) return;
-
-      const roles = Array.from(card.querySelectorAll(".role-badge"))
-        .map(element => element.textContent.trim())
-        .filter(Boolean);
-
-      nextMap.set(name.toLowerCase(), roles.join(" / ") || "運営");
-    });
-
-    staffMap = nextMap;
-  } catch (error) {
-    console.warn("運営メンバー情報の取得に失敗:", error);
-  }
+  上=Z−、下=Z＋、右=X＋、左=X−。
+*/
+function worldToMap(entity) {
+  const position = getCoordinates(entity);
+  return {x:position.x,y:position.z};
 }
 
-function getPlayerRole(player) {
-  return staffMap.get(getName(player).toLowerCase()) || "";
-}
-
-/* =========================================
-   表示範囲・全体表示
-========================================= */
+/* ======================================
+   全体表示
+====================================== */
 
 function fitViewToData() {
   const size = getMapSize();
   const points = [];
 
-  players.forEach(player => {
-    const p = getCoordinates(player);
-    points.push({ x:p.x, y:p.z });
-  });
-
-  trains.forEach(train => {
-    const p = getCoordinates(train);
-    points.push({ x:p.x, y:p.z });
-  });
+  players.forEach(player => points.push(worldToMap(player)));
+  trains.forEach(train => points.push(worldToMap(train)));
 
   if (points.length === 0) {
     view.w = 10000;
@@ -597,63 +681,59 @@ function fitViewToData() {
   const centerX = (minX + maxX) / 2;
   const centerY = (minY + maxY) / 2;
 
-  const dataWidth = Math.max(0, maxX - minX);
-  const dataHeight = Math.max(0, maxY - minY);
+  const dataWidth = Math.max(0,maxX-minX);
+  const dataHeight = Math.max(0,maxY-minY);
 
-  let width = Math.max(1000, dataWidth) * 1.12;
-  let height = Math.max(1000, dataHeight) * 1.12;
+  const padding = Math.max(
+    1000,
+    Math.max(dataWidth,dataHeight) * 0.12
+  );
 
-  let targetWidth = Math.max(width, height * size.aspect);
-  targetWidth = Math.max(1000, Math.min(MAX_VIEW_WIDTH, targetWidth));
+  let width = dataWidth + padding * 2;
+  let height = dataHeight + padding * 2;
 
-  view.w = targetWidth;
-  view.h = targetWidth / size.aspect;
+  width = Math.max(width,height * size.aspect);
+  width = clamp(width,MIN_VIEW_WIDTH,MAX_VIEW_WIDTH);
+
+  view.w = width;
+  view.h = width / size.aspect;
   view.x = centerX - view.w / 2;
   view.y = centerY - view.h / 2;
 
   applyView();
 }
 
-function visibleBounds() {
-  return { x:view.x, y:view.y, w:view.w, h:view.h };
-}
-
-/* =========================================
+/* ======================================
    グリッド
-========================================= */
+====================================== */
 
-function getAdaptiveGridStep() {
-  const size = getMapSize();
-  const target = (view.w / size.width) * GRID_TARGET_PIXELS;
+function getGridStep() {
+  const target = getScale() * 90;
+  const power = Math.pow(10,Math.floor(Math.log10(Math.max(1,target))));
+  const choices = [power,power*2,power*5,power*10];
 
-  if (!Number.isFinite(target) || target <= 0) return 500;
-
-  const exponent = Math.pow(10, Math.floor(Math.log10(target)));
-  const candidates = [exponent, exponent * 2, exponent * 5, exponent * 10];
-
-  return candidates.find(step => step >= target) || exponent * 10;
+  return choices.find(step => step >= target) || power*10;
 }
 
 function renderGrid() {
-  const bounds = visibleBounds();
-  const step = getAdaptiveGridStep();
+  const step = getGridStep();
 
-  const left = Math.floor(bounds.x / step) * step;
-  const right = Math.ceil((bounds.x + bounds.w) / step) * step;
-  const top = Math.floor(bounds.y / step) * step;
-  const bottom = Math.ceil((bounds.y + bounds.h) / step) * step;
+  const left = Math.floor(view.x/step)*step;
+  const right = Math.ceil((view.x+view.w)/step)*step;
+  const top = Math.floor(view.y/step)*step;
+  const bottom = Math.ceil((view.y+view.h)/step)*step;
 
   const paths = [];
   let count = 0;
 
-  for (let x = left; x <= right && count < GRID_MAX_LINES; x += step) {
+  for (let x=left;x<=right && count<120;x+=step) {
     paths.push(`M${x} ${top}V${bottom}`);
     count++;
   }
 
   count = 0;
 
-  for (let y = top; y <= bottom && count < GRID_MAX_LINES; y += step) {
+  for (let y=top;y<=bottom && count<120;y+=step) {
     paths.push(`M${left} ${y}H${right}`);
     count++;
   }
@@ -662,55 +742,66 @@ function renderGrid() {
     `<path class="grid-line" d="${paths.join("")}" fill="none"/>`;
 }
 
-/* =========================================
-   表示範囲反映
-========================================= */
+/* ======================================
+   SVG表示範囲
+====================================== */
 
-function applyView(renderMarkerLayer = true) {
+function applyView(renderMarkers=true) {
   const size = getMapSize();
+
   view.h = view.w / size.aspect;
 
-  map.setAttribute("viewBox", `${view.x} ${view.y} ${view.w} ${view.h}`);
+  map.setAttribute(
+    "viewBox",
+    `${view.x} ${view.y} ${view.w} ${view.h}`
+  );
 
   renderGrid();
 
-  if (renderMarkerLayer && latestData) {
-    renderMarkers();
+  if (renderMarkers && latestData) {
+    renderMarkersNow();
   }
 }
 
-/* =========================================
+/* ======================================
    列車マーカー
-========================================= */
+====================================== */
 
-function makeTrainMarker(train, index, scale) {
-  const { x, z } = getCoordinates(train);
-
-  // Z座標をそのままSVGのY座標にする。
-  // これによりZ−が上、Z＋が下になる。
-  const y = z;
-
+function makeTrainMarker(train,index,scale) {
+  const position = worldToMap(train);
   const type = getTrainType(train);
   const angle = getDirectionAngle(train);
 
-  const width = 27 * scale;
-  const height = 16 * scale;
-  const fontSize = 11.5 * scale;
+  /*
+    車体と矢印先端を一つのパスで描く。
+    別々の四角形・三角形にしないため、
+    接合部に隙間が発生しない。
+  */
+  const width = 30 * scale;
+  const height = 17 * scale;
 
-  // 右向きの車体と矢印先端を一体化した形
-  const arrowPath = `
-    M ${-width * 0.5} ${-height * 0.5}
-    H ${width * 0.18}
-    L ${width * 0.5} 0
-    L ${width * 0.18} ${height * 0.5}
-    H ${-width * 0.5}
-    Q ${-width * 0.62} ${height * 0.5}
-      ${-width * 0.62} ${height * 0.25}
-    V ${-height * 0.25}
-    Q ${-width * 0.62} ${-height * 0.5}
-      ${-width * 0.5} ${-height * 0.5}
-    Z
-  `;
+  const left = -width * 0.5;
+  const bodyEnd = width * 0.12;
+  const tip = width * 0.5;
+  const backRadius = height * 0.28;
+
+  const path = [
+    `M ${left+backRadius} ${-height/2}`,
+    `H ${bodyEnd}`,
+    `L ${tip} 0`,
+    `L ${bodyEnd} ${height/2}`,
+    `H ${left+backRadius}`,
+    `Q ${left} ${height/2} ${left} ${height/2-backRadius}`,
+    `V ${-height/2+backRadius}`,
+    `Q ${left} ${-height/2} ${left+backRadius} ${-height/2}`,
+    "Z"
+  ].join(" ");
+
+  /*
+    文字は回転グループの外側に配置。
+    そのため列車の向きが変わっても文字は水平。
+  */
+  const labelSize = 11 * scale;
 
   return `
     <g class="train-marker"
@@ -719,14 +810,14 @@ function makeTrainMarker(train, index, scale) {
        tabindex="0"
        role="button"
        aria-label="${escapeHtml(type.name)} ${escapeHtml(getTrainDestination(train))}"
-       transform="translate(${x} ${y})">
+       transform="translate(${position.x} ${position.y})">
 
-      <g class="train-body" transform="rotate(${angle} 0 0)">
+      <g class="train-body" transform="rotate(${angle})">
         <path
-          d="${arrowPath}"
+          d="${path}"
           fill="${type.color}"
           stroke="#ffffff"
-          stroke-width="${1.2 * scale}"
+          stroke-width="${1.4*scale}"
           stroke-linejoin="round"
         />
       </g>
@@ -735,20 +826,45 @@ function makeTrainMarker(train, index, scale) {
         class="train-label"
         x="0"
         y="0"
-        font-size="${fontSize}"
+        font-size="${labelSize}"
       >${escapeHtml(type.label)}</text>
     </g>
   `;
 }
 
-function makePlayerMarker(player, index, scale) {
-  const { x, z } = getCoordinates(player);
-  const y = z;
+/* ======================================
+   プレイヤーマーカー
+====================================== */
 
+function makePlayerMarker(player,index,scale) {
+  const position = worldToMap(player);
   const name = getName(player);
-  const faceSize = 19.2 * scale;
-  const nameSize = 10.5 * scale;
-  const faceUrl = `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
+
+  /*
+    文字サイズは画面上で10～14px相当に制限。
+    ズームしても極端に小さく・大きくならない。
+  */
+  const faceScreenSize = 22;
+  const labelScreenSize = 12;
+
+  const faceSize = faceScreenSize * scale;
+  const labelSize = labelScreenSize * scale;
+
+  /*
+    長い名前も省略しない。
+    文字数に合わせてラベルの背景幅を確保する。
+  */
+  const estimatedTextWidth = Math.max(
+    25,
+    name.length * labelScreenSize * 0.95
+  );
+
+  const labelWidth = estimatedTextWidth * scale;
+  const labelHeight = 17 * scale;
+  const labelY = faceSize * 0.65;
+
+  const faceUrl =
+    `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
   return `
     <g class="player-marker"
@@ -757,57 +873,67 @@ function makePlayerMarker(player, index, scale) {
        tabindex="0"
        role="button"
        aria-label="${escapeHtml(name)}"
-       transform="translate(${x} ${y})">
+       transform="translate(${position.x} ${position.y})">
 
       <circle cx="0" cy="0" r="${faceSize}" fill="transparent"/>
 
       <image
         class="player-face"
         href="${faceUrl}"
-        x="${-faceSize / 2}"
-        y="${-faceSize / 2}"
+        x="${-faceSize/2}"
+        y="${-faceSize/2}"
         width="${faceSize}"
         height="${faceSize}"
         preserveAspectRatio="none"
       />
 
+      <rect
+        x="${-labelWidth/2}"
+        y="${labelY}"
+        width="${labelWidth}"
+        height="${labelHeight}"
+        rx="${4*scale}"
+        fill="#ffffff"
+        fill-opacity=".92"
+        stroke="#dce5ed"
+        stroke-width="${.7*scale}"
+      />
+
       <text
         class="player-name-label"
         x="0"
-        y="${faceSize * .95}"
-        font-size="${nameSize}"
+        y="${labelY+labelHeight/2}"
+        font-size="${labelSize}"
       >${escapeHtml(name)}</text>
     </g>
   `;
 }
 
-/* =========================================
+/* ======================================
    マーカー描画
-========================================= */
+====================================== */
 
-function renderMarkers() {
+function renderMarkersNow() {
   if (!latestData) return;
 
   const scale = getScale();
 
-  const trainMarkup = trains
-    .map((train, index) => makeTrainMarker(train, index, scale))
-    .join("");
+  const trainHTML = trains.map((train,index) =>
+    makeTrainMarker(train,index,scale)
+  ).join("");
 
-  const playerMarkup = players
-    .map((player, index) => makePlayerMarker(player, index, scale))
-    .join("");
+  const playerHTML = players.map((player,index) =>
+    makePlayerMarker(player,index,scale)
+  ).join("");
 
-  markerLayer.innerHTML = trainMarkup + playerMarkup;
+  /*
+    列車を先に描き、プレイヤーを後に描く。
+    同じ位置に重なった場合はプレイヤーが前面。
+  */
+  markerLayer.innerHTML = trainHTML + playerHTML;
 
   renderPlayerList();
-
-  if (selectedEntityKey) refreshSelectedModal();
 }
-
-/* =========================================
-   プレイヤー一覧
-========================================= */
 
 function renderPlayerList() {
   if (players.length === 0) {
@@ -816,14 +942,14 @@ function renderPlayerList() {
     return;
   }
 
-  playerList.innerHTML = players.map((player, index) => {
+  playerList.innerHTML = players.map((player,index) => {
     const name = getName(player);
     const role = getPlayerRole(player);
     const face = `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
     return `
       <button class="player-row" type="button" data-player-index="${index}">
-        <img src="${face}" alt="" loading="lazy">
+        <img src="${face}" alt="">
         <span class="player-row-info">
           <span class="player-row-name">${escapeHtml(name)}</span>
           <span class="player-row-role">${escapeHtml(role || "プレイヤー")}</span>
@@ -833,9 +959,9 @@ function renderPlayerList() {
   }).join("");
 }
 
-/* =========================================
-   詳細画面
-========================================= */
+/* ======================================
+   詳細モーダル
+====================================== */
 
 function openModal() {
   detailModal.classList.add("open");
@@ -849,12 +975,11 @@ function closeModal() {
 function showPlayerDetail(player) {
   const name = getName(player);
   const role = getPlayerRole(player);
-  const { x, z } = getCoordinates(player);
+  const position = getCoordinates(player);
+  const face = `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
   selectedEntityKey = `player:${name}`;
   modalTitle.textContent = "プレイヤー情報";
-
-  const face = `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
   modalContent.innerHTML = `
     <div class="detail-player">
@@ -868,11 +993,11 @@ function showPlayerDetail(player) {
     <div class="detail-grid">
       <div class="detail-item">
         <div class="detail-label">X座標</div>
-        <div class="detail-value">${formatNumber(x, 2)}</div>
+        <div class="detail-value">${formatNumber(position.x,2)}</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">Z座標</div>
-        <div class="detail-value">${formatNumber(z, 2)}</div>
+        <div class="detail-value">${formatNumber(position.z,2)}</div>
       </div>
     </div>
   `;
@@ -880,22 +1005,22 @@ function showPlayerDetail(player) {
   openModal();
 }
 
-function showTrainDetail(train, index = trains.indexOf(train)) {
+function showTrainDetail(train,index) {
   const type = getTrainType(train);
   const destination = getTrainDestination(train);
   const speed = getDisplaySpeed(train);
   const direction = getTrainDirection(train);
-  const { x, z } = getCoordinates(train);
+  const position = getCoordinates(train);
+
+  const directionNames = {
+    "x+":"東方向（X＋）",
+    "x-":"西方向（X−）",
+    "z+":"南方向（Z＋）",
+    "z-":"北方向（Z−）"
+  };
 
   selectedEntityKey = `train:${index}`;
   modalTitle.textContent = "列車情報";
-
-  const directionText = {
-    "z-":"北方向（Z−）",
-    "z+":"南方向（Z＋）",
-    "x-":"西方向（X−）",
-    "x+":"東方向（X＋）"
-  }[direction] || "不明";
 
   modalContent.innerHTML = `
     <div class="train-summary" style="border-color:${type.color}">
@@ -918,19 +1043,19 @@ function showTrainDetail(train, index = trains.indexOf(train)) {
       </div>
       <div class="detail-item">
         <div class="detail-label">速度</div>
-        <div class="detail-value">${formatNumber(speed, 0)} km/h</div>
+        <div class="detail-value">${formatNumber(speed,0)} km/h</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">進行方向</div>
-        <div class="detail-value">${escapeHtml(directionText)}</div>
+        <div class="detail-value">${escapeHtml(directionNames[direction] || "不明")}</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">X座標</div>
-        <div class="detail-value">${formatNumber(x, 2)}</div>
+        <div class="detail-value">${formatNumber(position.x,2)}</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">Z座標</div>
-        <div class="detail-value">${formatNumber(z, 2)}</div>
+        <div class="detail-value">${formatNumber(position.z,2)}</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">路線</div>
@@ -942,48 +1067,14 @@ function showTrainDetail(train, index = trains.indexOf(train)) {
   openModal();
 }
 
-function refreshSelectedModal() {
-  if (!detailModal.classList.contains("open") || !selectedEntityKey) return;
+/* ======================================
+   クリック処理
+====================================== */
 
-  if (selectedEntityKey.startsWith("player:")) {
-    const name = selectedEntityKey.slice("player:".length);
-    const index = players.findIndex(player => getName(player) === name);
-
-    if (index >= 0) {
-      showPlayerDetail(players[index]);
-    } else {
-      closeModal();
-    }
-
-    return;
-  }
-
-  if (selectedEntityKey.startsWith("train:")) {
-    const index = Number(selectedEntityKey.slice("train:".length));
-
-    if (Number.isInteger(index) && trains[index]) {
-      showTrainDetail(trains[index], index);
-    } else {
-      closeModal();
-    }
-  }
-}
-
-/* =========================================
-   マーカークリック
-========================================= */
-
-/*
-  ドラッグ中にSVG全体のpointer captureを行わない。
-  これによりマーカーのクリックイベントを奪わない。
-*/
-markerLayer.addEventListener("click", event => {
+markerLayer.addEventListener("click",event => {
   if (dragMoved) return;
 
-  const target = event.target instanceof Element
-    ? event.target.closest("[data-kind]")
-    : null;
-
+  const target = event.target.closest("[data-kind]");
   if (!target) return;
 
   const index = Number(target.dataset.index);
@@ -993,17 +1084,14 @@ markerLayer.addEventListener("click", event => {
   }
 
   if (target.dataset.kind === "train" && trains[index]) {
-    showTrainDetail(trains[index], index);
+    showTrainDetail(trains[index],index);
   }
 });
 
-markerLayer.addEventListener("keydown", event => {
+markerLayer.addEventListener("keydown",event => {
   if (event.key !== "Enter" && event.key !== " ") return;
 
-  const target = event.target instanceof Element
-    ? event.target.closest("[data-kind]")
-    : null;
-
+  const target = event.target.closest("[data-kind]");
   if (!target) return;
 
   event.preventDefault();
@@ -1015,43 +1103,36 @@ markerLayer.addEventListener("keydown", event => {
   }
 
   if (target.dataset.kind === "train" && trains[index]) {
-    showTrainDetail(trains[index], index);
+    showTrainDetail(trains[index],index);
   }
 });
 
-playerList.addEventListener("click", event => {
-  const button = event.target instanceof Element
-    ? event.target.closest("[data-player-index]")
-    : null;
-
+playerList.addEventListener("click",event => {
+  const button = event.target.closest("[data-player-index]");
   if (!button) return;
 
   const player = players[Number(button.dataset.playerIndex)];
   if (player) showPlayerDetail(player);
 });
 
-/* =========================================
+/* ======================================
    ステータス表示
-========================================= */
+====================================== */
 
-function updateStatusDisplay(root) {
-  const worldTime =
-    root.worldTime ?? root.time ?? root.world_time ?? "--";
-
-  const weather =
-    root.weather ?? root.worldWeather ?? root.world_weather ?? "--";
-
+function updateStatus(root) {
+  const worldTime = root.worldTime ?? root.time ?? root.world_time ?? "--";
+  const weather = root.weather ?? root.worldWeather ?? root.world_weather ?? "--";
   const tps = root.tps ?? root.TPS ?? "--";
 
   worldTimeText.textContent = `ワールド時刻：${worldTime}`;
   weatherText.textContent = `天候：${weather}`;
-  tpsText.textContent = `TPS：${formatNumber(tps, 1)}`;
+  tpsText.textContent = `TPS：${formatNumber(tps,1)}`;
 
   playerCountText.textContent = `プレイヤー：${players.length}人`;
   trainCountText.textContent = `列車：${trains.length}編成`;
 
   lastUpdated.textContent =
-    `最終更新：${new Date().toLocaleTimeString("ja-JP", {hour12:false})}`;
+    `最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
 }
 
 function setOnline() {
@@ -1066,30 +1147,28 @@ function setOffline() {
   connectionText.textContent = "サーバーに接続できません";
 }
 
-/* =========================================
-   APIデータ取得
-========================================= */
+/* ======================================
+   API取得
+====================================== */
 
 async function fetchStatus() {
-  if (isFetching) {
-    fetchAgainRequested = true;
-    return;
-  }
-
+  if (isFetching) return;
   isFetching = true;
 
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(API_URL,{
       method:"GET",
       mode:"cors",
       cache:"no-store"
     });
 
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
 
     const data = await response.json();
 
-    if (data?.success === false) {
+    if (data && data.success === false) {
       throw new Error(data.error || "API error");
     }
 
@@ -1097,96 +1176,90 @@ async function fetchStatus() {
 
     const root = extractDataLists(data);
 
-    updateStatusDisplay(root);
+    updateStatus(root);
     setOnline();
-
     lastSuccessfulFetch = Date.now();
 
     if (map.dataset.initialized !== "true") {
       fitViewToData();
       map.dataset.initialized = "true";
     } else {
-      renderMarkers();
+      renderMarkersNow();
     }
 
   } catch (error) {
-    console.warn("在線データ取得エラー:", error);
+    console.error("在線データ取得エラー:",error);
     setOffline();
 
   } finally {
     isFetching = false;
-
-    if (fetchAgainRequested) {
-      fetchAgainRequested = false;
-      queueMicrotask(() => fetchStatus());
-    }
   }
 }
 
-/* =========================================
+/* ======================================
    自動更新
-========================================= */
+====================================== */
 
-let refreshTimer = null;
-
-function scheduleRefresh() {
-  if (refreshTimer !== null) clearTimeout(refreshTimer);
+function startRefresh() {
+  if (refreshTimer !== null) {
+    clearTimeout(refreshTimer);
+  }
 
   refreshTimer = setTimeout(async () => {
-    refreshTimer = null;
     await fetchStatus();
-    scheduleRefresh();
-  }, REFRESH_MS);
+    startRefresh();
+  },REFRESH_MS);
 }
 
-function refreshImmediately() {
+function refreshNow() {
   if (refreshTimer !== null) {
     clearTimeout(refreshTimer);
     refreshTimer = null;
   }
 
-  fetchStatus().finally(scheduleRefresh);
+  fetchStatus().finally(startRefresh);
 }
 
-document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) refreshImmediately();
+document.addEventListener("visibilitychange",() => {
+  if (!document.hidden) refreshNow();
 });
 
-window.addEventListener("focus", refreshImmediately);
-window.addEventListener("pageshow", refreshImmediately);
-window.addEventListener("online", refreshImmediately);
+window.addEventListener("focus",refreshNow);
+window.addEventListener("online",refreshNow);
 
-window.addEventListener("pagehide", () => {
+window.addEventListener("pagehide",() => {
   if (refreshTimer !== null) {
     clearTimeout(refreshTimer);
     refreshTimer = null;
   }
 });
 
-/* =========================================
+/* ======================================
    ズーム
-========================================= */
+====================================== */
 
-function zoomAt(factor, clientX, clientY) {
+function zoomAt(factor,clientX,clientY) {
   const rect = map.getBoundingClientRect();
+
   if (rect.width <= 0 || rect.height <= 0) return;
 
-  const px = (clientX - rect.left) / rect.width;
-  const py = (clientY - rect.top) / rect.height;
+  const px = (clientX-rect.left)/rect.width;
+  const py = (clientY-rect.top)/rect.height;
 
-  const worldX = view.x + px * view.w;
-  const worldY = view.y + py * view.h;
+  const worldX = view.x + px*view.w;
+  const worldY = view.y + py*view.h;
 
-  const newWidth = Math.max(
+  const newWidth = clamp(
+    view.w*factor,
     MIN_VIEW_WIDTH,
-    Math.min(MAX_VIEW_WIDTH, view.w * factor)
+    MAX_VIEW_WIDTH
   );
 
   const size = getMapSize();
-  const newHeight = newWidth / size.aspect;
+  const newHeight = newWidth/size.aspect;
 
-  view.x = worldX - px * newWidth;
-  view.y = worldY - py * newHeight;
+  view.x = worldX-px*newWidth;
+  view.y = worldY-py*newHeight;
   view.w = newWidth;
   view.h = newHeight;
 
@@ -1198,50 +1271,49 @@ function zoomCenter(factor) {
 
   zoomAt(
     factor,
-    rect.left + rect.width / 2,
-    rect.top + rect.height / 2
+    rect.left+rect.width/2,
+    rect.top+rect.height/2
   );
 }
 
-document.getElementById("zoomIn").addEventListener("click", () => {
+document.getElementById("zoomIn").addEventListener("click",() => {
   zoomCenter(0.75);
 });
 
-document.getElementById("zoomOut").addEventListener("click", () => {
+document.getElementById("zoomOut").addEventListener("click",() => {
   zoomCenter(1.33);
 });
 
-document.getElementById("resetView").addEventListener("click", () => {
+document.getElementById("resetView").addEventListener("click",() => {
   fitViewToData();
 });
 
-/* =========================================
-   ホイールズーム
-========================================= */
+/* ======================================
+   ホイール操作
+====================================== */
 
-map.addEventListener("wheel", event => {
+/*
+  マップの外側ではズームしない。
+  マップ内ではページスクロールを止めてズームする。
+*/
+map.addEventListener("wheel",event => {
   event.preventDefault();
 
   const factor = event.deltaY < 0 ? 0.9 : 1.1;
 
-  zoomAt(factor, event.clientX, event.clientY);
-}, { passive:false });
+  zoomAt(factor,event.clientX,event.clientY);
+},{passive:false});
 
-/* =========================================
+/* ======================================
    ドラッグ移動
-========================================= */
+====================================== */
 
-/*
-  マーカーや操作パネル上ではドラッグを開始しない。
-  マーカーのクリック操作を優先する。
-*/
-map.addEventListener("pointerdown", event => {
+map.addEventListener("pointerdown",event => {
   if (event.button !== 0) return;
 
-  if (event.target instanceof Element &&
-      event.target.closest("[data-kind]")) {
-    return;
-  }
+  if (event.target.closest("[data-kind]")) return;
+
+  if (event.target.closest(".map-controls")) return;
 
   dragging = true;
   dragMoved = false;
@@ -1261,20 +1333,20 @@ map.addEventListener("pointerdown", event => {
   map.classList.add("dragging");
 });
 
-window.addEventListener("pointermove", event => {
+window.addEventListener("pointermove",event => {
   if (!dragging || !dragStart) return;
 
-  const dx = event.clientX - dragStart.x;
-  const dy = event.clientY - dragStart.y;
+  const dx = event.clientX-dragStart.x;
+  const dy = event.clientY-dragStart.y;
 
-  if (Math.abs(dx) + Math.abs(dy) > 3) {
+  if (Math.abs(dx)+Math.abs(dy)>3) {
     dragMoved = true;
   }
 
   const scale = getScale();
 
-  view.x = dragStart.viewX - dx * scale;
-  view.y = dragStart.viewY - dy * scale;
+  view.x = dragStart.viewX-dx*scale;
+  view.y = dragStart.viewY-dy*scale;
 
   applyView(false);
 });
@@ -1286,22 +1358,22 @@ function stopDragging() {
   dragStart = null;
   map.classList.remove("dragging");
 
-  renderMarkers();
+  renderMarkersNow();
 
   dragResetTimer = setTimeout(() => {
     dragMoved = false;
     dragResetTimer = null;
-  }, 100);
+  },100);
 }
 
-window.addEventListener("pointerup", stopDragging);
-window.addEventListener("pointercancel", stopDragging);
+window.addEventListener("pointerup",stopDragging);
+window.addEventListener("pointercancel",stopDragging);
 
-/* =========================================
+/* ======================================
    キーボード移動
-========================================= */
+====================================== */
 
-window.addEventListener("keydown", event => {
+window.addEventListener("keydown",event => {
   if (detailModal.classList.contains("open")) {
     if (event.key === "Escape") closeModal();
     return;
@@ -1312,11 +1384,9 @@ window.addEventListener("keydown", event => {
     event.target instanceof HTMLTextAreaElement ||
     event.target instanceof HTMLButtonElement ||
     event.target instanceof HTMLAnchorElement
-  ) {
-    return;
-  }
+  ) return;
 
-  const amount = view.w * 0.08;
+  const amount = view.w*0.08;
 
   switch (event.key) {
     case "ArrowUp":
@@ -1356,74 +1426,74 @@ window.addEventListener("keydown", event => {
   }
 });
 
-/* =========================================
-   プレイヤー一覧の折りたたみ
-========================================= */
+/* ======================================
+   プレイヤー一覧の開閉
+====================================== */
 
-document.getElementById("collapsePlayers").addEventListener("click", () => {
+document.getElementById("collapsePlayers").addEventListener("click",() => {
   playerPanel.classList.toggle("collapsed");
 
   const button = document.getElementById("collapsePlayers");
+
   button.textContent =
     playerPanel.classList.contains("collapsed") ? "+" : "−";
 });
 
-/* =========================================
+/* ======================================
    モーダル操作
-========================================= */
+====================================== */
 
-document.getElementById("closeModal").addEventListener("click", closeModal);
+document.getElementById("closeModal").addEventListener("click",closeModal);
 
-detailModal.addEventListener("click", event => {
+detailModal.addEventListener("click",event => {
   if (event.target === detailModal) closeModal();
 });
 
-/* =========================================
+/* ======================================
    画面サイズ変更
-========================================= */
+====================================== */
 
 let resizeFrame = null;
 
-function handleResize() {
-  if (resizeFrame !== null) cancelAnimationFrame(resizeFrame);
+window.addEventListener("resize",() => {
+  if (resizeFrame !== null) {
+    cancelAnimationFrame(resizeFrame);
+  }
 
   resizeFrame = requestAnimationFrame(() => {
     resizeFrame = null;
 
-    if (latestData && map.dataset.initialized === "true") {
-      applyView(true);
-    } else {
-      applyView(false);
-    }
+    const size = getMapSize();
+    view.h = view.w/size.aspect;
+
+    applyView(true);
   });
-}
+});
 
-window.addEventListener("resize", handleResize);
-
-/* =========================================
-   初期化
-========================================= */
-
-async function initialize() {
-  await loadStaff();
-  await fetchStatus();
-  scheduleRefresh();
-}
-
-initialize();
-
-/* =========================================
-   接続状態の補助監視
-========================================= */
+/* ======================================
+   接続監視
+====================================== */
 
 setInterval(() => {
   if (
     lastSuccessfulFetch > 0 &&
-    Date.now() - lastSuccessfulFetch > 10000
+    Date.now()-lastSuccessfulFetch>10000
   ) {
     setOffline();
   }
-}, 3000);
+},3000);
+
+/* ======================================
+   起動
+====================================== */
+
+async function initialize() {
+  await loadStaff();
+  await fetchStatus();
+  startRefresh();
+}
+
+initialize();
 
 </script>
 </body>
