@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,6 +7,11 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" type="image/png" href="./icon.png">
 <title>サーバー参加 | 波急サーバー</title>
+
+<!-- 共通テーマファイル -->
+<link rel="stylesheet" href="./theme.css">
+<script src="./theme.js" defer></script>
+
 <style>
 *{box-sizing:border-box}
 html{min-height:100%;scroll-behavior:smooth}
@@ -19,6 +25,28 @@ body{margin:0;min-height:100vh;background:#eef2f7;color:#24364b;font-family:"Yu 
 .navigation{display:flex;justify-content:center;align-items:center;flex:1 1 58%;min-width:0;gap:9px}
 .navigation a{display:flex;justify-content:center;align-items:center;flex:1 1 0;min-width:0;height:52px;padding:8px 7px;color:#fff;text-decoration:none;font-size:clamp(11px,1.1vw,15px);font-weight:700;white-space:nowrap;border:1px solid rgba(255,255,255,.45);border-radius:7px;background:rgba(255,255,255,.12);transition:background .2s}
 .navigation a:hover{background:rgba(255,255,255,.28)}
+
+/* テーマ切り替えボタン */
+.navigation .theme-toggle{
+display:flex;
+align-items:center;
+justify-content:center;
+flex:0 0 44px;
+width:44px;
+height:44px;
+padding:0;
+color:#fff;
+font-size:20px;
+font-weight:700;
+border:1px solid rgba(255,255,255,.55);
+border-radius:7px;
+background:rgba(255,255,255,.12);
+cursor:pointer;
+transition:background .2s,transform .2s;
+}
+.navigation .theme-toggle:hover{background:rgba(255,255,255,.28)}
+.navigation .theme-toggle:active{transform:scale(.95)}
+
 main{width:min(100% - 40px,1050px);margin:35px auto 60px}
 .page-heading{margin-bottom:30px}
 .page-heading h1{margin:0;color:#142b49;font-size:34px}
@@ -32,13 +60,14 @@ main{width:min(100% - 40px,1050px);margin:35px auto 60px}
 .connection-value{margin-bottom:15px;color:#142b49;font-size:21px;font-weight:700;overflow-wrap:anywhere}
 .copy-button{width:100%;min-height:42px;border:none;border-radius:7px;background:#087fc4;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
 .copy-button:hover{background:#075d9b}
-.steps{display:flex;flex-direction:column;gap:15px}
 .step{display:flex;align-items:flex-start;gap:15px;padding:15px;background:#f5f8fc;border-radius:9px}
+.steps{display:flex;flex-direction:column;gap:15px}
 .step-number{width:34px;height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#087fc4;color:#fff;font-weight:700}
 .step-text{padding-top:5px;line-height:1.7}
 .step-text strong{color:#142b49}
 .notice{padding:17px;background:#fff8e8;border-left:5px solid #e6a23c;border-radius:7px;line-height:1.8}
 .footer{padding:25px 15px;text-align:center;color:#7890a5;font-size:13px}
+
 @media(max-width:650px){
 .header{height:150px;flex-direction:column;justify-content:center;gap:8px;padding:6px 2%}
 .header-top{flex:0 0 auto;gap:8px}
@@ -47,6 +76,12 @@ main{width:min(100% - 40px,1050px);margin:35px auto 60px}
 .brand-subtitle{font-size:9px}
 .navigation{width:100%;flex:0 0 auto;gap:5px}
 .navigation a{height:42px;padding:5px 3px;font-size:10px}
+.navigation .theme-toggle{
+flex-basis:36px;
+width:36px;
+height:38px;
+font-size:18px;
+}
 }
 @media(max-width:900px){
 main{width:calc(100% - 24px);margin-top:25px}
@@ -59,6 +94,7 @@ main{width:calc(100% - 24px);margin-top:25px}
 }
 </style>
 </head>
+
 <body>
 <header class="header">
 <div class="header-top">
@@ -68,28 +104,38 @@ main{width:calc(100% - 24px);margin-top:25px}
 <div class="brand-subtitle">NAMIKYU RAILWAY</div>
 </div>
 </div>
+
 <nav class="navigation">
 <a href="./index.html">ホーム</a>
 <a href="./news.html">お知らせ</a>
 <a href="./join.html">サーバー参加</a>
 <a href="./status.html">在線位置</a>
 <a href="./staff.html">運営メンバー</a>
+
+<button class="theme-toggle" type="button"
+data-theme-toggle aria-label="ダークモードに切り替え">
+🌙
+</button>
 </nav>
 </header>
+
 <main>
 <div class="page-heading">
 <h1>サーバー参加</h1>
 <p>JOIN OUR SERVER</p>
 </div>
+
 <section class="section">
 <h2>接続情報</h2>
 <p>波急サーバーへの参加には、以下の情報をMinecraftに入力してください。</p>
+
 <div class="connection-card">
 <div class="connection-item">
 <div class="connection-label">サーバーアドレス</div>
 <div class="connection-value" id="serverAddress">nethernet.ringonw.com</div>
 <button class="copy-button" type="button" data-copy="nethernet.ringonw.com">アドレスをコピー</button>
 </div>
+
 <div class="connection-item">
 <div class="connection-label">ポート番号</div>
 <div class="connection-value" id="serverPort">3380</div>
@@ -97,6 +143,7 @@ main{width:calc(100% - 24px);margin-top:25px}
 </div>
 </div>
 </section>
+
 <section class="section">
 <h2>参加方法</h2>
 <div class="steps">
@@ -104,34 +151,41 @@ main{width:calc(100% - 24px);margin-top:25px}
 <div class="step-number">1</div>
 <div class="step-text"><strong>Minecraftを起動する</strong><br>Minecraft統合版を起動し、Microsoftアカウントでサインインしてください。</div>
 </div>
+
 <div class="step">
 <div class="step-number">2</div>
 <div class="step-text"><strong>サーバー一覧を開く</strong><br>タイトル画面から「プレイ」を選択し、「サーバー」タブを開いてください。</div>
 </div>
+
 <div class="step">
 <div class="step-number">3</div>
 <div class="step-text"><strong>サーバーを追加する</strong><br>サーバー一覧から「サーバーを追加」を選択してください。</div>
 </div>
+
 <div class="step">
 <div class="step-number">4</div>
 <div class="step-text"><strong>接続情報を入力する</strong><br>以下の情報を入力してください。<br><br>サーバー名：波急サーバー<br>サーバーアドレス：nethernet.ringonw.com<br>ポート番号：3380</div>
 </div>
+
 <div class="step">
 <div class="step-number">5</div>
 <div class="step-text"><strong>サーバーに参加する</strong><br>入力内容を保存し、サーバー一覧から波急サーバーを選択して参加してください。</div>
 </div>
 </div>
 </section>
+
 <section class="section">
 <h2>対応エディション・機器</h2>
 <p><strong>対応エディション：</strong> Minecraft 統合版（Bedrock Edition）</p>
 <p><strong>対応機器：</strong> Windows、スマートフォン、タブレットなど</p>
 <p>複数の機器から参加できます。ただし、Xbox・PlayStation・Nintendo Switchなどの家庭用ゲーム機では、通常の画面から外部サーバーを直接追加できない場合があります。</p>
 </section>
+
 <section class="section">
 <h2>注意事項</h2>
 <div class="notice">・Minecraft統合版で参加してください。<br>・サーバーアドレスとポート番号を間違えないようにしてください。<br>・サーバーのメンテナンス中や障害発生時には参加できない場合があります。<br>・接続できない場合は、時間をおいて再度お試しください。</div>
 </section>
+
 <section class="section">
 <h2>接続できない場合</h2>
 <p>接続できない場合は、次の項目を確認してください。</p>
@@ -145,12 +199,15 @@ main{width:calc(100% - 24px);margin-top:25px}
 <p>上記を確認しても接続できない場合は、波急サーバーの運営までお問い合わせください。</p>
 </section>
 </main>
+
 <footer class="footer">© Namikyu Railway. All Rights Reserved.</footer>
+
 <script>
 document.querySelectorAll("[data-copy]").forEach(function(button){
 button.addEventListener("click",async function(){
 const value=button.getAttribute("data-copy");
 const originalText=button.textContent;
+
 try{
 if(navigator.clipboard&&window.isSecureContext){
 await navigator.clipboard.writeText(value);
@@ -163,16 +220,20 @@ document.body.appendChild(textarea);
 textarea.select();
 const copied=document.execCommand("copy");
 document.body.removeChild(textarea);
+
 if(!copied){
 throw new Error("コピーに失敗しました");
 }
 }
+
 button.textContent="コピーしました！";
 button.disabled=true;
+
 setTimeout(function(){
 button.textContent=originalText;
 button.disabled=false;
 },1500);
+
 }catch(error){
 window.prompt("以下の文字列をコピーしてください。",value);
 }
