@@ -308,12 +308,11 @@ half=15*scale,tip=half+17*scale,
 path=`M ${-half} ${-half} L ${half} ${-half} L ${tip} 0 L ${half} ${half} L ${-half} ${half} Z`;
 return`<g class="train-marker" data-kind="train" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(type.name)}" transform="translate(${pos.x} ${pos.y})"><g class="train-body" transform="rotate(${angle})"><path class="train-hit-area" d="${path}" stroke-width="${14*scale}"/><path class="train-visual" d="${path}" fill="${type.color}" stroke="#ffffff" stroke-width="${1.2*scale}" stroke-linejoin="round" stroke-linecap="round"/></g><text class="train-label" x="0" y="0" font-size="${17*scale}">${escapeHtml(type.label)}</text></g>`}
 
-function makePlayerMarker(player,index,scale){
-const pos=worldToMap(player),name=getName(player),
+function makePlayerMarker(player,index,scale,pos){
+const name=getName(player),
 faceSize=22*scale,labelSize=12*scale,
-labelWidth=Math.max(25,name.length*12*.95)*scale,labelHeight=17*scale,labelY=faceSize*.65,
-hitRadius=Math.max(faceSize,labelWidth/2,labelHeight)+5*scale;
-return`<g class="player-marker" data-kind="player" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(name)}" transform="translate(${pos.x} ${pos.y})"><circle cx="0" cy="${labelY/2}" r="${hitRadius}" fill="transparent" pointer-events="all"/><image class="player-face" href="${faceUrl(name)}" x="${-faceSize/2}" y="${-faceSize/2}" width="${faceSize}" height="${faceSize}" preserveAspectRatio="none" pointer-events="none"/><rect x="${-labelWidth/2}" y="${labelY}" width="${labelWidth}" height="${labelHeight}" rx="${4*scale}" fill="#ffffff" fill-opacity=".92" stroke="#dce5ed" stroke-width="${.7*scale}" pointer-events="none"/><text class="player-name-label" x="0" y="${labelY+labelHeight/2}" font-size="${labelSize}" pointer-events="none">${escapeHtml(name)}</text></g>`}
+labelWidth=Math.max(25,name.length*12*.95)*scale,labelHeight=17*scale,labelY=faceSize*.65;
+return`<g class="player-marker" data-kind="player" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(name)}" transform="translate(${pos.x} ${pos.y})"><rect x="${-faceSize/2}" y="${-faceSize/2}" width="${faceSize}" height="${faceSize}" fill="transparent" pointer-events="all"/><image class="player-face" href="${faceUrl(name)}" x="${-faceSize/2}" y="${-faceSize/2}" width="${faceSize}" height="${faceSize}" preserveAspectRatio="none" pointer-events="none"/><rect x="${-labelWidth/2}" y="${labelY}" width="${labelWidth}" height="${labelHeight}" rx="${4*scale}" fill="#ffffff" fill-opacity=".92" stroke="#dce5ed" stroke-width="${.7*scale}" pointer-events="none"/><text class="player-name-label" x="0" y="${labelY+labelHeight/2}" font-size="${labelSize}" pointer-events="none">${escapeHtml(name)}</text></g>`}
 
 function handleMarkerOpen(el){
 if(!el)return;
@@ -334,10 +333,36 @@ markerLayer.querySelectorAll("[data-kind][data-index]").forEach(m=>{
 m.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();if(dragMoved)return;handleMarkerOpen(m)});
 m.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;e.preventDefault();e.stopPropagation();handleMarkerOpen(m)})})}
 
+function avoidTrains(pos,scale,tp){
+const h=15*scale,tip=h+17*scale,r=13*scale,poly=[[-h,-h],[h,-h],[tip,0],[h,h],[-h,h]];
+let x=pos.x,y=pos.y;
+for(let pass=0;pass<4;pass++){
+let moved=false;
+for(const t of tp){
+const dx=x-t.x,dy=y-t.y;
+if(dx*dx+dy*dy>(tip+r)*(tip+r))continue;
+const lx=dx*t.c+dy*t.s,ly=-dx*t.s+dy*t.c;
+let best=Infinity,qx=0,qy=0,inside=true;
+for(let i=0;i<5;i++){
+const a=poly[i],b=poly[(i+1)%5],abx=b[0]-a[0],aby=b[1]-a[1],
+k=clamp(((lx-a[0])*abx+(ly-a[1])*aby)/(abx*abx+aby*aby),0,1),
+px=a[0]+abx*k,py=a[1]+aby*k,d=Math.hypot(lx-px,ly-py);
+if(d<best){best=d;qx=px;qy=py}
+if(abx*(ly-a[1])-aby*(lx-a[0])<0)inside=false}
+if(!inside&&best>=r-1e-9)continue;
+let ux=inside?qx-lx:lx-qx,uy=inside?qy-ly:ly-qy;
+const len=Math.hypot(ux,uy);
+if(len<1e-9){ux=0;uy=-1}else{ux/=len;uy/=len}
+const nx=qx+ux*r,ny=qy+uy*r;
+x=t.x+nx*t.c-ny*t.s;y=t.y+nx*t.s+ny*t.c;moved=true}
+if(!moved)break}
+return{x,y}}
+
 function renderMarkersNow(){
 if(!latestData)return;
 const s=getScale();
-markerLayer.innerHTML=trains.map((t,i)=>makeTrainMarker(t,i,s)).join("")+players.map((p,i)=>makePlayerMarker(p,i,s)).join("");
+const tp=trains.map(t=>{const p=worldToMap(t),a=getDirectionAngle(t)*Math.PI/180;return{x:p.x,y:p.y,c:Math.cos(a),s:Math.sin(a)}});
+markerLayer.innerHTML=trains.map((t,i)=>makeTrainMarker(t,i,s)).join("")+players.map((p,i)=>makePlayerMarker(p,i,s,avoidTrains(worldToMap(p),s,tp))).join("");
 attachMarkerEvents();
 renderPlayerList()}
 
