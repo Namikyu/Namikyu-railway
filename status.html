@@ -1451,7 +1451,7 @@ function applyView(renderMarkers=true){
 }
 
 /* =====================================
-   列車マーカー：元のサイズから80％
+   列車マーカー：元のサイズから90％
    クリック範囲は元のサイズを維持
 ===================================== */
 
@@ -1464,9 +1464,9 @@ function makeTrainMarker(train,index,scale){
   hitHalf=15*scale,
   hitTip=hitHalf+17*scale,
 
-  // 表示サイズ：元の約80％
-  visualHalf=12*scale,
-  visualTip=visualHalf+13.6*scale,
+  // 表示サイズ：元の90％
+  visualHalf=13.5*scale,
+  visualTip=visualHalf+15.3*scale,
 
   hitPath=`M ${-hitHalf} ${-hitHalf}
            L ${hitHalf} ${-hitHalf}
@@ -1482,7 +1482,7 @@ function makeTrainMarker(train,index,scale){
               L ${-visualHalf} ${visualHalf}
               Z`;
 
-  return`<g class="train-marker" data-kind="train" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(type.name)}" transform="translate(${pos.x} ${pos.y})"><g class="train-body" transform="rotate(${angle})"><path class="train-hit-area" d="${hitPath}" stroke-width="${14*scale}"/><path class="train-visual" d="${visualPath}" fill="${type.color}" stroke="#ffffff" stroke-width="${1.2*scale}" stroke-linejoin="round" stroke-linecap="round"/></g><text class="train-label" x="0" y="0" font-size="${13.6*scale}">${escapeHtml(type.label)}</text></g>`;
+  return`<g class="train-marker" data-kind="train" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(type.name)}" transform="translate(${pos.x} ${pos.y})"><g class="train-body" transform="rotate(${angle})"><path class="train-hit-area" d="${hitPath}" stroke-width="${14*scale}"/><path class="train-visual" d="${visualPath}" fill="${type.color}" stroke="#ffffff" stroke-width="${1.08*scale}" stroke-linejoin="round" stroke-linecap="round"/></g><text class="train-label" x="0" y="0" font-size="${15.3*scale}">${escapeHtml(type.label)}</text></g>`;
 }
 
 function makePlayerMarker(player,index,scale,pos){
