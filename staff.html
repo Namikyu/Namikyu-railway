@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -5,6 +6,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" type="image/png" href="./icon.png">
+
+<!-- 共通テーマ設定 -->
+<link rel="stylesheet" href="./theme.css">
+<script src="./theme.js" defer></script>
+
 <title>運営メンバー | 波急サーバー</title>
 <style>
 *{box-sizing:border-box}
@@ -19,6 +25,28 @@ body{margin:0;min-height:100vh;background:#eef2f7;color:#24364b;font-family:"Yu 
 .navigation{display:flex;justify-content:center;align-items:center;flex:1 1 58%;min-width:0;gap:9px}
 .navigation a{display:flex;justify-content:center;align-items:center;flex:1 1 0;min-width:0;height:52px;padding:8px 7px;color:#fff;text-decoration:none;font-size:clamp(11px,1.1vw,15px);font-weight:700;white-space:nowrap;border:1px solid rgba(255,255,255,.45);border-radius:7px;background:rgba(255,255,255,.12);transition:background .2s}
 .navigation a:hover{background:rgba(255,255,255,.28)}
+
+/* テーマ切り替えボタン */
+.navigation .theme-toggle{
+  flex:0 0 44px;
+  width:44px;
+  height:44px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:20px;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:7px;
+  background:rgba(255,255,255,.12);
+  cursor:pointer;
+  transition:background .2s,transform .2s;
+}
+.navigation .theme-toggle:hover{background:rgba(255,255,255,.28)}
+.navigation .theme-toggle:active{transform:scale(.95)}
+
 main{width:min(1100px,calc(100% - 40px));margin:35px auto 60px}
 .page-heading{margin-bottom:30px}
 .page-heading h1{margin:0;color:#142b49;font-size:34px}
@@ -39,6 +67,7 @@ main{width:min(1100px,calc(100% - 40px));margin:35px auto 60px}
 .role-leave{color:#555f69;background:#d9dee3;border:1px solid #b9c1c9}
 .staff-description{margin:0;color:#40566d;font-size:14px;line-height:1.9;overflow-wrap:anywhere}
 .footer{padding:25px 15px;text-align:center;color:#7890a5;font-size:13px}
+
 @media(max-width:900px){
 .staff-list{grid-template-columns:1fr}
 main{width:calc(100% - 24px);margin-top:25px}
@@ -52,6 +81,12 @@ main{width:calc(100% - 24px);margin-top:25px}
 .brand-subtitle{font-size:9px}
 .navigation{width:100%;flex:0 0 auto;gap:5px}
 .navigation a{height:42px;padding:5px 3px;font-size:10px}
+.navigation .theme-toggle{
+  flex-basis:36px;
+  width:36px;
+  height:38px;
+  font-size:18px;
+}
 }
 @media(max-width:480px){
 .staff-card{gap:15px;padding:15px}
@@ -73,24 +108,39 @@ main{width:calc(100% - 24px);margin-top:25px}
 <div class="brand-subtitle">NAMIKYU RAILWAY</div>
 </div>
 </div>
+
 <nav class="navigation">
 <a href="./index.html">ホーム</a>
 <a href="./news.html">お知らせ</a>
 <a href="./join.html">サーバー参加</a>
 <a href="./status.html">在線位置</a>
 <a href="./staff.html">運営メンバー</a>
+
+<button class="theme-toggle" type="button"
+        data-theme-toggle
+        aria-label="ダークモードに切り替え">
+  🌙
+</button>
 </nav>
 </header>
+
 <main>
 <div class="page-heading">
 <h1>運営メンバー</h1>
 <p>STAFF MEMBERS</p>
 </div>
-<div class="intro">波急サーバーを運営しているメンバーを紹介します。各メンバーのスキン画像や役職、紹介文を掲載しています。</div>
+
+<div class="intro">
+波急サーバーを運営しているメンバーを紹介します。各メンバーのスキン画像や役職、紹介文を掲載しています。
+</div>
+
 <div class="staff-list">
+
 <!-- 1人目：コウミン -->
 <section class="staff-card">
-<div class="skin-frame"><img class="skin-image" src="./kou20230831.png" alt="kou20230831のスキン" width="289" height="646"></div>
+<div class="skin-frame">
+<img class="skin-image" src="./kou20230831.png" alt="kou20230831のスキン" width="289" height="646">
+</div>
 <div class="staff-info">
 <div class="staff-identity">
 <h2 class="staff-name">kou20230831</h2>
@@ -100,9 +150,12 @@ main{width:calc(100% - 24px);margin-top:25px}
 <p class="staff-description">波急サーバーのオーナーです。波急区間の管理やサーバー全体運営管理やアドオン製作、サイト制作を担当しています。</p>
 </div>
 </section>
+
 <!-- 2人目：プライム -->
 <section class="staff-card">
-<div class="skin-frame"><img class="skin-image" src="./primeactor79704.png" alt="Primeactor79704のスキン" width="289" height="646"></div>
+<div class="skin-frame">
+<img class="skin-image" src="./primeactor79704.png" alt="Primeactor79704のスキン" width="289" height="646">
+</div>
 <div class="staff-info">
 <div class="staff-identity">
 <h2 class="staff-name">Primeactor79704</h2>
@@ -112,9 +165,12 @@ main{width:calc(100% - 24px);margin-top:25px}
 <p class="staff-description">波急サーバーのデベロッパーです。川鉄区間の管理やワールド内のメロディー作成をしています。</p>
 </div>
 </section>
+
 <!-- 3人目：ゆうず -->
 <section class="staff-card">
-<div class="skin-frame"><img class="skin-image" src="./starbard173641.png" alt="StarBard173641のスキン" width="289" height="646"></div>
+<div class="skin-frame">
+<img class="skin-image" src="./starbard173641.png" alt="StarBard173641のスキン" width="289" height="646">
+</div>
 <div class="staff-info">
 <div class="staff-identity">
 <h2 class="staff-name">StarBard173641</h2>
@@ -124,9 +180,12 @@ main{width:calc(100% - 24px);margin-top:25px}
 <p class="staff-description">波急サーバーのデベロッパーです。主に矢野電区間の管理や一部のアドオン製作をしています。</p>
 </div>
 </section>
+
 <!-- 4人目：ナギ -->
 <section class="staff-card">
-<div class="skin-frame"><img class="skin-image" src="./naginagi151229.png" alt="Naginagi151229のスキン" width="289" height="646"></div>
+<div class="skin-frame">
+<img class="skin-image" src="./naginagi151229.png" alt="Naginagi151229のスキン" width="289" height="646">
+</div>
 <div class="staff-info">
 <div class="staff-identity">
 <h2 class="staff-name">Naginagi151229</h2>
@@ -136,6 +195,7 @@ main{width:calc(100% - 24px);margin-top:25px}
 <p class="staff-description">波急サーバーのモデレーターです。サーバー内の建築や参加者対応をしています。</p>
 </div>
 </section>
+
 <!-- 5人目：rossiyuki66（休職中・スキン画像なし） -->
 <section class="staff-card">
 <div class="staff-info">
@@ -146,8 +206,10 @@ main{width:calc(100% - 24px);margin-top:25px}
 <p class="staff-description">現在現実多忙のため休職中。</p>
 </div>
 </section>
+
 </div>
 </main>
+
 <footer class="footer">© Namikyu Railway. All Rights Reserved.</footer>
 </body>
 </html>
