@@ -454,4 +454,9 @@ html[data-theme="dark"]:not([data-theme-static="true"]) .player-name-label {
   color: #ffffff !important;
   border: 1px solid #52677d !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45) !important;
+}/* 在線位置：プレイヤー名の背景 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-name-background {
+  fill: #172638 !important;
+  stroke: #52677d !important;
+  stroke-width: 1.5px;
 }
