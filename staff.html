@@ -2,539 +2,2442 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" type="image/png" href="./icon.png">
-  <title>運営メンバー | 波急サーバー</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#087fc4">
+<title>在線位置 | 波急サーバー</title>
+<link rel="icon" href="./icon.png">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{box-sizing:border-box}
 
-    html {
-      min-height: 100%;
-      scroll-behavior: smooth;
-    }
+:root{
+  --navy:#142b49;
+  --blue:#087fc4;
+  --light-blue:#eaf5fc;
+  --text:#263e58;
+  --muted:#8295a8;
+  --border:#e1e9f1;
+  --surface:#fff;
+  --background:#f2f6fa;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #eef2f7;
-      color: #24364b;
-      font-family: "Yu Gothic UI", "Meiryo", sans-serif;
-    }
+html,body{
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  overscroll-behavior:none;
+  font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+  color:var(--text);
+  background:var(--background);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
 
-    /* 共通ヘッダー */
-    .header {
-      width: 100%;
-      height: 120px;
-      min-height: 120px;
-      max-height: 120px;
-      padding: 8px 3%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      overflow: hidden;
-      background: linear-gradient(110deg, #075d9b 0%, #087fc4 55%, #129bd2 100%);
-    }
+button{font:inherit;cursor:pointer}
 
-    .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      flex: 0 1 42%;
-      min-width: 0;
-      margin: 0;
-    }
+header{
+  height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 3%;
+  gap:18px;
+  color:white;
+  background:linear-gradient(110deg,#075d9b,#087fc4 60%,#129bd2);
+  overflow:hidden;
+  box-shadow:0 3px 14px #123c5c20;
+}
 
-    .logo {
-      display: block;
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-width: 0;
-    }
+.brand img{
+  width:72px;
+  height:72px;
+  object-fit:contain;
+  flex-shrink:0;
+}
 
-    .brand-title {
-      margin: 0;
-      color: white;
-      font-size: clamp(30px, 3.5vw, 44px);
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      line-height: 1.15;
-      white-space: nowrap;
-    }
+.brand h1{
+  margin:0;
+  font-size:clamp(24px,3vw,40px);
+  font-weight:850;
+  letter-spacing:.025em;
+  white-space:nowrap;
+}
 
-    .brand-subtitle {
-      margin-top: 5px;
-      color: white;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      white-space: nowrap;
-    }
+.brand small{
+  display:block;
+  margin-top:3px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:3px;
+  opacity:.8;
+}
 
-    .navigation {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 1 1 58%;
-      min-width: 0;
-      gap: 9px;
-      margin: 0;
-    }
+nav{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  min-width:0;
+}
 
-    .navigation a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 1 1 0;
-      min-width: 0;
-      height: 52px;
-      padding: 8px 7px;
-      color: white;
-      text-decoration: none;
-      font-size: clamp(11px, 1.1vw, 15px);
-      font-weight: 700;
-      white-space: nowrap;
-      border: 1px solid rgba(255, 255, 255, 0.45);
-      border-radius: 7px;
-      background: rgba(255, 255, 255, 0.12);
-      transition: background 0.2s;
-    }
+nav a{
+  color:white;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:750;
+  letter-spacing:.02em;
+  padding:12px 14px;
+  border:1px solid #ffffff55;
+  border-radius:9px;
+  background:#ffffff18;
+  white-space:nowrap;
+  transition:background .18s,transform .18s;
+}
 
-    .navigation a:hover {
-      background: rgba(255, 255, 255, 0.28);
-    }
+nav a:hover,nav a.active{background:#ffffff40}
+nav a:active{transform:scale(.97)}
 
-    /* メイン */
-    main {
-      width: min(1100px, calc(100% - 40px));
-      margin: 35px auto 60px;
-    }
+main{
+  height:calc(100dvh - 110px);
+  padding:14px 17px 16px;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  overflow:hidden;
+}
 
-    .page-heading {
-      margin-bottom: 30px;
-    }
+h2{
+  margin:0;
+  color:var(--navy);
+  font-size:22px;
+  font-weight:850;
+  letter-spacing:.025em;
+}
 
-    .page-heading h1 {
-      margin: 0;
-      color: #142b49;
-      font-size: 34px;
-    }
+.subtitle{
+  margin:3px 0 10px;
+  color:#8a9bad;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:2px;
+}
 
-    .page-heading p {
-      margin: 5px 0 0;
-      color: #668098;
-      font-size: 13px;
-      letter-spacing: 3px;
-      font-weight: bold;
-    }
+.status{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px 15px;
+  padding:10px 14px;
+  margin-bottom:8px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:11px;
+  font-size:11px;
+  color:#71859a;
+  box-shadow:0 2px 8px #142b4908;
+}
 
-    .intro {
-      margin-bottom: 28px;
-      padding: 20px 24px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(20, 43, 73, 0.06);
-      line-height: 1.9;
-    }
+.status strong{color:#263e58}
 
-    /* メンバーカード一覧 */
-    .staff-list {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 22px;
-    }
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#999;
+  flex-shrink:0;
+}
 
-    .staff-card {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      min-width: 0;
-      padding: 22px;
-      background: white;
-      border: 1px solid #e0e8f0;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(20, 43, 73, 0.07);
-    }
+.dot.online{
+  background:#20a464;
+  box-shadow:0 0 0 4px #20a4641c;
+}
 
-    /* スキン画像 */
-    .skin-frame {
-      width: 130px;
-      flex: 0 0 130px;
-      aspect-ratio: 289 / 646;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background: #f2f7fc;
-      border: 1px solid #dce8f2;
-      border-radius: 9px;
-    }
+.dot.offline{background:#d33}
 
-    .skin-image {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
+.online-count{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 10px;
+  border-radius:7px;
+  background:#e9f8f0;
+  color:#16834e;
+  font-weight:800;
+}
 
-    /* メンバー情報 */
-    .staff-info {
-      min-width: 0;
-      flex: 1;
-    }
+.online-count strong{
+  color:#117746;
+  font-size:14px;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+}
 
-    .staff-identity {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 7px;
-    }
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 15px;
+  margin:4px 0 9px;
+  font-size:10px;
+  font-weight:650;
+  color:#536b82;
+}
 
-    .staff-name {
-      margin: 0;
-      color: #142b49;
-      font-size: 20px;
-      font-weight: 800;
-      overflow-wrap: anywhere;
-    }
+.legend span{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
 
-    .staff-display-name {
-      margin: 0 0 13px;
-      color: #668098;
-      font-size: 15px;
-      font-weight: bold;
-    }
+.legend i{
+  width:9px;
+  height:9px;
+  border-radius:3px;
+}
 
-    /* 役職バッジ */
-    .role-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      padding: 5px 11px;
-      border-radius: 5px;
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1.4;
-      white-space: nowrap;
-    }
+#mapArea{
+  position:relative;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  border:1px solid #dce5ed;
+  border-radius:12px;
+  background:#f5f8fb;
+  box-shadow:0 3px 14px #142b4910;
+  overscroll-behavior:contain;
+}
 
-    .role-owner {
-      color: #795000;
-      background: #ffe08a;
-      border: 1px solid #f1c85d;
-    }
+#map{
+  width:100%;
+  height:100%;
+  display:block;
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+}
 
-    .role-developer {
-      color: #842c73;
-      background: #f3c4ec;
-      border: 1px solid #e5a5d9;
-    }
+#map.dragging{cursor:grabbing}
 
-    .role-moderator {
-      color: #a34470;
-      background: #fbd8e7;
-      border: 1px solid #efb8cf;
-    }
+.grid-line{
+  stroke:#dce5ed;
+  stroke-width:1;
+  vector-effect:non-scaling-stroke;
+  pointer-events:none;
+}
 
-    /* 休職中 */
-    .role-leave {
-      color: #555f69;
-      background: #d9dee3;
-      border: 1px solid #b9c1c9;
-    }
+.train-marker,.player-marker{
+  cursor:pointer;
+  pointer-events:all;
+  outline:none;
+}
 
-    .staff-description {
-      margin: 0;
-      color: #40566d;
-      font-size: 14px;
-      line-height: 1.9;
-      overflow-wrap: anywhere;
-    }
+.train-marker:focus-visible,
+.player-marker:focus-visible{
+  opacity:.88;
+  filter:drop-shadow(0 0 4px #087fc4);
+}
 
-    .footer {
-      padding: 25px 15px;
-      text-align: center;
-      color: #7890a5;
-      font-size: 13px;
-    }
+.train-body{pointer-events:all}
+.train-visual{pointer-events:none}
 
-    /* タブレット */
-    @media (max-width: 900px) {
-      .staff-list {
-        grid-template-columns: 1fr;
-      }
+.train-hit-area{
+  fill:transparent;
+  stroke:transparent;
+  pointer-events:all;
+}
 
-      main {
-        width: calc(100% - 24px);
-        margin-top: 25px;
-      }
+.train-label{
+  fill:white;
+  stroke:#26364a66;
+  stroke-width:1.5px;
+  paint-order:stroke fill;
+  font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+  font-weight:900;
+  text-anchor:middle;
+  dominant-baseline:central;
+  pointer-events:none;
+  user-select:none;
+}
 
-      .page-heading h1 {
-        font-size: 28px;
-      }
-    }
+.player-name-label{
+  fill:#263e58;
+  stroke:white;
+  stroke-width:3px;
+  paint-order:stroke fill;
+  font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+  font-weight:800;
+  text-anchor:middle;
+  dominant-baseline:central;
+  pointer-events:none;
+  user-select:none;
+}
 
-    /* スマートフォン */
-    @media (max-width: 650px) {
-      .header {
-        height: 150px;
-        min-height: 150px;
-        max-height: 150px;
-        flex-basis: 150px;
-        flex-direction: column;
-        justify-content: center;
-        gap: 8px;
-        padding: 6px 2%;
-      }
+.player-face{
+  image-rendering:pixelated;
+  pointer-events:none;
+}
 
-      .header-top {
-        flex: 0 0 auto;
-        gap: 8px;
-      }
+.compass{
+  position:absolute;
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:3;
+  display:grid;
+  grid-template-columns:28px 28px 28px;
+  grid-template-rows:20px 20px 20px;
+  align-items:center;
+  justify-items:center;
+  pointer-events:none;
+  color:#60778e;
+  font-size:10px;
+  font-weight:850;
+  text-shadow:0 1px 3px white;
+}
 
-      .logo {
-        width: 48px;
-        height: 48px;
-      }
+.compass .north{grid-column:2;grid-row:1}
+.compass .west{grid-column:1;grid-row:2}
+.compass .center{grid-column:2;grid-row:2;color:#9aabba}
+.compass .east{grid-column:3;grid-row:2}
+.compass .south{grid-column:2;grid-row:3}
 
-      .brand-title {
-        font-size: 25px;
-      }
+.map-controls{
+  position:absolute;
+  right:12px;
+  top:12px;
+  z-index:5;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
 
-      .brand-subtitle {
-        font-size: 9px;
-      }
+.map-controls button{
+  width:36px;
+  height:36px;
+  border:1px solid #d8e2ec;
+  border-radius:9px;
+  background:#fffffff2;
+  color:#284967;
+  font-size:19px;
+  font-weight:800;
+  box-shadow:0 2px 6px #142b4914;
+  transition:background .15s,transform .15s;
+}
 
-      .navigation {
-        width: 100%;
-        flex: 0 0 auto;
-        gap: 5px;
-      }
+.map-controls button:hover{background:#eaf5fc}
+.map-controls button:active{transform:scale(.94)}
 
-      .navigation a {
-        height: 42px;
-        padding: 5px 3px;
-        font-size: 10px;
-      }
-    }
+.map-help{
+  position:absolute;
+  right:12px;
+  bottom:9px;
+  z-index:2;
+  padding:6px 9px;
+  border-radius:6px;
+  background:#ffffffdf;
+  color:#8093a5;
+  font-size:9px;
+  font-weight:650;
+  pointer-events:none;
+}
 
-    /* 小型スマートフォン */
-    @media (max-width: 480px) {
-      .staff-card {
-        gap: 15px;
-        padding: 15px;
-      }
+.player-panel{
+  position:absolute;
+  left:12px;
+  top:12px;
+  z-index:5;
+  width:220px;
+  max-height:calc(100% - 24px);
+  display:flex;
+  flex-direction:column;
+  background:#fffffff5;
+  border:1px solid #dce5ed;
+  border-radius:12px;
+  box-shadow:0 4px 16px #142b491b;
+  overflow:hidden;
+  backdrop-filter:blur(8px);
+}
 
-      .skin-frame {
-        width: 105px;
-        flex-basis: 105px;
-      }
+.player-panel.collapsed{width:135px}
 
-      .staff-name {
-        font-size: 17px;
-      }
+.player-panel-head{
+  min-height:45px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:0 11px;
+  border-bottom:1px solid #e8eef4;
+  color:#29445f;
+  font-size:11px;
+  font-weight:850;
+}
 
-      .staff-display-name {
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
+.player-panel-heading{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-width:0;
+}
 
-      .staff-description {
-        font-size: 13px;
-      }
+.player-panel-heading::before{
+  content:"";
+  width:7px;
+  height:7px;
+  flex-shrink:0;
+  border-radius:50%;
+  background:#20a464;
+  box-shadow:0 0 0 3px #20a46420;
+}
 
-      .intro {
-        padding: 17px;
-      }
+.player-panel-count{
+  padding:3px 7px;
+  border-radius:6px;
+  background:#e9f8f0;
+  color:#16834e;
+  font-size:10px;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+}
 
-      .role-badge {
-        padding: 4px 9px;
-        font-size: 11px;
-      }
-    }
-  </style>
+.player-panel-head button{
+  width:25px;
+  height:25px;
+  border:0;
+  border-radius:6px;
+  background:#edf3f8;
+  color:#55718b;
+  font-size:15px;
+  font-weight:800;
+}
+
+.player-panel-head button:hover{background:#dceaf5}
+
+.player-list{
+  padding:6px;
+  overflow-y:auto;
+  min-height:0;
+  overscroll-behavior:contain;
+}
+
+.player-row{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  width:100%;
+  padding:7px;
+  margin-bottom:3px;
+  border:1px solid transparent;
+  border-radius:8px;
+  background:transparent;
+  text-align:left;
+  color:#334d67;
+  font-size:11px;
+  transition:background .15s,border-color .15s;
+}
+
+.player-row:last-child{margin-bottom:0}
+
+.player-row:hover{
+  background:#edf6fc;
+  border-color:#dcecf8;
+}
+
+.player-row img{
+  width:31px;
+  height:31px;
+  flex-shrink:0;
+  image-rendering:pixelated;
+  border-radius:7px;
+  background:#edf2f6;
+}
+
+.player-row-info{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:5px;
+}
+
+.player-row-name{
+  font-weight:850;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  color:#29445f;
+}
+
+.player-role-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  width:max-content;
+  max-width:100%;
+  padding:3px 8px;
+  border-radius:5px;
+  font-size:9px;
+  font-weight:800;
+  line-height:1.4;
+  white-space:nowrap;
+  border:1px solid transparent;
+}
+
+.player-role-badge.role-owner{
+  color:#795000;
+  background:#ffe08a;
+  border-color:#f1c85d;
+}
+
+.player-role-badge.role-developer{
+  color:#842c73;
+  background:#f3c4ec;
+  border-color:#e5a5d9;
+}
+
+.player-role-badge.role-moderator{
+  color:#a34470;
+  background:#fbd8e7;
+  border-color:#efb8cf;
+}
+
+.player-role-badge.role-participant{
+  color:#555f69;
+  background:#d9dee3;
+  border-color:#b9c1c9;
+}
+
+.player-empty{
+  padding:17px 8px;
+  color:#91a0ae;
+  font-size:10px;
+  text-align:center;
+}
+
+.player-panel.collapsed .player-list{display:none}
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:20;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:#0d1f327a;
+  backdrop-filter:blur(4px);
+}
+
+.modal.open{display:flex}
+
+.modal-card{
+  width:min(460px,100%);
+  max-height:85vh;
+  overflow:auto;
+  padding:21px;
+  background:white;
+  border:1px solid #dce5ed;
+  border-radius:15px;
+  box-shadow:0 15px 50px #0003;
+  overscroll-behavior:contain;
+  animation:modalIn .16s ease-out;
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(8px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.modal-title{
+  margin:0;
+  color:#142b49;
+  font-size:17px;
+  font-weight:900;
+}
+
+.modal-close{
+  width:32px;
+  height:32px;
+  border:0;
+  border-radius:8px;
+  background:#edf2f6;
+  color:#49647e;
+  font-size:19px;
+}
+
+.modal-close:hover{background:#dceaf5}
+
+.detail-player{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin-bottom:15px;
+  padding:12px;
+  background:#f7fafd;
+  border:1px solid #e6edf3;
+  border-radius:10px;
+}
+
+.detail-player img{
+  width:58px;
+  height:58px;
+  border-radius:9px;
+  image-rendering:pixelated;
+  background:#edf2f6;
+}
+
+.detail-player-name{
+  font-size:17px;
+  font-weight:900;
+  color:#203c58;
+  overflow-wrap:anywhere;
+}
+
+.detail-player-role{margin-top:6px}
+
+.train-summary{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:8px 0 17px;
+  padding:17px 10px;
+  border:2px solid #2878c8;
+  border-radius:10px;
+  flex-wrap:wrap;
+  background:#f9fbfd;
+}
+
+.train-type{
+  font-size:19px;
+  font-weight:900;
+  color:white;
+  background:#2878c8;
+  border-radius:7px;
+  padding:7px 14px;
+}
+
+.train-destination{
+  font-size:17px;
+  font-weight:900;
+  color:#263f58;
+  text-align:center;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.detail-item{
+  padding:11px;
+  border:1px solid #e4ebf1;
+  border-radius:8px;
+  background:#f8fafc;
+  min-width:0;
+}
+
+.detail-label{
+  font-size:9px;
+  color:#899aab;
+  font-weight:750;
+  letter-spacing:.04em;
+}
+
+.detail-value{
+  margin-top:5px;
+  font-size:13px;
+  color:#29445f;
+  font-weight:850;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  font-variant-numeric:tabular-nums;
+}
+
+.detail-note{
+  margin-top:12px;
+  font-size:10px;
+  color:#8a9aaa;
+}
+
+@media(max-width:760px){
+  header{
+    height:90px;
+    padding:6px 9px;
+    gap:7px;
+  }
+
+  .brand{gap:6px}
+
+  .brand img{
+    width:45px;
+    height:45px;
+  }
+
+  .brand h1{font-size:clamp(17px,4vw,26px)}
+  .brand small{font-size:7px;letter-spacing:1px}
+  nav{gap:3px}
+
+  nav a{
+    font-size:9px;
+    padding:9px 5px;
+  }
+
+  main{
+    height:calc(100dvh - 90px);
+    padding:9px;
+  }
+
+  h2{font-size:17px}
+  .subtitle{font-size:8px;margin-bottom:7px}
+
+  .status{
+    padding:8px;
+    margin-bottom:5px;
+    gap:6px 9px;
+    font-size:9px;
+  }
+
+  .legend{
+    gap:6px 9px;
+    font-size:9px;
+    margin:4px 0 7px;
+  }
+
+  .player-panel{
+    width:155px;
+    left:7px;
+    top:7px;
+    max-height:48%;
+  }
+
+  .player-panel.collapsed{width:125px}
+  .map-controls{right:7px;top:7px}
+
+  .map-controls button{
+    width:32px;
+    height:32px;
+  }
+
+  .map-help{
+    right:7px;
+    bottom:6px;
+    font-size:8px;
+  }
+}
+
+@media(max-width:430px){
+  header{height:78px}
+
+  .brand img{
+    width:36px;
+    height:36px;
+  }
+
+  .brand h1{font-size:16px}
+  .brand small{font-size:6px}
+  nav{gap:2px}
+
+  nav a{
+    font-size:8px;
+    padding:8px 3px;
+  }
+
+  main{
+    height:calc(100dvh - 78px);
+    padding:7px;
+  }
+
+  .player-panel{width:140px}
+  .player-panel.collapsed{width:120px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <header class="header">
-    <div class="header-top">
-      <img class="logo" src="./icon.png" alt="波急電鉄ロゴ">
+<header>
+  <div class="brand">
+    <img src="./icon.png" alt="波急">
+    <div>
+      <h1>波急サーバー</h1>
+      <small>NAMIKYU SERVER</small>
+    </div>
+  </div>
 
-      <div class="brand-text">
-        <h1 class="brand-title">波急サーバー</h1>
-        <div class="brand-subtitle">NAMIKYU RAILWAY</div>
+  <nav>
+    <a href="./index.html">ホーム</a>
+    <a href="./news.html">お知らせ</a>
+    <a href="./join.html">参加方法</a>
+    <a href="./status.html" class="active">在線位置</a>
+    <a href="./staff.html">運営メンバー</a>
+  </nav>
+</header>
+
+<main>
+  <h2>在線位置</h2>
+  <p class="subtitle">REAL-TIME PLAYER &amp; TRAIN POSITION</p>
+
+  <div class="status">
+    <span id="connectionDot" class="dot"></span>
+    <strong id="connectionText">接続しています...</strong>
+    <span id="lastUpdated">最終更新：--:--:--</span>
+    <span id="worldTime">ワールド時刻：--</span>
+    <span id="weatherText">天候：--</span>
+    <span id="tpsText">TPS：--</span>
+
+    <span class="online-count">
+      オンライン
+      <strong id="playerCount">--</strong>
+      人
+    </span>
+
+    <span id="trainCount">列車：--編成</span>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:#f97316"></i>特急</span>
+    <span><i style="background:#dc2626"></i>急行</span>
+    <span><i style="background:#16a34a"></i>準急</span>
+    <span><i style="background:#2878c8"></i>各駅停車</span>
+    <span><i style="background:#888"></i>水鉄水山線</span>
+    <span><i style="background:#222"></i>その他</span>
+    <span>顔マーク：プレイヤー</span>
+  </div>
+
+  <section id="mapArea">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ">
+      <g id="gridLayer"></g>
+      <g id="markerLayer"></g>
+    </svg>
+
+    <div class="compass">
+      <span class="north">Z−</span>
+      <span class="west">X−</span>
+      <span class="center">＋</span>
+      <span class="east">X＋</span>
+      <span class="south">Z＋</span>
+    </div>
+
+    <div class="player-panel" id="playerPanel">
+      <div class="player-panel-head">
+        <div class="player-panel-heading">オンラインプレイヤー</div>
+        <span class="player-panel-count" id="playerPanelCount">0</span>
+        <button id="collapsePlayers" type="button" aria-label="プレイヤー一覧を開閉">−</button>
+      </div>
+      <div class="player-list" id="playerList">
+        <div class="player-empty">読み込み中...</div>
       </div>
     </div>
 
-    <nav class="navigation">
-      <a href="./index.html">ホーム</a>
-      <a href="./news.html">お知らせ</a>
-      <a href="./join.html">サーバー参加</a>
-      <a href="./status.html">在線位置</a>
-      <a href="./staff.html">運営メンバー</a>
-    </nav>
-  </header>
-
-  <main>
-
-    <div class="page-heading">
-      <h1>運営メンバー</h1>
-      <p>STAFF MEMBERS</p>
+    <div class="map-controls">
+      <button id="zoomIn" type="button" title="拡大" aria-label="拡大">＋</button>
+      <button id="zoomOut" type="button" title="縮小" aria-label="縮小">−</button>
+      <button id="resetView" type="button" title="全体表示" aria-label="全体表示">⌂</button>
     </div>
 
-    <div class="intro">
-      波急サーバーを運営しているメンバーを紹介します。
-      各メンバーのスキン画像や役職、紹介文を掲載しています。
+    <div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小 / マーカー：詳細</div>
+  </section>
+</main>
+
+<div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 class="modal-title" id="modalTitle">詳細情報</h3>
+      <button class="modal-close" id="closeModal" type="button" aria-label="閉じる">×</button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ======================================
+   設定
+====================================== */
+
+const API_URL = "https://namikyu-status.kou20230831.workers.dev/api/status";
+
+// 3秒ごとに自動更新
+const REFRESH_MS = 3000;
+
+const MIN_VIEW_WIDTH = 500;
+const MAX_VIEW_WIDTH = 50000;
+const GRID_SIZE = 500;
+const HIDE_ZERO_AXIS_LINES = true;
+
+const WATERLINE_MIN_X = -608;
+const WATERLINE_MAX_X = 692;
+const WATERLINE_MIN_Z = 3957;
+const WATERLINE_MAX_Z = 5257;
+
+const KAWATETSU_MIN_X = 50;
+const UKYU_MIN_Z = 6131;
+const YANODEN_MAX_Z = -18;
+
+const map = document.getElementById("map");
+const mapArea = document.getElementById("mapArea");
+const gridLayer = document.getElementById("gridLayer");
+const markerLayer = document.getElementById("markerLayer");
+
+const connectionDot = document.getElementById("connectionDot");
+const connectionText = document.getElementById("connectionText");
+const lastUpdated = document.getElementById("lastUpdated");
+const worldTimeText = document.getElementById("worldTime");
+const weatherText = document.getElementById("weatherText");
+const tpsText = document.getElementById("tpsText");
+const playerCountText = document.getElementById("playerCount");
+const trainCountText = document.getElementById("trainCount");
+const playerPanelCount = document.getElementById("playerPanelCount");
+
+const playerList = document.getElementById("playerList");
+const playerPanel = document.getElementById("playerPanel");
+const detailModal = document.getElementById("detailModal");
+const modalContent = document.getElementById("modalContent");
+const modalTitle = document.getElementById("modalTitle");
+
+let latestData = null;
+let players = [];
+let trains = [];
+let staffMap = new Map();
+
+let view = {
+  x:-5000,
+  y:-5000,
+  w:10000,
+  h:10000
+};
+
+let dragging = false;
+let dragStart = null;
+let dragMoved = false;
+let dragResetTimer = null;
+let isFetching = false;
+let refreshTimer = null;
+let lastSuccessfulFetch = 0;
+let selectedEntityKey = null;
+let selectedTrainIdentity = null;
+
+/* ======================================
+   共通関数
+====================================== */
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function numberValue(value,fallback=0) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function formatNumber(value,digits=1) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n.toFixed(digits) : "--";
+}
+
+function getName(entity) {
+  return String(
+    entity?.name ??
+    entity?.playerName ??
+    entity?.player ??
+    entity?.id ??
+    "不明"
+  );
+}
+
+function getCoordinates(entity) {
+  const location = entity?.location ?? entity?.position ?? entity ?? {};
+
+  return {
+    x:numberValue(location.x,0),
+    z:numberValue(location.z,0)
+  };
+}
+
+function normalizeTags(entity) {
+  const raw = entity?.tags ?? entity?.tag ?? [];
+
+  if (Array.isArray(raw)) {
+    return raw.map(v => String(v).toLowerCase());
+  }
+
+  if (typeof raw === "string") {
+    return raw.split(/[,\s]+/)
+      .map(v => v.trim().toLowerCase())
+      .filter(Boolean);
+  }
+
+  return [];
+}
+
+function normalizeCollection(value) {
+  if (Array.isArray(value)) return value;
+
+  if (value && typeof value === "object") {
+    return Object.entries(value).map(([key,item]) => {
+      if (item && typeof item === "object") {
+        return {...item,id:item.id ?? key};
+      }
+
+      return {id:key,value:item};
+    });
+  }
+
+  return [];
+}
+
+function getMapSize() {
+  const rect = map.getBoundingClientRect();
+  const width = Math.max(1,rect.width);
+  const height = Math.max(1,rect.height);
+
+  return {width,height,aspect:width/height};
+}
+
+function getScale() {
+  return view.w / getMapSize().width;
+}
+
+function clamp(value,min,max) {
+  return Math.max(min,Math.min(max,value));
+}
+
+/* ======================================
+   路線判定
+====================================== */
+
+function xInWaterline(train) {
+  const {x,z} = getCoordinates(train);
+
+  return (
+    x >= WATERLINE_MIN_X &&
+    x <= WATERLINE_MAX_X &&
+    z >= WATERLINE_MIN_Z &&
+    z <= WATERLINE_MAX_Z
+  );
+}
+
+function getTrainRoute(train) {
+  const {x,z} = getCoordinates(train);
+
+  if (xInWaterline(train)) return "水鉄水山線";
+  if (x >= KAWATETSU_MIN_X) return "川鉄依丘線";
+  if (z > UKYU_MIN_Z) return "雨急雨波線";
+  if (z < YANODEN_MAX_Z) return "矢野電鉄";
+
+  return "波急波川線";
+}
+
+/* ======================================
+   種別判定
+====================================== */
+
+function getTrainType(train) {
+  const tags = normalizeTags(train);
+  const {z} = getCoordinates(train);
+
+  if (tags.includes("ltd")) {
+    return {
+      key:"ltd",
+      name:"特急",
+      label:"特",
+      color:"#f97316"
+    };
+  }
+
+  if (tags.includes("exp")) {
+    return {
+      key:"exp",
+      name:"急行",
+      label:"急",
+      color:"#dc2626"
+    };
+  }
+
+  if (tags.includes("sexp")) {
+    if (z < -18 || z > 6131) {
+      return {
+        key:"sexp-local",
+        name:"各駅停車",
+        label:"各",
+        color:"#2878c8",
+        downgradedFromSemiExpress:true
+      };
+    }
+
+    return {
+      key:"sexp",
+      name:"準急",
+      label:"準",
+      color:"#16a34a"
+    };
+  }
+
+  if (tags.includes("local2")) {
+    return {
+      key:"local2",
+      name:"各駅停車",
+      label:"各",
+      color:"#60a5fa"
+    };
+  }
+
+  if (tags.includes("local")) {
+    return {
+      key:"local",
+      name:"各駅停車",
+      label:"各",
+      color:"#2878c8"
+    };
+  }
+
+  if (xInWaterline(train)) {
+    return {
+      key:"waterline",
+      name:"普通",
+      label:"普",
+      color:"#888888"
+    };
+  }
+
+  return {
+    key:"unknown",
+    name:"その他",
+    label:"不",
+    color:"#222222"
+  };
+}
+
+/* ======================================
+   進行方向
+====================================== */
+
+function getTrainDirection(train) {
+  const tags = normalizeTags(train);
+
+  if (tags.includes("z-")) return "z-";
+  if (tags.includes("z+")) return "z+";
+  if (tags.includes("z")) return "z+";
+
+  if (tags.includes("x-")) return "x-";
+  if (tags.includes("x+")) return "x+";
+  if (tags.includes("x")) return "x+";
+
+  return "x+";
+}
+
+function getDirectionAngle(train) {
+  switch (getTrainDirection(train)) {
+    case "x+": return 0;
+    case "z+": return 90;
+    case "x-": return 180;
+    case "z-": return -90;
+    default: return 0;
+  }
+}
+
+function isPositiveDirection(train) {
+  const direction = getTrainDirection(train);
+  return direction === "z+" || direction === "x+";
+}
+
+/* ======================================
+   行先
+====================================== */
+
+function getTrainDestination(train) {
+  const type = getTrainType(train);
+  const positive = isPositiveDirection(train);
+
+  if (type.key === "waterline") return "草市～水山 往復";
+  if (type.key === "local2") return positive ? "依丘" : "草市";
+  if (type.key === "local") return positive ? "波丘" : "吉山";
+  if (type.key === "exp") return positive ? "依丘" : "吉山";
+  if (type.key === "ltd") return positive ? "雨山" : "吉山";
+
+  if (type.key === "sexp" || type.downgradedFromSemiExpress) {
+    return positive ? "雨山" : "矢野";
+  }
+
+  return "不明";
+}
+
+/* ======================================
+   速度
+====================================== */
+
+function getDisplaySpeed(train) {
+  const sokudo = Number(train?.sokudo);
+
+  // sokudoスコアが59なら120km/h
+  if (sokudo === 59) {
+    return 120;
+  }
+
+  // sokudoスコアがマイナスなら0km/h
+  if (Number.isFinite(sokudo) && sokudo < 0) {
+    return 0;
+  }
+
+  // それ以外はspeedの値を使用
+  const speed = Number(train?.speed);
+
+  // speedが未設定・数値でない・マイナスなら0km/h
+  if (!Number.isFinite(speed) || speed < 0) {
+    return 0;
+  }
+
+  return speed;
+}
+
+/* ======================================
+   列車の識別・追跡
+====================================== */
+
+// 列車の固有IDを取得
+function getTrainStableId(train) {
+  const value =
+    train?.id ??
+    train?.uuid ??
+    train?.uniqueId ??
+    train?.unique_id ??
+    train?.entityId ??
+    train?.entity_id ??
+    null;
+
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  return String(value);
+}
+
+// 選択中の列車の識別情報を保存
+function createTrainIdentity(train) {
+  const position = getCoordinates(train);
+
+  return {
+    stableId:getTrainStableId(train),
+    x:position.x,
+    z:position.z,
+    tags:normalizeTags(train).slice().sort().join("|"),
+    type:getTrainType(train).key,
+    direction:getTrainDirection(train)
+  };
+}
+
+// 選択中の列車を固有IDで検索
+function findSelectedTrain() {
+  if (!selectedTrainIdentity || trains.length === 0) {
+    return null;
+  }
+
+  const identity = selectedTrainIdentity;
+
+  // 固有IDがない場合は誤選択防止のため追跡しない
+  if (identity.stableId === null) {
+    return null;
+  }
+
+  // 固有IDが完全一致する列車だけを検索
+  const matchedIndex = trains.findIndex(train => {
+    return getTrainStableId(train) === identity.stableId;
+  });
+
+  // 見つからない場合、別の列車を代わりに選択しない
+  if (matchedIndex === -1) {
+    return null;
+  }
+
+  const train = trains[matchedIndex];
+
+  // 最新の位置・情報に更新
+  selectedTrainIdentity = createTrainIdentity(train);
+
+  return {
+    train,
+    index:matchedIndex
+  };
+}
+
+/* ======================================
+   スタッフ情報
+====================================== */
+
+async function loadStaff() {
+  try {
+    const response = await fetch("./staff.html",{cache:"no-store"});
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const html = await response.text();
+    const doc = new DOMParser().parseFromString(html,"text/html");
+    const nextMap = new Map();
+
+    doc.querySelectorAll(".staff-card").forEach(card => {
+      const nameElement = card.querySelector(".staff-name");
+      if (!nameElement) return;
+
+      const name = nameElement.textContent.trim();
+      if (!name) return;
+
+      const badge = card.querySelector(".role-badge");
+      if (!badge) return;
+
+      const roleText = badge.textContent.trim();
+
+      let roleClass = "role-participant";
+
+      if (badge.classList.contains("role-owner")) {
+        roleClass = "role-owner";
+      } else if (badge.classList.contains("role-developer")) {
+        roleClass = "role-developer";
+      } else if (badge.classList.contains("role-moderator")) {
+        roleClass = "role-moderator";
+      } else if (badge.classList.contains("role-leave")) {
+        roleClass = "role-participant";
+      } else if (roleText.includes("オーナー")) {
+        roleClass = "role-owner";
+      } else if (roleText.includes("デベロッパー")) {
+        roleClass = "role-developer";
+      } else if (roleText.includes("モデレーター")) {
+        roleClass = "role-moderator";
+      } else if (roleText.includes("休職中")) {
+        roleClass = "role-participant";
+      }
+
+      nextMap.set(name.toLowerCase(),{
+        label:roleText || "運営",
+        className:roleClass
+      });
+    });
+
+    staffMap = nextMap;
+
+  } catch (error) {
+    console.warn("スタッフ情報の取得に失敗:",error);
+  }
+}
+
+function getPlayerRoleInfo(player) {
+  const staff = staffMap.get(getName(player).toLowerCase());
+
+  if (!staff) {
+    return {
+      label:"参加者",
+      className:"role-participant"
+    };
+  }
+
+  return staff;
+}
+
+/* ======================================
+   APIデータ整理
+====================================== */
+
+function extractDataLists(data) {
+  const root = data?.data ?? data?.status ?? data ?? {};
+
+  players = normalizeCollection(
+    root.players ??
+    root.player ??
+    root.onlinePlayers ??
+    []
+  );
+
+  trains = normalizeCollection(
+    root.trains ??
+    root.train ??
+    root.carts ??
+    []
+  );
+
+  return root;
+}
+
+/* ======================================
+   マップ座標
+====================================== */
+
+function worldToMap(entity) {
+  const position = getCoordinates(entity);
+
+  return {
+    x:position.x,
+    y:position.z
+  };
+}
+
+/* ======================================
+   全体表示
+====================================== */
+
+function fitViewToData() {
+  const size = getMapSize();
+  const points = [];
+
+  players.forEach(player => points.push(worldToMap(player)));
+  trains.forEach(train => points.push(worldToMap(train)));
+
+  if (points.length === 0) {
+    view.w = 10000;
+    view.h = view.w / size.aspect;
+    view.x = -view.w / 2;
+    view.y = -view.h / 2;
+
+    applyView();
+    return;
+  }
+
+  const xs = points.map(p => p.x);
+  const ys = points.map(p => p.y);
+
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+
+  const centerX = (minX + maxX) / 2;
+  const centerY = (minY + maxY) / 2;
+
+  const dataWidth = Math.max(0,maxX-minX);
+  const dataHeight = Math.max(0,maxY-minY);
+
+  const padding = Math.max(
+    1000,
+    Math.max(dataWidth,dataHeight) * 0.12
+  );
+
+  let width = dataWidth + padding * 2;
+  let height = dataHeight + padding * 2;
+
+  width = Math.max(width,height * size.aspect);
+  width = clamp(width,MIN_VIEW_WIDTH,MAX_VIEW_WIDTH);
+
+  view.w = width;
+  view.h = width / size.aspect;
+  view.x = centerX - view.w / 2;
+  view.y = centerY - view.h / 2;
+
+  applyView();
+}
+
+/* ======================================
+   グリッド
+====================================== */
+
+function renderGrid() {
+  const left = view.x;
+  const right = view.x + view.w;
+  const top = view.y;
+  const bottom = view.y + view.h;
+
+  const paths = [];
+
+  const firstX = Math.floor(left / GRID_SIZE);
+  const lastX = Math.ceil(right / GRID_SIZE);
+
+  const firstZ = Math.floor(top / GRID_SIZE);
+  const lastZ = Math.ceil(bottom / GRID_SIZE);
+
+  for (let i=firstX;i<=lastX;i++) {
+    const x = i * GRID_SIZE;
+
+    if (HIDE_ZERO_AXIS_LINES && i === 0) continue;
+
+    paths.push(`M ${x} ${top} V ${bottom}`);
+  }
+
+  for (let i=firstZ;i<=lastZ;i++) {
+    const z = i * GRID_SIZE;
+
+    if (HIDE_ZERO_AXIS_LINES && i === 0) continue;
+
+    paths.push(`M ${left} ${z} H ${right}`);
+  }
+
+  gridLayer.innerHTML = `
+    <path
+      class="grid-line"
+      d="${paths.join(" ")}"
+      fill="none"
+    />
+  `;
+}
+
+/* ======================================
+   SVG表示範囲
+====================================== */
+
+function applyView(renderMarkers=true) {
+  const size = getMapSize();
+
+  view.h = view.w / size.aspect;
+
+  map.setAttribute(
+    "viewBox",
+    `${view.x} ${view.y} ${view.w} ${view.h}`
+  );
+
+  renderGrid();
+
+  if (renderMarkers && latestData) {
+    renderMarkersNow();
+  }
+}
+
+/* ======================================
+   列車マーカー
+====================================== */
+
+function makeTrainMarker(train,index,scale) {
+  const position = worldToMap(train);
+  const type = getTrainType(train);
+  const angle = getDirectionAngle(train);
+
+  const squareSize = 30 * scale;
+  const half = squareSize / 2;
+  const triangleLength = 17 * scale;
+  const tip = half + triangleLength;
+
+  const path = [
+    `M ${-half} ${-half}`,
+    `L ${half} ${-half}`,
+    `L ${tip} 0`,
+    `L ${half} ${half}`,
+    `L ${-half} ${half}`,
+    "Z"
+  ].join(" ");
+
+  const labelSize = 17 * scale;
+
+  return `
+    <g class="train-marker"
+       data-kind="train"
+       data-index="${index}"
+       tabindex="0"
+       role="button"
+       aria-label="${escapeHtml(type.name)}"
+       transform="translate(${position.x} ${position.y})">
+
+      <g class="train-body" transform="rotate(${angle})">
+        <path
+          class="train-hit-area"
+          d="${path}"
+          stroke-width="${14*scale}"
+        />
+
+        <path
+          class="train-visual"
+          d="${path}"
+          fill="${type.color}"
+          stroke="#ffffff"
+          stroke-width="${1.2*scale}"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+        />
+      </g>
+
+      <text
+        class="train-label"
+        x="0"
+        y="0"
+        font-size="${labelSize}"
+      >${escapeHtml(type.label)}</text>
+
+    </g>
+  `;
+}
+
+/* ======================================
+   プレイヤーマーカー
+====================================== */
+
+function makePlayerMarker(player,index,scale) {
+  const position = worldToMap(player);
+  const name = getName(player);
+
+  const faceScreenSize = 22;
+  const labelScreenSize = 12;
+
+  const faceSize = faceScreenSize * scale;
+  const labelSize = labelScreenSize * scale;
+
+  const estimatedTextWidth = Math.max(
+    25,
+    name.length * labelScreenSize * 0.95
+  );
+
+  const labelWidth = estimatedTextWidth * scale;
+  const labelHeight = 17 * scale;
+  const labelY = faceSize * 0.65;
+
+  const faceUrl =
+    `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
+
+  const hitRadius = Math.max(
+    faceSize,
+    labelWidth / 2,
+    labelHeight
+  ) + 5 * scale;
+
+  return `
+    <g class="player-marker"
+       data-kind="player"
+       data-index="${index}"
+       tabindex="0"
+       role="button"
+       aria-label="${escapeHtml(name)}"
+       transform="translate(${position.x} ${position.y})">
+
+      <circle
+        cx="0"
+        cy="${labelY/2}"
+        r="${hitRadius}"
+        fill="transparent"
+        pointer-events="all"
+      />
+
+      <image
+        class="player-face"
+        href="${faceUrl}"
+        x="${-faceSize/2}"
+        y="${-faceSize/2}"
+        width="${faceSize}"
+        height="${faceSize}"
+        preserveAspectRatio="none"
+        pointer-events="none"
+      />
+
+      <rect
+        x="${-labelWidth/2}"
+        y="${labelY}"
+        width="${labelWidth}"
+        height="${labelHeight}"
+        rx="${4*scale}"
+        fill="#ffffff"
+        fill-opacity=".92"
+        stroke="#dce5ed"
+        stroke-width="${.7*scale}"
+        pointer-events="none"
+      />
+
+      <text
+        class="player-name-label"
+        x="0"
+        y="${labelY+labelHeight/2}"
+        font-size="${labelSize}"
+        pointer-events="none"
+      >${escapeHtml(name)}</text>
+
+    </g>
+  `;
+}
+
+/* ======================================
+   マーカークリック処理
+====================================== */
+
+function handleMarkerOpen(target) {
+  if (!target) return;
+
+  const index = Number(target.getAttribute("data-index"));
+  const kind = target.getAttribute("data-kind");
+
+  if (!Number.isInteger(index) || index < 0) return;
+
+  if (kind === "player") {
+    const player = players[index];
+
+    if (player) showPlayerDetail(player);
+
+    return;
+  }
+
+  if (kind === "train") {
+    const train = trains[index];
+
+    if (train) showTrainDetail(train,index);
+  }
+}
+
+function findMarkerFromEvent(event) {
+  if (typeof event.composedPath === "function") {
+    for (const node of event.composedPath()) {
+      if (
+        node instanceof Element &&
+        node.matches("[data-kind][data-index]")
+      ) {
+        return node;
+      }
+    }
+  }
+
+  let node = event.target;
+
+  while (node && node !== map) {
+    if (
+      node instanceof Element &&
+      node.matches("[data-kind][data-index]")
+    ) {
+      return node;
+    }
+
+    node = node.parentElement;
+  }
+
+  return null;
+}
+
+function attachMarkerEvents() {
+  markerLayer.querySelectorAll("[data-kind][data-index]").forEach(marker => {
+    marker.addEventListener("click",event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (dragMoved) return;
+
+      handleMarkerOpen(marker);
+    });
+
+    marker.addEventListener("keydown",event => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      handleMarkerOpen(marker);
+    });
+  });
+}
+
+/* ======================================
+   マーカー描画
+====================================== */
+
+function renderMarkersNow() {
+  if (!latestData) return;
+
+  const scale = getScale();
+
+  const trainHTML = trains.map((train,index) =>
+    makeTrainMarker(train,index,scale)
+  ).join("");
+
+  const playerHTML = players.map((player,index) =>
+    makePlayerMarker(player,index,scale)
+  ).join("");
+
+  markerLayer.innerHTML = trainHTML + playerHTML;
+
+  attachMarkerEvents();
+  renderPlayerList();
+}
+
+/* ======================================
+   プレイヤー一覧
+====================================== */
+
+function renderPlayerList() {
+  playerPanelCount.textContent = String(players.length);
+
+  if (players.length === 0) {
+    playerList.innerHTML =
+      `<div class="player-empty">現在オンラインのプレイヤーはいません</div>`;
+    return;
+  }
+
+  playerList.innerHTML = players.map((player,index) => {
+    const name = getName(player);
+    const role = getPlayerRoleInfo(player);
+
+    const face =
+      `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
+
+    return `
+      <button class="player-row"
+              type="button"
+              data-player-index="${index}"
+              aria-label="${escapeHtml(name)}の詳細を表示">
+
+        <img src="${face}" alt="" loading="lazy">
+
+        <span class="player-row-info">
+          <span class="player-row-name">${escapeHtml(name)}</span>
+          <span class="player-role-badge ${role.className}">
+            ${escapeHtml(role.label)}
+          </span>
+        </span>
+
+      </button>
+    `;
+  }).join("");
+}
+
+/* ======================================
+   詳細モーダル
+====================================== */
+
+function openModal() {
+  const wasOpen = detailModal.classList.contains("open");
+
+  detailModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+
+  if (!wasOpen) {
+    document.getElementById("closeModal").focus();
+  }
+}
+
+function closeModal() {
+  detailModal.classList.remove("open");
+  document.body.style.overflow = "";
+
+  selectedEntityKey = null;
+  selectedTrainIdentity = null;
+}
+
+/* ======================================
+   プレイヤー詳細
+====================================== */
+
+function showPlayerDetail(player) {
+  const name = getName(player);
+  const role = getPlayerRoleInfo(player);
+  const position = getCoordinates(player);
+
+  const face =
+    `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
+
+  selectedEntityKey = `player:${name}`;
+  selectedTrainIdentity = null;
+
+  modalTitle.textContent = "プレイヤー情報";
+
+  modalContent.innerHTML = `
+    <div class="detail-player">
+      <img src="${face}" alt="">
+
+      <div>
+        <div class="detail-player-name">${escapeHtml(name)}</div>
+        <div class="player-role-badge detail-player-role ${role.className}">
+          ${escapeHtml(role.label)}
+        </div>
+      </div>
     </div>
 
-    <div class="staff-list">
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">X座標</div>
+        <div class="detail-value">${formatNumber(position.x,2)}</div>
+      </div>
 
-      <!-- 1人目：コウミン -->
-      <section class="staff-card">
-        <div class="skin-frame">
-          <img
-            class="skin-image"
-            src="./kou20230831.png"
-            alt="kou20230831のスキン"
-            width="289"
-            height="646"
-          >
-        </div>
-
-        <div class="staff-info">
-          <div class="staff-identity">
-            <h2 class="staff-name">kou20230831</h2>
-            <span class="role-badge role-owner">オーナー</span>
-          </div>
-
-          <p class="staff-display-name">コウミン</p>
-
-          <p class="staff-description">
-            波急サーバーのオーナーです。
-            波急区間の管理やサーバー全体運営管理やアドオン製作、サイト制作を担当しています。
-          </p>
-        </div>
-      </section>
-
-      <!-- 2人目：プライム -->
-      <section class="staff-card">
-        <div class="skin-frame">
-          <img
-            class="skin-image"
-            src="./primeactor79704.png"
-            alt="Primeactor79704のスキン"
-            width="289"
-            height="646"
-          >
-        </div>
-
-        <div class="staff-info">
-          <div class="staff-identity">
-            <h2 class="staff-name">Primeactor79704</h2>
-            <span class="role-badge role-developer">デベロッパー</span>
-          </div>
-
-          <p class="staff-display-name">プライム</p>
-
-          <p class="staff-description">
-            波急サーバーのデベロッパーです。
-            川鉄区間の管理やワールド内のメロディー作成をしています。
-          </p>
-        </div>
-      </section>
-
-      <!-- 3人目：ゆうず -->
-      <section class="staff-card">
-        <div class="skin-frame">
-          <img
-            class="skin-image"
-            src="./starbard173641.png"
-            alt="StarBard173641のスキン"
-            width="289"
-            height="646"
-          >
-        </div>
-
-        <div class="staff-info">
-          <div class="staff-identity">
-            <h2 class="staff-name">StarBard173641</h2>
-            <span class="role-badge role-developer">デベロッパー</span>
-          </div>
-
-          <p class="staff-display-name">ゆうず</p>
-
-          <p class="staff-description">
-            波急サーバーのデベロッパーです。
-            主に矢野電区間の管理や一部のアドオン製作をしています。
-          </p>
-        </div>
-      </section>
-
-      <!-- 4人目：ナギ -->
-      <section class="staff-card">
-        <div class="skin-frame">
-          <img
-            class="skin-image"
-            src="./naginagi151229.png"
-            alt="Naginagi151229のスキン"
-            width="289"
-            height="646"
-          >
-        </div>
-
-        <div class="staff-info">
-          <div class="staff-identity">
-            <h2 class="staff-name">Naginagi151229</h2>
-            <span class="role-badge role-moderator">モデレーター</span>
-          </div>
-
-          <p class="staff-display-name">ナギ</p>
-
-          <p class="staff-description">
-            波急サーバーのモデレーターです。
-            サーバー内の建築や参加者対応をしています。
-          </p>
-        </div>
-      </section>
-
-      <!-- 5人目：rossiyuki66（休職中・スキン画像なし） -->
-      <section class="staff-card">
-        <div class="staff-info">
-          <div class="staff-identity">
-            <h2 class="staff-name">rossiyuki66</h2>
-            <span class="role-badge role-leave">休職中</span>
-          </div>
-
-          <p class="staff-description">
-            現在現実多忙のため休職中。
-          </p>
-        </div>
-      </section>
-
+      <div class="detail-item">
+        <div class="detail-label">Z座標</div>
+        <div class="detail-value">${formatNumber(position.z,2)}</div>
+      </div>
     </div>
 
-  </main>
+    <div class="detail-note">在線情報は自動更新されます。</div>
+  `;
 
-  <footer class="footer">
-    © Namikyu Railway. All Rights Reserved.
-  </footer>
+  openModal();
+}
 
+/* ======================================
+   列車詳細
+====================================== */
+
+function showTrainDetail(train,index) {
+  const type = getTrainType(train);
+  const destination = getTrainDestination(train);
+  const route = getTrainRoute(train);
+  const speed = getDisplaySpeed(train);
+  const direction = getTrainDirection(train);
+  const position = getCoordinates(train);
+
+  const directionNames = {
+    "x+":"東方向（X＋）",
+    "x-":"西方向（X−）",
+    "z+":"南方向（Z＋）",
+    "z-":"北方向（Z−）"
+  };
+
+  selectedEntityKey = "train";
+  selectedTrainIdentity = createTrainIdentity(train);
+
+  modalTitle.textContent = "列車情報";
+
+  modalContent.innerHTML = `
+    <div class="train-summary" style="border-color:${type.color}">
+      <span class="train-type" style="background:${type.color}">
+        ${escapeHtml(type.name)}
+      </span>
+
+      <span class="train-destination">
+        ${escapeHtml(destination)} 行
+      </span>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">種別</div>
+        <div class="detail-value">${escapeHtml(type.name)}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">行先</div>
+        <div class="detail-value">${escapeHtml(destination)}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">路線</div>
+        <div class="detail-value">${escapeHtml(route)}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">速度</div>
+        <div class="detail-value">${formatNumber(speed,0)} km/h</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">進行方向</div>
+        <div class="detail-value">${escapeHtml(directionNames[direction] || "不明")}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">X座標</div>
+        <div class="detail-value">${formatNumber(position.x,2)}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">Z座標</div>
+        <div class="detail-value">${formatNumber(position.z,2)}</div>
+      </div>
+    </div>
+
+    <div class="detail-note">在線情報は自動更新されます。</div>
+  `;
+
+  openModal();
+}
+
+/* ======================================
+   詳細画面の自動更新
+====================================== */
+
+function refreshSelectedDetail() {
+  if (!detailModal.classList.contains("open")) return;
+  if (!selectedEntityKey) return;
+
+  if (selectedEntityKey.startsWith("player:")) {
+    const name = selectedEntityKey.slice("player:".length);
+
+    const player = players.find(
+      item => getName(item) === name
+    );
+
+    if (player) {
+      showPlayerDetail(player);
+    } else {
+      modalTitle.textContent = "プレイヤー情報";
+
+      modalContent.innerHTML = `
+        <div class="player-empty">
+          このプレイヤーは現在オンラインではありません。
+        </div>
+      `;
+    }
+
+    return;
+  }
+
+  if (selectedEntityKey === "train") {
+    const result = findSelectedTrain();
+
+    if (result) {
+      showTrainDetail(result.train,result.index);
+    } else {
+      modalTitle.textContent = "列車情報";
+
+      modalContent.innerHTML = `
+        <div class="player-empty">
+          選択中の列車を確認しています。
+          <br>
+          次回の更新で再検索します。
+        </div>
+      `;
+    }
+  }
+}
+
+/* ======================================
+   プレイヤー一覧クリック
+====================================== */
+
+playerList.addEventListener("click",event => {
+  const element = event.target instanceof Element
+    ? event.target
+    : event.target?.parentElement;
+
+  const button = element?.closest("[data-player-index]");
+
+  if (!button || !playerList.contains(button)) return;
+
+  const index = Number(button.dataset.playerIndex);
+  const player = players[index];
+
+  if (player) showPlayerDetail(player);
+});
+
+/* ======================================
+   ステータス表示
+====================================== */
+
+function updateStatus(root) {
+  const worldTime =
+    root.worldTime ??
+    root.time ??
+    root.world_time ??
+    "--";
+
+  const weather =
+    root.weather ??
+    root.worldWeather ??
+    root.world_weather ??
+    "--";
+
+  const tps = root.tps ?? root.TPS ?? "--";
+
+  worldTimeText.textContent = `ワールド時刻：${worldTime}`;
+  weatherText.textContent = `天候：${weather}`;
+  tpsText.textContent = `TPS：${formatNumber(tps,1)}`;
+
+  playerCountText.textContent = String(players.length);
+  trainCountText.textContent = `列車：${trains.length}編成`;
+
+  lastUpdated.textContent =
+    `最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
+}
+
+function setOnline() {
+  connectionDot.classList.remove("offline");
+  connectionDot.classList.add("online");
+  connectionText.textContent = "サーバー接続中";
+}
+
+function setOffline() {
+  connectionDot.classList.remove("online");
+  connectionDot.classList.add("offline");
+  connectionText.textContent = "サーバーに接続できません";
+}
+
+/* ======================================
+   API取得
+====================================== */
+
+async function fetchStatus() {
+  if (isFetching) return;
+
+  isFetching = true;
+
+  try {
+    const response = await fetch(API_URL,{
+      method:"GET",
+      mode:"cors",
+      cache:"no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data && data.success === false) {
+      throw new Error(data.error || "API error");
+    }
+
+    latestData = data;
+
+    const root = extractDataLists(data);
+
+    updateStatus(root);
+    setOnline();
+
+    lastSuccessfulFetch = Date.now();
+
+    if (map.dataset.initialized !== "true") {
+      fitViewToData();
+      map.dataset.initialized = "true";
+    } else {
+      renderMarkersNow();
+    }
+
+    refreshSelectedDetail();
+
+  } catch (error) {
+    console.error("在線データ取得エラー:",error);
+    setOffline();
+
+  } finally {
+    isFetching = false;
+  }
+}
+
+/* ======================================
+   自動更新
+====================================== */
+
+function startRefresh() {
+  if (refreshTimer !== null) {
+    clearTimeout(refreshTimer);
+  }
+
+  refreshTimer = setTimeout(async () => {
+    await fetchStatus();
+    startRefresh();
+  },REFRESH_MS);
+}
+
+function refreshNow() {
+  if (refreshTimer !== null) {
+    clearTimeout(refreshTimer);
+    refreshTimer = null;
+  }
+
+  fetchStatus().finally(startRefresh);
+}
+
+document.addEventListener("visibilitychange",() => {
+  if (!document.hidden) refreshNow();
+});
+
+window.addEventListener("focus",refreshNow);
+window.addEventListener("online",refreshNow);
+
+window.addEventListener("pagehide",() => {
+  if (refreshTimer !== null) {
+    clearTimeout(refreshTimer);
+    refreshTimer = null;
+  }
+});
+
+/* ======================================
+   ズーム
+====================================== */
+
+function zoomAt(factor,clientX,clientY) {
+  const rect = map.getBoundingClientRect();
+
+  if (rect.width <= 0 || rect.height <= 0) return;
+
+  const px = (clientX-rect.left)/rect.width;
+  const py = (clientY-rect.top)/rect.height;
+
+  const worldX = view.x + px*view.w;
+  const worldY = view.y + py*view.h;
+
+  const newWidth = clamp(
+    view.w*factor,
+    MIN_VIEW_WIDTH,
+    MAX_VIEW_WIDTH
+  );
+
+  const size = getMapSize();
+  const newHeight = newWidth/size.aspect;
+
+  view.x = worldX-px*newWidth;
+  view.y = worldY-py*newHeight;
+  view.w = newWidth;
+  view.h = newHeight;
+
+  applyView(true);
+}
+
+function zoomCenter(factor) {
+  const rect = map.getBoundingClientRect();
+
+  zoomAt(
+    factor,
+    rect.left+rect.width/2,
+    rect.top+rect.height/2
+  );
+}
+
+document.getElementById("zoomIn").addEventListener("click",() => {
+  zoomCenter(0.75);
+});
+
+document.getElementById("zoomOut").addEventListener("click",() => {
+  zoomCenter(1.33);
+});
+
+document.getElementById("resetView").addEventListener("click",() => {
+  fitViewToData();
+});
+
+/* ======================================
+   ホイール操作
+====================================== */
+
+map.addEventListener("wheel",event => {
+  event.preventDefault();
+
+  const factor = event.deltaY < 0 ? 0.9 : 1.1;
+
+  zoomAt(factor,event.clientX,event.clientY);
+},{passive:false});
+
+/* ======================================
+   ドラッグ移動
+====================================== */
+
+map.addEventListener("pointerdown",event => {
+  if (event.button !== 0) return;
+
+  const marker = findMarkerFromEvent(event);
+
+  if (marker) {
+    dragMoved = false;
+    return;
+  }
+
+  const element = event.target instanceof Element
+    ? event.target
+    : event.target?.parentElement;
+
+  if (element?.closest(".map-controls")) return;
+  if (element?.closest(".player-panel")) return;
+
+  dragging = true;
+  dragMoved = false;
+
+  if (dragResetTimer !== null) {
+    clearTimeout(dragResetTimer);
+    dragResetTimer = null;
+  }
+
+  dragStart = {
+    x:event.clientX,
+    y:event.clientY,
+    viewX:view.x,
+    viewY:view.y
+  };
+
+  map.classList.add("dragging");
+});
+
+window.addEventListener("pointermove",event => {
+  if (!dragging || !dragStart) return;
+
+  const dx = event.clientX-dragStart.x;
+  const dy = event.clientY-dragStart.y;
+
+  if (Math.abs(dx)+Math.abs(dy)>3) {
+    dragMoved = true;
+  }
+
+  const scale = getScale();
+
+  view.x = dragStart.viewX-dx*scale;
+  view.y = dragStart.viewY-dy*scale;
+
+  applyView(false);
+});
+
+function stopDragging() {
+  if (!dragging) return;
+
+  dragging = false;
+  dragStart = null;
+
+  map.classList.remove("dragging");
+
+  renderMarkersNow();
+
+  if (dragResetTimer !== null) {
+    clearTimeout(dragResetTimer);
+  }
+
+  dragResetTimer = setTimeout(() => {
+    dragMoved = false;
+    dragResetTimer = null;
+  },150);
+}
+
+window.addEventListener("pointerup",stopDragging);
+window.addEventListener("pointercancel",stopDragging);
+
+/* ======================================
+   キーボード操作
+====================================== */
+
+window.addEventListener("keydown",event => {
+  if (detailModal.classList.contains("open")) {
+    if (event.key === "Escape") {
+      closeModal();
+    }
+
+    return;
+  }
+
+  if (
+    event.target instanceof HTMLInputElement ||
+    event.target instanceof HTMLTextAreaElement ||
+    event.target instanceof HTMLButtonElement ||
+    event.target instanceof HTMLAnchorElement
+  ) {
+    return;
+  }
+
+  const amount = view.w*0.08;
+
+  switch (event.key) {
+    case "ArrowUp":
+      event.preventDefault();
+      view.y -= amount;
+      applyView(false);
+      break;
+
+    case "ArrowDown":
+      event.preventDefault();
+      view.y += amount;
+      applyView(false);
+      break;
+
+    case "ArrowLeft":
+      event.preventDefault();
+      view.x -= amount;
+      applyView(false);
+      break;
+
+    case "ArrowRight":
+      event.preventDefault();
+      view.x += amount;
+      applyView(false);
+      break;
+
+    case "+":
+    case "=":
+      event.preventDefault();
+      zoomCenter(0.75);
+      break;
+
+    case "-":
+      event.preventDefault();
+      zoomCenter(1.33);
+      break;
+  }
+});
+
+/* ======================================
+   プレイヤー一覧の開閉
+====================================== */
+
+document.getElementById("collapsePlayers").addEventListener("click",() => {
+  playerPanel.classList.toggle("collapsed");
+
+  const button = document.getElementById("collapsePlayers");
+
+  button.textContent =
+    playerPanel.classList.contains("collapsed") ? "+" : "−";
+});
+
+/* ======================================
+   モーダル操作
+====================================== */
+
+document.getElementById("closeModal")
+  .addEventListener("click",closeModal);
+
+detailModal.addEventListener("click",event => {
+  if (event.target === detailModal) {
+    closeModal();
+  }
+});
+
+/* ======================================
+   画面サイズ変更
+====================================== */
+
+let resizeFrame = null;
+
+window.addEventListener("resize",() => {
+  if (resizeFrame !== null) {
+    cancelAnimationFrame(resizeFrame);
+  }
+
+  resizeFrame = requestAnimationFrame(() => {
+    resizeFrame = null;
+
+    const size = getMapSize();
+
+    view.h = view.w/size.aspect;
+
+    applyView(true);
+  });
+});
+
+/* ======================================
+   接続監視
+====================================== */
+
+setInterval(() => {
+  if (
+    lastSuccessfulFetch > 0 &&
+    Date.now()-lastSuccessfulFetch>10000
+  ) {
+    setOffline();
+  }
+},3000);
+
+/* ======================================
+   起動
+====================================== */
+
+async function initialize() {
+  await loadStaff();
+  await fetchStatus();
+  startRefresh();
+}
+
+initialize();
+
+</script>
 </body>
 </html>
