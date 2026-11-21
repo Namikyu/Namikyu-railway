@@ -49,7 +49,7 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 .player-marker:focus-visible,.train-marker:focus-visible{opacity:.8}
 .player-face{image-rendering:pixelated;pointer-events:none}
 
-/* 列車マーカーの文字は常に水平 */
+/* 列車文字は絶対に回転させない */
 .train-label{
   font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
   font-weight:900;
@@ -276,7 +276,6 @@ let players = [];
 let trains = [];
 let staffMap = new Map();
 
-let selectedEntity = null;
 let selectedEntityKey = null;
 
 let isFetching = false;
@@ -688,7 +687,6 @@ function fitViewToData() {
   height *= margin;
 
   let targetWidth = Math.max(width, height * size.aspect);
-
   targetWidth = Math.max(500, targetWidth);
 
   view.w = targetWidth;
@@ -742,7 +740,6 @@ function renderGrid() {
   const bottom = Math.ceil((bounds.y + bounds.h) / step) * step;
 
   const path = [];
-
   let count = 0;
 
   for (let x = left; x <= right && count < GRID_MAX_LINES; x += step) {
@@ -783,22 +780,14 @@ function applyView(renderMarkerLayer = true) {
 }
 
 /* =========================================
-   マーカー文字列生成
+   列車マーカー
 ========================================= */
 
 /*
-  列車マーカーの回転処理：
-
-  1. マーカー全体は座標位置へ移動するだけ。
-  2. 列車の図形と文字を同じ回転グループに入れる。
-  3. 文字には図形と逆向きの回転を指定する。
-  4. その結果、図形だけが進行方向を向き、文字は水平を保つ。
-
-  例：
-  X+ : 図形 0度 / 文字 0度
-  Z+ : 図形 90度 / 文字 -90度
-  X- : 図形 180度 / 文字 -180度
-  Z- : 図形 -90度 / 文字 90度
+  列車全体は座標位置へ移動する。
+  図形だけを進行方向に回転する。
+  文字は回転グループの外に置くため、
+  どの方向でも画面に対して水平になる。
 */
 
 function makeTrainMarker(train, index, scale) {
@@ -807,7 +796,6 @@ function makeTrainMarker(train, index, scale) {
 
   const type = getTrainType(train);
   const angle = getDirectionAngle(train);
-  const reverseAngle = -angle;
 
   const size = 18.4 * scale;
   const triangle = 7.6 * scale;
@@ -823,7 +811,6 @@ function makeTrainMarker(train, index, scale) {
        transform="translate(${x} ${y})">
 
       <g class="train-body" transform="rotate(${angle} 0 0)">
-
         <rect
           x="${-size / 2}"
           y="${-size / 2}"
@@ -844,20 +831,15 @@ function makeTrainMarker(train, index, scale) {
           stroke-width="${.8 * scale}"
           stroke-linejoin="round"
         />
-
-        <!--
-          図形と同じ回転グループ内に文字を置き、
-          文字だけ逆方向へ回転して水平に戻す。
-        -->
-        <text
-          class="train-label"
-          x="0"
-          y="0"
-          font-size="${fontSize}"
-          transform="rotate(${reverseAngle} 0 0)"
-        >${escapeHtml(type.label)}</text>
-
       </g>
+
+      <text
+        class="train-label"
+        x="0"
+        y="0"
+        font-size="${fontSize}"
+        transform="none"
+      >${escapeHtml(type.label)}</text>
     </g>
   `;
 }
@@ -889,6 +871,7 @@ function makePlayerMarker(player, index, scale) {
         cx="0"
         cy="0"
         r="${faceSize * .9}"
+        fill="transparent"
       />
 
       <image
@@ -906,6 +889,7 @@ function makePlayerMarker(player, index, scale) {
         x="0"
         y="${faceSize * .95}"
         font-size="${nameSize}"
+        transform="none"
       >${escapeHtml(name)}</text>
     </g>
   `;
@@ -927,11 +911,6 @@ function renderMarkers() {
   const playerMarkup = players
     .map((player, index) => makePlayerMarker(player, index, scale))
     .join("");
-
-  /*
-    プレイヤーを列車より後に描画して、
-    重なった場合はプレイヤーを手前に表示する。
-  */
 
   markerLayer.innerHTML = trainMarkup + playerMarkup;
 
@@ -984,7 +963,6 @@ function openModal() {
 
 function closeModal() {
   detailModal.classList.remove("open");
-  selectedEntity = null;
   selectedEntityKey = null;
 }
 
@@ -993,7 +971,6 @@ function showPlayerDetail(player) {
   const role = getPlayerRole(player);
   const { x, z } = getCoordinates(player);
 
-  selectedEntity = player;
   selectedEntityKey = `player:${name}`;
 
   modalTitle.textContent = "プレイヤー情報";
@@ -1029,8 +1006,6 @@ function showTrainDetail(train) {
   const destination = getTrainDestination(train);
   const speed = getDisplaySpeed(train);
   const { x, z } = getCoordinates(train);
-
-  selectedEntity = train;
 
   const trainIndex = trains.indexOf(train);
   selectedEntityKey = `train:${trainIndex}`;
@@ -1217,8 +1192,7 @@ async function fetchStatus() {
       method: "GET",
       cache: "no-store",
       headers: {
-        "Accept": "application/json",
-        "Cache-Control": "no-cache"
+        "Accept": "application/json"
       }
     });
 
@@ -1236,11 +1210,6 @@ async function fetchStatus() {
     setOnline();
 
     lastSuccessfulFetch = Date.now();
-
-    /*
-      初回はデータ全体が入るように表示範囲を調整。
-      2回目以降はユーザーが動かしたマップ位置を維持する。
-    */
 
     if (!map.dataset.initialized) {
       fitViewToData();
@@ -1409,11 +1378,6 @@ map.addEventListener("pointermove", event => {
   view.x = dragStart.viewX - dx * scale;
   view.y = dragStart.viewY - dy * scale;
 
-  /*
-    移動中はマーカーを再生成しない。
-    SVGのviewBoxだけを変更するので軽い。
-  */
-
   applyView(false);
 });
 
@@ -1423,10 +1387,6 @@ function stopDragging() {
   dragging = false;
   dragStart = null;
   map.classList.remove("dragging");
-
-  /*
-    ドラッグ後に一度だけマーカーを更新。
-  */
 
   renderMarkers();
 
@@ -1553,12 +1513,6 @@ window.addEventListener("resize", handleResize);
 
 async function initialize() {
   await loadStaff();
-
-  /*
-    ページを開いた瞬間に取得。
-    その後は1秒ごとの定期更新。
-  */
-
   await fetchStatus();
   scheduleRefresh();
 }
