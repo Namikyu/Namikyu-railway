@@ -205,6 +205,7 @@ main {
   display: block;
   cursor: grab;
   touch-action: none;
+  overflow: visible;
 }
 
 #map.dragging {
@@ -215,6 +216,7 @@ main {
   stroke: #d9e1e9;
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
+  pointer-events: none;
 }
 
 .player-marker,
@@ -224,13 +226,13 @@ main {
 
 .player-face {
   image-rendering: pixelated;
+  pointer-events: none;
 }
 
-/* 列車マーカーの種別文字 */
 .train-label {
   font-weight: 900;
   text-anchor: middle;
-  dominant-baseline: middle;
+  dominant-baseline: central;
   fill: white;
   pointer-events: none;
 }
@@ -556,7 +558,12 @@ main {
   </div>
 
   <section id="mapArea">
-    <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線マップ">
+    <svg
+      id="map"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="none"
+      aria-label="在線マップ"
+    >
       <g id="grid"></g>
       <g id="markers"></g>
     </svg>
@@ -600,6 +607,19 @@ main {
 /* API設定 */
 const API_URL = "https://namikyu-status.kou20230831.workers.dev/api/status";
 const REFRESH_MS = 2500;
+
+/* マップ設定 */
+const GRID_SIZE = 500;
+
+/* ズーム制限 */
+const MIN_VIEW_WIDTH = 500;
+const MAX_VIEW_WIDTH = 50000;
+
+/* マーカーの画面上の大きさ */
+const PLAYER_FACE_PIXELS = 48;
+const TRAIN_SQUARE_PIXELS = 46;
+const TRAIN_TRIANGLE_PIXELS = 19;
+const TRAIN_TEXT_PIXELS = 22;
 
 /* 状態 */
 let staffRoles = {};
@@ -765,10 +785,21 @@ function getDirection(tags) {
   return 0;
 }
 
+/* SVGの実際の表示サイズ */
+function getMapSize() {
+  const rect = map.getBoundingClientRect();
+
+  return {
+    width: Math.max(1, rect.width),
+    height: Math.max(1, rect.height),
+    aspect: Math.max(0.01, rect.width / Math.max(1, rect.height))
+  };
+}
+
 /* 現在の表示倍率 */
 function screenScale() {
-  const rect = map.getBoundingClientRect();
-  return view.w / Math.max(1, rect.width);
+  const size = getMapSize();
+  return view.w / size.width;
 }
 
 /* 表示範囲 */
@@ -781,10 +812,10 @@ function visibleBounds() {
   };
 }
 
-/* グリッド描画。数字は表示しない */
+/* グリッド描画。500m間隔・数字なし */
 function renderGrid() {
   const bounds = visibleBounds();
-  const step = 1000;
+  const step = GRID_SIZE;
 
   const left = Math.floor(bounds.x / step) * step;
   const right = Math.ceil((bounds.x + bounds.w) / step) * step;
@@ -828,12 +859,12 @@ function fitViewToData(data) {
   ];
 
   if (all.length === 0) {
-    view = {
-      x: -5000,
-      y: -5000,
-      w: 10000,
-      h: 10000
-    };
+    const size = getMapSize();
+
+    view.w = 10000;
+    view.h = view.w / size.aspect;
+    view.x = -view.w / 2;
+    view.y = -view.h / 2;
     return;
   }
 
@@ -855,9 +886,8 @@ function fitViewToData(data) {
   minY -= padding;
   maxY += padding;
 
-  const aspect =
-    Math.max(1, mapArea.clientWidth) /
-    Math.max(1, mapArea.clientHeight);
+  const size = getMapSize();
+  const aspect = size.aspect;
 
   let width = Math.max(2000, maxX - minX);
   let height = Math.max(2000, maxY - minY);
@@ -880,12 +910,12 @@ function fitViewToData(data) {
 function renderMarkers(data) {
   const unit = screenScale();
 
-  /* プレイヤーの顔は画面上で一定サイズ */
-  const faceSize = 34 * unit;
+  /* プレイヤーの顔は画面上で常に一定サイズ */
+  const faceSize = PLAYER_FACE_PIXELS * unit;
 
-  /* 列車マーカーも画面上で一定サイズ */
-  const squareSize = 34 * unit;
-  const triangleSize = 14 * unit;
+  /* 列車マーカーも画面上で常に一定サイズ */
+  const squareSize = TRAIN_SQUARE_PIXELS * unit;
+  const triangleSize = TRAIN_TRIANGLE_PIXELS * unit;
   const markerHalf = squareSize / 2;
 
   let output = "";
@@ -924,7 +954,7 @@ function renderMarkers(data) {
 
     /*
       四角形と三角形を一体化した形。
-      外枠や白い背景、列車番号は描画しない。
+      外枠・白い背景・列車番号は表示しない。
     */
     const left = -markerHalf;
     const top = -markerHalf;
@@ -956,7 +986,7 @@ function renderMarkers(data) {
           class="train-label"
           x="0"
           y="0"
-          style="font-size:${16 * unit}px"
+          style="font-size:${TRAIN_TEXT_PIXELS * unit}px"
         >${escapeHTML(type.initial)}</text>
       </g>
     `;
@@ -994,6 +1024,20 @@ function renderMarkers(data) {
 
 /* マップ全体を更新 */
 function applyView() {
+  const size = getMapSize();
+
+  /*
+    SVGの縦横比と表示範囲を一致させる。
+    これにより上下方向の表示欠けを防ぐ。
+  */
+  const centerX = view.x + view.w / 2;
+  const centerY = view.y + view.h / 2;
+
+  view.h = view.w / size.aspect;
+
+  view.x = centerX - view.w / 2;
+  view.y = centerY - view.h / 2;
+
   map.setAttribute(
     "viewBox",
     `${view.x} ${view.y} ${view.w} ${view.h}`
@@ -1247,14 +1291,26 @@ document.addEventListener("keydown", event => {
 function zoomAt(factor, clientX, clientY) {
   const rect = map.getBoundingClientRect();
 
+  if (rect.width <= 0 || rect.height <= 0) return;
+
   const px = (clientX - rect.left) / rect.width;
   const py = (clientY - rect.top) / rect.height;
 
   const worldX = view.x + px * view.w;
   const worldY = view.y + py * view.h;
 
-  const newWidth = view.w * factor;
-  const newHeight = view.h * factor;
+  /*
+    ズーム倍率を制限する。
+    小さくしすぎてマーカーが巨大化したり、
+    大きくしすぎて見失ったりするのを防ぐ。
+  */
+  const newWidth = Math.min(
+    MAX_VIEW_WIDTH,
+    Math.max(MIN_VIEW_WIDTH, view.w * factor)
+  );
+
+  const size = getMapSize();
+  const newHeight = newWidth / size.aspect;
 
   view.x = worldX - px * newWidth;
   view.y = worldY - py * newHeight;
@@ -1355,17 +1411,6 @@ map.addEventListener("wheel", event => {
 /* 画面サイズ変更 */
 window.addEventListener("resize", () => {
   if (!latestData) return;
-
-  const centerX = view.x + view.w / 2;
-  const centerY = view.y + view.h / 2;
-
-  const aspect =
-    Math.max(1, mapArea.clientWidth) /
-    Math.max(1, mapArea.clientHeight);
-
-  view.h = view.w / aspect;
-  view.x = centerX - view.w / 2;
-  view.y = centerY - view.h / 2;
 
   applyView();
 });
