@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -8,6 +9,11 @@
 <meta name="description" content="波急電鉄からのお知らせ">
 <link rel="icon" href="./icon.png">
 <link rel="apple-touch-icon" href="./icon.png">
+
+<!-- 共通テーマファイル -->
+<link rel="stylesheet" href="./theme.css">
+<script src="./theme.js" defer></script>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:"Yu Gothic UI","Meiryo",sans-serif;color:#24364b;background:#eef2f7}
@@ -20,6 +26,28 @@ body{margin:0;font-family:"Yu Gothic UI","Meiryo",sans-serif;color:#24364b;backg
 .navigation{display:flex;justify-content:center;align-items:center;flex:1 1 58%;min-width:0;gap:9px}
 .navigation a{display:flex;justify-content:center;align-items:center;flex:1 1 0;min-width:0;height:52px;padding:8px 7px;color:#fff;text-decoration:none;font-size:clamp(11px,1.1vw,15px);font-weight:700;white-space:nowrap;border:1px solid rgba(255,255,255,.45);border-radius:7px;background:rgba(255,255,255,.12);transition:background .2s}
 .navigation a:hover{background:rgba(255,255,255,.28)}
+
+/* テーマ切り替えボタン */
+.navigation .theme-toggle{
+display:flex;
+align-items:center;
+justify-content:center;
+flex:0 0 44px;
+width:44px;
+height:44px;
+padding:0;
+color:#fff;
+font-size:20px;
+font-weight:700;
+border:1px solid rgba(255,255,255,.55);
+border-radius:7px;
+background:rgba(255,255,255,.12);
+cursor:pointer;
+transition:background .2s,transform .2s;
+}
+.navigation .theme-toggle:hover{background:rgba(255,255,255,.28)}
+.navigation .theme-toggle:active{transform:scale(.95)}
+
 .main{width:min(100% - 40px,1000px);margin:45px auto 70px}
 .page-title{margin:0;color:#075d9b;font-size:36px;font-weight:800}
 .page-subtitle{margin-top:8px;color:#64748b;font-size:14px;letter-spacing:.12em}
@@ -32,6 +60,7 @@ body{margin:0;font-family:"Yu Gothic UI","Meiryo",sans-serif;color:#24364b;backg
 .news-heading{margin:13px 0 8px;color:#142b49;font-size:21px;font-weight:800;line-height:1.5}
 .news-description{margin:0;color:#52647a;font-size:15px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}
 .empty{padding:45px 20px;color:#64748b;text-align:center;border-radius:8px;background:#fff}
+
 @media(max-width:650px){
 .header{height:150px;flex-direction:column;justify-content:center;gap:8px;padding:6px 2%}
 .header-top{flex:0 0 auto;gap:8px}
@@ -40,6 +69,12 @@ body{margin:0;font-family:"Yu Gothic UI","Meiryo",sans-serif;color:#24364b;backg
 .brand-subtitle{font-size:9px}
 .navigation{width:100%;flex:0 0 auto;gap:5px}
 .navigation a{height:42px;padding:5px 3px;font-size:10px}
+.navigation .theme-toggle{
+flex-basis:36px;
+width:36px;
+height:38px;
+font-size:18px;
+}
 .main{width:calc(100% - 28px);margin:30px auto 45px}
 .page-title{font-size:29px}
 .news-item{padding:20px}
@@ -48,6 +83,7 @@ body{margin:0;font-family:"Yu Gothic UI","Meiryo",sans-serif;color:#24364b;backg
 }
 </style>
 </head>
+
 <body>
 <header class="header">
 <div class="header-top">
@@ -57,22 +93,32 @@ body{margin:0;font-family:"Yu Gothic UI","Meiryo",sans-serif;color:#24364b;backg
 <div class="brand-subtitle">NAMIKYU RAILWAY</div>
 </div>
 </div>
+
 <nav class="navigation">
 <a href="./index.html">ホーム</a>
 <a href="./news.html">お知らせ</a>
 <a href="./join.html">サーバー参加</a>
 <a href="./status.html">在線位置</a>
 <a href="./staff.html">運営メンバー</a>
+
+<button class="theme-toggle" type="button"
+data-theme-toggle aria-label="ダークモードに切り替え">
+🌙
+</button>
 </nav>
 </header>
+
 <main class="main">
 <h2 class="page-title">お知らせ</h2>
 <div class="page-subtitle">NEWS</div>
 <div class="title-line"></div>
 <section class="news-list" id="newsList" aria-label="お知らせ一覧"></section>
 </main>
+
 <script>
-// お知らせ設定：新しいお知らせは配列の先頭に追加（date:日付 / category:カテゴリー / title:タイトル / content:本文）
+// お知らせ設定：新しいお知らせは配列の先頭に追加
+// date:日付 / category:カテゴリー / title:タイトル / content:本文
+
 const newsData=[
 {
 date:"2026年11月20日",
@@ -98,6 +144,7 @@ const newsList=document.getElementById("newsList");
 
 function displayNews(){
 newsList.replaceChildren();
+
 if(newsData.length===0){
 const empty=document.createElement("div");
 empty.className="empty";
@@ -105,23 +152,30 @@ empty.textContent="現在、お知らせはありません。";
 newsList.appendChild(empty);
 return;
 }
+
 newsData.forEach((news)=>{
 const article=document.createElement("article");
 article.className="news-item";
+
 const information=document.createElement("div");
 information.className="news-information";
+
 const date=document.createElement("span");
 date.className="news-date";
 date.textContent=news.date;
+
 const category=document.createElement("span");
 category.className="news-category";
 category.textContent=news.category;
+
 const heading=document.createElement("h3");
 heading.className="news-heading";
 heading.textContent=news.title;
+
 const description=document.createElement("p");
 description.className="news-description";
 description.textContent=news.content;
+
 information.appendChild(date);
 information.appendChild(category);
 article.appendChild(information);
