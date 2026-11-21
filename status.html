@@ -297,8 +297,17 @@ h2{
   filter:drop-shadow(0 0 4px #087fc4);
 }
 
+/* 列車マーカー */
 .train-body{pointer-events:all}
-.train-visual{pointer-events:none}
+
+.train-visual{
+  pointer-events:none;
+  filter:drop-shadow(0 1px 1.5px #142b4933);
+}
+
+.train-marker:hover .train-visual{
+  filter:drop-shadow(0 1px 2px #142b4966);
+}
 
 .train-hit-area{
   fill:transparent;
@@ -332,7 +341,7 @@ h2{
   user-select:none;
 }
 
-/* プレイヤー名背景の基本設定 */
+/* プレイヤー名背景 */
 .player-name-background{
   fill:#ffffff;
   fill-opacity:.92;
@@ -1432,18 +1441,29 @@ function applyView(renderMarkers=true){
   if(renderMarkers&&latestData)renderMarkersNow();
 }
 
+/* =====================================
+   列車マーカー：小型・公式サイト風
+===================================== */
+
 function makeTrainMarker(train,index,scale){
   const pos=worldToMap(train),
   type=getTrainType(train),
   angle=getDirectionAngle(train),
-  half=15*scale,
-  tip=half+17*scale,
-  path=`M ${-half} ${-half} L ${half} ${-half} L ${tip} 0 L ${half} ${half} L ${-half} ${half} Z`;
 
-  return`<g class="train-marker" data-kind="train" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(type.name)}" transform="translate(${pos.x} ${pos.y})"><g class="train-body" transform="rotate(${angle})"><path class="train-hit-area" d="${path}" stroke-width="${14*scale}"/><path class="train-visual" d="${path}" fill="${type.color}" stroke="#ffffff" stroke-width="${1.2*scale}" stroke-linejoin="round" stroke-linecap="round"/></g><text class="train-label" x="0" y="0" font-size="${17*scale}">${escapeHtml(type.label)}</text></g>`;
+  // マーカーを小型化
+  half=10*scale,
+  tip=half+11*scale,
+
+  path=`M ${-half} ${-half}
+        L ${half} ${-half}
+        L ${tip} 0
+        L ${half} ${half}
+        L ${-half} ${half}
+        Z`;
+
+  return`<g class="train-marker" data-kind="train" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(type.name)}" transform="translate(${pos.x} ${pos.y})"><g class="train-body" transform="rotate(${angle})"><path class="train-hit-area" d="${path}" stroke-width="${14*scale}"/><path class="train-visual" d="${path}" fill="${type.color}" stroke="#ffffff" stroke-width="${2*scale}" stroke-linejoin="round" stroke-linecap="round"/></g><text class="train-label" x="0" y="0" font-size="${12*scale}">${escapeHtml(type.label)}</text></g>`;
 }
 
-/* プレイヤーマーカー */
 function makePlayerMarker(player,index,scale,pos){
   const name=getName(player),
   faceSize=22*scale,
@@ -1508,10 +1528,15 @@ function attachMarkerEvents(){
   });
 }
 
+/* =====================================
+   プレイヤーと列車の重なりを回避
+   小型マーカーに合わせて調整
+===================================== */
+
 function avoidTrains(pos,scale,tp){
-  const h=15*scale,
-  tip=h+17*scale,
-  r=13*scale,
+  const h=10*scale,
+  tip=h+11*scale,
+  r=9*scale,
   poly=[[-h,-h],[h,-h],[tip,0],[h,h],[-h,h]];
 
   let x=pos.x,
