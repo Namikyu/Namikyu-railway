@@ -11,6 +11,17 @@
 <style>
 *{box-sizing:border-box}
 
+:root{
+  --navy:#142b49;
+  --blue:#087fc4;
+  --light-blue:#eaf5fc;
+  --text:#263e58;
+  --muted:#8295a8;
+  --border:#e1e9f1;
+  --surface:#fff;
+  --background:#f2f6fa;
+}
+
 html,body{
   width:100%;
   height:100%;
@@ -18,9 +29,11 @@ html,body{
   padding:0;
   overflow:hidden;
   overscroll-behavior:none;
-  font-family:"Yu Gothic UI","Meiryo",sans-serif;
-  color:#24364b;
-  background:#eef2f7
+  font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+  color:var(--text);
+  background:var(--background);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
 
 button{font:inherit;cursor:pointer}
@@ -35,91 +48,105 @@ header{
   gap:18px;
   color:white;
   background:linear-gradient(110deg,#075d9b,#087fc4 60%,#129bd2);
-  overflow:hidden
+  overflow:hidden;
+  box-shadow:0 3px 14px #123c5c20;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:12px;
-  min-width:0
+  min-width:0;
 }
 
 .brand img{
   width:72px;
   height:72px;
   object-fit:contain;
-  flex-shrink:0
+  flex-shrink:0;
 }
 
 .brand h1{
   margin:0;
   font-size:clamp(24px,3vw,40px);
-  white-space:nowrap
+  font-weight:850;
+  letter-spacing:.025em;
+  white-space:nowrap;
 }
 
 .brand small{
   display:block;
-  font-size:11px;
-  letter-spacing:3px
+  margin-top:3px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:3px;
+  opacity:.8;
 }
 
 nav{
   display:flex;
   gap:8px;
   align-items:center;
-  min-width:0
+  min-width:0;
 }
 
 nav a{
   color:white;
   text-decoration:none;
-  font-size:13px;
-  font-weight:bold;
+  font-size:12px;
+  font-weight:750;
+  letter-spacing:.02em;
   padding:12px 14px;
-  border:1px solid #ffffff66;
-  border-radius:7px;
+  border:1px solid #ffffff55;
+  border-radius:9px;
   background:#ffffff18;
-  white-space:nowrap
+  white-space:nowrap;
+  transition:background .18s,transform .18s;
 }
 
 nav a:hover,nav a.active{background:#ffffff40}
+nav a:active{transform:scale(.97)}
 
 /* メイン */
 main{
   height:calc(100dvh - 110px);
-  padding:12px 16px 15px;
+  padding:14px 17px 16px;
   display:flex;
   flex-direction:column;
   min-height:0;
-  overflow:hidden
+  overflow:hidden;
 }
 
 h2{
   margin:0;
-  color:#142b49;
-  font-size:21px
+  color:var(--navy);
+  font-size:22px;
+  font-weight:850;
+  letter-spacing:.025em;
 }
 
 .subtitle{
-  margin:2px 0 9px;
-  color:#8295a8;
+  margin:3px 0 10px;
+  color:#8a9bad;
   font-size:9px;
-  letter-spacing:2px
+  font-weight:700;
+  letter-spacing:2px;
 }
 
+/* ステータス */
 .status{
   display:flex;
   align-items:center;
   flex-wrap:wrap;
-  gap:8px 13px;
-  padding:9px 12px;
-  margin-bottom:7px;
+  gap:8px 15px;
+  padding:10px 14px;
+  margin-bottom:8px;
   background:white;
-  border:1px solid #e1e9f1;
-  border-radius:8px;
+  border:1px solid var(--border);
+  border-radius:11px;
   font-size:11px;
-  color:#61768b
+  color:#71859a;
+  box-shadow:0 2px 8px #142b4908;
 }
 
 .status strong{color:#263e58}
@@ -129,35 +156,56 @@ h2{
   height:8px;
   border-radius:50%;
   background:#999;
-  flex-shrink:0
+  flex-shrink:0;
 }
 
 .dot.online{
   background:#20a464;
-  box-shadow:0 0 0 3px #20a46420
+  box-shadow:0 0 0 4px #20a4641c;
 }
 
 .dot.offline{background:#d33}
 
+/* オンライン人数 */
+.online-count{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 10px;
+  border-radius:7px;
+  background:#e9f8f0;
+  color:#16834e;
+  font-weight:800;
+}
+
+.online-count strong{
+  color:#117746;
+  font-size:14px;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+}
+
+/* 凡例 */
 .legend{
   display:flex;
   flex-wrap:wrap;
   gap:8px 15px;
-  margin:4px 0 8px;
+  margin:4px 0 9px;
   font-size:10px;
-  color:#536b82
+  font-weight:650;
+  color:#536b82;
 }
 
 .legend span{
   display:flex;
   align-items:center;
-  gap:5px
+  gap:5px;
 }
 
 .legend i{
   width:9px;
   height:9px;
-  border-radius:3px
+  border-radius:3px;
 }
 
 /* マップ */
@@ -167,10 +215,10 @@ h2{
   min-height:0;
   overflow:hidden;
   border:1px solid #dce5ed;
-  border-radius:10px;
+  border-radius:12px;
   background:#f5f8fb;
   box-shadow:0 3px 14px #142b4910;
-  overscroll-behavior:contain
+  overscroll-behavior:contain;
 }
 
 #map{
@@ -179,7 +227,7 @@ h2{
   display:block;
   cursor:grab;
   touch-action:none;
-  user-select:none
+  user-select:none;
 }
 
 #map.dragging{cursor:grabbing}
@@ -188,34 +236,44 @@ h2{
   stroke:#dce5ed;
   stroke-width:1;
   vector-effect:non-scaling-stroke;
-  pointer-events:none
+  pointer-events:none;
 }
 
 .train-marker,.player-marker{
   cursor:pointer;
   pointer-events:all;
-  outline:none
+  outline:none;
 }
 
 .train-marker:focus-visible,
 .player-marker:focus-visible{
-  opacity:.85;
-  filter:drop-shadow(0 0 3px #087fc4)
+  opacity:.88;
+  filter:drop-shadow(0 0 4px #087fc4);
 }
 
-.train-body{pointer-events:none}
+.train-body{pointer-events:all}
+
+.train-visual{
+  pointer-events:none;
+}
+
+.train-hit-area{
+  fill:transparent;
+  stroke:transparent;
+  pointer-events:all;
+}
 
 .train-label{
   fill:white;
   stroke:#26364a66;
   stroke-width:1.5px;
   paint-order:stroke fill;
-  font-family:"Yu Gothic UI","Meiryo",sans-serif;
+  font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
   font-weight:900;
   text-anchor:middle;
   dominant-baseline:central;
   pointer-events:none;
-  user-select:none
+  user-select:none;
 }
 
 .player-name-label{
@@ -223,19 +281,20 @@ h2{
   stroke:white;
   stroke-width:3px;
   paint-order:stroke fill;
+  font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
   font-weight:800;
   text-anchor:middle;
   dominant-baseline:central;
   pointer-events:none;
-  user-select:none
+  user-select:none;
 }
 
 .player-face{
   image-rendering:pixelated;
-  pointer-events:none
+  pointer-events:none;
 }
 
-/* 方角表示 */
+/* 方角 */
 .compass{
   position:absolute;
   top:10px;
@@ -250,8 +309,8 @@ h2{
   pointer-events:none;
   color:#60778e;
   font-size:10px;
-  font-weight:800;
-  text-shadow:0 1px 2px white
+  font-weight:850;
+  text-shadow:0 1px 3px white;
 }
 
 .compass .north{grid-column:2;grid-row:1}
@@ -268,35 +327,37 @@ h2{
   z-index:5;
   display:flex;
   flex-direction:column;
-  gap:6px
+  gap:6px;
 }
 
 .map-controls button{
   width:36px;
   height:36px;
   border:1px solid #d8e2ec;
-  border-radius:8px;
+  border-radius:9px;
   background:#fffffff2;
   color:#284967;
   font-size:19px;
   font-weight:800;
-  box-shadow:0 2px 6px #142b4914
+  box-shadow:0 2px 6px #142b4914;
+  transition:background .15s,transform .15s;
 }
 
 .map-controls button:hover{background:#eaf5fc}
-.map-controls button:active{transform:scale(.96)}
+.map-controls button:active{transform:scale(.94)}
 
 .map-help{
   position:absolute;
   right:12px;
   bottom:9px;
   z-index:2;
-  padding:5px 8px;
-  border-radius:5px;
-  background:#ffffffdd;
+  padding:6px 9px;
+  border-radius:6px;
+  background:#ffffffdf;
   color:#8093a5;
   font-size:9px;
-  pointer-events:none
+  font-weight:650;
+  pointer-events:none;
 }
 
 /* プレイヤー一覧 */
@@ -305,85 +366,148 @@ h2{
   left:12px;
   top:12px;
   z-index:5;
-  width:205px;
+  width:220px;
   max-height:calc(100% - 24px);
   display:flex;
   flex-direction:column;
-  background:#fffffff2;
+  background:#fffffff5;
   border:1px solid #dce5ed;
-  border-radius:9px;
-  box-shadow:0 3px 12px #142b4917;
-  overflow:hidden
+  border-radius:12px;
+  box-shadow:0 4px 16px #142b491b;
+  overflow:hidden;
+  backdrop-filter:blur(8px);
 }
 
-.player-panel.collapsed{width:112px}
+.player-panel.collapsed{width:135px}
 
 .player-panel-head{
-  height:38px;
-  min-height:38px;
+  min-height:45px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 10px;
+  gap:8px;
+  padding:0 11px;
   border-bottom:1px solid #e8eef4;
   color:#29445f;
   font-size:11px;
-  font-weight:800
+  font-weight:850;
+}
+
+.player-panel-heading{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-width:0;
+}
+
+.player-panel-heading::before{
+  content:"";
+  width:7px;
+  height:7px;
+  flex-shrink:0;
+  border-radius:50%;
+  background:#20a464;
+  box-shadow:0 0 0 3px #20a46420;
+}
+
+.player-panel-count{
+  padding:3px 7px;
+  border-radius:6px;
+  background:#e9f8f0;
+  color:#16834e;
+  font-size:10px;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
 }
 
 .player-panel-head button{
+  width:25px;
+  height:25px;
   border:0;
-  background:transparent;
+  border-radius:6px;
+  background:#edf3f8;
   color:#55718b;
-  font-size:14px
+  font-size:15px;
+  font-weight:800;
 }
 
+.player-panel-head button:hover{background:#dceaf5}
+
 .player-list{
-  padding:5px 7px;
+  padding:6px;
   overflow-y:auto;
   min-height:0;
-  overscroll-behavior:contain
+  overscroll-behavior:contain;
 }
 
 .player-row{
   display:flex;
   align-items:center;
-  gap:7px;
+  gap:9px;
   width:100%;
-  padding:5px 3px;
-  border:0;
-  border-radius:5px;
+  padding:7px;
+  margin-bottom:3px;
+  border:1px solid transparent;
+  border-radius:8px;
   background:transparent;
   text-align:left;
   color:#334d67;
-  font-size:10px
+  font-size:11px;
+  transition:background .15s,border-color .15s;
 }
 
-.player-row:hover{background:#edf6fc}
+.player-row:last-child{margin-bottom:0}
+
+.player-row:hover{
+  background:#edf6fc;
+  border-color:#dcecf8;
+}
 
 .player-row img{
-  width:23px;
-  height:23px;
+  width:31px;
+  height:31px;
   flex-shrink:0;
   image-rendering:pixelated;
-  border-radius:4px
+  border-radius:7px;
+  background:#edf2f6;
 }
 
 .player-row-info{
   min-width:0;
   display:flex;
-  flex-direction:column
+  flex-direction:column;
+  gap:3px;
 }
 
 .player-row-name{
-  font-weight:800;
+  font-weight:850;
   overflow-wrap:anywhere;
-  word-break:break-word
+  word-break:break-word;
+  color:#29445f;
 }
 
 .player-row-role{
+  display:flex;
+  align-items:center;
+  gap:4px;
   font-size:9px;
-  color:#8799aa
+  font-weight:650;
+  color:#8799aa;
+}
+
+.player-row-role::before{
+  content:"";
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#20a464;
+}
+
+.player-empty{
+  padding:17px 8px;
+  color:#91a0ae;
+  font-size:10px;
+  text-align:center;
 }
 
 .player-panel.collapsed .player-list{display:none}
@@ -398,21 +522,27 @@ h2{
   justify-content:center;
   padding:18px;
   background:#0d1f327a;
-  backdrop-filter:blur(3px)
+  backdrop-filter:blur(4px);
 }
 
 .modal.open{display:flex}
 
 .modal-card{
-  width:min(440px,100%);
+  width:min(460px,100%);
   max-height:85vh;
   overflow:auto;
-  padding:20px;
+  padding:21px;
   background:white;
   border:1px solid #dce5ed;
-  border-radius:13px;
+  border-radius:15px;
   box-shadow:0 15px 50px #0003;
-  overscroll-behavior:contain
+  overscroll-behavior:contain;
+  animation:modalIn .16s ease-out;
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(8px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
 }
 
 .modal-head{
@@ -420,24 +550,24 @@ h2{
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  margin-bottom:15px
+  margin-bottom:15px;
 }
 
 .modal-title{
   margin:0;
   color:#142b49;
   font-size:17px;
-  font-weight:900
+  font-weight:900;
 }
 
 .modal-close{
-  width:30px;
-  height:30px;
+  width:32px;
+  height:32px;
   border:0;
-  border-radius:7px;
+  border-radius:8px;
   background:#edf2f6;
   color:#49647e;
-  font-size:18px
+  font-size:19px;
 }
 
 .modal-close:hover{background:#dceaf5}
@@ -446,27 +576,33 @@ h2{
   display:flex;
   align-items:center;
   gap:13px;
-  margin-bottom:15px
+  margin-bottom:15px;
+  padding:12px;
+  background:#f7fafd;
+  border:1px solid #e6edf3;
+  border-radius:10px;
 }
 
 .detail-player img{
-  width:56px;
-  height:56px;
-  border-radius:8px;
-  image-rendering:pixelated
+  width:58px;
+  height:58px;
+  border-radius:9px;
+  image-rendering:pixelated;
+  background:#edf2f6;
 }
 
 .detail-player-name{
   font-size:17px;
   font-weight:900;
   color:#203c58;
-  overflow-wrap:anywhere
+  overflow-wrap:anywhere;
 }
 
 .detail-player-role{
-  margin-top:3px;
+  margin-top:4px;
   color:#8193a5;
-  font-size:11px
+  font-size:11px;
+  font-weight:650;
 }
 
 .train-summary{
@@ -477,8 +613,9 @@ h2{
   margin:8px 0 17px;
   padding:17px 10px;
   border:2px solid #2878c8;
-  border-radius:9px;
-  flex-wrap:wrap
+  border-radius:10px;
+  flex-wrap:wrap;
+  background:#f9fbfd;
 }
 
 .train-type{
@@ -486,50 +623,52 @@ h2{
   font-weight:900;
   color:white;
   background:#2878c8;
-  border-radius:6px;
-  padding:7px 13px
+  border-radius:7px;
+  padding:7px 14px;
 }
 
 .train-destination{
   font-size:17px;
   font-weight:900;
   color:#263f58;
-  text-align:center
+  text-align:center;
 }
 
 .detail-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px
+  gap:8px;
 }
 
 .detail-item{
-  padding:10px;
+  padding:11px;
   border:1px solid #e4ebf1;
-  border-radius:7px;
+  border-radius:8px;
   background:#f8fafc;
-  min-width:0
+  min-width:0;
 }
 
 .detail-label{
   font-size:9px;
   color:#899aab;
-  font-weight:700
+  font-weight:750;
+  letter-spacing:.04em;
 }
 
 .detail-value{
-  margin-top:4px;
+  margin-top:5px;
   font-size:13px;
   color:#29445f;
-  font-weight:800;
+  font-weight:850;
   overflow-wrap:anywhere;
-  word-break:break-word
+  word-break:break-word;
+  font-variant-numeric:tabular-nums;
 }
 
 .detail-note{
   margin-top:12px;
   font-size:10px;
-  color:#8a9aaa
+  color:#8a9aaa;
 }
 
 /* 小さい画面 */
@@ -537,14 +676,14 @@ h2{
   header{
     height:90px;
     padding:6px 9px;
-    gap:7px
+    gap:7px;
   }
 
   .brand{gap:6px}
 
   .brand img{
     width:45px;
-    height:45px
+    height:45px;
   }
 
   .brand h1{font-size:clamp(17px,4vw,26px)}
@@ -553,12 +692,12 @@ h2{
 
   nav a{
     font-size:9px;
-    padding:9px 5px
+    padding:9px 5px;
   }
 
   main{
     height:calc(100dvh - 90px);
-    padding:9px
+    padding:9px;
   }
 
   h2{font-size:17px}
@@ -567,35 +706,35 @@ h2{
   .status{
     padding:8px;
     margin-bottom:5px;
-    gap:6px;
-    font-size:9px
+    gap:6px 9px;
+    font-size:9px;
   }
 
   .legend{
     gap:6px 9px;
     font-size:9px;
-    margin:4px 0 7px
+    margin:4px 0 7px;
   }
 
   .player-panel{
-    width:145px;
+    width:155px;
     left:7px;
     top:7px;
-    max-height:48%
+    max-height:48%;
   }
 
-  .player-panel.collapsed{width:105px}
+  .player-panel.collapsed{width:125px}
   .map-controls{right:7px;top:7px}
 
   .map-controls button{
     width:32px;
-    height:32px
+    height:32px;
   }
 
   .map-help{
     right:7px;
     bottom:6px;
-    font-size:8px
+    font-size:8px;
   }
 }
 
@@ -604,7 +743,7 @@ h2{
 
   .brand img{
     width:36px;
-    height:36px
+    height:36px;
   }
 
   .brand h1{font-size:16px}
@@ -613,12 +752,22 @@ h2{
 
   nav a{
     font-size:8px;
-    padding:8px 3px
+    padding:8px 3px;
   }
 
   main{
     height:calc(100dvh - 78px);
-    padding:7px
+    padding:7px;
+  }
+
+  .player-panel{width:140px}
+  .player-panel.collapsed{width:120px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
   }
 }
 </style>
@@ -655,7 +804,13 @@ h2{
     <span id="worldTime">ワールド時刻：--</span>
     <span id="weatherText">天候：--</span>
     <span id="tpsText">TPS：--</span>
-    <span id="playerCount">プレイヤー：--人</span>
+
+    <span class="online-count">
+      オンライン
+      <strong id="playerCount">--</strong>
+      人
+    </span>
+
     <span id="trainCount">列車：--編成</span>
   </div>
 
@@ -685,19 +840,22 @@ h2{
 
     <div class="player-panel" id="playerPanel">
       <div class="player-panel-head">
-        <span>オンライン</span>
+        <div class="player-panel-heading">オンラインプレイヤー</div>
+        <span class="player-panel-count" id="playerPanelCount">0</span>
         <button id="collapsePlayers" type="button" aria-label="プレイヤー一覧を開閉">−</button>
       </div>
-      <div class="player-list" id="playerList"></div>
+      <div class="player-list" id="playerList">
+        <div class="player-empty">読み込み中...</div>
+      </div>
     </div>
 
     <div class="map-controls">
-      <button id="zoomIn" type="button" title="拡大">＋</button>
-      <button id="zoomOut" type="button" title="縮小">−</button>
-      <button id="resetView" type="button" title="全体表示">⌂</button>
+      <button id="zoomIn" type="button" title="拡大" aria-label="拡大">＋</button>
+      <button id="zoomOut" type="button" title="縮小" aria-label="縮小">−</button>
+      <button id="resetView" type="button" title="全体表示" aria-label="全体表示">⌂</button>
     </div>
 
-    <div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小</div>
+    <div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小 / マーカー：詳細</div>
   </section>
 </main>
 
@@ -746,6 +904,7 @@ const weatherText = document.getElementById("weatherText");
 const tpsText = document.getElementById("tpsText");
 const playerCountText = document.getElementById("playerCount");
 const trainCountText = document.getElementById("trainCount");
+const playerPanelCount = document.getElementById("playerPanelCount");
 
 const playerList = document.getElementById("playerList");
 const playerPanel = document.getElementById("playerPanel");
@@ -882,21 +1041,10 @@ function xInWaterline(train) {
 function getTrainRoute(train) {
   const {x,z} = getCoordinates(train);
 
-  if (xInWaterline(train)) {
-    return "水山線";
-  }
-
-  if (x >= KAWATETSU_MIN_X) {
-    return "川鉄線";
-  }
-
-  if (z > UKYU_MIN_Z) {
-    return "雨急線";
-  }
-
-  if (z < YANODEN_MAX_Z) {
-    return "矢野電";
-  }
+  if (xInWaterline(train)) return "水山線";
+  if (x >= KAWATETSU_MIN_X) return "川鉄線";
+  if (z > UKYU_MIN_Z) return "雨急線";
+  if (z < YANODEN_MAX_Z) return "矢野電";
 
   return "波急線";
 }
@@ -1011,7 +1159,6 @@ function getDirectionAngle(train) {
 
 function isPositiveDirection(train) {
   const direction = getTrainDirection(train);
-
   return direction === "z+" || direction === "x+";
 }
 
@@ -1023,25 +1170,11 @@ function getTrainDestination(train) {
   const type = getTrainType(train);
   const positive = isPositiveDirection(train);
 
-  if (type.key === "waterline") {
-    return "草市～水山 往復";
-  }
-
-  if (type.key === "local2") {
-    return positive ? "依丘" : "草市";
-  }
-
-  if (type.key === "local") {
-    return positive ? "波丘" : "吉山";
-  }
-
-  if (type.key === "exp") {
-    return positive ? "依丘" : "吉山";
-  }
-
-  if (type.key === "ltd") {
-    return positive ? "雨山" : "吉山";
-  }
+  if (type.key === "waterline") return "草市～水山 往復";
+  if (type.key === "local2") return positive ? "依丘" : "草市";
+  if (type.key === "local") return positive ? "波丘" : "吉山";
+  if (type.key === "exp") return positive ? "依丘" : "吉山";
+  if (type.key === "ltd") return positive ? "雨山" : "吉山";
 
   if (type.key === "sexp" || type.downgradedFromSemiExpress) {
     return positive ? "雨山" : "矢野";
@@ -1073,9 +1206,7 @@ function getDisplaySpeed(train) {
 
   const speed = Number(raw);
 
-  if (!Number.isFinite(speed) || speed < 0) {
-    return 0;
-  }
+  if (!Number.isFinite(speed) || speed < 0) return 0;
 
   return speed;
 }
@@ -1096,11 +1227,9 @@ async function loadStaff() {
 
     doc.querySelectorAll(".staff-card").forEach(card => {
       const nameElement = card.querySelector(".staff-name");
-
       if (!nameElement) return;
 
       const name = nameElement.textContent.trim();
-
       if (!name) return;
 
       const roles = Array.from(card.querySelectorAll(".role-badge"))
@@ -1166,13 +1295,8 @@ function fitViewToData() {
   const size = getMapSize();
   const points = [];
 
-  players.forEach(player => {
-    points.push(worldToMap(player));
-  });
-
-  trains.forEach(train => {
-    points.push(worldToMap(train));
-  });
+  players.forEach(player => points.push(worldToMap(player)));
+  trains.forEach(train => points.push(worldToMap(train)));
 
   if (points.length === 0) {
     view.w = 10000;
@@ -1297,21 +1421,15 @@ function makeTrainMarker(train,index,scale) {
   const angle = getDirectionAngle(train);
   const destination = getTrainDestination(train);
 
-  /*
-    正方形部分：
-      30 × 30
-
-    三角形部分：
-      正方形の右辺から先端まで接続
-
-    正方形と三角形は、同じ一つのパスで描画する。
-    そのため境界に白い線は入らない。
-  */
-
   const squareSize = 30 * scale;
   const half = squareSize / 2;
   const triangleLength = 17 * scale;
   const tip = half + triangleLength;
+
+  /*
+    四角形と三角形を一つのパスで描画。
+    内部に境界線は存在しない。
+  */
 
   const path = [
     `M ${-half} ${-half}`,
@@ -1333,18 +1451,17 @@ function makeTrainMarker(train,index,scale) {
        aria-label="${escapeHtml(type.name)} ${escapeHtml(destination)}"
        transform="translate(${position.x} ${position.y})">
 
-      <!-- 透明なクリック領域 -->
-      <path
-        d="${path}"
-        fill="transparent"
-        stroke="transparent"
-        stroke-width="${12*scale}"
-        pointer-events="all"
-      />
-
-      <!-- 車体と先端を一つの図形として描画 -->
+      <!-- 車体とクリック領域を同時に回転 -->
       <g class="train-body" transform="rotate(${angle})">
+
         <path
+          class="train-hit-area"
+          d="${path}"
+          stroke-width="${14*scale}"
+        />
+
+        <path
+          class="train-visual"
           d="${path}"
           fill="${type.color}"
           stroke="#ffffff"
@@ -1352,9 +1469,10 @@ function makeTrainMarker(train,index,scale) {
           stroke-linejoin="round"
           stroke-linecap="round"
         />
+
       </g>
 
-      <!-- 文字は回転させず正方形の中心に配置 -->
+      <!-- 文字は回転させず、四角形の中心に表示 -->
       <text
         class="train-label"
         x="0"
@@ -1407,7 +1525,6 @@ function makePlayerMarker(player,index,scale) {
        aria-label="${escapeHtml(name)}"
        transform="translate(${position.x} ${position.y})">
 
-      <!-- 顔と名前をまとめたクリック領域 -->
       <circle
         cx="0"
         cy="${labelY/2}"
@@ -1469,16 +1586,21 @@ function renderMarkersNow() {
     makePlayerMarker(player,index,scale)
   ).join("");
 
-  // 列車を先、プレイヤーを後に描画
   markerLayer.innerHTML = trainHTML + playerHTML;
 
   renderPlayerList();
 }
 
+/* ======================================
+   プレイヤー一覧
+====================================== */
+
 function renderPlayerList() {
+  playerPanelCount.textContent = String(players.length);
+
   if (players.length === 0) {
     playerList.innerHTML =
-      `<div style="padding:10px;color:#91a0ae;font-size:10px">プレイヤーはいません</div>`;
+      `<div class="player-empty">現在オンラインのプレイヤーはいません</div>`;
     return;
   }
 
@@ -1492,12 +1614,16 @@ function renderPlayerList() {
     return `
       <button class="player-row"
               type="button"
-              data-player-index="${index}">
-        <img src="${face}" alt="">
+              data-player-index="${index}"
+              aria-label="${escapeHtml(name)}の詳細を表示">
+
+        <img src="${face}" alt="" loading="lazy">
+
         <span class="player-row-info">
           <span class="player-row-name">${escapeHtml(name)}</span>
           <span class="player-row-role">${escapeHtml(role || "プレイヤー")}</span>
         </span>
+
       </button>
     `;
   }).join("");
@@ -1509,6 +1635,7 @@ function renderPlayerList() {
 
 function openModal() {
   detailModal.classList.add("open");
+  document.body.style.overflow = "hidden";
 
   const closeButton = document.getElementById("closeModal");
   closeButton.focus();
@@ -1516,6 +1643,7 @@ function openModal() {
 
 function closeModal() {
   detailModal.classList.remove("open");
+  document.body.style.overflow = "";
   selectedEntityKey = null;
 }
 
@@ -1533,6 +1661,7 @@ function showPlayerDetail(player) {
   modalContent.innerHTML = `
     <div class="detail-player">
       <img src="${face}" alt="">
+
       <div>
         <div class="detail-player-name">${escapeHtml(name)}</div>
         <div class="detail-player-role">${escapeHtml(role || "プレイヤー")}</div>
@@ -1626,57 +1755,76 @@ function showTrainDetail(train,index) {
 }
 
 /* ======================================
-   クリック・キーボード操作
+   マーカー判定
 ====================================== */
+
+/*
+  SVG内のクリック対象をcomposedPath()から探す。
+  SVGのpath・text・imageなど、どの部分を押しても
+  親のマーカーを取得できるようにする。
+*/
+
+function findMarkerFromEvent(event) {
+  const path = typeof event.composedPath === "function"
+    ? event.composedPath()
+    : [event.target];
+
+  for (const node of path) {
+    if (
+      node instanceof Element &&
+      node.matches("[data-kind][data-index]")
+    ) {
+      return node;
+    }
+  }
+
+  return null;
+}
 
 function handleMarkerOpen(target) {
   if (!target) return;
 
-  const index = Number(target.dataset.index);
+  const index = Number(target.getAttribute("data-index"));
+  const kind = target.getAttribute("data-kind");
 
   if (!Number.isInteger(index) || index < 0) return;
 
-  if (target.dataset.kind === "player") {
+  if (kind === "player") {
     const player = players[index];
 
-    if (player) {
-      showPlayerDetail(player);
-    }
-
+    if (player) showPlayerDetail(player);
     return;
   }
 
-  if (target.dataset.kind === "train") {
+  if (kind === "train") {
     const train = trains[index];
 
-    if (train) {
-      showTrainDetail(train,index);
-    }
+    if (train) showTrainDetail(train,index);
   }
 }
 
-markerLayer.addEventListener("click",event => {
+/*
+  markerLayerではなくmapにイベントを登録する。
+  マーカーの再描画後もイベント登録が失われない。
+*/
+
+map.addEventListener("click",event => {
   if (dragMoved) return;
 
-  const element = event.target instanceof Element
-    ? event.target
-    : event.target.parentElement;
-
-  const target = element?.closest("[data-kind]");
+  const target = findMarkerFromEvent(event);
 
   if (!target || !markerLayer.contains(target)) return;
+
+  event.preventDefault();
+  event.stopPropagation();
 
   handleMarkerOpen(target);
 });
 
-markerLayer.addEventListener("keydown",event => {
+map.addEventListener("keydown",event => {
   if (event.key !== "Enter" && event.key !== " ") return;
 
-  const element = event.target instanceof Element
-    ? event.target
-    : event.target.parentElement;
-
-  const target = element?.closest("[data-kind]");
+  const target = findMarkerFromEvent(event);
 
   if (!target || !markerLayer.contains(target)) return;
 
@@ -1687,7 +1835,7 @@ markerLayer.addEventListener("keydown",event => {
 playerList.addEventListener("click",event => {
   const element = event.target instanceof Element
     ? event.target
-    : event.target.parentElement;
+    : event.target?.parentElement;
 
   const button = element?.closest("[data-player-index]");
 
@@ -1696,9 +1844,7 @@ playerList.addEventListener("click",event => {
   const index = Number(button.dataset.playerIndex);
   const player = players[index];
 
-  if (player) {
-    showPlayerDetail(player);
-  }
+  if (player) showPlayerDetail(player);
 });
 
 /* ======================================
@@ -1724,7 +1870,7 @@ function updateStatus(root) {
   weatherText.textContent = `天候：${weather}`;
   tpsText.textContent = `TPS：${formatNumber(tps,1)}`;
 
-  playerCountText.textContent = `プレイヤー：${players.length}人`;
+  playerCountText.textContent = String(players.length);
   trainCountText.textContent = `列車：${trains.length}編成`;
 
   lastUpdated.textContent =
@@ -1819,9 +1965,7 @@ function refreshNow() {
 }
 
 document.addEventListener("visibilitychange",() => {
-  if (!document.hidden) {
-    refreshNow();
-  }
+  if (!document.hidden) refreshNow();
 });
 
 window.addEventListener("focus",refreshNow);
@@ -1907,11 +2051,14 @@ map.addEventListener("wheel",event => {
 map.addEventListener("pointerdown",event => {
   if (event.button !== 0) return;
 
+  const marker = findMarkerFromEvent(event);
+
+  if (marker) return;
+
   const element = event.target instanceof Element
     ? event.target
-    : event.target.parentElement;
+    : event.target?.parentElement;
 
-  if (element?.closest("[data-kind]")) return;
   if (element?.closest(".map-controls")) return;
   if (element?.closest(".player-panel")) return;
 
@@ -1961,17 +2108,21 @@ function stopDragging() {
 
   renderMarkersNow();
 
+  if (dragResetTimer !== null) {
+    clearTimeout(dragResetTimer);
+  }
+
   dragResetTimer = setTimeout(() => {
     dragMoved = false;
     dragResetTimer = null;
-  },100);
+  },150);
 }
 
 window.addEventListener("pointerup",stopDragging);
 window.addEventListener("pointercancel",stopDragging);
 
 /* ======================================
-   キーボード移動・モーダル閉じる
+   キーボード操作・モーダル閉じる
 ====================================== */
 
 window.addEventListener("keydown",event => {
