@@ -878,8 +878,8 @@ h2{
 
 const API_URL = "https://namikyu-status.kou20230831.workers.dev/api/status";
 
-/* Durable Objects運用向け：2秒間隔で取得 */
-const REFRESH_MS = 2000;
+/* Cloudflare通信節約：5秒間隔で取得 */
+const REFRESH_MS = 5000;
 
 const MIN_VIEW_WIDTH = 500;
 const MAX_VIEW_WIDTH = 50000;
@@ -1353,21 +1353,6 @@ function fitViewToData() {
    固定500mグリッド
 ====================================== */
 
-/*
-  グリッドの基準はワールド座標 X=0 / Z=0。
-
-  X方向：
-    ... -1000, -500, 500, 1000 ...
-
-  Z方向：
-    ... -1000, -500, 500, 1000 ...
-
-  0を通る縦線と横線だけを描画しない。
-
-  画面のズーム倍率やサイズに関係なく、
-  1マスの実際の大きさは常に500m。
-*/
-
 function renderGrid() {
   const left = view.x;
   const right = view.x + view.w;
@@ -1382,7 +1367,6 @@ function renderGrid() {
   const firstZ = Math.floor(top / GRID_SIZE);
   const lastZ = Math.ceil(bottom / GRID_SIZE);
 
-  /* 縦線：X座標が500mごとの位置 */
   for (let i=firstX;i<=lastX;i++) {
     const x = i * GRID_SIZE;
 
@@ -1393,7 +1377,6 @@ function renderGrid() {
     paths.push(`M ${x} ${top} V ${bottom}`);
   }
 
-  /* 横線：Z座標が500mごとの位置 */
   for (let i=firstZ;i<=lastZ;i++) {
     const z = i * GRID_SIZE;
 
@@ -1614,11 +1597,6 @@ function handleMarkerOpen(target) {
   }
 }
 
-/*
-  SVGのイベント対象から親マーカーを取得する。
-  path・image・textなど、内部要素を押しても対応する。
-*/
-
 function findMarkerFromEvent(event) {
   if (typeof event.composedPath === "function") {
     for (const node of event.composedPath()) {
@@ -1646,11 +1624,6 @@ function findMarkerFromEvent(event) {
 
   return null;
 }
-
-/*
-  マーカーを再描画するたびにクリック処理を登録する。
-  これにより、SVGのイベント取得に依存しすぎない。
-*/
 
 function attachMarkerEvents() {
   markerLayer.querySelectorAll("[data-kind][data-index]").forEach(marker => {
@@ -1740,11 +1713,18 @@ function renderPlayerList() {
 ====================================== */
 
 function openModal() {
+  const wasOpen = detailModal.classList.contains("open");
+
   detailModal.classList.add("open");
   document.body.style.overflow = "hidden";
 
-  const closeButton = document.getElementById("closeModal");
-  closeButton.focus();
+  /*
+    初めて開いたときだけ閉じるボタンへフォーカスする。
+    自動更新時にフォーカスが何度も移動しないようにする。
+  */
+  if (!wasOpen) {
+    document.getElementById("closeModal").focus();
+  }
 }
 
 function closeModal() {
@@ -1785,6 +1765,8 @@ function showPlayerDetail(player) {
         <div class="detail-value">${formatNumber(position.z,2)}</div>
       </div>
     </div>
+
+    <div class="detail-note">在線情報は自動更新されます。</div>
   `;
 
   openModal();
@@ -1855,9 +1837,61 @@ function showTrainDetail(train,index) {
         <div class="detail-value">${formatNumber(position.z,2)}</div>
       </div>
     </div>
+
+    <div class="detail-note">在線情報は自動更新されます。</div>
   `;
 
   openModal();
+}
+
+/* ======================================
+   詳細画面の自動更新
+====================================== */
+
+function refreshSelectedDetail() {
+  if (!detailModal.classList.contains("open")) return;
+  if (!selectedEntityKey) return;
+
+  const separatorIndex = selectedEntityKey.indexOf(":");
+  const kind = selectedEntityKey.slice(0,separatorIndex);
+  const identifier = selectedEntityKey.slice(separatorIndex+1);
+
+  if (kind === "player") {
+    const player = players.find(
+      item => getName(item) === identifier
+    );
+
+    if (player) {
+      showPlayerDetail(player);
+    } else {
+      modalTitle.textContent = "プレイヤー情報";
+      modalContent.innerHTML = `
+        <div class="player-empty">
+          このプレイヤーは現在オンラインではありません。
+        </div>
+      `;
+      selectedEntityKey = null;
+    }
+
+    return;
+  }
+
+  if (kind === "train") {
+    const index = Number(identifier);
+    const train = trains[index];
+
+    if (Number.isInteger(index) && train) {
+      showTrainDetail(train,index);
+    } else {
+      modalTitle.textContent = "列車情報";
+      modalContent.innerHTML = `
+        <div class="player-empty">
+          この列車は現在在線情報にありません。
+        </div>
+      `;
+      selectedEntityKey = null;
+    }
+  }
 }
 
 /* ======================================
@@ -1964,6 +1998,12 @@ async function fetchStatus() {
     } else {
       renderMarkersNow();
     }
+
+    /*
+      詳細画面が開いている場合も、
+      新しく取得したデータで詳細内容を書き換える。
+    */
+    refreshSelectedDetail();
 
   } catch (error) {
     console.error("在線データ取得エラー:",error);
@@ -2087,10 +2127,6 @@ map.addEventListener("pointerdown",event => {
 
   const marker = findMarkerFromEvent(event);
 
-  /*
-    マーカー上では地図をドラッグしない。
-    前回のドラッグ状態もここでリセットする。
-  */
   if (marker) {
     dragMoved = false;
     return;
