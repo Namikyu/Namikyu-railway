@@ -380,3 +380,67 @@ html[data-theme="dark"]:not([data-theme-static="true"]) .page-heading h1 {
 html[data-theme="dark"]:not([data-theme-static="true"]) .page-heading p {
   color: #a8bfd5 !important;
 }
+
+/* =====================================
+   サーバー参加ページ：ダークモード文字色修正
+===================================== */
+
+/* ページ見出し */
+html[data-theme="dark"]:not([data-theme-static="true"]) .page-heading h1 {
+  color: #eaf3ff !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .page-heading p {
+  color: #a9bfd5 !important;
+}
+
+/* セクション見出し */
+html[data-theme="dark"]:not([data-theme-static="true"]) .section h2 {
+  color: #eaf3ff !important;
+}
+
+/* 接続情報 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .connection-label {
+  color: #b5c9dc !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .connection-value {
+  color: #f0f6ff !important;
+}
+
+/* 参加手順の説明 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .step-text {
+  color: #dce8f5 !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .step-text strong {
+  color: #ffffff !important;
+}
+
+/* 通常の説明文・リスト */
+html[data-theme="dark"]:not([data-theme-static="true"]) .section p,
+html[data-theme="dark"]:not([data-theme-static="true"]) .section li {
+  color: #dce8f5 !important;
+}
+
+/* 注意事項 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .notice {
+  background: #3b3425 !important;
+  color: #ffe7b5 !important;
+  border-left-color: #e6a23c;
+}
+
+/* 注意事項内の文字 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .notice * {
+  color: #ffe7b5 !important;
+}
+
+/* コピー後のボタン */
+html[data-theme="dark"]:not([data-theme-static="true"]) .copy-button {
+  color: #ffffff !important;
+}
+
+/* フッター */
+html[data-theme="dark"]:not([data-theme-static="true"]) .footer {
+  color: #9db2c8 !important;
+}
