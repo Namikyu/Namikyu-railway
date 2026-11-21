@@ -877,7 +877,9 @@ h2{
 ====================================== */
 
 const API_URL = "https://namikyu-status.kou20230831.workers.dev/api/status";
-const REFRESH_MS = 1000;
+
+/* Durable Objects運用向け：2秒間隔で取得 */
+const REFRESH_MS = 2000;
 
 const MIN_VIEW_WIDTH = 500;
 const MAX_VIEW_WIDTH = 50000;
