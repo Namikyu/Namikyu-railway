@@ -4,282 +4,524 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>在線位置 | 波急サーバー</title>
-<link rel="icon" type="image/png" href="./icon.png">
+<link rel="icon" href="./icon.png">
+<link rel="apple-touch-icon" href="./icon.png">
 
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;min-height:100%;font-family:"Yu Gothic UI","Meiryo",sans-serif;color:#24364b;background:#eef2f7}
+* {
+  box-sizing: border-box;
+}
 
-/* ホーム画面と共通のヘッダー */
-.header{
-  height:120px;
-  padding:8px 3%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  background:linear-gradient(110deg,#075d9b,#087fc4,#129bd2);
-  color:white;
+html, body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+  color: #24364b;
+  background: #eef2f7;
 }
-.header-top{
-  display:flex;
-  align-items:center;
-  flex:0 0 42%;
-  gap:14px;
-  min-width:0;
-}
-.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.brand img{width:80px;height:80px;object-fit:contain}
-.brand-name{font-size:clamp(30px,3.5vw,44px);font-weight:800;white-space:nowrap}
-.brand-subtitle{font-size:11px;letter-spacing:3px}
-.navigation{
-  display:flex;
-  flex:0 0 58%;
-  gap:9px;
-  justify-content:flex-end;
-  align-items:center;
-}
-.navigation a{
-  height:52px;
-  padding:0 10px;
-  border:1px solid #ffffff66;
-  border-radius:7px;
-  color:white;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:bold;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:1;
-  white-space:nowrap;
-}
-.navigation a:hover,.navigation a.active{background:#ffffff33}
 
-main{padding:18px}
-.page-title{margin:0 0 5px;color:#142b49;font-size:27px}
-.page-subtitle{margin:0 0 15px;color:#668098;font-size:12px;letter-spacing:2px;font-weight:bold}
-
-.status-line{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  margin-bottom:12px;
-  padding:10px 14px;
-  background:white;
-  border-radius:9px;
-  box-shadow:0 3px 12px #142b4910;
-  font-size:13px;
+/* ヘッダー */
+.header {
+  width: 100%;
+  height: 120px;
+  min-height: 120px;
+  max-height: 120px;
+  padding: 8px 3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  overflow: hidden;
+  background: linear-gradient(110deg, #075d9b 0%, #087fc4 55%, #129bd2 100%);
 }
-.status-dot{width:10px;height:10px;border-radius:50%;background:#999;flex-shrink:0}
-.status-dot.online{background:#20a464;box-shadow:0 0 0 4px #20a46422}
-.status-dot.offline{background:#d33}
 
-.legend{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0;font-size:12px}
-.legend span{display:flex;align-items:center;gap:5px}
-.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex: 0 1 42%;
+  min-width: 0;
+  margin: 0;
+}
 
-#mapArea{
-  position:relative;
-  width:100%;
-  height:calc(100vh - 260px);
-  min-height:450px;
-  overflow:hidden;
-  border:1px solid #d7e2ec;
-  border-radius:12px;
-  background:#f9fbfd;
-  box-shadow:0 4px 18px #142b4910;
+.logo {
+  display: block;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
-#map{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
-#map.dragging{cursor:grabbing}
-.grid-line{stroke:#d9e1e9;stroke-width:2;vector-effect:non-scaling-stroke}
 
-/* マーカー */
-.player-marker,.train-marker{cursor:pointer}
-.player-name{
-  font-weight:bold;
-  fill:#24364b;
-  paint-order:stroke;
-  stroke:#fff;
-  stroke-width:5px;
-  stroke-linejoin:round;
-  text-anchor:middle;
-  pointer-events:none;
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
 }
-.marker-label{
-  font-weight:bold;
-  text-anchor:middle;
-  dominant-baseline:middle;
-  fill:white;
-  pointer-events:none;
+
+.brand-title {
+  margin: 0;
+  color: white;
+  font-size: clamp(30px, 3.5vw, 44px);
+  font-weight: 800;
+  letter-spacing: .06em;
+  line-height: 1.15;
+  white-space: nowrap;
 }
-.train-arrow{
-  fill:white;
-  stroke:white;
-  stroke-width:2;
-  stroke-linejoin:round;
-  pointer-events:none;
+
+.brand-subtitle {
+  margin-top: 5px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .2em;
+  white-space: nowrap;
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 58%;
+  min-width: 0;
+  gap: 9px;
+  margin: 0;
+}
+
+.navigation a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 52px;
+  padding: 8px 7px;
+  color: white;
+  text-decoration: none;
+  font-size: clamp(11px, 1.1vw, 15px);
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 7px;
+  background: rgba(255,255,255,.12);
+  transition: background .2s;
+}
+
+.navigation a:hover,
+.navigation a.active {
+  background: rgba(255,255,255,.28);
+}
+
+/* ページ */
+main {
+  padding: 16px 18px;
+}
+
+.page-title {
+  margin: 0 0 4px;
+  color: #142b49;
+  font-size: 27px;
+}
+
+.page-subtitle {
+  margin: 0 0 13px;
+  color: #668098;
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  background: white;
+  border-radius: 9px;
+  box-shadow: 0 3px 12px #142b4910;
+  font-size: 13px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #999;
+  flex-shrink: 0;
+}
+
+.status-dot.online {
+  background: #20a464;
+  box-shadow: 0 0 0 4px #20a46422;
+}
+
+.status-dot.offline {
+  background: #d33;
+}
+
+/* 凡例 */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 10px 0;
+  font-size: 12px;
+}
+
+.legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* マップ */
+#mapArea {
+  position: relative;
+  width: 100%;
+  height: calc(100dvh - 245px);
+  min-height: 430px;
+  overflow: hidden;
+  border: 1px solid #d7e2ec;
+  border-radius: 12px;
+  background: #f9fbfd;
+  box-shadow: 0 4px 18px #142b4910;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+
+#map.dragging {
+  cursor: grabbing;
+}
+
+.grid-line {
+  stroke: #d9e1e9;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.player-marker,
+.train-marker {
+  cursor: pointer;
+}
+
+.player-face {
+  image-rendering: pixelated;
+}
+
+/* 列車マーカーの種別文字 */
+.train-label {
+  font-weight: 900;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: white;
+  pointer-events: none;
 }
 
 /* プレイヤー一覧 */
-#playerPanel{
-  position:absolute;
-  top:12px;
-  left:12px;
-  width:min(300px,calc(100% - 24px));
-  max-height:65%;
-  display:flex;
-  flex-direction:column;
-  background:#ffffffed;
-  border:1px solid #d8e3ed;
-  border-radius:10px;
-  box-shadow:0 4px 18px #142b4930;
-  z-index:3;
-}
-.panel-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:11px 13px;
-  border-bottom:1px solid #e2e9f0;
-  font-weight:bold;
-  color:#142b49;
-}
-.panel-head button,.map-controls button{
-  border:1px solid #cbd8e5;
-  background:white;
-  color:#24415f;
-  border-radius:6px;
-  padding:6px 10px;
-  cursor:pointer;
-}
-#playerList{overflow:auto;padding:5px 10px}
-.player-row{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  padding:8px 3px;
-  border-bottom:1px solid #edf1f5;
-  min-width:0;
-}
-.player-row img{
-  width:36px;
-  height:36px;
-  object-fit:cover;
-  border-radius:7px;
-  background:#e8eef4;
-  image-rendering:pixelated;
-}
-.player-info{min-width:0;flex:1}
-.player-gamertag{font-size:12px;font-weight:bold;overflow-wrap:anywhere}
-.role{
-  display:inline-block;
-  margin-top:3px;
-  padding:2px 6px;
-  border-radius:4px;
-  background:#e8eef5;
-  color:#40566d;
-  font-size:10px;
-  font-weight:bold;
-}
-.role-owner{background:#ffe08a;color:#795000}
-.role-developer{background:#f3c4ec;color:#842c73}
-.role-moderator{background:#fbd8e7;color:#a34470}
-.role-leave{background:#d9dee3;color:#555f69}
-
-/* マップ操作 */
-.map-controls{
-  position:absolute;
-  right:12px;
-  top:12px;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  z-index:2;
-}
-.map-controls button{
-  width:40px;
-  height:40px;
-  font-size:20px;
+#playerPanel {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: min(300px, calc(100% - 24px));
+  max-height: 65%;
+  display: flex;
+  flex-direction: column;
+  background: #ffffffed;
+  border: 1px solid #d8e3ed;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px #142b4930;
+  z-index: 3;
 }
 
-/* 列車詳細 */
-#detailBackdrop{
-  position:absolute;
-  inset:0;
-  z-index:5;
-  background:#142b4955;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 13px;
+  border-bottom: 1px solid #e2e9f0;
+  font-weight: bold;
+  color: #142b49;
 }
-#detailPanel{
-  position:relative;
-  width:min(420px,100%);
-  max-height:85%;
-  overflow:auto;
-  padding:20px;
-  background:white;
-  border-radius:12px;
-  box-shadow:0 8px 35px #142b4940;
-  border-top:6px solid #2878c8;
-}
-#closeDetail{
-  position:absolute;
-  top:10px;
-  right:10px;
-  width:32px;
-  height:32px;
-  border:0;
-  background:#eaf0f6;
-  border-radius:6px;
-  cursor:pointer;
-  font-size:18px;
-}
-#detailContent{padding-top:10px}
-#detailContent h3{margin:0 40px 15px 0;color:#142b49;font-size:21px}
-#detailContent p{margin:9px 0;font-size:13px;overflow-wrap:anywhere}
 
-.footer{text-align:center;padding:15px;color:#7890a5;font-size:12px}
+.panel-head button,
+.map-controls button {
+  border: 1px solid #cbd8e5;
+  background: white;
+  color: #24415f;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
 
-@media(max-width:650px){
-  .header{
-    height:150px;
-    padding:8px;
-    flex-direction:column;
-    justify-content:center;
-    gap:7px;
+#playerList {
+  overflow: auto;
+  padding: 5px 10px;
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 3px;
+  border-bottom: 1px solid #edf1f5;
+  min-width: 0;
+}
+
+.player-row img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #e8eef4;
+  image-rendering: pixelated;
+}
+
+.player-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.player-gamertag {
+  font-size: 12px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.role {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #e8eef5;
+  color: #40566d;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.role-owner {
+  background: #ffe08a;
+  color: #795000;
+}
+
+.role-developer {
+  background: #f3c4ec;
+  color: #842c73;
+}
+
+.role-moderator {
+  background: #fbd8e7;
+  color: #a34470;
+}
+
+.role-leave {
+  background: #d9dee3;
+  color: #555f69;
+}
+
+/* マップ操作ボタン */
+.map-controls {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 2;
+}
+
+.map-controls button {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+}
+
+/* 詳細表示 */
+#detailBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,25,42,.42);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 20;
+}
+
+#detailCard {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 18px 60px #0004;
+}
+
+#detailAccent {
+  height: 9px;
+  background: #2878c8;
+}
+
+#detailClose {
+  position: absolute;
+  right: 13px;
+  top: 19px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: #edf2f7;
+  color: #24364b;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#detailContent {
+  padding: 24px;
+}
+
+#detailContent h3 {
+  margin: 0 45px 17px 0;
+  color: #142b49;
+  font-size: 23px;
+}
+
+#detailContent p {
+  margin: 9px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#detailContent .detail-type {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.footer {
+  text-align: center;
+  padding: 12px;
+  color: #7890a5;
+  font-size: 12px;
+}
+
+/* タブレット */
+@media(max-width:900px) {
+  .header-top {
+    flex-basis: 38%;
   }
-  .header-top{flex:0 0 auto;justify-content:center}
-  .brand img{width:48px;height:48px}
-  .brand-name{font-size:23px}
-  .brand-subtitle{font-size:9px}
-  .navigation{
-    flex:0 0 auto;
-    width:100%;
-    gap:4px;
+
+  .navigation {
+    gap: 5px;
   }
-  .navigation a{height:42px;padding:0 5px;font-size:10px}
-  main{padding:10px}
-  #mapArea{height:calc(100vh - 310px);min-height:400px}
-  .status-line{flex-wrap:wrap;font-size:11px}
+
+  .navigation a {
+    font-size: 11px;
+    padding: 6px 3px;
+  }
+}
+
+/* スマートフォン */
+@media(max-width:650px) {
+  .header {
+    height: 150px;
+    min-height: 150px;
+    max-height: 150px;
+    flex-basis: 150px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px 2%;
+  }
+
+  .header-top {
+    flex: 0 0 auto;
+    gap: 8px;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .brand-title {
+    font-size: 25px;
+  }
+
+  .brand-subtitle {
+    font-size: 9px;
+  }
+
+  .navigation {
+    width: 100%;
+    flex: 0 0 auto;
+    gap: 5px;
+  }
+
+  .navigation a {
+    height: 42px;
+    padding: 5px 3px;
+    font-size: 10px;
+  }
+
+  main {
+    padding: 10px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .status-line {
+    flex-wrap: wrap;
+    font-size: 11px;
+  }
+
+  #mapArea {
+    height: calc(100dvh - 285px);
+    min-height: 390px;
+  }
+
+  #playerPanel {
+    width: min(250px, calc(100% - 24px));
+  }
 }
 </style>
 </head>
 
 <body>
+
 <header class="header">
   <div class="header-top">
-    <div class="brand">
-      <img src="./icon.png" alt="波急サーバーロゴ">
-      <div>
-        <div class="brand-name">波急サーバー</div>
-        <div class="brand-subtitle">NAMIKYU RAILWAY</div>
-      </div>
+    <img class="logo" src="./icon.png" alt="波急電鉄ロゴ">
+    <div class="brand-text">
+      <h1 class="brand-title">波急サーバー</h1>
+      <div class="brand-subtitle">NAMIKYU RAILWAY</div>
     </div>
   </div>
+
   <nav class="navigation">
     <a href="./index.html">ホーム</a>
     <a href="./news.html">お知らせ</a>
@@ -290,14 +532,17 @@ main{padding:18px}
 </header>
 
 <main>
-  <h1 class="page-title">リアルタイム在線位置</h1>
-  <p class="page-subtitle">REALTIME TRAIN & PLAYER MAP</p>
+  <h2 class="page-title">リアルタイム在線位置</h2>
+  <p class="page-subtitle">REALTIME TRAIN &amp; PLAYER MAP</p>
 
   <div class="status-line">
     <span id="statusDot" class="status-dot"></span>
     <strong id="serverState">接続確認中...</strong>
     <span id="lastUpdate">データ取得待機中</span>
-    <span style="margin-left:auto">プレイヤー <b id="playerCount">0</b> 人 / 列車 <b id="trainCount">0</b> 編成</span>
+    <span style="margin-left:auto">
+      プレイヤー <b id="playerCount">0</b> 人 /
+      列車 <b id="trainCount">0</b> 編成
+    </span>
   </div>
 
   <div class="legend">
@@ -311,8 +556,7 @@ main{padding:18px}
   </div>
 
   <section id="mapArea">
-    <svg id="map" viewBox="-5000 -5000 10000 10000"
-         xmlns="http://www.w3.org/2000/svg" aria-label="在線マップ">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線マップ">
       <g id="grid"></g>
       <g id="markers"></g>
     </svg>
@@ -322,8 +566,11 @@ main{padding:18px}
         <span>在線プレイヤー (<span id="panelCount">0</span>)</span>
         <button id="togglePlayers">閉じる −</button>
       </div>
+
       <div id="playerList">
-        <p style="font-size:12px;color:#7890a5">プレイヤー情報を取得中...</p>
+        <p style="font-size:12px;color:#7890a5">
+          プレイヤー情報を取得中...
+        </p>
       </div>
     </aside>
 
@@ -332,485 +579,805 @@ main{padding:18px}
       <button id="zoomOut" title="縮小">－</button>
       <button id="resetView" title="全体表示">⌂</button>
     </div>
-
-    <div id="detailBackdrop">
-      <div id="detailPanel">
-        <button id="closeDetail" aria-label="閉じる">×</button>
-        <div id="detailContent"></div>
-      </div>
-    </div>
   </section>
 </main>
 
-<footer class="footer">© Namikyu Railway. All Rights Reserved.</footer>
+<footer class="footer">
+  © Namikyu Railway. All Rights Reserved.
+</footer>
+
+<div id="detailBackdrop" role="dialog" aria-modal="true" aria-label="列車・プレイヤー詳細">
+  <div id="detailCard">
+    <div id="detailAccent"></div>
+    <button id="detailClose" aria-label="閉じる">×</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
 
 <script>
 "use strict";
 
-const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status";
-const REFRESH_MS=2500;
+/* API設定 */
+const API_URL = "https://namikyu-status.kou20230831.workers.dev/api/status";
+const REFRESH_MS = 2500;
 
-let staffRoles={};
-let latestData=null;
-let initializedView=false;
+/* 状態 */
+let staffRoles = {};
+let latestData = null;
+let initializedView = false;
 
-const map=document.getElementById("map");
-const grid=document.getElementById("grid");
-const markers=document.getElementById("markers");
+let view = {
+  x: -5000,
+  y: -5000,
+  w: 10000,
+  h: 10000
+};
 
-let view={x:-5000,y:-5000,w:10000,h:10000};
-let drag=null;
+let drag = null;
 
-const MIN_VIEW_SIZE=100;
-const MAX_VIEW_SIZE=1000000;
+/* HTML要素 */
+const map = document.getElementById("map");
+const grid = document.getElementById("grid");
+const markers = document.getElementById("markers");
+const mapArea = document.getElementById("mapArea");
 
-function escapeHTML(value){
-  return String(value??"").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+/* HTMLエスケープ */
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
   })[c]);
 }
 
-function getScale(){
-  const rect=map.getBoundingClientRect();
-  return view.w/Math.max(rect.width,1);
-}
+/* 運営メンバーをstaff.htmlから取得 */
+async function loadStaff() {
+  try {
+    const response = await fetch("./staff.html");
 
-async function loadStaff(){
-  try{
-    const response=await fetch("./staff.html");
-    if(!response.ok)throw new Error("staff.htmlを取得できません");
-    const html=await response.text();
-    const doc=new DOMParser().parseFromString(html,"text/html");
+    if (!response.ok) {
+      throw new Error("staff.htmlを取得できません");
+    }
 
-    doc.querySelectorAll(".staff-card").forEach(card=>{
-      const name=card.querySelector(".staff-name")?.textContent.trim();
-      const role=card.querySelector(".role-badge")?.textContent.trim();
-      if(name&&role)staffRoles[name.toLowerCase()]=role;
+    const doc = new DOMParser().parseFromString(
+      await response.text(),
+      "text/html"
+    );
+
+    doc.querySelectorAll(".staff-card").forEach(card => {
+      const name = card.querySelector(".staff-name")?.textContent.trim();
+      const role = card.querySelector(".role-badge")?.textContent.trim();
+
+      if (name && role) {
+        staffRoles[name.toLowerCase()] = role;
+      }
     });
-  }catch(error){
-    console.warn("運営一覧の読み込みに失敗:",error);
+  } catch (error) {
+    console.warn("運営一覧の読み込みに失敗:", error);
   }
 }
 
-function getRole(name){
-  return staffRoles[String(name).toLowerCase()]||"参加者";
+/* プレイヤーの役職 */
+function getRole(name) {
+  return staffRoles[String(name).toLowerCase()] || "参加者";
 }
 
-function roleClass(role){
-  if(role==="オーナー")return "role-owner";
-  if(role==="デベロッパー"||role==="開発者")return "role-developer";
-  if(role==="モデレーター")return "role-moderator";
-  if(role==="休職中")return "role-leave";
+function roleClass(role) {
+  if (role === "オーナー") return "role-owner";
+  if (role === "デベロッパー") return "role-developer";
+  if (role === "モデレーター") return "role-moderator";
+  if (role === "休職中") return "role-leave";
   return "";
 }
 
-function faceURL(name){
-  return "https://mc-heads.net/avatar/"+encodeURIComponent(name)+"/64";
+/* Minecraftスキンの顔画像 */
+function faceURL(name) {
+  return "https://mc-heads.net/avatar/" +
+    encodeURIComponent(name) + "/64";
 }
 
-function getTrainType(train){
-  const tags=train.tags||[];
-  const z=Number(train.z);
+/* 列車種別判定 */
+function getTrainType(train) {
+  const tags = train.tags || [];
+  const z = Number(train.z);
 
-  if(tags.includes("ltd"))
-    return {name:"特急",color:"#f97316",initial:"特"};
-
-  if(tags.includes("exp"))
-    return {name:"急行",color:"#dc2626",initial:"急"};
-
-  if(tags.includes("sexp")){
-    if(z < -18 || z > 6131)
-      return {name:"各停",color:"#2878c8",initial:"各"};
-    return {name:"sexp",color:"#16a34a",initial:"S"};
+  if (tags.includes("ltd")) {
+    return {
+      name: "特急",
+      color: "#f97316",
+      initial: "特",
+      alias: "特急シティ"
+    };
   }
 
-  if(tags.includes("local2"))
-    return {name:"川鉄線各停",color:"#60a5fa",initial:"川"};
-
-  if(tags.includes("local"))
-    return {name:"各停",color:"#2878c8",initial:"各"};
-
-  const inMizuyamaArea=
-    Number(train.x)>=-608&&
-    Number(train.x)<=692&&
-    z>=3957&&
-    z<=5257;
-
-  if(inMizuyamaArea)
-    return {name:"普通",color:"#888888",initial:"普"};
-
-  return {name:"不明",color:"#000000",initial:"不"};
-}
-
-function getDirection(tags){
-  if(tags.includes("z"))return "z";
-  if(tags.includes("z-"))return "z-";
-  if(tags.includes("x"))return "x";
-  if(tags.includes("x-"))return "x-";
-  return "x";
-}
-
-/* グリッドは表示範囲に合わせて描画。数字は表示しない */
-function renderGrid(){
-  const minX=view.x;
-  const maxX=view.x+view.w;
-  const minY=view.y;
-  const maxY=view.y+view.h;
-
-  const startX=Math.floor(minX/1000)*1000;
-  const endX=Math.ceil(maxX/1000)*1000;
-  const startY=Math.floor(minY/1000)*1000;
-  const endY=Math.ceil(maxY/1000)*1000;
-
-  let html="";
-
-  for(let x=startX;x<=endX;x+=1000){
-    html+=`<line class="grid-line" x1="${x}" y1="${startY}" x2="${x}" y2="${endY}"/>`;
+  if (tags.includes("exp")) {
+    return {
+      name: "急行",
+      color: "#dc2626",
+      initial: "急"
+    };
   }
 
-  for(let y=startY;y<=endY;y+=1000){
-    html+=`<line class="grid-line" x1="${startX}" y1="${y}" x2="${endX}" y2="${y}"/>`;
-  }
-
-  grid.innerHTML=html;
-}
-
-/* マーカーの大きさは画面上のピクセル数で固定 */
-function renderMarkers(data){
-  const players=data.players||[];
-  const trains=data.trains||[];
-  const scale=getScale();
-
-  const playerSize=48*scale;
-  const faceSize=40*scale;
-  const nameSize=12*scale;
-  const trainW=42*scale;
-  const trainH=30*scale;
-  const arrowSize=12*scale;
-  const trainTextSize=11*scale;
-
-  let html="";
-
-  players.forEach(player=>{
-    const x=Number(player.x)||0;
-    const y=-(Number(player.z)||0);
-    const name=String(player.name||"不明");
-    const size=faceSize;
-
-    html+=`
-      <g class="player-marker" data-player="${escapeHTML(name)}">
-        <image href="${faceURL(name)}"
-          x="${x-size/2}" y="${y-size/2}"
-          width="${size}" height="${size}"
-          preserveAspectRatio="xMidYMid slice"/>
-        <text class="player-name"
-          x="${x}" y="${y+playerSize/2}"
-          font-size="${nameSize}">${escapeHTML(name)}</text>
-      </g>`;
-  });
-
-  trains.forEach((train,index)=>{
-    const x=Number(train.x)||0;
-    const y=-(Number(train.z)||0);
-    const type=getTrainType(train);
-    const direction=getDirection(train.tags||[]);
-    const number=train.realtime_tr??index+1;
-
-    let rotation=0;
-    if(direction==="z")rotation=-90;
-    if(direction==="z-")rotation=90;
-    if(direction==="x")rotation=0;
-    if(direction==="x-")rotation=180;
-
-    const left=-trainW/2;
-    const top=-trainH/2;
-
-    /* 四角形と矢印を一体化したマーカー */
-    const path=`
-      M ${left} ${top}
-      H ${trainW/2-arrowSize}
-      L ${trainW/2} 0
-      L ${trainW/2-arrowSize} ${trainH/2}
-      H ${left}
-      Z`;
-
-    html+=`
-      <g class="train-marker" data-train="${index}"
-         transform="translate(${x} ${y})">
-        <g transform="rotate(${rotation})">
-          <path d="${path}" fill="${type.color}"
-            stroke="white" stroke-width="${2*scale}"
-            stroke-linejoin="round"/>
-          <text class="marker-label" x="${-arrowSize/2}"
-            y="0" font-size="${trainTextSize}">
-            ${escapeHTML(type.initial)}
-          </text>
-        </g>
-        <text class="player-name" x="0"
-          y="${trainH/2+trainTextSize*1.5}"
-          font-size="${trainTextSize}">${escapeHTML(number)}</text>
-      </g>`;
-  });
-
-  markers.innerHTML=html;
-
-  markers.querySelectorAll(".train-marker").forEach(marker=>{
-    marker.addEventListener("click",()=>{
-      const train=trains[Number(marker.dataset.train)];
-      if(train)showTrainDetail(train);
-    });
-  });
-
-  markers.querySelectorAll(".player-marker").forEach(marker=>{
-    marker.addEventListener("click",()=>{
-      const player=players.find(p=>p.name===marker.dataset.player);
-      if(player)showPlayerDetail(player);
-    });
-  });
-}
-
-function renderMap(data){
-  const players=data.players||[];
-  const trains=data.trains||[];
-
-  if(!initializedView){
-    const points=[
-      ...players.map(p=>({x:Number(p.x)||0,y:-(Number(p.z)||0)})),
-      ...trains.map(t=>({x:Number(t.x)||0,y:-(Number(t.z)||0)}))
-    ];
-
-    if(points.length){
-      const minX=Math.min(...points.map(p=>p.x))-1000;
-      const maxX=Math.max(...points.map(p=>p.x))+1000;
-      const minY=Math.min(...points.map(p=>p.y))-1000;
-      const maxY=Math.max(...points.map(p=>p.y))+1000;
-
-      const width=Math.max(2000,maxX-minX);
-      const height=Math.max(2000,maxY-minY);
-      const size=Math.max(width,height);
-
-      view={
-        x:(minX+maxX)/2-size/2,
-        y:(minY+maxY)/2-size/2,
-        w:size,
-        h:size
+  if (tags.includes("sexp")) {
+    if (z < -18 || z > 6131) {
+      return {
+        name: "各停",
+        color: "#2878c8",
+        initial: "各"
       };
     }
 
-    initializedView=true;
+    return {
+      name: "sexp",
+      color: "#16a34a",
+      initial: "S"
+    };
   }
 
-  applyView();
-  renderMarkers(data);
+  if (tags.includes("local2")) {
+    return {
+      name: "川鉄線各停",
+      color: "#60a5fa",
+      initial: "川"
+    };
+  }
+
+  if (tags.includes("local")) {
+    return {
+      name: "各停",
+      color: "#2878c8",
+      initial: "各"
+    };
+  }
+
+  /* 水山線の普通列車判定。Y座標は使用しない */
+  const x = Number(train.x);
+
+  const inMizuyama =
+    x >= -608 &&
+    x <= 692 &&
+    z >= 3957 &&
+    z <= 5257;
+
+  if (inMizuyama) {
+    return {
+      name: "普通",
+      color: "#888888",
+      initial: "普"
+    };
+  }
+
+  return {
+    name: "不明",
+    color: "#000000",
+    initial: "不"
+  };
 }
 
-function applyView(){
-  map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
-  renderGrid();
-  if(latestData)renderMarkers(latestData);
+/* 列車の進行方向 */
+function getDirection(tags) {
+  if (tags.includes("z")) return -90;
+  if (tags.includes("z-")) return 90;
+  if (tags.includes("x")) return 0;
+  if (tags.includes("x-")) return 180;
+  return 0;
 }
 
-function showTrainDetail(train){
-  const type=getTrainType(train);
-  const tags=train.tags||[];
-  const speed=train.speed;
-  const direction=getDirection(tags);
-  const title=type.name==="特急"?"特急シティ":type.name;
-
-  document.getElementById("detailPanel").style.borderTopColor=type.color;
-
-  document.getElementById("detailContent").innerHTML=`
-    <h3>${escapeHTML(title)}</h3>
-    <p><b>種別：</b>${escapeHTML(type.name)}</p>
-    <p><b>列車番号：</b>${escapeHTML(train.realtime_tr??"不明")}</p>
-    <p><b>速度：</b>${speed==null?"未取得":escapeHTML(speed)+" km/h"}</p>
-    <p><b>方向：</b>${direction==="z"?"北向き":direction==="z-"?"南向き":direction==="x"?"東向き":direction==="x-"?"西向き":"不明"}</p>
-    <p><b>座標：</b>X ${escapeHTML(train.x)} / Y ${escapeHTML(train.y)} / Z ${escapeHTML(train.z)}</p>
-    <p><b>タグ：</b>${escapeHTML(tags.join(", ")||"なし")}</p>
-  `;
-
-  document.getElementById("detailBackdrop").style.display="flex";
+/* 現在の表示倍率 */
+function screenScale() {
+  const rect = map.getBoundingClientRect();
+  return view.w / Math.max(1, rect.width);
 }
 
-function showPlayerDetail(player){
-  const role=getRole(player.name);
-
-  document.getElementById("detailPanel").style.borderTopColor="#2878c8";
-
-  document.getElementById("detailContent").innerHTML=`
-    <h3>${escapeHTML(player.name)}</h3>
-    <p><b>役職：</b>${escapeHTML(role)}</p>
-    <p><b>ディメンション：</b>${escapeHTML(player.dimension||"overworld")}</p>
-    <p><b>座標：</b>X ${escapeHTML(player.x)} / Y ${escapeHTML(player.y)} / Z ${escapeHTML(player.z)}</p>
-  `;
-
-  document.getElementById("detailBackdrop").style.display="flex";
+/* 表示範囲 */
+function visibleBounds() {
+  return {
+    x: view.x,
+    y: view.y,
+    w: view.w,
+    h: view.h
+  };
 }
 
-function renderPlayerList(players){
-  const list=document.getElementById("playerList");
-  document.getElementById("playerCount").textContent=players.length;
-  document.getElementById("panelCount").textContent=players.length;
+/* グリッド描画。数字は表示しない */
+function renderGrid() {
+  const bounds = visibleBounds();
+  const step = 1000;
 
-  if(!players.length){
-    list.innerHTML='<p style="font-size:12px;color:#7890a5">現在プレイヤーはいません。</p>';
+  const left = Math.floor(bounds.x / step) * step;
+  const right = Math.ceil((bounds.x + bounds.w) / step) * step;
+  const top = Math.floor(bounds.y / step) * step;
+  const bottom = Math.ceil((bounds.y + bounds.h) / step) * step;
+
+  let output = "";
+
+  for (let x = left; x <= right; x += step) {
+    output += `
+      <line
+        class="grid-line"
+        x1="${x}"
+        y1="${top}"
+        x2="${x}"
+        y2="${bottom}"
+      />
+    `;
+  }
+
+  for (let y = top; y <= bottom; y += step) {
+    output += `
+      <line
+        class="grid-line"
+        x1="${left}"
+        y1="${y}"
+        x2="${right}"
+        y2="${y}"
+      />
+    `;
+  }
+
+  grid.innerHTML = output;
+}
+
+/* 初回表示位置を決める */
+function fitViewToData(data) {
+  const all = [
+    ...(data.players || []),
+    ...(data.trains || [])
+  ];
+
+  if (all.length === 0) {
+    view = {
+      x: -5000,
+      y: -5000,
+      w: 10000,
+      h: 10000
+    };
     return;
   }
 
-  list.innerHTML=players.map(player=>{
-    const role=getRole(player.name);
+  const xs = all.map(p => Number(p.x) || 0);
+  const ys = all.map(p => -(Number(p.z) || 0));
+
+  let minX = Math.min(...xs);
+  let maxX = Math.max(...xs);
+  let minY = Math.min(...ys);
+  let maxY = Math.max(...ys);
+
+  const padding = Math.max(
+    1000,
+    Math.max(maxX - minX, maxY - minY) * 0.12
+  );
+
+  minX -= padding;
+  maxX += padding;
+  minY -= padding;
+  maxY += padding;
+
+  const aspect =
+    Math.max(1, mapArea.clientWidth) /
+    Math.max(1, mapArea.clientHeight);
+
+  let width = Math.max(2000, maxX - minX);
+  let height = Math.max(2000, maxY - minY);
+
+  if (width / height < aspect) {
+    width = height * aspect;
+  } else {
+    height = width / aspect;
+  }
+
+  view = {
+    x: (minX + maxX - width) / 2,
+    y: (minY + maxY - height) / 2,
+    w: width,
+    h: height
+  };
+}
+
+/* マーカー描画 */
+function renderMarkers(data) {
+  const unit = screenScale();
+
+  /* プレイヤーの顔は画面上で一定サイズ */
+  const faceSize = 34 * unit;
+
+  /* 列車マーカーも画面上で一定サイズ */
+  const squareSize = 34 * unit;
+  const triangleSize = 14 * unit;
+  const markerHalf = squareSize / 2;
+
+  let output = "";
+
+  /* プレイヤー */
+  (data.players || []).forEach(player => {
+    const x = Number(player.x) || 0;
+    const y = -(Number(player.z) || 0);
+    const name = String(player.name || "不明");
+
+    output += `
+      <g
+        class="player-marker"
+        data-player="${escapeHTML(name)}"
+      >
+        <image
+          href="${faceURL(name)}"
+          x="${x - faceSize / 2}"
+          y="${y - faceSize / 2}"
+          width="${faceSize}"
+          height="${faceSize}"
+          preserveAspectRatio="xMidYMid slice"
+          class="player-face"
+        />
+      </g>
+    `;
+  });
+
+  /* 列車 */
+  (data.trains || []).forEach((train, index) => {
+    const x = Number(train.x) || 0;
+    const y = -(Number(train.z) || 0);
+
+    const type = getTrainType(train);
+    const direction = getDirection(train.tags || []);
+
+    /*
+      四角形と三角形を一体化した形。
+      外枠や白い背景、列車番号は描画しない。
+    */
+    const left = -markerHalf;
+    const top = -markerHalf;
+    const right = markerHalf;
+    const bottom = markerHalf;
+    const tip = right + triangleSize;
+
+    const path = [
+      `M ${left} ${top}`,
+      `H ${right}`,
+      `L ${tip} 0`,
+      `L ${right} ${bottom}`,
+      `H ${left}`,
+      "Z"
+    ].join(" ");
+
+    output += `
+      <g
+        class="train-marker"
+        data-train="${index}"
+        transform="translate(${x} ${y}) rotate(${direction})"
+      >
+        <path
+          d="${path}"
+          fill="${type.color}"
+        />
+
+        <text
+          class="train-label"
+          x="0"
+          y="0"
+          style="font-size:${16 * unit}px"
+        >${escapeHTML(type.initial)}</text>
+      </g>
+    `;
+  });
+
+  markers.innerHTML = output;
+
+  /* 列車クリック */
+  markers.querySelectorAll(".train-marker").forEach(element => {
+    element.addEventListener("click", () => {
+      const index = Number(element.dataset.train);
+      const train = data.trains[index];
+
+      if (train) {
+        showTrainDetail(train);
+      }
+    });
+  });
+
+  /* プレイヤークリック */
+  markers.querySelectorAll(".player-marker").forEach(element => {
+    element.addEventListener("click", () => {
+      const name = element.dataset.player;
+
+      const player = (data.players || []).find(
+        value => value.name === name
+      );
+
+      if (player) {
+        showPlayerDetail(player);
+      }
+    });
+  });
+}
+
+/* マップ全体を更新 */
+function applyView() {
+  map.setAttribute(
+    "viewBox",
+    `${view.x} ${view.y} ${view.w} ${view.h}`
+  );
+
+  renderGrid();
+
+  if (latestData) {
+    renderMarkers(latestData);
+  }
+}
+
+/* マップ描画 */
+function renderMap(data) {
+  if (!initializedView) {
+    fitViewToData(data);
+    initializedView = true;
+  }
+
+  applyView();
+}
+
+/* 詳細画面を開く */
+function openDetail(html, color) {
+  document.getElementById("detailAccent").style.background =
+    color || "#2878c8";
+
+  document.getElementById("detailContent").innerHTML = html;
+  document.getElementById("detailBackdrop").style.display = "flex";
+}
+
+/* 詳細画面を閉じる */
+function closeDetail() {
+  document.getElementById("detailBackdrop").style.display = "none";
+}
+
+/* 列車詳細 */
+function showTrainDetail(train) {
+  const type = getTrainType(train);
+  const tags = train.tags || [];
+  const speed = train.speed;
+  const heading = type.alias || type.name;
+
+  openDetail(`
+    <h3>${escapeHTML(heading)}</h3>
+
+    <span
+      class="detail-type"
+      style="background:${type.color}"
+    >${escapeHTML(type.name)}</span>
+
+    <p>
+      <b>列車番号：</b>
+      ${escapeHTML(train.realtime_tr ?? "不明")}
+    </p>
+
+    <p>
+      <b>速度：</b>
+      ${speed == null
+        ? "未取得"
+        : escapeHTML(speed) + " km/h"}
+    </p>
+
+    <p>
+      <b>座標：</b>
+      X ${escapeHTML(train.x)}
+      /
+      Y ${escapeHTML(train.y)}
+      /
+      Z ${escapeHTML(train.z)}
+    </p>
+
+    <p>
+      <b>タグ：</b>
+      ${escapeHTML(tags.join(", ") || "なし")}
+    </p>
+  `, type.color);
+}
+
+/* プレイヤー詳細 */
+function showPlayerDetail(player) {
+  const role = getRole(player.name);
+
+  openDetail(`
+    <h3>${escapeHTML(player.name)}</h3>
+
+    <span
+      class="detail-type"
+      style="background:#2878c8"
+    >${escapeHTML(role)}</span>
+
+    <p>
+      <b>ディメンション：</b>
+      ${escapeHTML(player.dimension || "overworld")}
+    </p>
+
+    <p>
+      <b>座標：</b>
+      X ${escapeHTML(player.x)}
+      /
+      Y ${escapeHTML(player.y)}
+      /
+      Z ${escapeHTML(player.z)}
+    </p>
+  `, "#2878c8");
+}
+
+/* プレイヤー一覧 */
+function renderPlayerList(players) {
+  document.getElementById("playerCount").textContent = players.length;
+  document.getElementById("panelCount").textContent = players.length;
+
+  const list = document.getElementById("playerList");
+
+  if (players.length === 0) {
+    list.innerHTML = `
+      <p style="font-size:12px;color:#7890a5">
+        現在プレイヤーはいません。
+      </p>
+    `;
+    return;
+  }
+
+  list.innerHTML = players.map(player => {
+    const role = getRole(player.name);
+
     return `
       <div class="player-row">
-        <img src="${faceURL(player.name)}" alt=""
-          onerror="this.style.display='none'">
+        <img
+          src="${faceURL(player.name)}"
+          alt=""
+          onerror="this.style.display='none'"
+        >
+
         <div class="player-info">
-          <div class="player-gamertag">${escapeHTML(player.name)}</div>
-          <span class="role ${roleClass(role)}">${escapeHTML(role)}</span>
+          <div class="player-gamertag">
+            ${escapeHTML(player.name)}
+          </div>
+
+          <span class="role ${roleClass(role)}">
+            ${escapeHTML(role)}
+          </span>
         </div>
-      </div>`;
+      </div>
+    `;
   }).join("");
 }
 
-async function updateStatus(){
-  try{
-    const response=await fetch(API_URL,{cache:"no-store"});
-    if(!response.ok)throw new Error("API error "+response.status);
+/* サーバー状態取得 */
+async function updateStatus() {
+  try {
+    const response = await fetch(API_URL, {
+      cache: "no-store"
+    });
 
-    const result=await response.json();
+    if (!response.ok) {
+      throw new Error("API error " + response.status);
+    }
 
-    if(!result.online||!result.data){
+    const result = await response.json();
+
+    if (!result.online || !result.data) {
       setOffline("サーバーオフライン");
       return;
     }
 
-    latestData=result.data;
+    latestData = result.data;
 
-    document.getElementById("statusDot").className="status-dot online";
-    document.getElementById("serverState").textContent="サーバーオンライン";
-    document.getElementById("lastUpdate").textContent=
-      "最終更新："+new Date(result.updated_at).toLocaleTimeString("ja-JP");
-    document.getElementById("trainCount").textContent=
-      (result.data.trains||[]).length;
+    document.getElementById("statusDot").className =
+      "status-dot online";
 
-    renderPlayerList(result.data.players||[]);
+    document.getElementById("serverState").textContent =
+      "サーバーオンライン";
+
+    document.getElementById("lastUpdate").textContent =
+      "最終更新：" +
+      new Date(result.updated_at).toLocaleTimeString("ja-JP");
+
+    document.getElementById("trainCount").textContent =
+      (result.data.trains || []).length;
+
+    renderPlayerList(result.data.players || []);
+
+    /*
+      初回だけ表示範囲を自動調整。
+      2回目以降は現在のズーム・位置を維持する。
+    */
     renderMap(result.data);
 
-  }catch(error){
+  } catch (error) {
     console.error(error);
     setOffline("データ取得エラー");
   }
 }
 
-function setOffline(message){
-  document.getElementById("statusDot").className="status-dot offline";
-  document.getElementById("serverState").textContent=message;
-  document.getElementById("lastUpdate").textContent="データを取得できません";
-  document.getElementById("playerCount").textContent="0";
-  document.getElementById("panelCount").textContent="0";
-  document.getElementById("trainCount").textContent="0";
-  document.getElementById("playerList").innerHTML=
-    '<p style="font-size:12px;color:#7890a5">在線データがありません。</p>';
-  markers.innerHTML="";
+/* オフライン表示 */
+function setOffline(message) {
+  document.getElementById("statusDot").className =
+    "status-dot offline";
+
+  document.getElementById("serverState").textContent = message;
+  document.getElementById("lastUpdate").textContent =
+    "データを取得できません";
+
+  document.getElementById("playerCount").textContent = "0";
+  document.getElementById("panelCount").textContent = "0";
+  document.getElementById("trainCount").textContent = "0";
+
+  document.getElementById("playerList").innerHTML = `
+    <p style="font-size:12px;color:#7890a5">
+      在線データがありません。
+    </p>
+  `;
+
+  markers.innerHTML = "";
 }
 
 /* プレイヤー一覧の開閉 */
-document.getElementById("togglePlayers").addEventListener("click",()=>{
-  const list=document.getElementById("playerList");
-  const button=document.getElementById("togglePlayers");
-  const hidden=list.style.display==="none";
+document.getElementById("togglePlayers").addEventListener("click", () => {
+  const list = document.getElementById("playerList");
+  const button = document.getElementById("togglePlayers");
 
-  list.style.display=hidden?"block":"none";
-  button.textContent=hidden?"閉じる −":"開く ＋";
+  const hidden = list.style.display === "none";
+
+  list.style.display = hidden ? "block" : "none";
+  button.textContent = hidden ? "閉じる −" : "開く ＋";
 });
 
-/* 詳細パネルを閉じる */
-document.getElementById("closeDetail").addEventListener("click",()=>{
-  document.getElementById("detailBackdrop").style.display="none";
+/* 詳細画面の閉じる操作 */
+document.getElementById("detailClose").addEventListener(
+  "click",
+  closeDetail
+);
+
+document.getElementById("detailBackdrop").addEventListener(
+  "click",
+  event => {
+    if (event.target.id === "detailBackdrop") {
+      closeDetail();
+    }
+  }
+);
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeDetail();
+  }
 });
-document.getElementById("detailBackdrop").addEventListener("click",event=>{
-  if(event.target.id==="detailBackdrop")
-    event.currentTarget.style.display="none";
-});
 
-/* ズーム */
-function zoom(factor){
-  const oldW=view.w;
-  const newW=Math.max(MIN_VIEW_SIZE,Math.min(MAX_VIEW_SIZE,oldW*factor));
-  const ratio=newW/oldW;
+/* 指定位置を中心にズーム */
+function zoomAt(factor, clientX, clientY) {
+  const rect = map.getBoundingClientRect();
 
-  const cx=view.x+view.w/2;
-  const cy=view.y+view.h/2;
+  const px = (clientX - rect.left) / rect.width;
+  const py = (clientY - rect.top) / rect.height;
 
-  view.w=newW;
-  view.h*=ratio;
-  view.x=cx-view.w/2;
-  view.y=cy-view.h/2;
+  const worldX = view.x + px * view.w;
+  const worldY = view.y + py * view.h;
+
+  const newWidth = view.w * factor;
+  const newHeight = view.h * factor;
+
+  view.x = worldX - px * newWidth;
+  view.y = worldY - py * newHeight;
+  view.w = newWidth;
+  view.h = newHeight;
 
   applyView();
 }
 
-document.getElementById("zoomIn").addEventListener("click",()=>zoom(.8));
-document.getElementById("zoomOut").addEventListener("click",()=>zoom(1.25));
+/* 拡大ボタン */
+document.getElementById("zoomIn").addEventListener("click", () => {
+  const rect = map.getBoundingClientRect();
 
-document.getElementById("resetView").addEventListener("click",()=>{
-  initializedView=false;
-  if(latestData)renderMap(latestData);
+  zoomAt(
+    0.75,
+    rect.left + rect.width / 2,
+    rect.top + rect.height / 2
+  );
 });
 
-/* ドラッグ移動 */
-map.addEventListener("pointerdown",event=>{
-  if(event.target.closest(".train-marker,.player-marker"))return;
+/* 縮小ボタン */
+document.getElementById("zoomOut").addEventListener("click", () => {
+  const rect = map.getBoundingClientRect();
 
-  drag={
-    x:event.clientX,
-    y:event.clientY,
-    viewX:view.x,
-    viewY:view.y
+  zoomAt(
+    1.33,
+    rect.left + rect.width / 2,
+    rect.top + rect.height / 2
+  );
+});
+
+/* 初期表示に戻す */
+document.getElementById("resetView").addEventListener("click", () => {
+  if (latestData) {
+    fitViewToData(latestData);
+    applyView();
+  }
+});
+
+/* ドラッグ開始 */
+map.addEventListener("pointerdown", event => {
+  if (event.target.closest(".train-marker, .player-marker")) {
+    return;
+  }
+
+  drag = {
+    x: event.clientX,
+    y: event.clientY,
+    viewX: view.x,
+    viewY: view.y
   };
 
   map.classList.add("dragging");
   map.setPointerCapture(event.pointerId);
 });
 
-map.addEventListener("pointermove",event=>{
-  if(!drag)return;
+/* ドラッグ中 */
+map.addEventListener("pointermove", event => {
+  if (!drag) return;
 
-  const rect=map.getBoundingClientRect();
-  const dx=(event.clientX-drag.x)/rect.width*view.w;
-  const dy=(event.clientY-drag.y)/rect.height*view.h;
+  const rect = map.getBoundingClientRect();
 
-  view.x=drag.viewX-dx;
-  view.y=drag.viewY-dy;
+  view.x =
+    drag.viewX -
+    (event.clientX - drag.x) / rect.width * view.w;
+
+  view.y =
+    drag.viewY -
+    (event.clientY - drag.y) / rect.height * view.h;
+
   applyView();
 });
 
-map.addEventListener("pointerup",()=>{
-  drag=null;
+/* ドラッグ終了 */
+function endDrag() {
+  drag = null;
   map.classList.remove("dragging");
-});
+}
 
-map.addEventListener("pointercancel",()=>{
-  drag=null;
-  map.classList.remove("dragging");
-});
+map.addEventListener("pointerup", endDrag);
+map.addEventListener("pointercancel", endDrag);
 
-/* マウスホイールでもズーム */
-map.addEventListener("wheel",event=>{
+/* マウスホイールでズーム */
+map.addEventListener("wheel", event => {
   event.preventDefault();
-  zoom(event.deltaY<0?.9:1.1);
-},{passive:false});
 
-/* 画面サイズ変更時もマーカーサイズを維持 */
-window.addEventListener("resize",()=>{
-  if(latestData)renderMarkers(latestData);
+  const factor = event.deltaY < 0 ? 0.9 : 1.1;
+
+  zoomAt(
+    factor,
+    event.clientX,
+    event.clientY
+  );
+}, {
+  passive: false
+});
+
+/* 画面サイズ変更 */
+window.addEventListener("resize", () => {
+  if (!latestData) return;
+
+  const centerX = view.x + view.w / 2;
+  const centerY = view.y + view.h / 2;
+
+  const aspect =
+    Math.max(1, mapArea.clientWidth) /
+    Math.max(1, mapArea.clientHeight);
+
+  view.h = view.w / aspect;
+  view.x = centerX - view.w / 2;
+  view.y = centerY - view.h / 2;
+
+  applyView();
 });
 
 /* 起動 */
-(async()=>{
+(async function start() {
   await loadStaff();
   await updateStatus();
-  setInterval(updateStatus,REFRESH_MS);
+
+  setInterval(updateStatus, REFRESH_MS);
 })();
 </script>
+
 </body>
 </html>
