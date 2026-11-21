@@ -29,11 +29,12 @@ html,body{
   padding:0;
   overflow:hidden;
   overscroll-behavior:none;
-  font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+  font-family:Inter,"Noto Sans JP","BIZ UDPGothic","Yu Gothic UI",Meiryo,sans-serif;
   color:var(--text);
   background:var(--background);
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
+  font-feature-settings:"palt";
 }
 
 button{font:inherit;cursor:pointer}
@@ -232,9 +233,20 @@ h2{
 
 #map.dragging{cursor:grabbing}
 
+/* 500m区画 */
 .grid-line{
+  fill:#edf3f8;
+  fill-opacity:.38;
   stroke:#dce5ed;
   stroke-width:1;
+  vector-effect:non-scaling-stroke;
+  pointer-events:none;
+}
+
+.origin-line{
+  fill:none;
+  stroke:#9aafc1;
+  stroke-width:1.7;
   vector-effect:non-scaling-stroke;
   pointer-events:none;
 }
@@ -268,7 +280,7 @@ h2{
   stroke:#26364a66;
   stroke-width:1.5px;
   paint-order:stroke fill;
-  font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+  font-family:Inter,"Noto Sans JP","BIZ UDPGothic","Yu Gothic UI",Meiryo,sans-serif;
   font-weight:900;
   text-anchor:middle;
   dominant-baseline:central;
@@ -281,7 +293,7 @@ h2{
   stroke:white;
   stroke-width:3px;
   paint-order:stroke fill;
-  font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+  font-family:Inter,"Noto Sans JP","BIZ UDPGothic","Yu Gothic UI",Meiryo,sans-serif;
   font-weight:800;
   text-anchor:middle;
   dominant-baseline:central;
@@ -819,7 +831,7 @@ h2{
     <span><i style="background:#dc2626"></i>急行</span>
     <span><i style="background:#16a34a"></i>準急</span>
     <span><i style="background:#2878c8"></i>各駅停車</span>
-    <span><i style="background:#888"></i>水山線</span>
+    <span><i style="background:#888"></i>水鉄水山線・普通</span>
     <span><i style="background:#222"></i>その他</span>
     <span>顔マーク：プレイヤー</span>
   </div>
@@ -881,6 +893,9 @@ const REFRESH_MS = 1000;
 
 const MIN_VIEW_WIDTH = 500;
 const MAX_VIEW_WIDTH = 50000;
+
+/* 500m区画の設定 */
+const GRID_SIZE = 500;
 
 const WATERLINE_MIN_X = -608;
 const WATERLINE_MAX_X = 692;
@@ -1041,12 +1056,12 @@ function xInWaterline(train) {
 function getTrainRoute(train) {
   const {x,z} = getCoordinates(train);
 
-  if (xInWaterline(train)) return "水山線";
-  if (x >= KAWATETSU_MIN_X) return "川鉄線";
-  if (z > UKYU_MIN_Z) return "雨急線";
-  if (z < YANODEN_MAX_Z) return "矢野電";
+  if (xInWaterline(train)) return "水鉄水山線";
+  if (x >= KAWATETSU_MIN_X) return "川鉄依丘線";
+  if (z > UKYU_MIN_Z) return "雨急雨波線";
+  if (z < YANODEN_MAX_Z) return "矢野電鉄";
 
-  return "波急線";
+  return "波急波川線";
 }
 
 /* ======================================
@@ -1342,52 +1357,74 @@ function fitViewToData() {
 }
 
 /* ======================================
-   グリッド
+   500m四方の区画グリッド
 ====================================== */
 
-function getGridStep() {
-  const target = getScale() * 90;
+/*
+  X=0・Z=0を基準に500m間隔で区切る。
 
-  const power = Math.pow(
-    10,
-    Math.floor(Math.log10(Math.max(1,target)))
-  );
+  X方向：
+    0～500
+    500～1000
+    -500～0
+    ...
 
-  const choices = [
-    power,
-    power * 2,
-    power * 5,
-    power * 10
-  ];
+  Z方向：
+    0～500
+    500～1000
+    -500～0
+    ...
 
-  return choices.find(step => step >= target) || power * 10;
-}
+  区画サイズは常にワールド座標で500×500。
+  画面サイズやズームによって変更しない。
+*/
 
 function renderGrid() {
-  const step = getGridStep();
+  const step = GRID_SIZE;
 
-  const left = Math.floor(view.x/step)*step;
-  const right = Math.ceil((view.x+view.w)/step)*step;
-  const top = Math.floor(view.y/step)*step;
-  const bottom = Math.ceil((view.y+view.h)/step)*step;
+  const left = Math.floor(view.x / step) * step;
+  const right = Math.ceil((view.x + view.w) / step) * step;
+  const top = Math.floor(view.y / step) * step;
+  const bottom = Math.ceil((view.y + view.h) / step) * step;
 
-  const paths = [];
-  let count = 0;
+  const cellPaths = [];
 
-  for (let x=left;x<=right && count<120;x+=step) {
-    paths.push(`M${x} ${top}V${bottom}`);
-    count++;
+  /*
+    表示範囲内の500m区画を描画する。
+    各区画は必ず500×500の固定サイズ。
+  */
+
+  for (let x = left; x < right; x += step) {
+    for (let z = top; z < bottom; z += step) {
+      cellPaths.push(
+        `M${x} ${z}h${step}v${step}h-${step}Z`
+      );
+    }
   }
 
-  count = 0;
+  /*
+    区画の境界線。
+    原点の線は別のパスで少し強調する。
+  */
 
-  for (let y=top;y<=bottom && count<120;y+=step) {
-    paths.push(`M${left} ${y}H${right}`);
-    count++;
-  }
+  const gridPath = cellPaths.join("");
 
-  gridLayer.innerHTML =
-    `<path class="grid-line" d="${paths.join("")}" fill="none"/>`;
+  const originPath = [
+    `M0 ${top}V${bottom}`,
+    `M${left} 0H${right}`
+  ].join("");
+
+  gridLayer.innerHTML = `
+    <path
+      class="grid-line"
+      d="${gridPath}"
+    />
+
+    <path
+      class="origin-line"
+      d="${originPath}"
+    />
+  `;
 }
 
 /* ======================================
@@ -1426,11 +1463,6 @@ function makeTrainMarker(train,index,scale) {
   const triangleLength = 17 * scale;
   const tip = half + triangleLength;
 
-  /*
-    四角形と三角形を一つのパスで描画。
-    内部に境界線は存在しない。
-  */
-
   const path = [
     `M ${-half} ${-half}`,
     `L ${half} ${-half}`,
@@ -1448,10 +1480,10 @@ function makeTrainMarker(train,index,scale) {
        data-index="${index}"
        tabindex="0"
        role="button"
+       pointer-events="all"
        aria-label="${escapeHtml(type.name)} ${escapeHtml(destination)}"
        transform="translate(${position.x} ${position.y})">
 
-      <!-- 車体とクリック領域を同時に回転 -->
       <g class="train-body" transform="rotate(${angle})">
 
         <path
@@ -1472,7 +1504,6 @@ function makeTrainMarker(train,index,scale) {
 
       </g>
 
-      <!-- 文字は回転させず、四角形の中心に表示 -->
       <text
         class="train-label"
         x="0"
@@ -1522,6 +1553,7 @@ function makePlayerMarker(player,index,scale) {
        data-index="${index}"
        tabindex="0"
        role="button"
+       pointer-events="all"
        aria-label="${escapeHtml(name)}"
        transform="translate(${position.x} ${position.y})">
 
@@ -1759,23 +1791,36 @@ function showTrainDetail(train,index) {
 ====================================== */
 
 /*
-  SVG内のクリック対象をcomposedPath()から探す。
-  SVGのpath・text・imageなど、どの部分を押しても
-  親のマーカーを取得できるようにする。
+  SVG内のクリック対象を取得する。
+  path・text・imageなどを押した場合でも、
+  親のdata-kindを持つマーカーを探す。
 */
 
 function findMarkerFromEvent(event) {
-  const path = typeof event.composedPath === "function"
-    ? event.composedPath()
-    : [event.target];
+  if (typeof event.composedPath === "function") {
+    const path = event.composedPath();
 
-  for (const node of path) {
+    for (const node of path) {
+      if (
+        node instanceof Element &&
+        node.matches("[data-kind][data-index]")
+      ) {
+        return node;
+      }
+    }
+  }
+
+  let node = event.target;
+
+  while (node && node !== map) {
     if (
       node instanceof Element &&
       node.matches("[data-kind][data-index]")
     ) {
       return node;
     }
+
+    node = node.parentElement;
   }
 
   return null;
@@ -1804,8 +1849,8 @@ function handleMarkerOpen(target) {
 }
 
 /*
-  markerLayerではなくmapにイベントを登録する。
-  マーカーの再描画後もイベント登録が失われない。
+  マップ全体でイベントを受け取る。
+  マーカーの再描画後もイベント登録は維持される。
 */
 
 map.addEventListener("click",event => {
@@ -2053,7 +2098,21 @@ map.addEventListener("pointerdown",event => {
 
   const marker = findMarkerFromEvent(event);
 
-  if (marker) return;
+  /*
+    マーカーを押した場合はドラッグしない。
+    前回のドラッグ判定も解除しておく。
+  */
+
+  if (marker) {
+    dragMoved = false;
+
+    if (dragResetTimer !== null) {
+      clearTimeout(dragResetTimer);
+      dragResetTimer = null;
+    }
+
+    return;
+  }
 
   const element = event.target instanceof Element
     ? event.target
