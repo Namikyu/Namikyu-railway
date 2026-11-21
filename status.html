@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -432,7 +433,8 @@ main {
   padding: 7px 13px;
   border: 3px solid currentColor;
   border-radius: 8px;
-  background: transparent;
+  background: var(--type-color, #2878c8);
+  color: #ffffff;
   font-size: 21px;
   font-weight: 900;
   white-space: nowrap;
@@ -676,6 +678,9 @@ const TRAIN_TEXT_PIXELS = 16.4;
 let staffRoles = {};
 let latestData = null;
 let initializedView = false;
+
+/* 現在詳細表示している列車の配列位置 */
+let selectedTrainIndex = null;
 
 let view = {
   x: -5000,
@@ -1020,6 +1025,9 @@ function renderMarkers(data) {
   const triangleSize = TRAIN_TRIANGLE_PIXELS * unit;
   const markerHalf = squareSize / 2;
 
+  /* 文字が四角の中に収まるようにする */
+  const textWidth = Math.max(1, squareSize - 2 * unit);
+
   let output = "";
 
   /* プレイヤー */
@@ -1042,7 +1050,7 @@ function renderMarkers(data) {
           y="${y - faceSize / 2}"
           width="${faceSize}"
           height="${faceSize}"
-          preserveAspectRatio="xMidYMid slice"
+          preserveAspectRatio="xMidY slice"
           class="player-face"
         />
       </g>
@@ -1085,12 +1093,20 @@ function renderMarkers(data) {
           fill="${type.color}"
         />
 
-        <text
-          class="train-label"
-          x="0"
-          y="0"
-          style="font-size:${TRAIN_TEXT_PIXELS * unit}px"
-        >${escapeHTML(type.initial)}</text>
+        <!--
+          外側の列車マークは進行方向に回転。
+          内側の文字は逆方向に回転させて正立させる。
+        -->
+        <g transform="rotate(${-direction})">
+          <text
+            class="train-label"
+            x="0"
+            y="0"
+            textLength="${textWidth}"
+            lengthAdjust="spacingAndGlyphs"
+            style="font-size:${TRAIN_TEXT_PIXELS * unit}px"
+          >${escapeHTML(type.initial)}</text>
+        </g>
       </g>
     `;
   });
@@ -1104,7 +1120,7 @@ function renderMarkers(data) {
       const train = data.trains[index];
 
       if (train) {
-        showTrainDetail(train);
+        showTrainDetail(train, index);
       }
     });
   });
@@ -1174,19 +1190,43 @@ function openDetail(html, color) {
 /* 詳細画面を閉じる */
 function closeDetail() {
   document.getElementById("detailBackdrop").style.display = "none";
+
+  /* 選択中の列車を解除 */
+  selectedTrainIndex = null;
 }
 
 /* 列車詳細 */
-function showTrainDetail(train) {
+function showTrainDetail(train, index = null) {
+  /*
+    列車をクリックしたときは選択位置を保存する。
+    定期更新から呼び出されたときは保存位置を維持する。
+  */
+  if (index !== null) {
+    selectedTrainIndex = index;
+  }
+
   const type = getTrainType(train);
-  const speed = train.speed;
+
+  /*
+    sokudo が59の場合は120 km/hと表示。
+    それ以外は従来の speed を使用。
+  */
+  const speed = Number(train.sokudo) === 59
+    ? 120
+    : train.speed;
+
   const destination = getTrainDestination(train, type);
 
   openDetail(`
     <div class="detail-train-heading">
       <span
         class="detail-type"
-        style="color:${type.color};border-color:${type.color}"
+        style="
+          --type-color:${type.color};
+          color:#ffffff;
+          background:${type.color};
+          border-color:${type.color};
+        "
       >${escapeHTML(type.name)}</span>
 
       <span class="detail-destination">
@@ -1216,6 +1256,9 @@ function showTrainDetail(train) {
 
 /* プレイヤー詳細 */
 function showPlayerDetail(player) {
+  /* プレイヤー詳細を開いたら列車の選択を解除 */
+  selectedTrainIndex = null;
+
   const role = getRole(player.name);
 
   openDetail(`
@@ -1223,7 +1266,12 @@ function showPlayerDetail(player) {
 
     <span
       class="detail-type"
-      style="color:#2878c8;border-color:#2878c8"
+      style="
+        --type-color:#2878c8;
+        color:#ffffff;
+        background:#2878c8;
+        border-color:#2878c8;
+      "
     >${escapeHTML(role)}</span>
 
     <div class="detail-information">
@@ -1320,7 +1368,23 @@ async function updateStatus() {
 
     renderPlayerList(result.data.players || []);
 
+    /* マップ上のプレイヤー・列車位置を更新 */
     renderMap(result.data);
+
+    /*
+      列車詳細画面を開いている場合、
+      選択中の列車の最新データで詳細画面を更新する。
+    */
+    if (selectedTrainIndex !== null) {
+      const selectedTrain = (result.data.trains || [])[selectedTrainIndex];
+
+      if (selectedTrain) {
+        showTrainDetail(selectedTrain);
+      } else {
+        /* 選択中の列車がデータから消えた場合は詳細を閉じる */
+        closeDetail();
+      }
+    }
 
   } catch (error) {
     console.error(error);
@@ -1349,6 +1413,9 @@ function setOffline(message) {
 
   latestData = null;
   markers.innerHTML = "";
+
+  /* オフラインになった場合は詳細画面も閉じる */
+  closeDetail();
 }
 
 /* プレイヤー一覧の開閉 */
