@@ -25,7 +25,7 @@ html, body {
   background: #eef2f7;
 }
 
-/* ヘッダー */
+/* ヘッダー：既存デザインを維持 */
 .header {
   width: 100%;
   height: 120px;
@@ -132,14 +132,15 @@ main {
   flex-shrink: 0;
   margin: 0 0 3px;
   color: #142b49;
-  font-size: 27px;
+  font-size: 23px;
+  font-weight: 800;
 }
 
 .page-subtitle {
   flex-shrink: 0;
   margin: 0 0 9px;
   color: #668098;
-  font-size: 12px;
+  font-size: 10px;
   letter-spacing: 2px;
   font-weight: bold;
 }
@@ -150,16 +151,17 @@ main {
   align-items: center;
   gap: 9px;
   margin-bottom: 8px;
-  padding: 9px 14px;
+  padding: 8px 13px;
   background: white;
+  border: 1px solid #e0e8f0;
   border-radius: 9px;
   box-shadow: 0 3px 12px #142b4910;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .status-dot {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: #999;
   flex-shrink: 0;
@@ -179,9 +181,10 @@ main {
   flex-shrink: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin: 7px 0 9px;
-  font-size: 12px;
+  gap: 11px;
+  margin: 6px 0 8px;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .legend span {
@@ -191,8 +194,8 @@ main {
 }
 
 .legend i {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   border-radius: 3px;
   display: inline-block;
 }
@@ -241,7 +244,7 @@ main {
 }
 
 .train-label {
-  font-weight: 900;
+  font-weight: 800;
   text-anchor: middle;
   dominant-baseline: central;
   fill: white;
@@ -253,7 +256,7 @@ main {
   position: absolute;
   top: 12px;
   left: 12px;
-  width: min(300px, calc(100% - 24px));
+  width: min(280px, calc(100% - 24px));
   max-height: 65%;
   display: flex;
   flex-direction: column;
@@ -270,8 +273,9 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 13px;
+  padding: 10px 12px;
   border-bottom: 1px solid #e2e9f0;
+  font-size: 12px;
   font-weight: bold;
   color: #142b49;
 }
@@ -298,14 +302,14 @@ main {
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 8px 3px;
+  padding: 7px 3px;
   border-bottom: 1px solid #edf1f5;
   min-width: 0;
 }
 
 .player-row img {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   object-fit: cover;
   border-radius: 6px;
   background: #e8eef4;
@@ -318,7 +322,7 @@ main {
 }
 
 .player-gamertag {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   overflow-wrap: anywhere;
 }
@@ -330,7 +334,7 @@ main {
   border-radius: 4px;
   background: #e8eef5;
   color: #40566d;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: bold;
 }
 
@@ -366,9 +370,10 @@ main {
 }
 
 .map-controls button {
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  font-size: 19px;
 }
 
 /* 詳細表示 */
@@ -385,49 +390,49 @@ main {
 
 #detailCard {
   position: relative;
-  width: min(520px, 100%);
+  width: min(480px, 100%);
   max-height: 85dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
   background: white;
-  border: 5px solid #2878c8;
-  border-radius: 18px;
+  border: 4px solid #2878c8;
+  border-radius: 15px;
   box-shadow: 0 18px 60px #0004;
 }
 
 #detailAccent {
-  height: 12px;
+  height: 8px;
   background: #2878c8;
 }
 
 #detailClose {
   position: absolute;
-  right: 13px;
-  top: 20px;
-  width: 36px;
-  height: 36px;
+  right: 12px;
+  top: 15px;
+  width: 32px;
+  height: 32px;
   border: 0;
   border-radius: 50%;
   background: #edf2f7;
   color: #24364b;
-  font-size: 23px;
+  font-size: 21px;
   line-height: 1;
   cursor: pointer;
 }
 
 #detailContent {
-  padding: 28px;
+  padding: 23px;
 }
 
 #detailContent h3 {
-  margin: 0 45px 17px 0;
+  margin: 0 42px 15px 0;
   color: #142b49;
-  font-size: 23px;
+  font-size: 19px;
 }
 
 #detailContent p {
-  margin: 12px 0;
-  font-size: 16px;
+  margin: 10px 0;
+  font-size: 13px;
   line-height: 1.7;
 }
 
@@ -437,9 +442,9 @@ main {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 12px;
   width: 100%;
-  margin: 12px 0 28px;
+  margin: 10px 0 22px;
   text-align: center;
 }
 
@@ -447,20 +452,20 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 7px 13px;
-  border: 3px solid var(--type-color, #2878c8);
-  border-radius: 8px;
+  padding: 6px 11px;
+  border: 2px solid var(--type-color, #2878c8);
+  border-radius: 7px;
   background: var(--type-color, #2878c8);
   color: #ffffff;
-  font-size: 21px;
-  font-weight: 900;
+  font-size: 17px;
+  font-weight: 800;
   white-space: nowrap;
   margin: 0;
 }
 
 .detail-destination {
   color: #142b49;
-  font-size: clamp(25px, 5vw, 36px);
+  font-size: clamp(22px, 4vw, 29px);
   font-weight: 900;
   line-height: 1.3;
   overflow-wrap: anywhere;
@@ -468,11 +473,11 @@ main {
 
 .detail-information {
   border-top: 1px solid #e4eaf0;
-  padding-top: 15px;
+  padding-top: 12px;
 }
 
 .detail-information p {
-  margin: 13px 0;
+  margin: 10px 0;
 }
 
 /* タブレット */
@@ -539,17 +544,17 @@ main {
   }
 
   .page-title {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .page-subtitle {
     margin-bottom: 6px;
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .status-line {
     flex-wrap: wrap;
-    font-size: 11px;
+    font-size: 10px;
     padding: 7px 10px;
     margin-bottom: 5px;
     gap: 6px;
@@ -558,12 +563,12 @@ main {
   .legend {
     gap: 7px;
     margin: 5px 0 7px;
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .legend i {
-    width: 10px;
-    height: 10px;
+    width: 9px;
+    height: 9px;
   }
 
   #mapArea {
@@ -572,23 +577,23 @@ main {
   }
 
   #playerPanel {
-    width: min(250px, calc(100% - 24px));
+    width: min(230px, calc(100% - 24px));
   }
 
   #detailContent {
-    padding: 22px 17px;
+    padding: 19px 15px;
   }
 
   .detail-train-heading {
-    gap: 10px;
+    gap: 9px;
   }
 
   #detailContent .detail-type {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .detail-destination {
-    font-size: 27px;
+    font-size: 24px;
   }
 }
 </style>
@@ -629,11 +634,11 @@ main {
   </div>
 
   <div class="legend">
-    <span><i style="background:#2878c8"></i>各停</span>
+    <span><i style="background:#2878c8"></i>各駅停車</span>
     <span><i style="background:#16a34a"></i>準急</span>
     <span><i style="background:#dc2626"></i>急行</span>
     <span><i style="background:#f97316"></i>特急</span>
-    <span><i style="background:#60a5fa"></i>川鉄線各停</span>
+    <span><i style="background:#60a5fa"></i>各駅停車（川鉄線）</span>
     <span><i style="background:#888"></i>普通</span>
     <span><i style="background:#000"></i>不明</span>
   </div>
@@ -656,7 +661,7 @@ main {
       </div>
 
       <div id="playerList">
-        <p style="font-size:12px;color:#7890a5">
+        <p style="font-size:11px;color:#7890a5">
           プレイヤー情報を取得中...
         </p>
       </div>
@@ -695,8 +700,9 @@ const MAX_VIEW_WIDTH = 50000;
 /* マーカーの画面上の大きさ */
 const PLAYER_FACE_PIXELS = 19.2;
 const TRAIN_SQUARE_PIXELS = 34;
+const TRAIN_LOCAL_SQUARE_PIXELS = 88;
 const TRAIN_TRIANGLE_PIXELS = 14;
-const TRAIN_TEXT_PIXELS = 19;
+const TRAIN_TEXT_PIXELS = 15;
 
 /* 状態 */
 let staffRoles = {};
@@ -803,9 +809,9 @@ function getTrainType(train) {
   if (tags.includes("sexp")) {
     if (z < -18 || z > 6131) {
       return {
-        name: "各停",
+        name: "各駅停車",
         color: "#2878c8",
-        initial: "各"
+        initial: "各駅停車"
       };
     }
 
@@ -818,17 +824,17 @@ function getTrainType(train) {
 
   if (tags.includes("local2")) {
     return {
-      name: "川鉄線各停",
+      name: "各駅停車",
       color: "#60a5fa",
-      initial: "川"
+      initial: "各駅停車"
     };
   }
 
   if (tags.includes("local")) {
     return {
-      name: "各停",
+      name: "各駅停車",
       color: "#2878c8",
-      initial: "各"
+      initial: "各駅停車"
     };
   }
 
@@ -859,7 +865,7 @@ function getTrainType(train) {
 
 /*
   進行方向タグの判定。
-  従来の判定を維持する。
+  上がz-、下がz+、右がx、左がx-。
 */
 function getDirection(tags) {
   if (tags.includes("z")) return -90;
@@ -871,18 +877,12 @@ function getDirection(tags) {
 
 /*
   列車の行先判定。
-
-  急行・各停の行先については、
-  x  を z  と同じ方向、
-  x- を z- と同じ方向として扱う。
-
-  従来の z / z- がある場合は、そちらを優先する。
-  方向表示用の getDirection() には影響しない。
+  xをzと同じ方向、x-をz-と同じ方向として扱う。
+  z / z- がある場合はそちらを優先する。
 */
 function getTrainDestination(train, type) {
   const tags = train.tags || [];
 
-  /* 水山線 */
   if (type.alias === "水山線") {
     return "草市～水山 往復";
   }
@@ -890,20 +890,13 @@ function getTrainDestination(train, type) {
   let towardPositiveZ = false;
   let towardNegativeZ = false;
 
-  /* 従来のZ方向タグを優先 */
   if (tags.includes("z")) {
     towardPositiveZ = true;
   } else if (tags.includes("z-")) {
     towardNegativeZ = true;
-  }
-
-  /*
-    川鉄線内の急行・各停用の行先判定。
-    x / x- を z / z- の代わりとして認識する。
-  */
-  else if (
+  } else if (
     type.name === "急行" ||
-    type.name === "各停"
+    type.name === "各駅停車"
   ) {
     if (tags.includes("x")) {
       towardPositiveZ = true;
@@ -916,7 +909,7 @@ function getTrainDestination(train, type) {
     return "行先不明";
   }
 
-  if (type.name === "各停") {
+  if (type.name === "各駅停車") {
     return towardPositiveZ ? "波丘" : "吉山";
   }
 
@@ -1021,8 +1014,8 @@ function fitViewToData(data) {
   const xs = all.map(p => Number(p.x) || 0);
 
   /*
-    Z座標を反転してマップに配置。
-    MinecraftのZプラス方向が画面下になる。
+    マップの縦座標はZ座標を反転して配置。
+    Zマイナスは画面上、Zプラスは画面下。
   */
   const ys = all.map(p => -(Number(p.z) || 0));
 
@@ -1068,13 +1061,7 @@ function renderMarkers(data) {
   /* プレイヤーの顔は画面上で一定サイズ */
   const faceSize = PLAYER_FACE_PIXELS * unit;
 
-  /* 列車マーカーも画面上で一定サイズ */
-  const squareSize = TRAIN_SQUARE_PIXELS * unit;
   const triangleSize = TRAIN_TRIANGLE_PIXELS * unit;
-  const markerHalf = squareSize / 2;
-
-  /* 文字が四角の中に収まるようにする */
-  const textWidth = Math.max(1, squareSize - 2 * unit);
 
   let output = "";
 
@@ -1115,6 +1102,23 @@ function renderMarkers(data) {
     const type = getTrainType(train);
     const direction = getDirection(train.tags || []);
 
+    const label = type.initial || type.name;
+    const isLongLocalLabel = label === "各駅停車";
+
+    /* 各駅停車だけ文字が収まる横長マーカーにする */
+    const squareSize = (
+      isLongLocalLabel
+        ? TRAIN_LOCAL_SQUARE_PIXELS
+        : TRAIN_SQUARE_PIXELS
+    ) * unit;
+
+    const markerHalf = squareSize / 2;
+
+    const textWidth = Math.max(
+      1,
+      squareSize - (isLongLocalLabel ? 8 : 2) * unit
+    );
+
     const left = -markerHalf;
     const top = -markerHalf;
     const right = markerHalf;
@@ -1150,7 +1154,7 @@ function renderMarkers(data) {
             textLength="${textWidth}"
             lengthAdjust="spacingAndGlyphs"
             style="font-size:${TRAIN_TEXT_PIXELS * unit}px"
-          >${escapeHTML(type.initial)}</text>
+          >${escapeHTML(label)}</text>
         </g>
       </g>
     `;
@@ -1235,8 +1239,38 @@ function openDetail(html, color) {
 /* 詳細画面を閉じる */
 function closeDetail() {
   document.getElementById("detailBackdrop").style.display = "none";
-
   selectedTrainIndex = null;
+}
+
+/*
+  速度表示用の値を整える。
+  sokudoが59なら120。
+  speedまたはsokudoが"-"なら0。
+  空欄や数値に変換できない値も0として扱う。
+*/
+function getDisplaySpeed(train) {
+  if (Number(train.sokudo) === 59 && String(train.sokudo).trim() !== "") {
+    return 120;
+  }
+
+  const rawSpeed = train.speed;
+
+  if (
+    rawSpeed === null ||
+    rawSpeed === undefined ||
+    String(rawSpeed).trim() === "" ||
+    String(rawSpeed).trim() === "-"
+  ) {
+    return 0;
+  }
+
+  const speed = Number(rawSpeed);
+
+  if (!Number.isFinite(speed)) {
+    return 0;
+  }
+
+  return speed;
 }
 
 /* 列車詳細 */
@@ -1250,12 +1284,7 @@ function showTrainDetail(train, index = null) {
   }
 
   const type = getTrainType(train);
-
-  /* sokudo が59の場合は120 km/hと表示 */
-  const speed = Number(train.sokudo) === 59
-    ? 120
-    : train.speed;
-
+  const speed = getDisplaySpeed(train);
   const destination = getTrainDestination(train, type);
 
   openDetail(`
@@ -1278,9 +1307,7 @@ function showTrainDetail(train, index = null) {
     <div class="detail-information">
       <p>
         <b>速度：</b>
-        ${speed == null
-          ? "未取得"
-          : escapeHTML(speed) + " km/h"}
+        ${speed} km/h
       </p>
 
       <p>
@@ -1341,7 +1368,7 @@ function renderPlayerList(players) {
 
   if (players.length === 0) {
     list.innerHTML = `
-      <p style="font-size:12px;color:#7890a5">
+      <p style="font-size:11px;color:#7890a5">
         現在プレイヤーはいません。
       </p>
     `;
@@ -1443,7 +1470,7 @@ function setOffline(message) {
   document.getElementById("trainCount").textContent = "0";
 
   document.getElementById("playerList").innerHTML = `
-    <p style="font-size:12px;color:#7890a5">
+    <p style="font-size:11px;color:#7890a5">
       在線データがありません。
     </p>
   `;
