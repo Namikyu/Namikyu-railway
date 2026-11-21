@@ -213,7 +213,7 @@ if(y.key==="sexp"||y.downgradedFromSemiExpress)return p?"雨山":"矢野";
 return"不明"}
 
 function getDisplaySpeed(t){
-const s=Number(t?.sokudo);
+const s=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));
 if(s===59)return 120;
 if(Number.isFinite(s)&&s<0)return 0;
 const p=Number(t?.speed);
