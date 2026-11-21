@@ -140,7 +140,7 @@ main{padding:7px}
 <div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><div class="modal-head"><h3 class="modal-title" id="modalTitle">詳細情報</h3><button class="modal-close" id="closeModal" type="button" aria-label="閉じる">×</button></div><div id="modalContent"></div></div></div>
 <script>
 "use strict";
-const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status",REFRESH_MS=3000,MIN_VIEW_WIDTH=500,MAX_VIEW_WIDTH=50000,GRID_SIZE=500,
+const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status",REFRESH_MS=2500,MIN_VIEW_WIDTH=500,MAX_VIEW_WIDTH=50000,GRID_SIZE=500,
 WATERLINE_MIN_X=-608,WATERLINE_MAX_X=692,WATERLINE_MIN_Z=3957,WATERLINE_MAX_Z=5257,KAWATETSU_MIN_X=50,UKYU_MIN_Z=6131,YANODEN_MAX_Z=-18,
 $=id=>document.getElementById(id),
 map=$("map"),gridLayer=$("gridLayer"),markerLayer=$("markerLayer"),connectionDot=$("connectionDot"),connectionText=$("connectionText"),lastUpdated=$("lastUpdated"),worldTimeText=$("worldTime"),weatherText=$("weatherText"),tpsText=$("tpsText"),playerCountText=$("playerCount"),trainCountText=$("trainCount"),playerPanelCount=$("playerPanelCount"),playerList=$("playerList"),playerPanel=$("playerPanel"),detailModal=$("detailModal"),modalContent=$("modalContent"),modalTitle=$("modalTitle");
