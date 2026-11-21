@@ -38,7 +38,6 @@ html,body{
 
 button{font:inherit;cursor:pointer}
 
-/* ヘッダー */
 header{
   height:110px;
   display:flex;
@@ -107,7 +106,6 @@ nav a{
 nav a:hover,nav a.active{background:#ffffff40}
 nav a:active{transform:scale(.97)}
 
-/* メイン */
 main{
   height:calc(100dvh - 110px);
   padding:14px 17px 16px;
@@ -133,7 +131,6 @@ h2{
   letter-spacing:2px;
 }
 
-/* ステータス */
 .status{
   display:flex;
   align-items:center;
@@ -166,7 +163,6 @@ h2{
 
 .dot.offline{background:#d33}
 
-/* オンライン人数 */
 .online-count{
   display:inline-flex;
   align-items:center;
@@ -185,7 +181,6 @@ h2{
   font-variant-numeric:tabular-nums;
 }
 
-/* 凡例 */
 .legend{
   display:flex;
   flex-wrap:wrap;
@@ -208,7 +203,6 @@ h2{
   border-radius:3px;
 }
 
-/* マップ */
 #mapArea{
   position:relative;
   flex:1;
@@ -291,7 +285,6 @@ h2{
   pointer-events:none;
 }
 
-/* 方角 */
 .compass{
   position:absolute;
   top:10px;
@@ -316,7 +309,6 @@ h2{
 .compass .east{grid-column:3;grid-row:2}
 .compass .south{grid-column:2;grid-row:3}
 
-/* 操作ボタン */
 .map-controls{
   position:absolute;
   right:12px;
@@ -357,7 +349,6 @@ h2{
   pointer-events:none;
 }
 
-/* プレイヤー一覧 */
 .player-panel{
   position:absolute;
   left:12px;
@@ -484,7 +475,6 @@ h2{
   color:#29445f;
 }
 
-/* 役職バッジ共通 */
 .player-role-badge{
   display:inline-flex;
   align-items:center;
@@ -501,28 +491,24 @@ h2{
   border:1px solid transparent;
 }
 
-/* オーナー */
 .player-role-badge.role-owner{
   color:#795000;
   background:#ffe08a;
   border-color:#f1c85d;
 }
 
-/* デベロッパー */
 .player-role-badge.role-developer{
   color:#842c73;
   background:#f3c4ec;
   border-color:#e5a5d9;
 }
 
-/* モデレーター */
 .player-role-badge.role-moderator{
   color:#a34470;
   background:#fbd8e7;
   border-color:#efb8cf;
 }
 
-/* 参加者・休職中 */
 .player-role-badge.role-participant{
   color:#555f69;
   background:#d9dee3;
@@ -538,7 +524,6 @@ h2{
 
 .player-panel.collapsed .player-list{display:none}
 
-/* 詳細モーダル */
 .modal{
   position:fixed;
   inset:0;
@@ -624,11 +609,8 @@ h2{
   overflow-wrap:anywhere;
 }
 
-.detail-player-role{
-  margin-top:6px;
-}
+.detail-player-role{margin-top:6px}
 
-/* 列車詳細 */
 .train-summary{
   display:flex;
   align-items:center;
@@ -695,7 +677,6 @@ h2{
   color:#8a9aaa;
 }
 
-/* 小さい画面 */
 @media(max-width:760px){
   header{
     height:90px;
@@ -958,6 +939,7 @@ let isFetching = false;
 let refreshTimer = null;
 let lastSuccessfulFetch = 0;
 let selectedEntityKey = null;
+let selectedTrainIdentity = null;
 
 /* ======================================
    共通関数
@@ -1214,31 +1196,146 @@ function getTrainDestination(train) {
 ====================================== */
 
 function getDisplaySpeed(train) {
-  const special = Number(train?.sokudo);
+  const sokudo = Number(train?.sokudo);
 
-  if (special === 59) return 120;
+  // sokudoスコアが59なら120km/h
+  if (sokudo === 59) {
+    return 120;
+  }
 
-  const raw = train?.speed;
-
-  if (
-    raw === null ||
-    raw === undefined ||
-    raw === "" ||
-    raw === "-" ||
-    raw === "—"
-  ) {
+  // sokudoスコアがマイナスなら0km/h
+  if (Number.isFinite(sokudo) && sokudo < 0) {
     return 0;
   }
 
-  const speed = Number(raw);
+  // それ以外はspeedの値を使用
+  const speed = Number(train?.speed);
 
-  if (!Number.isFinite(speed) || speed < 0) return 0;
+  // speedが未設定・数値でない・マイナスなら0km/h
+  if (!Number.isFinite(speed) || speed < 0) {
+    return 0;
+  }
 
   return speed;
 }
 
 /* ======================================
-   スタッフ情報・役職情報
+   列車の識別・追跡
+====================================== */
+
+function getTrainStableId(train) {
+  const value =
+    train?.uuid ??
+    train?.uniqueId ??
+    train?.unique_id ??
+    train?.entityId ??
+    train?.entity_id ??
+    train?.id ??
+    null;
+
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  return String(value);
+}
+
+function createTrainIdentity(train) {
+  const position = getCoordinates(train);
+
+  return {
+    stableId:getTrainStableId(train),
+    x:position.x,
+    z:position.z,
+    tags:normalizeTags(train).slice().sort().join("|"),
+    type:getTrainType(train).key,
+    direction:getTrainDirection(train)
+  };
+}
+
+function findSelectedTrain() {
+  if (!selectedTrainIdentity || trains.length === 0) {
+    return null;
+  }
+
+  const identity = selectedTrainIdentity;
+
+  // 固有IDがある場合はIDを最優先
+  if (identity.stableId !== null) {
+    const matchedIndex = trains.findIndex(train =>
+      getTrainStableId(train) === identity.stableId
+    );
+
+    if (matchedIndex !== -1) {
+      const train = trains[matchedIndex];
+
+      selectedTrainIdentity = createTrainIdentity(train);
+
+      return {
+        train,
+        index:matchedIndex
+      };
+    }
+  }
+
+  // 固有IDがない場合は特徴と座標で検索
+  let bestMatch = null;
+  let bestScore = Infinity;
+
+  trains.forEach((train,index) => {
+    const position = getCoordinates(train);
+    const tags = normalizeTags(train).slice().sort().join("|");
+    const type = getTrainType(train).key;
+    const direction = getTrainDirection(train);
+
+    const dx = position.x - identity.x;
+    const dz = position.z - identity.z;
+    const distance = Math.sqrt(dx * dx + dz * dz);
+
+    let score = distance;
+
+    if (identity.tags && tags !== identity.tags) {
+      score += 5000;
+    }
+
+    if (identity.type !== type) {
+      score += 1500;
+    }
+
+    if (identity.direction !== direction) {
+      score += 1500;
+    }
+
+    if (score < bestScore) {
+      bestScore = score;
+
+      bestMatch = {
+        train,
+        index,
+        distance,
+        score
+      };
+    }
+  });
+
+  if (!bestMatch) {
+    return null;
+  }
+
+  if (bestMatch.distance > 10000) {
+    return null;
+  }
+
+  selectedTrainIdentity = createTrainIdentity(bestMatch.train);
+
+  return {
+    train:bestMatch.train,
+    index:bestMatch.index
+  };
+}
+
+/* ======================================
+   スタッフ情報
 ====================================== */
 
 async function loadStaff() {
@@ -1261,10 +1358,7 @@ async function loadStaff() {
       if (!name) return;
 
       const badge = card.querySelector(".role-badge");
-
-      if (!badge) {
-        return;
-      }
+      if (!badge) return;
 
       const roleText = badge.textContent.trim();
 
@@ -1301,11 +1395,6 @@ async function loadStaff() {
   }
 }
 
-/*
-  オンラインプレイヤーの役職を取得する。
-  運営一覧にないプレイヤーは参加者として扱う。
-  休職中は参加者と同じ灰色にする。
-*/
 function getPlayerRoleInfo(player) {
   const staff = staffMap.get(getName(player).toLowerCase());
 
@@ -1411,7 +1500,7 @@ function fitViewToData() {
 }
 
 /* ======================================
-   固定500mグリッド
+   グリッド
 ====================================== */
 
 function renderGrid() {
@@ -1482,7 +1571,6 @@ function makeTrainMarker(train,index,scale) {
   const position = worldToMap(train);
   const type = getTrainType(train);
   const angle = getDirectionAngle(train);
-  const destination = getTrainDestination(train);
 
   const squareSize = 30 * scale;
   const half = squareSize / 2;
@@ -1506,7 +1594,7 @@ function makeTrainMarker(train,index,scale) {
        data-index="${index}"
        tabindex="0"
        role="button"
-       aria-label="${escapeHtml(type.name)} ${escapeHtml(destination)}"
+       aria-label="${escapeHtml(type.name)}"
        transform="translate(${position.x} ${position.y})">
 
       <g class="train-body" transform="rotate(${angle})">
@@ -1781,8 +1869,14 @@ function openModal() {
 function closeModal() {
   detailModal.classList.remove("open");
   document.body.style.overflow = "";
+
   selectedEntityKey = null;
+  selectedTrainIdentity = null;
 }
+
+/* ======================================
+   プレイヤー詳細
+====================================== */
 
 function showPlayerDetail(player) {
   const name = getName(player);
@@ -1793,6 +1887,8 @@ function showPlayerDetail(player) {
     `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
   selectedEntityKey = `player:${name}`;
+  selectedTrainIdentity = null;
+
   modalTitle.textContent = "プレイヤー情報";
 
   modalContent.innerHTML = `
@@ -1825,6 +1921,10 @@ function showPlayerDetail(player) {
   openModal();
 }
 
+/* ======================================
+   列車詳細
+====================================== */
+
 function showTrainDetail(train,index) {
   const type = getTrainType(train);
   const destination = getTrainDestination(train);
@@ -1840,7 +1940,9 @@ function showTrainDetail(train,index) {
     "z-":"北方向（Z−）"
   };
 
-  selectedEntityKey = `train:${index}`;
+  selectedEntityKey = "train";
+  selectedTrainIdentity = createTrainIdentity(train);
+
   modalTitle.textContent = "列車情報";
 
   modalContent.innerHTML = `
@@ -1905,44 +2007,43 @@ function refreshSelectedDetail() {
   if (!detailModal.classList.contains("open")) return;
   if (!selectedEntityKey) return;
 
-  const separatorIndex = selectedEntityKey.indexOf(":");
-  const kind = selectedEntityKey.slice(0,separatorIndex);
-  const identifier = selectedEntityKey.slice(separatorIndex+1);
+  if (selectedEntityKey.startsWith("player:")) {
+    const name = selectedEntityKey.slice("player:".length);
 
-  if (kind === "player") {
     const player = players.find(
-      item => getName(item) === identifier
+      item => getName(item) === name
     );
 
     if (player) {
       showPlayerDetail(player);
     } else {
       modalTitle.textContent = "プレイヤー情報";
+
       modalContent.innerHTML = `
         <div class="player-empty">
           このプレイヤーは現在オンラインではありません。
         </div>
       `;
-      selectedEntityKey = null;
     }
 
     return;
   }
 
-  if (kind === "train") {
-    const index = Number(identifier);
-    const train = trains[index];
+  if (selectedEntityKey === "train") {
+    const result = findSelectedTrain();
 
-    if (Number.isInteger(index) && train) {
-      showTrainDetail(train,index);
+    if (result) {
+      showTrainDetail(result.train,result.index);
     } else {
       modalTitle.textContent = "列車情報";
+
       modalContent.innerHTML = `
         <div class="player-empty">
-          この列車は現在在線情報にありません。
+          選択中の列車を確認しています。
+          <br>
+          次回の更新で再検索します。
         </div>
       `;
-      selectedEntityKey = null;
     }
   }
 }
@@ -2246,7 +2347,7 @@ window.addEventListener("pointerup",stopDragging);
 window.addEventListener("pointercancel",stopDragging);
 
 /* ======================================
-   キーボード操作・モーダル閉じる
+   キーボード操作
 ====================================== */
 
 window.addEventListener("keydown",event => {
