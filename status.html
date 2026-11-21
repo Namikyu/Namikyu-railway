@@ -11,19 +11,19 @@
 <script src="./theme.js" defer></script>
 <style>
 *{box-sizing:border-box}
-:root{--navy:#142b49;--blue:#087fc4;--light-blue:#eaf5fc;--text:#263e58;--muted:#8295a8;--border:#e1e9f1;--surface:#fff;--background:#f2f6fa}
+:root{--navy:#142b49;--blue:#087fc4;--text:#263e58;--muted:#8295a8;--border:#e1e9f1;--surface:#fff;--background:#f2f6fa}
 html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;overscroll-behavior:none;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;color:var(--text);background:var(--background);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 button{font:inherit;cursor:pointer}
-.header{width:100%;height:120px;min-height:120px;max-height:120px;padding:8px 3%;display:flex;align-items:center;justify-content:space-between;gap:18px;overflow:hidden;background:linear-gradient(110deg,#075d9b,#087fc4 55%,#129bd2);font-family:"Yu Gothic UI","Meiryo",sans-serif}
-.header-top{display:flex;align-items:center;justify-content:center;gap:14px;flex:0 1 42%;min-width:0;margin:0}
-.logo{display:block;width:80px;height:80px;object-fit:contain;flex-shrink:0}
+.header{height:120px;min-height:120px;max-height:120px;padding:8px 3%;display:flex;align-items:center;justify-content:space-between;gap:18px;overflow:hidden;background:linear-gradient(110deg,#075d9b,#087fc4 55%,#129bd2);font-family:"Yu Gothic UI","Meiryo",sans-serif}
+.header-top{display:flex;align-items:center;gap:14px;flex:0 1 42%;min-width:0}
+.logo{width:80px;height:80px;object-fit:contain;flex-shrink:0}
 .brand-text{display:flex;flex-direction:column;justify-content:center;min-width:0}
 .brand-title{margin:0;color:#fff;font-size:clamp(30px,3.5vw,44px);font-weight:800;letter-spacing:.06em;line-height:1.15;white-space:nowrap}
 .brand-subtitle{margin-top:5px;color:#fff;font-size:13px;font-weight:600;letter-spacing:.2em;white-space:nowrap}
-.navigation{display:flex;justify-content:center;align-items:center;flex:1 1 58%;min-width:0;gap:9px;margin:0}
+.navigation{display:flex;justify-content:center;align-items:center;flex:1 1 58%;min-width:0;gap:9px}
 .navigation a{display:flex;justify-content:center;align-items:center;flex:1 1 0;min-width:0;height:52px;padding:8px 7px;color:#fff;text-decoration:none;font-size:clamp(11px,1.1vw,15px);font-weight:700;white-space:nowrap;border:1px solid #ffffff73;border-radius:7px;background:#ffffff1f;transition:background .2s}
 .navigation a:hover,.theme-toggle:hover{background:#ffffff47}
-.theme-toggle{display:flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;padding:0;color:#fff;font-size:20px;font-weight:700;border:1px solid #ffffff8c;border-radius:7px;background:#ffffff1f;cursor:pointer;transition:background .2s,transform .2s}
+.theme-toggle{display:flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;padding:0;color:#fff;font-size:20px;font-weight:700;border:1px solid #ffffff8c;border-radius:7px;background:#ffffff1f;transition:background .2s,transform .2s}
 .theme-toggle:active{transform:scale(.95)}
 main{height:calc(100dvh - 120px);padding:14px 17px 16px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 h2{margin:0;color:var(--navy);font-size:22px;font-weight:850;letter-spacing:.025em}
@@ -62,7 +62,7 @@ h2{margin:0;color:var(--navy);font-size:22px;font-weight:850;letter-spacing:.025
 .player-panel.collapsed{width:135px}
 .player-panel-head{min-height:45px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 11px;border-bottom:1px solid #e8eef4;color:#29445f;font-size:11px;font-weight:850}
 .player-panel-heading{display:flex;align-items:center;gap:7px;min-width:0}
-.player-panel-heading::before{content:"";width:7px;height:7px;flex-shrink:0;border-radius:50%;background:#20a464;box-shadow:0 0 0 3px #20a46420}
+.player-panel-heading:before{content:"";width:7px;height:7px;flex-shrink:0;border-radius:50%;background:#20a464;box-shadow:0 0 0 3px #20a46420}
 .player-panel-count{padding:3px 7px;border-radius:6px;background:#e9f8f0;color:#16834e;font-size:10px;font-weight:900;font-variant-numeric:tabular-nums}
 .player-panel-head button{width:25px;height:25px;border:0;border-radius:6px;background:#edf3f8;color:#55718b;font-size:15px;font-weight:800}
 .player-panel-head button:hover{background:#dceaf5}
@@ -100,7 +100,7 @@ h2{margin:0;color:var(--navy);font-size:22px;font-weight:850;letter-spacing:.025
 .detail-label{font-size:9px;color:#899aab;font-weight:750;letter-spacing:.04em}
 .detail-value{margin-top:5px;font-size:13px;color:#29445f;font-weight:850;overflow-wrap:anywhere;word-break:break-word;font-variant-numeric:tabular-nums}
 .detail-note{margin-top:12px;font-size:10px;color:#8a9aaa}
-html[data-theme="dark"]{--navy:#eaf3ff;--blue:#2699df;--light-blue:#263d53;--text:#e4edf7;--muted:#a4b8cc;--border:#354b62;--surface:#1c2b3e;--background:#111c2b;color-scheme:dark}
+html[data-theme="dark"]{--navy:#eaf3ff;--blue:#2699df;--text:#e4edf7;--muted:#a4b8cc;--border:#354b62;--surface:#1c2b3e;--background:#111c2b;color-scheme:dark}
 html[data-theme="dark"] body{background:#111c2b;color:#e4edf7}
 html[data-theme="dark"] h2{color:#eaf3ff}
 html[data-theme="dark"] .subtitle{color:#a4b8cc}
@@ -200,90 +200,479 @@ main{height:calc(100dvh - 150px)}
 </div>
 <script>
 "use strict";
-const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status",REFRESH_MS=1000,MIN_VIEW_WIDTH=500,MAX_VIEW_WIDTH=50000,GRID_SIZE=500,WATERLINE_MIN_X=-608,WATERLINE_MAX_X=692,WATERLINE_MIN_Z=3957,WATERLINE_MAX_Z=5257,KAWATETSU_MIN_X=50,UKYU_MIN_Z=6131,YANODEN_MAX_Z=-18,
-$=id=>document.getElementById(id),
-map=$("map"),gridLayer=$("gridLayer"),markerLayer=$("markerLayer"),connectionDot=$("connectionDot"),connectionText=$("connectionText"),lastUpdated=$("lastUpdated"),worldTimeText=$("worldTime"),weatherText=$("weatherText"),tpsText=$("tpsText"),playerCountText=$("playerCount"),trainCountText=$("trainCount"),playerPanelCount=$("playerPanelCount"),playerList=$("playerList"),playerPanel=$("playerPanel"),detailModal=$("detailModal"),modalContent=$("modalContent"),modalTitle=$("modalTitle");
-let latestData=null,players=[],trains=[],staffMap=new Map(),view={x:-5000,y:-5000,w:10000,h:10000},dragging=false,dragStart=null,dragMoved=false,dragResetTimer=null,isFetching=false,refreshTimer=null,lastSuccessfulFetch=0,selectedEntityKey=null,selectedTrainIdentity=null;
-const escapeHtml=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;"),
-numberValue=(v,f=0)=>{const n=Number(v);return Number.isFinite(n)?n:f},
-formatNumber=(v,d=1)=>{const n=Number(v);return Number.isFinite(n)?n.toFixed(d):"--"},
-getName=e=>String(e?.name??e?.playerName??e?.player??e?.id??"不明"),
-getCoordinates=e=>{const l=e?.location??e?.position??e??{};return{x:numberValue(l.x,0),z:numberValue(l.z,0)}},
-clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),
-faceUrl=n=>`https://mc-heads.net/avatar/${encodeURIComponent(n)}/64`;
-function normalizeTags(e){const r=e?.tags??e?.tag??[];if(Array.isArray(r))return r.map(v=>String(v).toLowerCase());if(typeof r==="string")return r.split(/[,\s]+/).map(v=>v.trim().toLowerCase()).filter(Boolean);return[]}
-function normalizeCollection(v){if(Array.isArray(v))return v;if(v&&typeof v==="object")return Object.entries(v).map(([k,i])=>i&&typeof i==="object"?{...i,id:i.id??k}:{id:k,value:i});return[]}
-function getMapSize(){const r=map.getBoundingClientRect(),w=Math.max(1,r.width),h=Math.max(1,r.height);return{width:w,height:h,aspect:w/h}}
-const getScale=()=>view.w/getMapSize().width,TYPE_TAGS=["ltd","exp","sexp","local2","local"];
-function xInWaterline(t){const{x,z}=getCoordinates(t);return x>=WATERLINE_MIN_X&&x<=WATERLINE_MAX_X&&z>=WATERLINE_MIN_Z&&z<=WATERLINE_MAX_Z&&!normalizeTags(t).some(g=>TYPE_TAGS.includes(g))}
-function getTrainRoute(t){const{x,z}=getCoordinates(t);if(xInWaterline(t))return"水鉄水山線";if(x>=KAWATETSU_MIN_X)return"川鉄依丘線";if(z>UKYU_MIN_Z)return"雨急雨波線";if(z<YANODEN_MAX_Z)return"矢野電鉄";return"波急波川線"}
-function getTrainType(t){const g=normalizeTags(t),{z}=getCoordinates(t);if(g.includes("ltd"))return{key:"ltd",name:"特急",label:"特",color:"#f97316"};if(g.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"};if(g.includes("sexp"))return z<-18||z>6131?{key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8",downgradedFromSemiExpress:true}:{key:"sexp",name:"準急",label:"準",color:"#16a34a"};if(g.includes("local2"))return{key:"local2",name:"各駅停車",label:"各",color:"#60a5fa"};if(g.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};if(xInWaterline(t))return{key:"waterline",name:"普通",label:"普",color:"#888888"};return{key:"unknown",name:"その他",label:"不",color:"#222222"}}
-function getTrainDirection(t){const g=normalizeTags(t);if(g.includes("z-"))return"z-";if(g.includes("z+")||g.includes("z"))return"z+";if(g.includes("x-"))return"x-";return"x+"}
-const ANGLES={"x+":0,"z+":90,"x-":180,"z-":-90},getDirectionAngle=t=>ANGLES[getTrainDirection(t)]??0,isPositiveDirection=t=>["z+","x+"].includes(getTrainDirection(t));
-function getTrainDestination(t){const y=getTrainType(t),p=isPositiveDirection(t);if(y.key==="waterline")return"草市～水山 往復";if(y.key==="local2")return p?"依丘":"草市";if(y.key==="local")return p?"波丘":"吉山";if(y.key==="exp")return p?"依丘":"吉山";if(y.key==="ltd")return p?"雨山":"吉山";if(y.key==="sexp"||y.downgradedFromSemiExpress)return p?"雨山":"矢野";return"不明"}
-function getDisplaySpeed(t){const s=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));if(s===59)return 120;if(Number.isFinite(s)&&s<0)return 0;const p=Number(t?.speed);return!Number.isFinite(p)||p<0?0:p}
-function getTrainStableId(t){const v=t?.id??t?.uuid??t?.uniqueId??t?.unique_id??t?.entityId??t?.entity_id??null;return v===null||v===undefined||v===""?null:String(v)}
-function createTrainIdentity(t){const p=getCoordinates(t);return{stableId:getTrainStableId(t),x:p.x,z:p.z,tags:normalizeTags(t).slice().sort().join("|"),type:getTrainType(t).key,direction:getTrainDirection(t)}}
-function findSelectedTrain(){if(!selectedTrainIdentity||!trains.length||selectedTrainIdentity.stableId===null)return null;const i=trains.findIndex(t=>getTrainStableId(t)===selectedTrainIdentity.stableId);if(i===-1)return null;const train=trains[i];selectedTrainIdentity=createTrainIdentity(train);return{train,index:i}}
-async function loadStaff(){try{const r=await fetch("./staff.html",{cache:"no-store"});if(!r.ok)throw Error(`HTTP ${r.status}`);const doc=new DOMParser().parseFromString(await r.text(),"text/html"),m=new Map();doc.querySelectorAll(".staff-card").forEach(card=>{const n=card.querySelector(".staff-name");if(!n)return;const name=n.textContent.trim();if(!name)return;const b=card.querySelector(".role-badge");if(!b)return;const t=b.textContent.trim();let c="role-participant";if(b.classList.contains("role-owner"))c="role-owner";else if(b.classList.contains("role-developer"))c="role-developer";else if(b.classList.contains("role-moderator"))c="role-moderator";else if(b.classList.contains("role-leave"))c="role-participant";else if(t.includes("オーナー"))c="role-owner";else if(t.includes("デベロッパー"))c="role-developer";else if(t.includes("モデレーター"))c="role-moderator";m.set(name.toLowerCase(),{label:t||"運営",className:c})});staffMap=m}catch(e){console.warn("スタッフ情報の取得に失敗:",e)}}
-const getPlayerRoleInfo=p=>staffMap.get(getName(p).toLowerCase())||{label:"参加者",className:"role-participant"};
-function extractDataLists(d){const r=d?.data??d?.status??d??{};players=normalizeCollection(r.players??r.player??r.onlinePlayers??[]);trains=normalizeCollection(r.trains??r.train??r.carts??[]);return r}
-const worldToMap=e=>{const p=getCoordinates(e);return{x:p.x,y:p.z}};
-function fitViewToData(){const size=getMapSize(),pts=[];players.forEach(p=>pts.push(worldToMap(p)));trains.forEach(t=>pts.push(worldToMap(t)));if(!pts.length){view.w=10000;view.h=view.w/size.aspect;view.x=-view.w/2;view.y=-view.h/2;applyView();return}const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),cx=(minX+maxX)/2,cy=(minY+maxY)/2,dw=maxX-minX,dh=maxY-minY,pad=Math.max(1000,Math.max(dw,dh)*.12);let w=dw+pad*2;w=Math.max(w,(dh+pad*2)*size.aspect);w=clamp(w,MIN_VIEW_WIDTH,MAX_VIEW_WIDTH);view.w=w;view.h=w/size.aspect;view.x=cx-view.w/2;view.y=cy-view.h/2;applyView()}
-function renderGrid(){const l=view.x,r=l+view.w,t=view.y,b=t+view.h,paths=[],fx=Math.floor(l/GRID_SIZE),lx=Math.ceil(r/GRID_SIZE),fz=Math.floor(t/GRID_SIZE),lz=Math.ceil(b/GRID_SIZE);for(let i=fx;i<=lx;i++)paths.push(`M ${i*GRID_SIZE} ${t} V ${b}`);for(let i=fz;i<=lz;i++)paths.push(`M ${l} ${i*GRID_SIZE} H ${r}`);gridLayer.innerHTML=`<path class="grid-line" d="${paths.join(" ")}" fill="none"/>`}
-function applyView(renderMarkers=true){view.h=view.w/getMapSize().aspect;map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);renderGrid();if(renderMarkers&&latestData)renderMarkersNow()}
 
-/* 列車表示95%。クリック範囲は100%を維持 */
-function makeTrainMarker(train,index,scale){
-const pos=worldToMap(train),type=getTrainType(train),angle=getDirectionAngle(train),
-hitHalf=15*scale,hitTip=hitHalf+17*scale,
-visualHalf=14.25*scale,visualTip=visualHalf+16.15*scale,
-hitPath=`M ${-hitHalf} ${-hitHalf} L ${hitHalf} ${-hitHalf} L ${hitTip} 0 L ${hitHalf} ${hitHalf} L ${-hitHalf} ${hitHalf} Z`,
-visualPath=`M ${-visualHalf} ${-visualHalf} L ${visualHalf} ${-visualHalf} L ${visualTip} 0 L ${visualHalf} ${visualHalf} L ${-visualHalf} ${visualHalf} Z`;
-return`<g class="train-marker" data-kind="train" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(type.name)}" transform="translate(${pos.x} ${pos.y})"><g class="train-body" transform="rotate(${angle})"><path class="train-hit-area" d="${hitPath}" stroke-width="${14*scale}"/><path class="train-visual" d="${visualPath}" fill="${type.color}" stroke="#fff" stroke-width="${1.14*scale}" stroke-linejoin="round" stroke-linecap="round"/></g><text class="train-label" x="0" y="0" font-size="${16.15*scale}">${escapeHtml(type.label)}</text></g>`
+const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status";
+const REFRESH_MS=1000,MIN_VIEW_WIDTH=500,MAX_VIEW_WIDTH=50000,GRID_SIZE=500;
+const WATERLINE_MIN_X=-608,WATERLINE_MAX_X=692,WATERLINE_MIN_Z=3957,WATERLINE_MAX_Z=5257;
+const KAWATETSU_MIN_X=50,UKYU_MIN_Z=6131,YANODEN_MAX_Z=-18;
+const $=id=>document.getElementById(id);
+const map=$("map"),gridLayer=$("gridLayer"),markerLayer=$("markerLayer");
+const connectionDot=$("connectionDot"),connectionText=$("connectionText");
+const lastUpdated=$("lastUpdated"),worldTimeText=$("worldTime"),weatherText=$("weatherText"),tpsText=$("tpsText");
+const playerCountText=$("playerCount"),trainCountText=$("trainCount"),playerPanelCount=$("playerPanelCount");
+const playerList=$("playerList"),playerPanel=$("playerPanel"),detailModal=$("detailModal");
+const modalContent=$("modalContent"),modalTitle=$("modalTitle");
+
+let latestData=null,players=[],trains=[],staffMap=new Map();
+let view={x:-5000,y:-5000,w:10000,h:10000};
+let dragging=false,dragStart=null,dragMoved=false,dragResetTimer=null;
+let isFetching=false,refreshTimer=null,lastSuccessfulFetch=0;
+let selectedEntityKey=null,selectedTrainIdentity=null,resizeFrame=null;
+
+const escapeHtml=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+const numberValue=(v,f=0)=>{const n=Number(v);return Number.isFinite(n)?n:f};
+const formatNumber=(v,d=1)=>{const n=Number(v);return Number.isFinite(n)?n.toFixed(d):"--"};
+const getName=e=>String(e?.name??e?.playerName??e?.player??e?.id??"不明");
+const getCoordinates=e=>{const p=e?.location??e?.position??e??{};return{x:numberValue(p.x),z:numberValue(p.z)}};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const faceUrl=n=>`https://mc-heads.net/avatar/${encodeURIComponent(n)}/64`;
+const TYPE_TAGS=["ltd","exp","sexp","local2","local"];
+const ANGLES={"x+":0,"z+":90,"x-":180,"z-":-90};
+
+function normalizeTags(e){
+ const v=e?.tags??e?.tag??[];
+ if(Array.isArray(v))return v.map(x=>String(x).toLowerCase());
+ if(typeof v==="string")return v.split(/[,\s]+/).map(x=>x.trim().toLowerCase()).filter(Boolean);
+ return[];
 }
-function makePlayerMarker(player,index,scale,pos){const name=getName(player),faceSize=22*scale,labelSize=12*scale,labelWidth=Math.max(25,name.length*12*.95)*scale,labelHeight=17*scale,labelY=faceSize*.65;return`<g class="player-marker" data-kind="player" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(name)}" transform="translate(${pos.x} ${pos.y})"><rect x="${-faceSize/2-4*scale}" y="${-faceSize/2-4*scale}" width="${faceSize+8*scale}" height="${faceSize+8*scale}" fill="transparent" pointer-events="all"/><image class="player-face" href="${faceUrl(name)}" x="${-faceSize/2}" y="${-faceSize/2}" width="${faceSize}" height="${faceSize}" preserveAspectRatio="none" pointer-events="none"/><rect class="player-name-background" x="${-labelWidth/2}" y="${labelY}" width="${labelWidth}" height="${labelHeight}" rx="${4*scale}" fill="#fff" fill-opacity=".92" stroke="#dce5ed" stroke-width="${.7*scale}" pointer-events="none"/><text class="player-name-label" x="0" y="${labelY+labelHeight/2}" font-size="${labelSize}" pointer-events="none">${escapeHtml(name)}</text></g>`}
-function handleMarkerOpen(el){if(!el)return;const i=Number(el.getAttribute("data-index")),k=el.getAttribute("data-kind");if(!Number.isInteger(i)||i<0)return;if(k==="player"){const p=players[i];if(p)showPlayerDetail(p)}else if(k==="train"){const t=trains[i];if(t)showTrainDetail(t,i)}}
-function findMarkerFromEvent(ev){if(typeof ev.composedPath==="function")for(const n of ev.composedPath())if(n instanceof Element&&n.matches("[data-kind][data-index]"))return n;let n=ev.target;while(n&&n!==map){if(n instanceof Element&&n.matches("[data-kind][data-index]"))return n;n=n.parentElement}return null}
-function attachMarkerEvents(){markerLayer.querySelectorAll("[data-kind][data-index]").forEach(m=>{m.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();if(dragMoved)return;handleMarkerOpen(m)});m.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;e.preventDefault();e.stopPropagation();handleMarkerOpen(m)})})}
+function normalizeCollection(v){
+ if(Array.isArray(v))return v;
+ if(v&&typeof v==="object")return Object.entries(v).map(([k,x])=>x&&typeof x==="object"?{...x,id:x.id??k}:{id:k,value:x});
+ return[];
+}
+function getMapSize(){
+ const r=map.getBoundingClientRect(),width=Math.max(1,r.width),height=Math.max(1,r.height);
+ return{width,height,aspect:width/height};
+}
+const getScale=()=>view.w/getMapSize().width;
 
-/* 重なり回避判定は従来の100% */
-function avoidTrains(pos,scale,tp){const h=15*scale,tip=h+17*scale,r=13*scale,poly=[[-h,-h],[h,-h],[tip,0],[h,h],[-h,h]];let x=pos.x,y=pos.y;for(let pass=0;pass<4;pass++){let moved=false;for(const t of tp){const dx=x-t.x,dy=y-t.y;if(dx*dx+dy*dy>(tip+r)*(tip+r))continue;const lx=dx*t.c+dy*t.s,ly=-dx*t.s+dy*t.c;let best=Infinity,qx=0,qy=0,inside=true;for(let i=0;i<5;i++){const a=poly[i],b=poly[(i+1)%5],abx=b[0]-a[0],aby=b[1]-a[1],k=clamp(((lx-a[0])*abx+(ly-a[1])*aby)/(abx*abx+aby*aby),0,1),px=a[0]+abx*k,py=a[1]+aby*k,d=Math.hypot(lx-px,ly-py);if(d<best){best=d;qx=px;qy=py}if(abx*(ly-a[1])-aby*(lx-a[0])<0)inside=false}if(!inside&&best>=r-1e-9)continue;let ux=inside?qx-lx:lx-qx,uy=inside?qy-ly:ly-qy,len=Math.hypot(ux,uy);if(len<1e-9){ux=0;uy=-1}else{ux/=len;uy/=len}const nx=qx+ux*r,ny=qy+uy*r;x=t.x+nx*t.c-ny*t.s;y=t.y+nx*t.s+ny*t.c;moved=true}if(!moved)break}return{x,y}}
-function renderMarkersNow(){if(!latestData)return;const s=getScale(),tp=trains.map(t=>{const p=worldToMap(t),a=getDirectionAngle(t)*Math.PI/180;return{x:p.x,y:p.y,c:Math.cos(a),s:Math.sin(a)}});markerLayer.innerHTML=trains.map((t,i)=>makeTrainMarker(t,i,s)).join("")+players.map((p,i)=>makePlayerMarker(p,i,s,avoidTrains(worldToMap(p),s,tp))).join("");attachMarkerEvents();renderPlayerList()}
-function renderPlayerList(){playerPanelCount.textContent=String(players.length);if(!players.length){playerList.innerHTML='<div class="player-empty">現在オンラインのプレイヤーはいません</div>';return}playerList.innerHTML=players.map((p,i)=>{const n=getName(p),r=getPlayerRoleInfo(p),e=escapeHtml(n);return`<button class="player-row" type="button" data-player-index="${i}" aria-label="${e}の詳細を表示"><img src="${faceUrl(n)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${e}</span><span class="player-role-badge ${r.className}">${escapeHtml(r.label)}</span></span></button>`}).join("")}
-function openModal(){const was=detailModal.classList.contains("open");detailModal.classList.add("open");document.body.style.overflow="hidden";if(!was)$("closeModal").focus()}
-function closeModal(){detailModal.classList.remove("open");document.body.style.overflow="";selectedEntityKey=null;selectedTrainIdentity=null}
-function showPlayerDetail(player){const name=getName(player),role=getPlayerRoleInfo(player),pos=getCoordinates(player);selectedEntityKey=`player:${name}`;selectedTrainIdentity=null;modalTitle.textContent="プレイヤー情報";modalContent.innerHTML=`<div class="detail-player"><img src="${faceUrl(name)}" alt=""><div><div class="detail-player-name">${escapeHtml(name)}</div><div class="player-role-badge detail-player-role ${role.className}">${escapeHtml(role.label)}</div></div></div><div class="detail-grid"><div class="detail-item"><div class="detail-label">X座標</div><div class="detail-value">${formatNumber(pos.x,2)}</div></div><div class="detail-item"><div class="detail-label">Z座標</div><div class="detail-value">${formatNumber(pos.z,2)}</div></div></div><div class="detail-note">在線情報は自動更新されます。</div>`;openModal()}
-function showTrainDetail(train){const type=getTrainType(train),dest=getTrainDestination(train),dir=getTrainDirection(train),pos=getCoordinates(train),names={"x+":"東方向（X＋）","x-":"西方向（X−）","z+":"南方向（Z＋）","z-":"北方向（Z−）"},item=(l,v)=>`<div class="detail-item"><div class="detail-label">${l}</div><div class="detail-value">${v}</div></div>`;selectedEntityKey="train";selectedTrainIdentity=createTrainIdentity(train);modalTitle.textContent="列車情報";modalContent.innerHTML=`<div class="train-summary" style="border-color:${type.color}"><span class="train-type" style="background:${type.color}">${escapeHtml(type.name)}</span><span class="train-destination">${escapeHtml(dest)} 行</span></div><div class="detail-grid">${item("種別",escapeHtml(type.name))}${item("行先",escapeHtml(dest))}${item("路線",escapeHtml(getTrainRoute(train)))}${item("速度",formatNumber(getDisplaySpeed(train),0)+" km/h")}${item("進行方向",escapeHtml(names[dir]||"不明"))}${item("X座標",formatNumber(pos.x,2))}${item("Z座標",formatNumber(pos.z,2))}</div><div class="detail-note">在線情報は自動更新されます。</div>`;openModal()}
-function refreshSelectedDetail(){if(!detailModal.classList.contains("open")||!selectedEntityKey)return;if(selectedEntityKey.startsWith("player:")){const name=selectedEntityKey.slice(7),p=players.find(i=>getName(i)===name);if(p)showPlayerDetail(p);else{modalTitle.textContent="プレイヤー情報";modalContent.innerHTML='<div class="player-empty">このプレイヤーは現在オンラインではありません。</div>'}return}if(selectedEntityKey==="train"){const r=findSelectedTrain();if(r)showTrainDetail(r.train,r.index);else{modalTitle.textContent="列車情報";modalContent.innerHTML='<div class="player-empty">選択中の列車を確認しています。<br>次回の更新で再検索します。</div>'}}}
-playerList.addEventListener("click",ev=>{const el=ev.target instanceof Element?ev.target:ev.target?.parentElement,b=el?.closest("[data-player-index]");if(!b||!playerList.contains(b))return;const p=players[Number(b.dataset.playerIndex)];if(p)showPlayerDetail(p)});
-function updateStatus(r){const wt=r.worldTime??r.time??r.world_time??"--",w=r.weather??r.worldWeather??r.world_weather??"--",tps=r.tps??r.TPS??"--";worldTimeText.textContent=`ワールド時刻：${wt}`;weatherText.textContent=`天候：${w}`;tpsText.textContent=`TPS：${formatNumber(tps,0)}`;playerCountText.textContent=String(players.length);trainCountText.textContent=`列車：${trains.length}編成`;lastUpdated.textContent=`最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`}
-function setOnline(){connectionDot.classList.remove("offline");connectionDot.classList.add("online");connectionText.textContent="サーバー接続中"}
-function setOffline(){connectionDot.classList.remove("online");connectionDot.classList.add("offline");connectionText.textContent="サーバーに接続できません"}
-async function fetchStatus(){if(isFetching)return;isFetching=true;try{const res=await fetch(API_URL,{method:"GET",mode:"cors",cache:"no-store"});if(!res.ok)throw Error(`HTTP ${res.status}`);const data=await res.json();if(data&&data.success===false)throw Error(data.error||"API error");latestData=data;const root=extractDataLists(data);updateStatus(root);setOnline();lastSuccessfulFetch=Date.now();if(map.dataset.initialized!=="true"){fitViewToData();map.dataset.initialized="true"}else renderMarkersNow();refreshSelectedDetail()}catch(e){console.error("在線データ取得エラー:",e);setOffline()}finally{isFetching=false}}
-function startRefresh(){if(refreshTimer!==null)clearTimeout(refreshTimer);refreshTimer=setTimeout(async()=>{await fetchStatus();startRefresh()},REFRESH_MS)}
-function refreshNow(){if(refreshTimer!==null){clearTimeout(refreshTimer);refreshTimer=null}fetchStatus().finally(startRefresh)}
+function xInWaterline(t){
+ const{x,z}=getCoordinates(t);
+ return x>=WATERLINE_MIN_X&&x<=WATERLINE_MAX_X&&z>=WATERLINE_MIN_Z&&z<=WATERLINE_MAX_Z&&!normalizeTags(t).some(g=>TYPE_TAGS.includes(g));
+}
+function getTrainRoute(t){
+ const{x,z}=getCoordinates(t);
+ if(xInWaterline(t))return"水鉄水山線";
+ if(x>=KAWATETSU_MIN_X)return"川鉄依丘線";
+ if(z>UKYU_MIN_Z)return"雨急雨波線";
+ if(z<YANODEN_MAX_Z)return"矢野電鉄";
+ return"波急波川線";
+}
+function getTrainType(t){
+ const tags=normalizeTags(t),{z}=getCoordinates(t);
+ if(tags.includes("ltd"))return{key:"ltd",name:"特急",label:"特",color:"#f97316"};
+ if(tags.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"};
+ if(tags.includes("sexp"))return z<-18||z>6131?{key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8",downgradedFromSemiExpress:true}:{key:"sexp",name:"準急",label:"準",color:"#16a34a"};
+ if(tags.includes("local2"))return{key:"local2",name:"各駅停車",label:"各",color:"#60a5fa"};
+ if(tags.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
+ if(xInWaterline(t))return{key:"waterline",name:"普通",label:"普",color:"#888"};
+ return{key:"unknown",name:"その他",label:"不",color:"#222"};
+}
+function getTrainDirection(t){
+ const tags=normalizeTags(t);
+ if(tags.includes("z-"))return"z-";
+ if(tags.includes("z+")||tags.includes("z"))return"z+";
+ if(tags.includes("x-"))return"x-";
+ return"x+";
+}
+const getDirectionAngle=t=>ANGLES[getTrainDirection(t)]??0;
+const isPositiveDirection=t=>["z+","x+"].includes(getTrainDirection(t));
+
+function getTrainDestination(t){
+ const type=getTrainType(t),positive=isPositiveDirection(t);
+ if(type.key==="waterline")return"草市～水山 往復";
+ if(type.key==="local2")return positive?"依丘":"草市";
+ if(type.key==="local")return positive?"波丘":"吉山";
+ if(type.key==="exp")return positive?"依丘":"吉山";
+ if(type.key==="ltd")return positive?"雨山":"吉山";
+ if(type.key==="sexp"||type.downgradedFromSemiExpress)return positive?"雨山":"矢野";
+ return"不明";
+}
+function getDisplaySpeed(t){
+ const speed=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));
+ if(speed===59)return 120;
+ if(Number.isFinite(speed)&&speed<0)return 0;
+ const raw=Number(t?.speed);
+ return!Number.isFinite(raw)||raw<0?0:raw;
+}
+function getTrainStableId(t){
+ const id=t?.id??t?.uuid??t?.uniqueId??t?.unique_id??t?.entityId??t?.entity_id??null;
+ return id==null||id===""?null:String(id);
+}
+function createTrainIdentity(t){
+ const p=getCoordinates(t);
+ return{stableId:getTrainStableId(t),x:p.x,z:p.z,tags:normalizeTags(t).slice().sort().join("|"),type:getTrainType(t).key,direction:getTrainDirection(t)};
+}
+function findSelectedTrain(){
+ if(!selectedTrainIdentity||!trains.length||selectedTrainIdentity.stableId===null)return null;
+ const index=trains.findIndex(t=>getTrainStableId(t)===selectedTrainIdentity.stableId);
+ if(index<0)return null;
+ const train=trains[index];
+ selectedTrainIdentity=createTrainIdentity(train);
+ return{train,index};
+}
+
+async function loadStaff(){
+ try{
+  const response=await fetch("./staff.html",{cache:"no-store"});
+  if(!response.ok)throw Error(`HTTP ${response.status}`);
+  const doc=new DOMParser().parseFromString(await response.text(),"text/html"),result=new Map();
+  doc.querySelectorAll(".staff-card").forEach(card=>{
+   const name=card.querySelector(".staff-name")?.textContent.trim();
+   const badge=card.querySelector(".role-badge");
+   if(!name||!badge)return;
+   const label=badge.textContent.trim();
+   let className="role-participant";
+   if(badge.classList.contains("role-owner")||label.includes("オーナー"))className="role-owner";
+   else if(badge.classList.contains("role-developer")||label.includes("デベロッパー"))className="role-developer";
+   else if(badge.classList.contains("role-moderator")||label.includes("モデレーター"))className="role-moderator";
+   result.set(name.toLowerCase(),{label:label||"運営",className});
+  });
+  staffMap=result;
+ }catch(error){console.warn("スタッフ情報の取得に失敗:",error)}
+}
+const getPlayerRoleInfo=p=>staffMap.get(getName(p).toLowerCase())||{label:"参加者",className:"role-participant"};
+
+function extractDataLists(data){
+ const root=data?.data??data?.status??data??{};
+ players=normalizeCollection(root.players??root.player??root.onlinePlayers??[]);
+ trains=normalizeCollection(root.trains??root.train??root.carts??[]);
+ return root;
+}
+const worldToMap=e=>{const p=getCoordinates(e);return{x:p.x,y:p.z}};
+
+function fitViewToData(){
+ const size=getMapSize(),points=[];
+ players.forEach(p=>points.push(worldToMap(p)));
+ trains.forEach(t=>points.push(worldToMap(t)));
+ if(!points.length){
+  view.w=10000;view.h=view.w/size.aspect;
+  view.x=-view.w/2;view.y=-view.h/2;applyView();return;
+ }
+ let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+ for(const p of points){
+  minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);
+  minY=Math.min(minY,p.y);maxY=Math.max(maxY,p.y);
+ }
+ const cx=(minX+maxX)/2,cy=(minY+maxY)/2;
+ const pad=Math.max(1000,Math.max(maxX-minX,maxY-minY)*.12);
+ let width=Math.max(maxX-minX+pad*2,(maxY-minY+pad*2)*size.aspect);
+ width=clamp(width,MIN_VIEW_WIDTH,MAX_VIEW_WIDTH);
+ view.w=width;view.h=width/size.aspect;
+ view.x=cx-view.w/2;view.y=cy-view.h/2;
+ applyView();
+}
+function renderGrid(){
+ const left=view.x,right=left+view.w,top=view.y,bottom=top+view.h,paths=[];
+ for(let x=Math.floor(left/GRID_SIZE);x<=Math.ceil(right/GRID_SIZE);x++)paths.push(`M${x*GRID_SIZE} ${top}V${bottom}`);
+ for(let y=Math.floor(top/GRID_SIZE);y<=Math.ceil(bottom/GRID_SIZE);y++)paths.push(`M${left} ${y*GRID_SIZE}H${right}`);
+ gridLayer.innerHTML=`<path class="grid-line" d="${paths.join(" ")}" fill="none"/>`;
+}
+function applyView(renderMarkers=true){
+ view.h=view.w/getMapSize().aspect;
+ map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
+ renderGrid();
+ if(renderMarkers&&latestData)renderMarkersNow();
+}
+
+/* マーカーの見た目は92%。クリック判定は100%。 */
+function makeTrainMarker(train,index,scale){
+ const pos=worldToMap(train),type=getTrainType(train),angle=getDirectionAngle(train);
+ const hitHalf=15*scale,hitTip=hitHalf+17*scale;
+ const visualHalf=13.8*scale,visualTip=visualHalf+15.64*scale;
+ const hitPath=`M${-hitHalf} ${-hitHalf}L${hitHalf} ${-hitHalf}L${hitTip} 0L${hitHalf} ${hitHalf}L${-hitHalf} ${hitHalf}Z`;
+ const visualPath=`M${-visualHalf} ${-visualHalf}L${visualHalf} ${-visualHalf}L${visualTip} 0L${visualHalf} ${visualHalf}L${-visualHalf} ${visualHalf}Z`;
+ return`<g class="train-marker" data-kind="train" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(type.name)}" transform="translate(${pos.x} ${pos.y})"><g class="train-body" transform="rotate(${angle})"><path class="train-hit-area" d="${hitPath}" stroke-width="${14*scale}"/><path class="train-visual" d="${visualPath}" fill="${type.color}" stroke="#fff" stroke-width="${1.104*scale}" stroke-linejoin="round" stroke-linecap="round"/></g><text class="train-label" x="0" y="0" font-size="${15.64*scale}">${escapeHtml(type.label)}</text></g>`;
+}
+function makePlayerMarker(player,index,scale,pos){
+ const name=getName(player),faceSize=22*scale,labelSize=12*scale;
+ const labelWidth=Math.max(25,name.length*12*.95)*scale,labelHeight=17*scale,labelY=faceSize*.65;
+ return`<g class="player-marker" data-kind="player" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(name)}" transform="translate(${pos.x} ${pos.y})"><rect x="${-faceSize/2-4*scale}" y="${-faceSize/2-4*scale}" width="${faceSize+8*scale}" height="${faceSize+8*scale}" fill="transparent" pointer-events="all"/><image class="player-face" href="${faceUrl(name)}" x="${-faceSize/2}" y="${-faceSize/2}" width="${faceSize}" height="${faceSize}" preserveAspectRatio="none" pointer-events="none"/><rect class="player-name-background" x="${-labelWidth/2}" y="${labelY}" width="${labelWidth}" height="${labelHeight}" rx="${4*scale}" fill="#fff" fill-opacity=".92" stroke="#dce5ed" stroke-width="${.7*scale}" pointer-events="none"/><text class="player-name-label" x="0" y="${labelY+labelHeight/2}" font-size="${labelSize}" pointer-events="none">${escapeHtml(name)}</text></g>`;
+}
+function handleMarkerOpen(el){
+ if(!el)return;
+ const index=Number(el.getAttribute("data-index")),kind=el.getAttribute("data-kind");
+ if(!Number.isInteger(index)||index<0)return;
+ if(kind==="player"){const player=players[index];if(player)showPlayerDetail(player)}
+ else if(kind==="train"){const train=trains[index];if(train)showTrainDetail(train,index)}
+}
+
+/* イベントをマーカーごとに登録せず、親SVGでまとめて処理 */
+function getMarkerFromTarget(target){
+ const el=target instanceof Element?target:target?.parentElement;
+ return el?.closest("[data-kind][data-index]");
+}
+markerLayer.addEventListener("click",event=>{
+ const marker=getMarkerFromTarget(event.target);
+ if(!marker||!markerLayer.contains(marker))return;
+ event.preventDefault();event.stopPropagation();
+ if(dragMoved)return;
+ handleMarkerOpen(marker);
+});
+markerLayer.addEventListener("keydown",event=>{
+ if(event.key!=="Enter"&&event.key!==" ")return;
+ const marker=getMarkerFromTarget(event.target);
+ if(!marker||!markerLayer.contains(marker))return;
+ event.preventDefault();event.stopPropagation();
+ handleMarkerOpen(marker);
+});
+
+/* 列車同士の重なり回避は100%のサイズで計算 */
+function avoidTrains(pos,scale,trainPoints){
+ const h=15*scale,tip=h+17*scale,r=13*scale;
+ const polygon=[[-h,-h],[h,-h],[tip,0],[h,h],[-h,h]];
+ let x=pos.x,y=pos.y;
+ for(let pass=0;pass<4;pass++){
+  let moved=false;
+  for(const train of trainPoints){
+   const dx=x-train.x,dy=y-train.y;
+   if(dx*dx+dy*dy>(tip+r)*(tip+r))continue;
+   const lx=dx*train.c+dy*train.s,ly=-dx*train.s+dy*train.c;
+   let best=Infinity,qx=0,qy=0,inside=true;
+   for(let i=0;i<5;i++){
+    const a=polygon[i],b=polygon[(i+1)%5];
+    const abx=b[0]-a[0],aby=b[1]-a[1];
+    const k=clamp(((lx-a[0])*abx+(ly-a[1])*aby)/(abx*abx+aby*aby),0,1);
+    const px=a[0]+abx*k,py=a[1]+aby*k,d=Math.hypot(lx-px,ly-py);
+    if(d<best){best=d;qx=px;qy=py}
+    if(abx*(ly-a[1])-aby*(lx-a[0])<0)inside=false;
+   }
+   if(!inside&&best>=r-1e-9)continue;
+   let ux=inside?qx-lx:lx-qx,uy=inside?qy-ly:ly-qy;
+   const length=Math.hypot(ux,uy);
+   if(length<1e-9){ux=0;uy=-1}else{ux/=length;uy/=length}
+   const nx=qx+ux*r,ny=qy+uy*r;
+   x=train.x+nx*train.c-ny*train.s;
+   y=train.y+nx*train.s+ny*train.c;
+   moved=true;
+  }
+  if(!moved)break;
+ }
+ return{x,y};
+}
+function renderMarkersNow(){
+ if(!latestData)return;
+ const scale=getScale();
+ const trainPoints=trains.map(train=>{
+  const p=worldToMap(train),angle=getDirectionAngle(train)*Math.PI/180;
+  return{x:p.x,y:p.y,c:Math.cos(angle),s:Math.sin(angle)};
+ });
+ const trainMarkup=trains.map((train,i)=>makeTrainMarker(train,i,scale)).join("");
+ const playerMarkup=players.map((player,i)=>makePlayerMarker(player,i,scale,avoidTrains(worldToMap(player),scale,trainPoints))).join("");
+ markerLayer.innerHTML=trainMarkup+playerMarkup;
+ renderPlayerList();
+}
+function renderPlayerList(){
+ playerPanelCount.textContent=String(players.length);
+ if(!players.length){
+  playerList.innerHTML='<div class="player-empty">現在オンラインのプレイヤーはいません</div>';
+  return;
+ }
+ playerList.innerHTML=players.map((player,index)=>{
+  const name=getName(player),role=getPlayerRoleInfo(player),escaped=escapeHtml(name);
+  return`<button class="player-row" type="button" data-player-index="${index}" aria-label="${escaped}の詳細を表示"><img src="${faceUrl(name)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${escaped}</span><span class="player-role-badge ${role.className}">${escapeHtml(role.label)}</span></span></button>`;
+ }).join("");
+}
+
+function openModal(){
+ const wasOpen=detailModal.classList.contains("open");
+ detailModal.classList.add("open");
+ document.body.style.overflow="hidden";
+ if(!wasOpen)$("closeModal").focus();
+}
+function closeModal(){
+ detailModal.classList.remove("open");
+ document.body.style.overflow="";
+ selectedEntityKey=null;selectedTrainIdentity=null;
+}
+function showPlayerDetail(player){
+ const name=getName(player),role=getPlayerRoleInfo(player),pos=getCoordinates(player);
+ selectedEntityKey=`player:${name}`;selectedTrainIdentity=null;
+ modalTitle.textContent="プレイヤー情報";
+ modalContent.innerHTML=`<div class="detail-player"><img src="${faceUrl(name)}" alt=""><div><div class="detail-player-name">${escapeHtml(name)}</div><div class="player-role-badge detail-player-role ${role.className}">${escapeHtml(role.label)}</div></div></div><div class="detail-grid"><div class="detail-item"><div class="detail-label">X座標</div><div class="detail-value">${formatNumber(pos.x,2)}</div></div><div class="detail-item"><div class="detail-label">Z座標</div><div class="detail-value">${formatNumber(pos.z,2)}</div></div></div><div class="detail-note">在線情報は自動更新されます。</div>`;
+ openModal();
+}
+function showTrainDetail(train){
+ const type=getTrainType(train),destination=getTrainDestination(train),direction=getTrainDirection(train),pos=getCoordinates(train);
+ const names={"x+":"東方向（X＋）","x-":"西方向（X−）","z+":"南方向（Z＋）","z-":"北方向（Z−）"};
+ const item=(label,value)=>`<div class="detail-item"><div class="detail-label">${label}</div><div class="detail-value">${value}</div></div>`;
+ selectedEntityKey="train";selectedTrainIdentity=createTrainIdentity(train);
+ modalTitle.textContent="列車情報";
+ modalContent.innerHTML=`<div class="train-summary" style="border-color:${type.color}"><span class="train-type" style="background:${type.color}">${escapeHtml(type.name)}</span><span class="train-destination">${escapeHtml(destination)} 行</span></div><div class="detail-grid">${item("種別",escapeHtml(type.name))}${item("行先",escapeHtml(destination))}${item("路線",escapeHtml(getTrainRoute(train)))}${item("速度",formatNumber(getDisplaySpeed(train),0)+" km/h")}${item("進行方向",escapeHtml(names[direction]||"不明"))}${item("X座標",formatNumber(pos.x,2))}${item("Z座標",formatNumber(pos.z,2))}</div><div class="detail-note">在線情報は自動更新されます。</div>`;
+ openModal();
+}
+function refreshSelectedDetail(){
+ if(!detailModal.classList.contains("open")||!selectedEntityKey)return;
+ if(selectedEntityKey.startsWith("player:")){
+  const name=selectedEntityKey.slice(7),player=players.find(p=>getName(p)===name);
+  if(player)showPlayerDetail(player);
+  else{modalTitle.textContent="プレイヤー情報";modalContent.innerHTML='<div class="player-empty">このプレイヤーは現在オンラインではありません。</div>'}
+  return;
+ }
+ if(selectedEntityKey==="train"){
+  const result=findSelectedTrain();
+  if(result)showTrainDetail(result.train);
+  else{modalTitle.textContent="列車情報";modalContent.innerHTML='<div class="player-empty">選択中の列車を確認しています。<br>次回の更新で再検索します。</div>'}
+ }
+}
+
+playerList.addEventListener("click",event=>{
+ const target=event.target instanceof Element?event.target:event.target?.parentElement;
+ const button=target?.closest("[data-player-index]");
+ if(!button||!playerList.contains(button))return;
+ const player=players[Number(button.dataset.playerIndex)];
+ if(player)showPlayerDetail(player);
+});
+
+function updateStatus(root){
+ const worldTime=root.worldTime??root.time??root.world_time??"--";
+ const weather=root.weather??root.worldWeather??root.world_weather??"--";
+ const tps=root.tps??root.TPS??"--";
+ worldTimeText.textContent=`ワールド時刻：${worldTime}`;
+ weatherText.textContent=`天候：${weather}`;
+ tpsText.textContent=`TPS：${formatNumber(tps,0)}`;
+ playerCountText.textContent=String(players.length);
+ trainCountText.textContent=`列車：${trains.length}編成`;
+ lastUpdated.textContent=`最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
+}
+function setOnline(){
+ connectionDot.classList.remove("offline");
+ connectionDot.classList.add("online");
+ connectionText.textContent="サーバー接続中";
+}
+function setOffline(){
+ connectionDot.classList.remove("online");
+ connectionDot.classList.add("offline");
+ connectionText.textContent="サーバーに接続できません";
+}
+async function fetchStatus(){
+ if(isFetching)return;
+ isFetching=true;
+ try{
+  const response=await fetch(API_URL,{method:"GET",mode:"cors",cache:"no-store"});
+  if(!response.ok)throw Error(`HTTP ${response.status}`);
+  const data=await response.json();
+  if(data?.success===false)throw Error(data.error||"API error");
+  latestData=data;
+  const root=extractDataLists(data);
+  updateStatus(root);setOnline();lastSuccessfulFetch=Date.now();
+  if(map.dataset.initialized!=="true"){
+   fitViewToData();
+   map.dataset.initialized="true";
+  }else renderMarkersNow();
+  refreshSelectedDetail();
+ }catch(error){
+  console.error("在線データ取得エラー:",error);
+  setOffline();
+ }finally{isFetching=false}
+}
+function startRefresh(){
+ if(refreshTimer!==null)clearTimeout(refreshTimer);
+ refreshTimer=setTimeout(async()=>{await fetchStatus();startRefresh()},REFRESH_MS);
+}
+function refreshNow(){
+ if(refreshTimer!==null){clearTimeout(refreshTimer);refreshTimer=null}
+ fetchStatus().finally(startRefresh);
+}
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshNow()});
-window.addEventListener("focus",refreshNow);window.addEventListener("online",refreshNow);
-window.addEventListener("pagehide",()=>{if(refreshTimer!==null){clearTimeout(refreshTimer);refreshTimer=null}});
-function zoomAt(f,cx,cy){const r=map.getBoundingClientRect();if(r.width<=0||r.height<=0)return;const px=(cx-r.left)/r.width,py=(cy-r.top)/r.height,wx=view.x+px*view.w,wy=view.y+py*view.h,nw=clamp(view.w*f,MIN_VIEW_WIDTH,MAX_VIEW_WIDTH),nh=nw/getMapSize().aspect;view.x=wx-px*nw;view.y=wy-py*nh;view.w=nw;view.h=nh;applyView(true)}
-function zoomCenter(f){const r=map.getBoundingClientRect();zoomAt(f,r.left+r.width/2,r.top+r.height/2)}
+window.addEventListener("focus",refreshNow);
+window.addEventListener("online",refreshNow);
+window.addEventListener("pagehide",()=>{
+ if(refreshTimer!==null){clearTimeout(refreshTimer);refreshTimer=null}
+});
+
+function zoomAt(factor,clientX,clientY){
+ const rect=map.getBoundingClientRect();
+ if(rect.width<=0||rect.height<=0)return;
+ const px=(clientX-rect.left)/rect.width,py=(clientY-rect.top)/rect.height;
+ const worldX=view.x+px*view.w,worldY=view.y+py*view.h;
+ const width=clamp(view.w*factor,MIN_VIEW_WIDTH,MAX_VIEW_WIDTH),height=width/getMapSize().aspect;
+ view.x=worldX-px*width;view.y=worldY-py*height;
+ view.w=width;view.h=height;
+ applyView();
+}
+function zoomCenter(factor){
+ const rect=map.getBoundingClientRect();
+ zoomAt(factor,rect.left+rect.width/2,rect.top+rect.height/2);
+}
 $("zoomIn").addEventListener("click",()=>zoomCenter(.75));
 $("zoomOut").addEventListener("click",()=>zoomCenter(1.33));
 $("resetView").addEventListener("click",fitViewToData);
-map.addEventListener("wheel",e=>{e.preventDefault();zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY)},{passive:false});
-map.addEventListener("pointerdown",e=>{if(e.button!==0)return;if(findMarkerFromEvent(e)){dragMoved=false;return}const el=e.target instanceof Element?e.target:e.target?.parentElement;if(el?.closest(".map-controls")||el?.closest(".player-panel"))return;dragging=true;dragMoved=false;if(dragResetTimer!==null){clearTimeout(dragResetTimer);dragResetTimer=null}dragStart={x:e.clientX,y:e.clientY,viewX:view.x,viewY:view.y};map.classList.add("dragging")});
-window.addEventListener("pointermove",e=>{if(!dragging||!dragStart)return;const dx=e.clientX-dragStart.x,dy=e.clientY-dragStart.y;if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true;const s=getScale();view.x=dragStart.viewX-dx*s;view.y=dragStart.viewY-dy*s;applyView(false)});
-function stopDragging(){if(!dragging)return;dragging=false;dragStart=null;map.classList.remove("dragging");renderMarkersNow();if(dragResetTimer!==null)clearTimeout(dragResetTimer);dragResetTimer=setTimeout(()=>{dragMoved=false;dragResetTimer=null},150)}
-window.addEventListener("pointerup",stopDragging);window.addEventListener("pointercancel",stopDragging);
-window.addEventListener("keydown",e=>{if(detailModal.classList.contains("open")){if(e.key==="Escape")closeModal();return}if(e.target instanceof HTMLInputElement||e.target instanceof HTMLTextAreaElement||e.target instanceof HTMLButtonElement||e.target instanceof HTMLAnchorElement)return;const a=view.w*.08;switch(e.key){case"ArrowUp":e.preventDefault();view.y-=a;applyView(false);break;case"ArrowDown":e.preventDefault();view.y+=a;applyView(false);break;case"ArrowLeft":e.preventDefault();view.x-=a;applyView(false);break;case"ArrowRight":e.preventDefault();view.x+=a;applyView(false);break;case"+":case"=":e.preventDefault();zoomCenter(.75);break;case"-":e.preventDefault();zoomCenter(1.33);break}});
-$("collapsePlayers").addEventListener("click",()=>{playerPanel.classList.toggle("collapsed");$("collapsePlayers").textContent=playerPanel.classList.contains("collapsed")?"+":"−"});
+map.addEventListener("wheel",event=>{
+ event.preventDefault();
+ zoomAt(event.deltaY<0?.9:1.1,event.clientX,event.clientY);
+},{passive:false});
+
+map.addEventListener("pointerdown",event=>{
+ if(event.button!==0)return;
+ if(getMarkerFromTarget(event.target)){dragMoved=false;return}
+ const target=event.target instanceof Element?event.target:event.target?.parentElement;
+ if(target?.closest(".map-controls")||target?.closest(".player-panel"))return;
+ dragging=true;dragMoved=false;
+ if(dragResetTimer!==null){clearTimeout(dragResetTimer);dragResetTimer=null}
+ dragStart={x:event.clientX,y:event.clientY,viewX:view.x,viewY:view.y};
+ map.classList.add("dragging");
+});
+window.addEventListener("pointermove",event=>{
+ if(!dragging||!dragStart)return;
+ const dx=event.clientX-dragStart.x,dy=event.clientY-dragStart.y;
+ if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true;
+ const scale=getScale();
+ view.x=dragStart.viewX-dx*scale;
+ view.y=dragStart.viewY-dy*scale;
+ applyView(false);
+});
+function stopDragging(){
+ if(!dragging)return;
+ dragging=false;dragStart=null;
+ map.classList.remove("dragging");
+ renderMarkersNow();
+ if(dragResetTimer!==null)clearTimeout(dragResetTimer);
+ dragResetTimer=setTimeout(()=>{dragMoved=false;dragResetTimer=null},150);
+}
+window.addEventListener("pointerup",stopDragging);
+window.addEventListener("pointercancel",stopDragging);
+
+window.addEventListener("keydown",event=>{
+ if(detailModal.classList.contains("open")){
+  if(event.key==="Escape")closeModal();
+  return;
+ }
+ if(event.target instanceof HTMLInputElement||event.target instanceof HTMLTextAreaElement||event.target instanceof HTMLButtonElement||event.target instanceof HTMLAnchorElement)return;
+ const amount=view.w*.08;
+ switch(event.key){
+  case"ArrowUp":event.preventDefault();view.y-=amount;applyView(false);break;
+  case"ArrowDown":event.preventDefault();view.y+=amount;applyView(false);break;
+  case"ArrowLeft":event.preventDefault();view.x-=amount;applyView(false);break;
+  case"ArrowRight":event.preventDefault();view.x+=amount;applyView(false);break;
+  case"+":case"=":event.preventDefault();zoomCenter(.75);break;
+  case"-":event.preventDefault();zoomCenter(1.33);break;
+ }
+});
+$("collapsePlayers").addEventListener("click",()=>{
+ playerPanel.classList.toggle("collapsed");
+ $("collapsePlayers").textContent=playerPanel.classList.contains("collapsed")?"+":"−";
+});
 $("closeModal").addEventListener("click",closeModal);
-detailModal.addEventListener("click",e=>{if(e.target===detailModal)closeModal()});
-let resizeFrame=null;
-window.addEventListener("resize",()=>{if(resizeFrame!==null)cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{resizeFrame=null;view.h=view.w/getMapSize().aspect;applyView(true)})});
-setInterval(()=>{if(lastSuccessfulFetch>0&&Date.now()-lastSuccessfulFetch>10000)setOffline()},3000);
-(async()=>{await loadStaff();await fetchStatus();startRefresh()})();
+detailModal.addEventListener("click",event=>{if(event.target===detailModal)closeModal()});
+
+window.addEventListener("resize",()=>{
+ if(resizeFrame!==null)cancelAnimationFrame(resizeFrame);
+ resizeFrame=requestAnimationFrame(()=>{
+  resizeFrame=null;
+  view.h=view.w/getMapSize().aspect;
+  applyView();
+ });
+});
+setInterval(()=>{
+ if(lastSuccessfulFetch>0&&Date.now()-lastSuccessfulFetch>10000)setOffline();
+},3000);
+
+(async()=>{
+ await loadStaff();
+ await fetchStatus();
+ startRefresh();
+})();
 </script>
 </body>
 </html>
