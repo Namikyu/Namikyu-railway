@@ -142,3 +142,229 @@ html[data-theme="dark"]:not([data-theme-static="true"]) .map-controls {
     font-size: 18px;
   }
 }
+/* =====================================
+   在線位置ページ：ダークモード対応
+===================================== */
+
+/* ページ全体 */
+html[data-theme="dark"]:not([data-theme-static="true"]) {
+  --navy: #eaf3ff;
+  --blue: #2699df;
+  --light-blue: #263d53;
+  --text: #e4edf7;
+  --muted: #a4b8cc;
+  --border: #354b62;
+  --surface: #1c2b3e;
+  --background: #111c2b;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) body {
+  background: var(--background);
+  color: var(--text);
+}
+
+/* 見出し・説明 */
+html[data-theme="dark"]:not([data-theme-static="true"]) h2 {
+  color: #eaf3ff;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .subtitle {
+  color: #9db2c8;
+}
+
+/* 接続状況 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .status {
+  background: #1c2b3e;
+  color: #b8c9da;
+  border-color: #354b62;
+  box-shadow: 0 2px 8px #0003;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .status strong {
+  color: #e4edf7;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .online-count {
+  background: #173e32;
+  color: #70dba7;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .online-count strong {
+  color: #8aebba;
+}
+
+/* 凡例 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .legend {
+  color: #b5c7d9;
+}
+
+/* マップ背景 */
+html[data-theme="dark"]:not([data-theme-static="true"]) #mapArea {
+  background: #172638;
+  border-color: #354b62;
+  box-shadow: 0 3px 14px #0003;
+}
+
+/* マップのグリッド線 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .grid-line {
+  stroke: #34485d;
+}
+
+/* プレイヤー名ラベル */
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-name-label {
+  fill: #eaf3ff;
+  stroke: #172638;
+}
+
+/* 方位表示 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .compass {
+  color: #c0d1e2;
+  text-shadow: 0 1px 3px #000;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .compass .center {
+  color: #829bb3;
+}
+
+/* マップ操作ボタン */
+html[data-theme="dark"]:not([data-theme-static="true"]) .map-controls button {
+  background: #26384d;
+  color: #e4edf7;
+  border-color: #435a72;
+  box-shadow: 0 2px 6px #0004;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .map-controls button:hover {
+  background: #354d66;
+}
+
+/* マップ操作説明 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .map-help {
+  background: #1c2b3eeb;
+  color: #b4c6d8;
+}
+
+/* プレイヤー一覧 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-panel {
+  background: #1c2b3ef5;
+  border-color: #354b62;
+  box-shadow: 0 4px 16px #0005;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-panel-head {
+  color: #e4edf7;
+  border-bottom-color: #354b62;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-panel-count {
+  background: #173e32;
+  color: #80e4b0;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-panel-head button {
+  background: #30465d;
+  color: #dceafa;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-panel-head button:hover {
+  background: #405a73;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-row {
+  color: #dceafa;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-row:hover {
+  background: #293e54;
+  border-color: #405a73;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-row-name {
+  color: #e4edf7;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-row img {
+  background: #30445a;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-empty {
+  color: #9db2c8;
+}
+
+/* モーダル背景 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .modal-card {
+  background: #1c2b3e;
+  color: #e4edf7;
+  border-color: #354b62;
+  box-shadow: 0 15px 50px #0008;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .modal-title {
+  color: #eaf3ff;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .modal-close {
+  background: #30465d;
+  color: #e4edf7;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .modal-close:hover {
+  background: #405a73;
+}
+
+/* プレイヤー詳細 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .detail-player {
+  background: #26384d;
+  border-color: #40566e;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .detail-player img {
+  background: #30445a;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .detail-player-name {
+  color: #eaf3ff;
+}
+
+/* 列車詳細 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .train-summary {
+  background: #26384d;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .train-destination {
+  color: #eaf3ff;
+}
+
+/* 詳細情報の各項目 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .detail-item {
+  background: #26384d;
+  border-color: #40566e;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .detail-label {
+  color: #9db2c8;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .detail-value {
+  color: #e4edf7;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .detail-note {
+  color: #9db2c8;
+}
+
+/* スクロールバー */
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-list,
+html[data-theme="dark"]:not([data-theme-static="true"]) .modal-card {
+  scrollbar-color: #50677f #1c2b3e;
+}
+
+/* ヘッダーは従来の青いグラデーションを維持 */
+html[data-theme="dark"] .header {
+  background: linear-gradient(
+    110deg,
+    #075d9b 0%,
+    #087fc4 55%,
+    #129bd2 100%
+  );
+}
