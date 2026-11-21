@@ -132,7 +132,6 @@ button{font:inherit;cursor:pointer}
   background:rgba(255,255,255,.28);
 }
 
-/* テーマ切り替えボタン */
 .theme-toggle{
   display:flex;
   align-items:center;
@@ -331,6 +330,15 @@ h2{
   dominant-baseline:central;
   pointer-events:none;
   user-select:none;
+}
+
+/* プレイヤー名背景の基本設定 */
+.player-name-background{
+  fill:#ffffff;
+  fill-opacity:.92;
+  stroke:#dce5ed;
+  stroke-width:.7px;
+  pointer-events:none;
 }
 
 .player-face{
@@ -868,6 +876,19 @@ html[data-theme="dark"] .detail-label{color:#a4b8cc}
 html[data-theme="dark"] .detail-value{color:#e4edf7}
 
 html[data-theme="dark"] .detail-note{color:#a4b8cc}
+
+/* マップ上のプレイヤー名背景：ダークモード */
+html[data-theme="dark"] .player-name-background{
+  fill:#172638;
+  fill-opacity:.96;
+  stroke:#52677d;
+  stroke-width:1.5px;
+}
+
+html[data-theme="dark"] .player-name-label{
+  fill:#ffffff;
+  stroke:#172638;
+}
 
 /* レスポンシブ */
 @media(max-width:760px){
@@ -1422,6 +1443,7 @@ function makeTrainMarker(train,index,scale){
   return`<g class="train-marker" data-kind="train" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(type.name)}" transform="translate(${pos.x} ${pos.y})"><g class="train-body" transform="rotate(${angle})"><path class="train-hit-area" d="${path}" stroke-width="${14*scale}"/><path class="train-visual" d="${path}" fill="${type.color}" stroke="#ffffff" stroke-width="${1.2*scale}" stroke-linejoin="round" stroke-linecap="round"/></g><text class="train-label" x="0" y="0" font-size="${17*scale}">${escapeHtml(type.label)}</text></g>`;
 }
 
+/* プレイヤーマーカー */
 function makePlayerMarker(player,index,scale,pos){
   const name=getName(player),
   faceSize=22*scale,
@@ -1430,7 +1452,7 @@ function makePlayerMarker(player,index,scale,pos){
   labelHeight=17*scale,
   labelY=faceSize*.65;
 
-  return`<g class="player-marker" data-kind="player" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(name)}" transform="translate(${pos.x} ${pos.y})"><rect x="${-faceSize/2-4*scale}" y="${-faceSize/2-4*scale}" width="${faceSize+8*scale}" height="${faceSize+8*scale}" fill="transparent" pointer-events="all"/><image class="player-face" href="${faceUrl(name)}" x="${-faceSize/2}" y="${-faceSize/2}" width="${faceSize}" height="${faceSize}" preserveAspectRatio="none" pointer-events="none"/><rect x="${-labelWidth/2}" y="${labelY}" width="${labelWidth}" height="${labelHeight}" rx="${4*scale}" fill="#ffffff" fill-opacity=".92" stroke="#dce5ed" stroke-width="${.7*scale}" pointer-events="none"/><text class="player-name-label" x="0" y="${labelY+labelHeight/2}" font-size="${labelSize}" pointer-events="none">${escapeHtml(name)}</text></g>`;
+  return`<g class="player-marker" data-kind="player" data-index="${index}" tabindex="0" role="button" aria-label="${escapeHtml(name)}" transform="translate(${pos.x} ${pos.y})"><rect x="${-faceSize/2-4*scale}" y="${-faceSize/2-4*scale}" width="${faceSize+8*scale}" height="${faceSize+8*scale}" fill="transparent" pointer-events="all"/><image class="player-face" href="${faceUrl(name)}" x="${-faceSize/2}" y="${-faceSize/2}" width="${faceSize}" height="${faceSize}" preserveAspectRatio="none" pointer-events="none"/><rect class="player-name-background" x="${-labelWidth/2}" y="${labelY}" width="${labelWidth}" height="${labelHeight}" rx="${4*scale}" fill="#ffffff" fill-opacity=".92" stroke="#dce5ed" stroke-width="${.7*scale}" pointer-events="none"/><text class="player-name-label" x="0" y="${labelY+labelHeight/2}" font-size="${labelSize}" pointer-events="none">${escapeHtml(name)}</text></g>`;
 }
 
 function handleMarkerOpen(el){
