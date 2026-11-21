@@ -1,0 +1,144 @@
+
+/* =========================
+   Namikyu 共通テーマ
+========================= */
+
+/* 切り替えボタン */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 7px;
+  background: rgba(255,255,255,.12);
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+
+.theme-toggle:hover {
+  background: rgba(255,255,255,.28);
+}
+
+.theme-toggle:active {
+  transform: scale(.95);
+}
+
+/* ホーム画面以外のダークモード */
+html[data-theme="dark"]:not([data-theme-static="true"]) {
+  color-scheme: dark;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) body {
+  background: #111c2b !important;
+  color: #e4edf7 !important;
+}
+
+/* ページ見出し */
+html[data-theme="dark"]:not([data-theme-static="true"]) .page-heading h1,
+html[data-theme="dark"]:not([data-theme-static="true"]) .page-title {
+  color: #eaf3ff !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .page-heading p,
+html[data-theme="dark"]:not([data-theme-static="true"]) .page-subtitle {
+  color: #a8bfd5 !important;
+}
+
+/* お知らせ・運営メンバー */
+html[data-theme="dark"]:not([data-theme-static="true"]) .news-item,
+html[data-theme="dark"]:not([data-theme-static="true"]) .staff-card,
+html[data-theme="dark"]:not([data-theme-static="true"]) .intro {
+  background: #1c2b3e !important;
+  color: #e4edf7 !important;
+  border-color: #344a62 !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .news-heading,
+html[data-theme="dark"]:not([data-theme-static="true"]) .staff-name {
+  color: #eaf3ff !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .news-description,
+html[data-theme="dark"]:not([data-theme-static="true"]) .staff-description {
+  color: #c3d2e2 !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .news-date,
+html[data-theme="dark"]:not([data-theme-static="true"]) .staff-display-name,
+html[data-theme="dark"]:not([data-theme-static="true"]) .footer {
+  color: #9db2c8 !important;
+}
+
+/* 運営メンバーのスキン枠 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .skin-frame {
+  background: #26384d !important;
+  border-color: #40566e !important;
+}
+
+/* サーバー参加ページ */
+html[data-theme="dark"]:not([data-theme-static="true"]) .section {
+  background: #1c2b3e !important;
+  color: #e4edf7 !important;
+  border-color: #344a62 !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .connection-item,
+html[data-theme="dark"]:not([data-theme-static="true"]) .step {
+  background: #26384d !important;
+  color: #e4edf7 !important;
+}
+
+html[data-theme="dark"]:not([data-theme-static="true"]) .notice {
+  background: #493b20 !important;
+  color: #ffe6a8 !important;
+  border-color: #80652e !important;
+}
+
+/* 在線位置ページ：共通カラー変数 */
+html[data-theme="dark"]:not([data-theme-static="true"]) {
+  --navy: #eaf3ff;
+  --blue: #2699df;
+  --light-blue: #263d53;
+  --text: #e4edf7;
+  --muted: #a4b8cc;
+  --border: #354b62;
+  --surface: #1c2b3e;
+  --background: #111c2b;
+}
+
+/* 在線位置ページ：一般的なパネル類 */
+html[data-theme="dark"]:not([data-theme-static="true"]) .panel,
+html[data-theme="dark"]:not([data-theme-static="true"]) .status-panel,
+html[data-theme="dark"]:not([data-theme-static="true"]) .player-panel,
+html[data-theme="dark"]:not([data-theme-static="true"]) .modal-content,
+html[data-theme="dark"]:not([data-theme-static="true"]) .map-controls {
+  background-color: #1c2b3e !important;
+  color: #e4edf7 !important;
+  border-color: #354b62 !important;
+}
+
+/* ヘッダーの青いグラデーションは変更しない */
+.header {
+  background: linear-gradient(
+    110deg,
+    #075d9b 0,
+    #087fc4 55%,
+    #129bd2 100%
+  );
+}
+
+@media (max-width: 650px) {
+  .theme-toggle {
+    flex-basis: 36px;
+    width: 36px;
+    height: 38px;
+    font-size: 18px;
+  }
+}
