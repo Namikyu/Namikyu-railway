@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -9,72 +10,201 @@
 
 <style>
 *{box-sizing:border-box}
+
 html,body{
-  width:100%;height:100%;margin:0;padding:0;
-  overflow:hidden;overscroll-behavior:none;
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  overscroll-behavior:none;
   font-family:"Yu Gothic UI","Meiryo",sans-serif;
-  color:#24364b;background:#eef2f7
+  color:#24364b;
+  background:#eef2f7
 }
+
 button{font:inherit;cursor:pointer}
 
 /* ヘッダー */
 header{
-  height:110px;display:flex;align-items:center;justify-content:space-between;
-  padding:8px 3%;gap:18px;color:white;
+  height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 3%;
+  gap:18px;
+  color:white;
   background:linear-gradient(110deg,#075d9b,#087fc4 60%,#129bd2);
   overflow:hidden
 }
-.brand{display:flex;align-items:center;gap:12px;min-width:0}
-.brand img{width:72px;height:72px;object-fit:contain;flex-shrink:0}
-.brand h1{margin:0;font-size:clamp(24px,3vw,40px);white-space:nowrap}
-.brand small{display:block;font-size:11px;letter-spacing:3px}
-nav{display:flex;gap:8px;align-items:center;min-width:0}
-nav a{
-  color:white;text-decoration:none;font-size:13px;font-weight:bold;
-  padding:12px 14px;border:1px solid #ffffff66;border-radius:7px;
-  background:#ffffff18;white-space:nowrap
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0
 }
+
+.brand img{
+  width:72px;
+  height:72px;
+  object-fit:contain;
+  flex-shrink:0
+}
+
+.brand h1{
+  margin:0;
+  font-size:clamp(24px,3vw,40px);
+  white-space:nowrap
+}
+
+.brand small{
+  display:block;
+  font-size:11px;
+  letter-spacing:3px
+}
+
+nav{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  min-width:0
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:bold;
+  padding:12px 14px;
+  border:1px solid #ffffff66;
+  border-radius:7px;
+  background:#ffffff18;
+  white-space:nowrap
+}
+
 nav a:hover,nav a.active{background:#ffffff40}
 
 /* メイン */
 main{
-  height:calc(100dvh - 110px);padding:12px 16px 15px;
-  display:flex;flex-direction:column;min-height:0;overflow:hidden
+  height:calc(100dvh - 110px);
+  padding:12px 16px 15px;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  overflow:hidden
 }
-h2{margin:0;color:#142b49;font-size:21px}
-.subtitle{margin:2px 0 9px;color:#8295a8;font-size:9px;letter-spacing:2px}
+
+h2{
+  margin:0;
+  color:#142b49;
+  font-size:21px
+}
+
+.subtitle{
+  margin:2px 0 9px;
+  color:#8295a8;
+  font-size:9px;
+  letter-spacing:2px
+}
+
 .status{
-  display:flex;align-items:center;flex-wrap:wrap;gap:8px 13px;
-  padding:9px 12px;margin-bottom:7px;background:white;
-  border:1px solid #e1e9f1;border-radius:8px;font-size:11px;color:#61768b
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px 13px;
+  padding:9px 12px;
+  margin-bottom:7px;
+  background:white;
+  border:1px solid #e1e9f1;
+  border-radius:8px;
+  font-size:11px;
+  color:#61768b
 }
+
 .status strong{color:#263e58}
-.dot{width:8px;height:8px;border-radius:50%;background:#999;flex-shrink:0}
-.dot.online{background:#20a464;box-shadow:0 0 0 3px #20a46420}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#999;
+  flex-shrink:0
+}
+
+.dot.online{
+  background:#20a464;
+  box-shadow:0 0 0 3px #20a46420
+}
+
 .dot.offline{background:#d33}
-.legend{display:flex;flex-wrap:wrap;gap:8px 15px;margin:4px 0 8px;font-size:10px;color:#536b82}
-.legend span{display:flex;align-items:center;gap:5px}
-.legend i{width:9px;height:9px;border-radius:3px}
+
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 15px;
+  margin:4px 0 8px;
+  font-size:10px;
+  color:#536b82
+}
+
+.legend span{
+  display:flex;
+  align-items:center;
+  gap:5px
+}
+
+.legend i{
+  width:9px;
+  height:9px;
+  border-radius:3px
+}
 
 /* マップ */
 #mapArea{
-  position:relative;flex:1;min-height:0;overflow:hidden;
-  border:1px solid #dce5ed;border-radius:10px;
-  background:#f5f8fb;box-shadow:0 3px 14px #142b4910;
+  position:relative;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  border:1px solid #dce5ed;
+  border-radius:10px;
+  background:#f5f8fb;
+  box-shadow:0 3px 14px #142b4910;
   overscroll-behavior:contain
 }
+
 #map{
-  width:100%;height:100%;display:block;
-  cursor:grab;touch-action:none;user-select:none
+  width:100%;
+  height:100%;
+  display:block;
+  cursor:grab;
+  touch-action:none;
+  user-select:none
 }
+
 #map.dragging{cursor:grabbing}
+
 .grid-line{
-  stroke:#dce5ed;stroke-width:1;
-  vector-effect:non-scaling-stroke;pointer-events:none
+  stroke:#dce5ed;
+  stroke-width:1;
+  vector-effect:non-scaling-stroke;
+  pointer-events:none
 }
-.train-marker,.player-marker{cursor:pointer;pointer-events:all}
-.train-marker:focus,.player-marker:focus{outline:none;opacity:.85}
+
+.train-marker,.player-marker{
+  cursor:pointer;
+  pointer-events:all;
+  outline:none
+}
+
+.train-marker:focus-visible,
+.player-marker:focus-visible{
+  opacity:.85;
+  filter:drop-shadow(0 0 3px #087fc4)
+}
+
 .train-body{pointer-events:none}
+
 .train-label{
   fill:white;
   stroke:#26364a66;
@@ -87,21 +217,43 @@ h2{margin:0;color:#142b49;font-size:21px}
   pointer-events:none;
   user-select:none
 }
+
 .player-name-label{
-  fill:#263e58;stroke:white;stroke-width:3px;paint-order:stroke fill;
-  font-weight:800;text-anchor:middle;dominant-baseline:central;
-  pointer-events:none;user-select:none
+  fill:#263e58;
+  stroke:white;
+  stroke-width:3px;
+  paint-order:stroke fill;
+  font-weight:800;
+  text-anchor:middle;
+  dominant-baseline:central;
+  pointer-events:none;
+  user-select:none
 }
-.player-face{image-rendering:pixelated;pointer-events:none}
+
+.player-face{
+  image-rendering:pixelated;
+  pointer-events:none
+}
 
 /* 方角表示 */
 .compass{
-  position:absolute;top:10px;left:50%;transform:translateX(-50%);
-  z-index:3;display:grid;grid-template-columns:28px 28px 28px;
-  grid-template-rows:20px 20px 20px;align-items:center;
-  justify-items:center;pointer-events:none;color:#60778e;
-  font-size:10px;font-weight:800;text-shadow:0 1px 2px white
+  position:absolute;
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:3;
+  display:grid;
+  grid-template-columns:28px 28px 28px;
+  grid-template-rows:20px 20px 20px;
+  align-items:center;
+  justify-items:center;
+  pointer-events:none;
+  color:#60778e;
+  font-size:10px;
+  font-weight:800;
+  text-shadow:0 1px 2px white
 }
+
 .compass .north{grid-column:2;grid-row:1}
 .compass .west{grid-column:1;grid-row:2}
 .compass .center{grid-column:2;grid-row:2;color:#9aabba}
@@ -110,119 +262,370 @@ h2{margin:0;color:#142b49;font-size:21px}
 
 /* 操作ボタン */
 .map-controls{
-  position:absolute;right:12px;top:12px;z-index:5;
-  display:flex;flex-direction:column;gap:6px
+  position:absolute;
+  right:12px;
+  top:12px;
+  z-index:5;
+  display:flex;
+  flex-direction:column;
+  gap:6px
 }
+
 .map-controls button{
-  width:36px;height:36px;border:1px solid #d8e2ec;
-  border-radius:8px;background:#fffffff2;color:#284967;
-  font-size:19px;font-weight:800;box-shadow:0 2px 6px #142b4914
+  width:36px;
+  height:36px;
+  border:1px solid #d8e2ec;
+  border-radius:8px;
+  background:#fffffff2;
+  color:#284967;
+  font-size:19px;
+  font-weight:800;
+  box-shadow:0 2px 6px #142b4914
 }
+
 .map-controls button:hover{background:#eaf5fc}
 .map-controls button:active{transform:scale(.96)}
+
 .map-help{
-  position:absolute;right:12px;bottom:9px;z-index:2;
-  padding:5px 8px;border-radius:5px;background:#ffffffdd;
-  color:#8093a5;font-size:9px;pointer-events:none
+  position:absolute;
+  right:12px;
+  bottom:9px;
+  z-index:2;
+  padding:5px 8px;
+  border-radius:5px;
+  background:#ffffffdd;
+  color:#8093a5;
+  font-size:9px;
+  pointer-events:none
 }
 
 /* プレイヤー一覧 */
 .player-panel{
-  position:absolute;left:12px;top:12px;z-index:5;
-  width:205px;max-height:calc(100% - 24px);
-  display:flex;flex-direction:column;
-  background:#fffffff2;border:1px solid #dce5ed;
-  border-radius:9px;box-shadow:0 3px 12px #142b4917;overflow:hidden
+  position:absolute;
+  left:12px;
+  top:12px;
+  z-index:5;
+  width:205px;
+  max-height:calc(100% - 24px);
+  display:flex;
+  flex-direction:column;
+  background:#fffffff2;
+  border:1px solid #dce5ed;
+  border-radius:9px;
+  box-shadow:0 3px 12px #142b4917;
+  overflow:hidden
 }
+
 .player-panel.collapsed{width:112px}
+
 .player-panel-head{
-  height:38px;min-height:38px;display:flex;align-items:center;
-  justify-content:space-between;padding:0 10px;
-  border-bottom:1px solid #e8eef4;color:#29445f;font-size:11px;font-weight:800
+  height:38px;
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 10px;
+  border-bottom:1px solid #e8eef4;
+  color:#29445f;
+  font-size:11px;
+  font-weight:800
 }
-.player-panel-head button{border:0;background:transparent;color:#55718b;font-size:14px}
-.player-list{padding:5px 7px;overflow-y:auto;min-height:0;overscroll-behavior:contain}
+
+.player-panel-head button{
+  border:0;
+  background:transparent;
+  color:#55718b;
+  font-size:14px
+}
+
+.player-list{
+  padding:5px 7px;
+  overflow-y:auto;
+  min-height:0;
+  overscroll-behavior:contain
+}
+
 .player-row{
-  display:flex;align-items:center;gap:7px;width:100%;
-  padding:5px 3px;border:0;border-radius:5px;background:transparent;
-  text-align:left;color:#334d67;font-size:10px
+  display:flex;
+  align-items:center;
+  gap:7px;
+  width:100%;
+  padding:5px 3px;
+  border:0;
+  border-radius:5px;
+  background:transparent;
+  text-align:left;
+  color:#334d67;
+  font-size:10px
 }
+
 .player-row:hover{background:#edf6fc}
-.player-row img{width:23px;height:23px;flex-shrink:0;image-rendering:pixelated;border-radius:4px}
-.player-row-info{min-width:0;display:flex;flex-direction:column}
-.player-row-name{font-weight:800;overflow-wrap:anywhere;word-break:break-word}
-.player-row-role{font-size:9px;color:#8799aa}
+
+.player-row img{
+  width:23px;
+  height:23px;
+  flex-shrink:0;
+  image-rendering:pixelated;
+  border-radius:4px
+}
+
+.player-row-info{
+  min-width:0;
+  display:flex;
+  flex-direction:column
+}
+
+.player-row-name{
+  font-weight:800;
+  overflow-wrap:anywhere;
+  word-break:break-word
+}
+
+.player-row-role{
+  font-size:9px;
+  color:#8799aa
+}
+
 .player-panel.collapsed .player-list{display:none}
 
 /* 詳細モーダル */
 .modal{
-  position:fixed;inset:0;z-index:20;display:none;
-  align-items:center;justify-content:center;padding:18px;
-  background:#0d1f327a;backdrop-filter:blur(3px)
+  position:fixed;
+  inset:0;
+  z-index:20;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:#0d1f327a;
+  backdrop-filter:blur(3px)
 }
+
 .modal.open{display:flex}
+
 .modal-card{
-  width:min(440px,100%);max-height:85vh;overflow:auto;
-  padding:20px;background:white;border:1px solid #dce5ed;
-  border-radius:13px;box-shadow:0 15px 50px #0003;
+  width:min(440px,100%);
+  max-height:85vh;
+  overflow:auto;
+  padding:20px;
+  background:white;
+  border:1px solid #dce5ed;
+  border-radius:13px;
+  box-shadow:0 15px 50px #0003;
   overscroll-behavior:contain
 }
-.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}
-.modal-title{margin:0;color:#142b49;font-size:17px;font-weight:900}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px
+}
+
+.modal-title{
+  margin:0;
+  color:#142b49;
+  font-size:17px;
+  font-weight:900
+}
+
 .modal-close{
-  width:30px;height:30px;border:0;border-radius:7px;
-  background:#edf2f6;color:#49647e;font-size:18px
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:7px;
+  background:#edf2f6;
+  color:#49647e;
+  font-size:18px
 }
-.detail-player{display:flex;align-items:center;gap:13px;margin-bottom:15px}
-.detail-player img{width:56px;height:56px;border-radius:8px;image-rendering:pixelated}
-.detail-player-name{font-size:17px;font-weight:900;color:#203c58;overflow-wrap:anywhere}
-.detail-player-role{margin-top:3px;color:#8193a5;font-size:11px}
+
+.modal-close:hover{background:#dceaf5}
+
+.detail-player{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin-bottom:15px
+}
+
+.detail-player img{
+  width:56px;
+  height:56px;
+  border-radius:8px;
+  image-rendering:pixelated
+}
+
+.detail-player-name{
+  font-size:17px;
+  font-weight:900;
+  color:#203c58;
+  overflow-wrap:anywhere
+}
+
+.detail-player-role{
+  margin-top:3px;
+  color:#8193a5;
+  font-size:11px
+}
+
 .train-summary{
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  margin:8px 0 17px;padding:17px 10px;
-  border:2px solid #2878c8;border-radius:9px;flex-wrap:wrap
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:8px 0 17px;
+  padding:17px 10px;
+  border:2px solid #2878c8;
+  border-radius:9px;
+  flex-wrap:wrap
 }
-.train-type{font-size:19px;font-weight:900;color:white;background:#2878c8;border-radius:6px;padding:7px 13px}
-.train-destination{font-size:17px;font-weight:900;color:#263f58;text-align:center}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.detail-item{padding:10px;border:1px solid #e4ebf1;border-radius:7px;background:#f8fafc;min-width:0}
-.detail-label{font-size:9px;color:#899aab;font-weight:700}
-.detail-value{margin-top:4px;font-size:13px;color:#29445f;font-weight:800;overflow-wrap:anywhere;word-break:break-word}
-.detail-note{margin-top:12px;font-size:10px;color:#8a9aaa}
+
+.train-type{
+  font-size:19px;
+  font-weight:900;
+  color:white;
+  background:#2878c8;
+  border-radius:6px;
+  padding:7px 13px
+}
+
+.train-destination{
+  font-size:17px;
+  font-weight:900;
+  color:#263f58;
+  text-align:center
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px
+}
+
+.detail-item{
+  padding:10px;
+  border:1px solid #e4ebf1;
+  border-radius:7px;
+  background:#f8fafc;
+  min-width:0
+}
+
+.detail-label{
+  font-size:9px;
+  color:#899aab;
+  font-weight:700
+}
+
+.detail-value{
+  margin-top:4px;
+  font-size:13px;
+  color:#29445f;
+  font-weight:800;
+  overflow-wrap:anywhere;
+  word-break:break-word
+}
+
+.detail-note{
+  margin-top:12px;
+  font-size:10px;
+  color:#8a9aaa
+}
 
 /* 小さい画面 */
 @media(max-width:760px){
-  header{height:90px;padding:6px 9px;gap:7px}
+  header{
+    height:90px;
+    padding:6px 9px;
+    gap:7px
+  }
+
   .brand{gap:6px}
-  .brand img{width:45px;height:45px}
+
+  .brand img{
+    width:45px;
+    height:45px
+  }
+
   .brand h1{font-size:clamp(17px,4vw,26px)}
   .brand small{font-size:7px;letter-spacing:1px}
   nav{gap:3px}
-  nav a{font-size:9px;padding:9px 5px}
-  main{height:calc(100dvh - 90px);padding:9px}
+
+  nav a{
+    font-size:9px;
+    padding:9px 5px
+  }
+
+  main{
+    height:calc(100dvh - 90px);
+    padding:9px
+  }
+
   h2{font-size:17px}
   .subtitle{font-size:8px;margin-bottom:7px}
-  .status{padding:8px;margin-bottom:5px;gap:6px;font-size:9px}
-  .legend{gap:6px 9px;font-size:9px;margin:4px 0 7px}
-  .player-panel{width:145px;left:7px;top:7px;max-height:48%}
+
+  .status{
+    padding:8px;
+    margin-bottom:5px;
+    gap:6px;
+    font-size:9px
+  }
+
+  .legend{
+    gap:6px 9px;
+    font-size:9px;
+    margin:4px 0 7px
+  }
+
+  .player-panel{
+    width:145px;
+    left:7px;
+    top:7px;
+    max-height:48%
+  }
+
   .player-panel.collapsed{width:105px}
   .map-controls{right:7px;top:7px}
-  .map-controls button{width:32px;height:32px}
-  .map-help{right:7px;bottom:6px;font-size:8px}
+
+  .map-controls button{
+    width:32px;
+    height:32px
+  }
+
+  .map-help{
+    right:7px;
+    bottom:6px;
+    font-size:8px
+  }
 }
+
 @media(max-width:430px){
   header{height:78px}
-  .brand img{width:36px;height:36px}
+
+  .brand img{
+    width:36px;
+    height:36px
+  }
+
   .brand h1{font-size:16px}
   .brand small{font-size:6px}
   nav{gap:2px}
-  nav a{font-size:8px;padding:8px 3px}
-  main{height:calc(100dvh - 78px);padding:7px}
+
+  nav a{
+    font-size:8px;
+    padding:8px 3px
+  }
+
+  main{
+    height:calc(100dvh - 78px);
+    padding:7px
+  }
 }
 </style>
 </head>
 
 <body>
+
 <header>
   <div class="brand">
     <img src="./icon.png" alt="波急">
@@ -231,6 +634,7 @@ h2{margin:0;color:#142b49;font-size:21px}
       <small>NAMIKYU SERVER</small>
     </div>
   </div>
+
   <nav>
     <a href="./index.html">ホーム</a>
     <a href="./news.html">お知らせ</a>
@@ -282,7 +686,7 @@ h2{margin:0;color:#142b49;font-size:21px}
     <div class="player-panel" id="playerPanel">
       <div class="player-panel-head">
         <span>オンライン</span>
-        <button id="collapsePlayers" type="button">−</button>
+        <button id="collapsePlayers" type="button" aria-label="プレイヤー一覧を開閉">−</button>
       </div>
       <div class="player-list" id="playerList"></div>
     </div>
@@ -297,11 +701,11 @@ h2{margin:0;color:#142b49;font-size:21px}
   </section>
 </main>
 
-<div class="modal" id="detailModal" role="dialog" aria-modal="true">
+<div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-card">
     <div class="modal-head">
       <h3 class="modal-title" id="modalTitle">詳細情報</h3>
-      <button class="modal-close" id="closeModal" type="button">×</button>
+      <button class="modal-close" id="closeModal" type="button" aria-label="閉じる">×</button>
     </div>
     <div id="modalContent"></div>
   </div>
@@ -320,22 +724,6 @@ const REFRESH_MS = 1000;
 const MIN_VIEW_WIDTH = 500;
 const MAX_VIEW_WIDTH = 50000;
 
-/*
-  路線判定の座標設定
-
-  水山線：
-    X -608 ～ 692
-    Z 3957 ～ 5257
-
-  川鉄線：
-    X 50以上
-
-  雨急線：
-    Z 6131より大きい範囲
-
-  矢野電：
-    Z -18未満の範囲
-*/
 const WATERLINE_MIN_X = -608;
 const WATERLINE_MAX_X = 692;
 const WATERLINE_MIN_Z = 3957;
@@ -480,44 +868,32 @@ function clamp(value,min,max) {
    路線判定
 ====================================== */
 
-/*
-  列車の種別とは別に、座標から路線を判定する。
-
-  判定優先順位：
-  1. 水山線の座標範囲
-  2. X座標50以上なら川鉄線
-  3. Z座標6131より大きければ雨急線
-  4. Z座標-18未満なら矢野電
-  5. それ以外は波急線
-
-  この判定を使うことで、準急が各停に変わった後も
-  路線名は座標に応じたものになる。
-*/
-
-function getTrainRoute(train) {
+function xInWaterline(train) {
   const {x,z} = getCoordinates(train);
 
-  // 水山線を最優先
-  if (
+  return (
     x >= WATERLINE_MIN_X &&
     x <= WATERLINE_MAX_X &&
     z >= WATERLINE_MIN_Z &&
     z <= WATERLINE_MAX_Z
-  ) {
+  );
+}
+
+function getTrainRoute(train) {
+  const {x,z} = getCoordinates(train);
+
+  if (xInWaterline(train)) {
     return "水山線";
   }
 
-  // X座標による川鉄線判定
   if (x >= KAWATETSU_MIN_X) {
     return "川鉄線";
   }
 
-  // Z＋方向の雨急線
   if (z > UKYU_MIN_Z) {
     return "雨急線";
   }
 
-  // Z−方向の矢野電
   if (z < YANODEN_MAX_Z) {
     return "矢野電";
   }
@@ -552,10 +928,6 @@ function getTrainType(train) {
   }
 
   if (tags.includes("sexp")) {
-    /*
-      準急の運転区間外では各停表示にする。
-      ただし行先判定は元の準急として扱う。
-    */
     if (z < -18 || z > 6131) {
       return {
         key:"sexp-local",
@@ -592,9 +964,7 @@ function getTrainType(train) {
     };
   }
 
-  if (
-    xInWaterline(train)
-  ) {
+  if (xInWaterline(train)) {
     return {
       key:"waterline",
       name:"普通",
@@ -609,17 +979,6 @@ function getTrainType(train) {
     label:"不",
     color:"#222222"
   };
-}
-
-function xInWaterline(train) {
-  const {x,z} = getCoordinates(train);
-
-  return (
-    x >= WATERLINE_MIN_X &&
-    x <= WATERLINE_MAX_X &&
-    z >= WATERLINE_MIN_Z &&
-    z <= WATERLINE_MAX_Z
-  );
 }
 
 /* ======================================
@@ -640,14 +999,6 @@ function getTrainDirection(train) {
   return "x+";
 }
 
-/*
-  右向きの矢印を基準に回転。
-
-  X＋=右0度
-  Z＋=下90度
-  X−=左180度
-  Z−=上−90度
-*/
 function getDirectionAngle(train) {
   switch (getTrainDirection(train)) {
     case "x+": return 0;
@@ -692,10 +1043,6 @@ function getTrainDestination(train) {
     return positive ? "雨山" : "吉山";
   }
 
-  /*
-    準急が各停に変更された場合でも、
-    行先は準急時のものを維持する。
-  */
   if (type.key === "sexp" || type.downgradedFromSemiExpress) {
     return positive ? "雨山" : "矢野";
   }
@@ -802,18 +1149,6 @@ function extractDataLists(data) {
    マップ座標
 ====================================== */
 
-/*
-  マップの方向：
-
-  上    = Z−
-  下    = Z＋
-  右    = X＋
-  左    = X−
-
-  SVGのY＋は画面下方向なので、
-  MinecraftのZ座標を反転せずそのまま使用する。
-*/
-
 function worldToMap(entity) {
   const position = getCoordinates(entity);
 
@@ -888,6 +1223,7 @@ function fitViewToData() {
 
 function getGridStep() {
   const target = getScale() * 90;
+
   const power = Math.pow(
     10,
     Math.floor(Math.log10(Math.max(1,target)))
@@ -959,44 +1295,34 @@ function makeTrainMarker(train,index,scale) {
   const position = worldToMap(train);
   const type = getTrainType(train);
   const angle = getDirectionAngle(train);
+  const destination = getTrainDestination(train);
 
   /*
-    列車マーカーの形状。
-
     正方形部分：
-      横28 × 縦28
+      30 × 30
 
     三角形部分：
       正方形の右辺から先端まで接続
 
-    四角形と三角形は一つのSVGパスで描画するため、
-    接合部分に隙間ができない。
-
-    文字は回転グループの外側に配置する。
-    そのため、列車の向きが変わっても文字は水平。
+    正方形と三角形は、同じ一つのパスで描画する。
+    そのため境界に白い線は入らない。
   */
 
-  const squareSize = 28 * scale;
+  const squareSize = 30 * scale;
   const half = squareSize / 2;
-  const triangleLength = 18 * scale;
-
+  const triangleLength = 17 * scale;
   const tip = half + triangleLength;
 
   const path = [
     `M ${-half} ${-half}`,
-    `H ${half}`,
+    `L ${half} ${-half}`,
     `L ${tip} 0`,
     `L ${half} ${half}`,
-    `H ${-half}`,
+    `L ${-half} ${half}`,
     "Z"
   ].join(" ");
 
-  /*
-    文字は正方形の中央に配置。
-    textLengthやlengthAdjustは使用しないため、
-    文字の横幅が押しつぶされない。
-  */
-  const labelSize = 18 * scale;
+  const labelSize = 17 * scale;
 
   return `
     <g class="train-marker"
@@ -1004,21 +1330,31 @@ function makeTrainMarker(train,index,scale) {
        data-index="${index}"
        tabindex="0"
        role="button"
-       aria-label="${escapeHtml(type.name)} ${escapeHtml(getTrainDestination(train))}"
+       aria-label="${escapeHtml(type.name)} ${escapeHtml(destination)}"
        transform="translate(${position.x} ${position.y})">
 
-      <!-- 進行方向に合わせて回転する車体 -->
+      <!-- 透明なクリック領域 -->
+      <path
+        d="${path}"
+        fill="transparent"
+        stroke="transparent"
+        stroke-width="${12*scale}"
+        pointer-events="all"
+      />
+
+      <!-- 車体と先端を一つの図形として描画 -->
       <g class="train-body" transform="rotate(${angle})">
         <path
           d="${path}"
           fill="${type.color}"
           stroke="#ffffff"
-          stroke-width="${1.4*scale}"
+          stroke-width="${1.2*scale}"
           stroke-linejoin="round"
+          stroke-linecap="round"
         />
       </g>
 
-      <!-- 正方形の中心に置く文字。回転させない -->
+      <!-- 文字は回転させず正方形の中心に配置 -->
       <text
         class="train-label"
         x="0"
@@ -1056,6 +1392,12 @@ function makePlayerMarker(player,index,scale) {
   const faceUrl =
     `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
+  const hitRadius = Math.max(
+    faceSize,
+    labelWidth / 2,
+    labelHeight
+  ) + 5 * scale;
+
   return `
     <g class="player-marker"
        data-kind="player"
@@ -1065,7 +1407,14 @@ function makePlayerMarker(player,index,scale) {
        aria-label="${escapeHtml(name)}"
        transform="translate(${position.x} ${position.y})">
 
-      <circle cx="0" cy="0" r="${faceSize}" fill="transparent"/>
+      <!-- 顔と名前をまとめたクリック領域 -->
+      <circle
+        cx="0"
+        cy="${labelY/2}"
+        r="${hitRadius}"
+        fill="transparent"
+        pointer-events="all"
+      />
 
       <image
         class="player-face"
@@ -1075,6 +1424,7 @@ function makePlayerMarker(player,index,scale) {
         width="${faceSize}"
         height="${faceSize}"
         preserveAspectRatio="none"
+        pointer-events="none"
       />
 
       <rect
@@ -1087,6 +1437,7 @@ function makePlayerMarker(player,index,scale) {
         fill-opacity=".92"
         stroke="#dce5ed"
         stroke-width="${.7*scale}"
+        pointer-events="none"
       />
 
       <text
@@ -1094,7 +1445,9 @@ function makePlayerMarker(player,index,scale) {
         x="0"
         y="${labelY+labelHeight/2}"
         font-size="${labelSize}"
+        pointer-events="none"
       >${escapeHtml(name)}</text>
+
     </g>
   `;
 }
@@ -1116,10 +1469,7 @@ function renderMarkersNow() {
     makePlayerMarker(player,index,scale)
   ).join("");
 
-  /*
-    列車を先に描き、プレイヤーを後に描画。
-    同じ位置に重なった場合はプレイヤーが前面。
-  */
+  // 列車を先、プレイヤーを後に描画
   markerLayer.innerHTML = trainHTML + playerHTML;
 
   renderPlayerList();
@@ -1140,7 +1490,9 @@ function renderPlayerList() {
       `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
     return `
-      <button class="player-row" type="button" data-player-index="${index}">
+      <button class="player-row"
+              type="button"
+              data-player-index="${index}">
         <img src="${face}" alt="">
         <span class="player-row-info">
           <span class="player-row-name">${escapeHtml(name)}</span>
@@ -1157,6 +1509,9 @@ function renderPlayerList() {
 
 function openModal() {
   detailModal.classList.add("open");
+
+  const closeButton = document.getElementById("closeModal");
+  closeButton.focus();
 }
 
 function closeModal() {
@@ -1189,6 +1544,7 @@ function showPlayerDetail(player) {
         <div class="detail-label">X座標</div>
         <div class="detail-value">${formatNumber(position.x,2)}</div>
       </div>
+
       <div class="detail-item">
         <div class="detail-label">Z座標</div>
         <div class="detail-value">${formatNumber(position.z,2)}</div>
@@ -1222,6 +1578,7 @@ function showTrainDetail(train,index) {
       <span class="train-type" style="background:${type.color}">
         ${escapeHtml(type.name)}
       </span>
+
       <span class="train-destination">
         ${escapeHtml(destination)} 行
       </span>
@@ -1269,53 +1626,75 @@ function showTrainDetail(train,index) {
 }
 
 /* ======================================
-   クリック処理
+   クリック・キーボード操作
 ====================================== */
 
-markerLayer.addEventListener("click",event => {
-  if (dragMoved) return;
-
-  const target = event.target.closest("[data-kind]");
-
+function handleMarkerOpen(target) {
   if (!target) return;
 
   const index = Number(target.dataset.index);
 
-  if (target.dataset.kind === "player" && players[index]) {
-    showPlayerDetail(players[index]);
+  if (!Number.isInteger(index) || index < 0) return;
+
+  if (target.dataset.kind === "player") {
+    const player = players[index];
+
+    if (player) {
+      showPlayerDetail(player);
+    }
+
+    return;
   }
 
-  if (target.dataset.kind === "train" && trains[index]) {
-    showTrainDetail(trains[index],index);
+  if (target.dataset.kind === "train") {
+    const train = trains[index];
+
+    if (train) {
+      showTrainDetail(train,index);
+    }
   }
+}
+
+markerLayer.addEventListener("click",event => {
+  if (dragMoved) return;
+
+  const element = event.target instanceof Element
+    ? event.target
+    : event.target.parentElement;
+
+  const target = element?.closest("[data-kind]");
+
+  if (!target || !markerLayer.contains(target)) return;
+
+  handleMarkerOpen(target);
 });
 
 markerLayer.addEventListener("keydown",event => {
   if (event.key !== "Enter" && event.key !== " ") return;
 
-  const target = event.target.closest("[data-kind]");
+  const element = event.target instanceof Element
+    ? event.target
+    : event.target.parentElement;
 
-  if (!target) return;
+  const target = element?.closest("[data-kind]");
+
+  if (!target || !markerLayer.contains(target)) return;
 
   event.preventDefault();
-
-  const index = Number(target.dataset.index);
-
-  if (target.dataset.kind === "player" && players[index]) {
-    showPlayerDetail(players[index]);
-  }
-
-  if (target.dataset.kind === "train" && trains[index]) {
-    showTrainDetail(trains[index],index);
-  }
+  handleMarkerOpen(target);
 });
 
 playerList.addEventListener("click",event => {
-  const button = event.target.closest("[data-player-index]");
+  const element = event.target instanceof Element
+    ? event.target
+    : event.target.parentElement;
 
-  if (!button) return;
+  const button = element?.closest("[data-player-index]");
 
-  const player = players[Number(button.dataset.playerIndex)];
+  if (!button || !playerList.contains(button)) return;
+
+  const index = Number(button.dataset.playerIndex);
+  const player = players[index];
 
   if (player) {
     showPlayerDetail(player);
@@ -1528,8 +1907,13 @@ map.addEventListener("wheel",event => {
 map.addEventListener("pointerdown",event => {
   if (event.button !== 0) return;
 
-  if (event.target.closest("[data-kind]")) return;
-  if (event.target.closest(".map-controls")) return;
+  const element = event.target instanceof Element
+    ? event.target
+    : event.target.parentElement;
+
+  if (element?.closest("[data-kind]")) return;
+  if (element?.closest(".map-controls")) return;
+  if (element?.closest(".player-panel")) return;
 
   dragging = true;
   dragMoved = false;
@@ -1587,7 +1971,7 @@ window.addEventListener("pointerup",stopDragging);
 window.addEventListener("pointercancel",stopDragging);
 
 /* ======================================
-   キーボード移動
+   キーボード移動・モーダル閉じる
 ====================================== */
 
 window.addEventListener("keydown",event => {
@@ -1665,7 +2049,8 @@ document.getElementById("collapsePlayers").addEventListener("click",() => {
    モーダル操作
 ====================================== */
 
-document.getElementById("closeModal").addEventListener("click",closeModal);
+document.getElementById("closeModal")
+  .addEventListener("click",closeModal);
 
 detailModal.addEventListener("click",event => {
   if (event.target === detailModal) {
