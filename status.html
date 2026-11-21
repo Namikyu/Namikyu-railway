@@ -169,7 +169,8 @@ return[]}
 function getMapSize(){const r=map.getBoundingClientRect(),w=Math.max(1,r.width),h=Math.max(1,r.height);return{width:w,height:h,aspect:w/h}}
 const getScale=()=>view.w/getMapSize().width;
 
-function xInWaterline(t){const{x,z}=getCoordinates(t);return x>=WATERLINE_MIN_X&&x<=WATERLINE_MAX_X&&z>=WATERLINE_MIN_Z&&z<=WATERLINE_MAX_Z}
+const TYPE_TAGS=["ltd","exp","sexp","local2","local"];
+function xInWaterline(t){const{x,z}=getCoordinates(t);return x>=WATERLINE_MIN_X&&x<=WATERLINE_MAX_X&&z>=WATERLINE_MIN_Z&&z<=WATERLINE_MAX_Z&&!normalizeTags(t).some(g=>TYPE_TAGS.includes(g))}
 
 function getTrainRoute(t){
 const{x,z}=getCoordinates(t);
