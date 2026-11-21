@@ -292,8 +292,8 @@ applyView()}
 function renderGrid(){
 const l=view.x,r=l+view.w,t=view.y,b=t+view.h,paths=[],
 fx=Math.floor(l/GRID_SIZE),lx=Math.ceil(r/GRID_SIZE),fz=Math.floor(t/GRID_SIZE),lz=Math.ceil(b/GRID_SIZE);
-for(let i=fx;i<=lx;i++){if(i===0)continue;paths.push(`M ${i*GRID_SIZE} ${t} V ${b}`)}
-for(let i=fz;i<=lz;i++){if(i===0)continue;paths.push(`M ${l} ${i*GRID_SIZE} H ${r}`)}
+for(let i=fx;i<=lx;i++){paths.push(`M ${i*GRID_SIZE} ${t} V ${b}`)}
+for(let i=fz;i<=lz;i++){paths.push(`M ${l} ${i*GRID_SIZE} H ${r}`)}
 gridLayer.innerHTML=`<path class="grid-line" d="${paths.join(" ")}" fill="none"/>`}
 
 function applyView(renderMarkers=true){
