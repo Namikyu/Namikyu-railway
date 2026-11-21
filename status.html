@@ -48,8 +48,23 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 .player-marker,.train-marker{cursor:pointer;pointer-events:auto;outline:none}
 .player-marker:focus-visible,.train-marker:focus-visible{opacity:.8}
 .player-face{image-rendering:pixelated;pointer-events:none}
-.player-hit-area{fill:transparent;stroke:transparent;pointer-events:all}
-.train-label{font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:900;text-anchor:middle;dominant-baseline:central;fill:#fff;stroke:rgba(0,0,0,.18);stroke-width:2px;paint-order:stroke fill;pointer-events:none;user-select:none}
+
+/* 列車マーカーの文字は常に水平 */
+.train-label{
+  font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+  font-weight:900;
+  text-anchor:middle;
+  dominant-baseline:central;
+  fill:#fff;
+  stroke:rgba(0,0,0,.18);
+  stroke-width:2px;
+  paint-order:stroke fill;
+  pointer-events:none;
+  user-select:none;
+  writing-mode:horizontal-tb;
+  text-orientation:mixed;
+}
+
 .player-name-label{font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;fill:#263e58;stroke:#fff;stroke-width:3px;paint-order:stroke fill;pointer-events:none;user-select:none}
 .train-marker:hover .train-body{filter:brightness(1.12)}
 .player-marker:hover image{filter:brightness(1.12)}
@@ -771,24 +786,32 @@ function applyView(renderMarkerLayer = true) {
    マーカー文字列生成
 ========================================= */
 
+/*
+  列車マーカーの回転処理：
+
+  1. マーカー全体は座標位置へ移動するだけ。
+  2. 列車の図形と文字を同じ回転グループに入れる。
+  3. 文字には図形と逆向きの回転を指定する。
+  4. その結果、図形だけが進行方向を向き、文字は水平を保つ。
+
+  例：
+  X+ : 図形 0度 / 文字 0度
+  Z+ : 図形 90度 / 文字 -90度
+  X- : 図形 180度 / 文字 -180度
+  Z- : 図形 -90度 / 文字 90度
+*/
+
 function makeTrainMarker(train, index, scale) {
   const { x, z } = getCoordinates(train);
   const y = -z;
 
   const type = getTrainType(train);
   const angle = getDirectionAngle(train);
+  const reverseAngle = -angle;
 
   const size = 18.4 * scale;
   const triangle = 7.6 * scale;
   const fontSize = 11.5 * scale;
-
-  /*
-    重要：
-    外側のtranslateは座標移動だけ。
-    内側のiconだけを進行方向に回転。
-    文字は回転グループの外側に置くため、
-    進行方向に関係なく常に正立する。
-  */
 
   return `
     <g class="train-marker"
@@ -799,7 +822,8 @@ function makeTrainMarker(train, index, scale) {
        aria-label="${escapeHtml(type.name)} ${escapeHtml(getTrainDestination(train))}"
        transform="translate(${x} ${y})">
 
-      <g class="train-body" transform="rotate(${angle})">
+      <g class="train-body" transform="rotate(${angle} 0 0)">
+
         <rect
           x="${-size / 2}"
           y="${-size / 2}"
@@ -820,15 +844,20 @@ function makeTrainMarker(train, index, scale) {
           stroke-width="${.8 * scale}"
           stroke-linejoin="round"
         />
-      </g>
 
-      <text
-        class="train-label"
-        x="0"
-        y="0"
-        font-size="${fontSize}"
-        transform="none"
-      >${escapeHtml(type.label)}</text>
+        <!--
+          図形と同じ回転グループ内に文字を置き、
+          文字だけ逆方向へ回転して水平に戻す。
+        -->
+        <text
+          class="train-label"
+          x="0"
+          y="0"
+          font-size="${fontSize}"
+          transform="rotate(${reverseAngle} 0 0)"
+        >${escapeHtml(type.label)}</text>
+
+      </g>
     </g>
   `;
 }
@@ -877,7 +906,6 @@ function makePlayerMarker(player, index, scale) {
         x="0"
         y="${faceSize * .95}"
         font-size="${nameSize}"
-        transform="none"
       >${escapeHtml(name)}</text>
     </g>
   `;
@@ -1237,25 +1265,6 @@ async function fetchStatus() {
 /* =========================================
    自動更新
 ========================================= */
-
-/*
-  通常は1秒間隔で取得する。
-
-  visibilitychange:
-    別タブから戻ってきたときに即時更新。
-
-  focus:
-    ブラウザのウィンドウに戻ったときに即時更新。
-
-  pageshow:
-    ページ表示・復元時に即時更新。
-
-  online:
-    ネット接続が復旧したときに即時更新。
-
-  pagehide:
-    ページを離れたときの無駄な処理を抑制。
-*/
 
 let refreshTimer = null;
 
