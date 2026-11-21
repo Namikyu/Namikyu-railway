@@ -16,7 +16,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:"Noto Sans
 button{font:inherit}
 
 /* ヘッダー */
-.header{height:120px;min-height:120px;padding:8px 3%;display:flex;align-items:center;justify-content:space-between;gap:18px;background:linear-gradient(110deg,#075d9b 0%,#087fc4 55%,#129bd2 100%);overflow:hidden}
+.header{height:120px;min-height:120px;padding:8px 3%;display:flex;align-items:center;justify-content:space-between;gap:18px;background:linear-gradient(110deg,#075d9b,#087fc4 55%,#129bd2);overflow:hidden}
 .header-top{display:flex;align-items:center;gap:14px;flex:0 1 42%;min-width:0}
 .logo{width:80px;height:80px;object-fit:contain;flex-shrink:0}
 .brand-text{display:flex;flex-direction:column;min-width:0}
@@ -30,7 +30,7 @@ button{font:inherit}
 main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:flex;flex-direction:column;overflow:hidden}
 .page-title{flex-shrink:0;margin:0 0 2px;color:#142b49;font-size:21px;font-weight:800}
 .page-subtitle{flex-shrink:0;margin:0 0 10px;color:#8295a8;font-size:9px;letter-spacing:2px;font-weight:800}
-.status-line{flex-shrink:0;display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-bottom:8px;padding:10px 13px;background:#fff;border:1px solid #e1e9f1;border-radius:9px;box-shadow:0 2px 8px rgba(20,43,73,.045);font-size:11px;color:#61768b}
+.status-line{flex-shrink:0;display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-bottom:8px;padding:10px 13px;background:#fff;border:1px solid #e1e9f1;border-radius:9px;box-shadow:0 2px 8px #142b490b;font-size:11px;color:#61768b}
 .status-line strong{color:#263e58;font-size:11px;font-weight:800}
 .status-dot{width:8px;height:8px;border-radius:50%;background:#999;flex-shrink:0}
 .status-dot.online{background:#20a464;box-shadow:0 0 0 3px #20a46420}
@@ -40,31 +40,15 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 .legend i{width:9px;height:9px;border-radius:3px;display:inline-block}
 
 /* マップ */
-#mapArea{position:relative;width:100%;flex:1 1 0;min-height:0;overflow:hidden;border:1px solid #dce5ed;border-radius:10px;background:linear-gradient(rgba(255,255,255,.65),rgba(255,255,255,.65)),#f3f7fb;box-shadow:0 3px 14px rgba(20,43,73,.065)}
+#mapArea{position:relative;width:100%;flex:1 1 0;min-height:0;overflow:hidden;border:1px solid #dce5ed;border-radius:10px;background:linear-gradient(#ffffffa6,#ffffffa6),#f3f7fb;box-shadow:0 3px 14px #142b4910}
 #map{width:100%;height:100%;display:block;cursor:grab;touch-action:none;overflow:hidden;user-select:none}
 #map.dragging{cursor:grabbing}
 .grid-line{stroke:#dce5ed;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
-.marker-layer{pointer-events:auto}
-.player-marker,.train-marker{cursor:pointer;pointer-events:auto;outline:none}
+.marker-layer{pointer-events:none}
+.player-marker,.train-marker{cursor:pointer;pointer-events:all;outline:none}
 .player-marker:focus-visible,.train-marker:focus-visible{opacity:.8}
 .player-face{image-rendering:pixelated;pointer-events:none}
-
-/* 列車文字は常に画面に対して水平 */
-.train-label{
-  font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
-  font-weight:900;
-  text-anchor:middle;
-  dominant-baseline:central;
-  fill:#fff;
-  stroke:rgba(0,0,0,.18);
-  stroke-width:2px;
-  paint-order:stroke fill;
-  pointer-events:none;
-  user-select:none;
-  writing-mode:horizontal-tb;
-  text-orientation:mixed;
-}
-
+.train-label{font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:900;text-anchor:middle;dominant-baseline:central;fill:#fff;stroke:rgba(0,0,0,.25);stroke-width:2px;paint-order:stroke fill;pointer-events:none;user-select:none}
 .player-name-label{font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;fill:#263e58;stroke:#fff;stroke-width:3px;paint-order:stroke fill;pointer-events:none;user-select:none}
 .train-marker:hover .train-body{filter:brightness(1.12)}
 .player-marker:hover image{filter:brightness(1.12)}
@@ -79,13 +63,13 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 
 /* 操作ボタン */
 .map-controls{position:absolute;right:13px;top:13px;z-index:4;display:flex;flex-direction:column;gap:6px}
-.map-controls button{width:36px;height:36px;border:1px solid #d8e2ec;border-radius:8px;background:rgba(255,255,255,.95);color:#284967;font-size:19px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(20,43,73,.08)}
+.map-controls button{width:36px;height:36px;border:1px solid #d8e2ec;border-radius:8px;background:#fffffff2;color:#284967;font-size:19px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px #142b4914}
 .map-controls button:hover{background:#eaf5fc}
 .map-controls button:active{transform:scale(.96)}
-.map-help{position:absolute;right:13px;bottom:10px;z-index:2;padding:5px 8px;border-radius:5px;background:rgba(255,255,255,.8);color:#8093a5;font-size:9px;pointer-events:none}
+.map-help{position:absolute;right:13px;bottom:10px;z-index:2;padding:5px 8px;border-radius:5px;background:#ffffffcc;color:#8093a5;font-size:9px;pointer-events:none}
 
 /* プレイヤー一覧 */
-.player-panel{position:absolute;left:12px;top:12px;z-index:4;width:205px;max-height:calc(100% - 24px);display:flex;flex-direction:column;background:rgba(255,255,255,.94);border:1px solid #dce5ed;border-radius:9px;box-shadow:0 3px 12px rgba(20,43,73,.09);overflow:hidden;transition:width .18s}
+.player-panel{position:absolute;left:12px;top:12px;z-index:4;width:205px;max-height:calc(100% - 24px);display:flex;flex-direction:column;background:#fffffff0;border:1px solid #dce5ed;border-radius:9px;box-shadow:0 3px 12px #142b4917;overflow:hidden;transition:width .18s}
 .player-panel.collapsed{width:112px}
 .player-panel-head{height:38px;min-height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border-bottom:1px solid #e8eef4;color:#29445f;font-size:11px;font-weight:800}
 .player-panel-head button{border:0;background:transparent;color:#55718b;cursor:pointer;font-size:14px}
@@ -99,9 +83,9 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 .player-panel.collapsed .player-list{display:none}
 
 /* モーダル */
-.modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(13,31,50,.48);backdrop-filter:blur(3px)}
+.modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:#0d1f327a;backdrop-filter:blur(3px)}
 .modal.open{display:flex}
-.modal-card{width:min(420px,100%);max-height:85vh;overflow:auto;padding:20px;background:white;border:1px solid #dce5ed;border-radius:13px;box-shadow:0 15px 50px rgba(0,0,0,.2)}
+.modal-card{width:min(420px,100%);max-height:85vh;overflow:auto;padding:20px;background:white;border:1px solid #dce5ed;border-radius:13px;box-shadow:0 15px 50px #0003}
 .modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}
 .modal-title{margin:0;color:#142b49;font-size:17px;font-weight:900}
 .modal-close{width:30px;height:30px;border:0;border-radius:7px;background:#edf2f6;color:#49647e;font-size:18px;cursor:pointer}
@@ -127,7 +111,7 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
  .brand-subtitle{font-size:8px;letter-spacing:.1em}
  .navigation{gap:4px}
  .navigation a{height:39px;padding:4px 3px;font-size:9px;border-radius:5px}
- main{height:calc(100dvh - 92px);padding:9px 9px 10px}
+ main{height:calc(100dvh - 92px);padding:9px}
  .page-title{font-size:17px}
  .page-subtitle{font-size:8px;margin-bottom:7px}
  .status-line{padding:8px;margin-bottom:5px;gap:6px;font-size:9px}
@@ -152,7 +136,6 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 </head>
 
 <body>
-
 <header class="header">
   <div class="header-top">
     <img class="logo" src="./icon.png" alt="波急">
@@ -161,7 +144,6 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
       <div class="brand-subtitle">NAMIKYU SERVER</div>
     </div>
   </div>
-
   <nav class="navigation">
     <a href="./index.html">ホーム</a>
     <a href="./news.html">お知らせ</a>
@@ -248,9 +230,8 @@ main{height:calc(100dvh - 120px);min-height:0;padding:13px 18px 16px;display:fle
 const API_URL = "https://namikyu-status.kou20230831.workers.dev/api/status";
 const REFRESH_MS = 1000;
 
-const MIN_VIEW_WIDTH = 0.001;
-const MAX_VIEW_WIDTH = 1000000000;
-
+const MIN_VIEW_WIDTH = 500;
+const MAX_VIEW_WIDTH = 50000;
 const GRID_TARGET_PIXELS = 90;
 const GRID_MAX_LINES = 120;
 
@@ -270,12 +251,14 @@ const trainCountText = document.getElementById("trainCount");
 
 const playerList = document.getElementById("playerList");
 const playerPanel = document.getElementById("playerPanel");
+const detailModal = document.getElementById("detailModal");
+const modalContent = document.getElementById("modalContent");
+const modalTitle = document.getElementById("modalTitle");
 
 let latestData = null;
 let players = [];
 let trains = [];
 let staffMap = new Map();
-
 let selectedEntityKey = null;
 
 let isFetching = false;
@@ -292,6 +275,7 @@ let view = {
 let dragging = false;
 let dragStart = null;
 let dragMoved = false;
+let dragResetTimer = null;
 
 /* =========================================
    共通処理
@@ -336,6 +320,18 @@ function getCoordinates(entity) {
   };
 }
 
+function getMapSize() {
+  const rect = map.getBoundingClientRect();
+  const width = Math.max(1, rect.width);
+  const height = Math.max(1, rect.height);
+
+  return { width, height, aspect: width / height };
+}
+
+function getScale() {
+  return view.w / getMapSize().width;
+}
+
 function normalizeTags(entity) {
   const raw = entity?.tags ?? entity?.tag ?? [];
 
@@ -344,34 +340,12 @@ function normalizeTags(entity) {
   }
 
   if (typeof raw === "string") {
-    return raw
-      .split(/[,\s]+/)
+    return raw.split(/[,\s]+/)
       .map(v => v.trim().toLowerCase())
       .filter(Boolean);
   }
 
   return [];
-}
-
-function hasTag(entity, tag) {
-  return normalizeTags(entity).includes(tag.toLowerCase());
-}
-
-function getMapSize() {
-  const rect = map.getBoundingClientRect();
-  const width = Math.max(1, rect.width);
-  const height = Math.max(1, rect.height);
-
-  return {
-    width,
-    height,
-    aspect: width / height
-  };
-}
-
-function getScale() {
-  const size = getMapSize();
-  return view.w / size.width;
 }
 
 /* =========================================
@@ -383,77 +357,52 @@ function getTrainType(train) {
   const { x, z } = getCoordinates(train);
 
   if (tags.includes("ltd")) {
-    return {
-      key: "ltd",
-      name: "特急",
-      label: "特",
-      color: "#f97316"
-    };
+    return { key:"ltd", name:"特急", label:"特", color:"#f97316" };
   }
 
   if (tags.includes("exp")) {
-    return {
-      key: "exp",
-      name: "急行",
-      label: "急",
-      color: "#dc2626"
-    };
+    return { key:"exp", name:"急行", label:"急", color:"#dc2626" };
   }
 
   if (tags.includes("sexp")) {
     if (z < -18 || z > 6131) {
       return {
-        key: "sexp-local",
-        name: "各駅停車",
-        label: "各",
-        color: "#2878c8",
-        downgradedFromSemiExpress: true
+        key:"sexp-local",
+        name:"各駅停車",
+        label:"各",
+        color:"#2878c8",
+        downgradedFromSemiExpress:true
       };
     }
 
-    return {
-      key: "sexp",
-      name: "準急",
-      label: "準",
-      color: "#16a34a"
-    };
+    return { key:"sexp", name:"準急", label:"準", color:"#16a34a" };
   }
 
   if (tags.includes("local2")) {
     return {
-      key: "local2",
-      name: "各駅停車",
-      label: "各",
-      color: "#60a5fa",
-      alias: "川鉄線"
+      key:"local2",
+      name:"各駅停車",
+      label:"各",
+      color:"#60a5fa",
+      alias:"川鉄線"
     };
   }
 
   if (tags.includes("local")) {
-    return {
-      key: "local",
-      name: "各駅停車",
-      label: "各",
-      color: "#2878c8"
-    };
+    return { key:"local", name:"各駅停車", label:"各", color:"#2878c8" };
   }
 
   if (x >= -608 && x <= 692 && z >= 3957 && z <= 5257) {
     return {
-      key: "waterline",
-      name: "普通",
-      label: "普",
-      color: "#888888",
-      alias: "水山線"
+      key:"waterline",
+      name:"普通",
+      label:"普",
+      color:"#888888",
+      alias:"水山線"
     };
   }
 
-  return {
-    key: "unknown",
-    name: "その他",
-    label: "不",
-    color: "#222222"
-  };
+  return { key:"unknown", name:"その他", label:"不", color:"#222222" };
 }
 
 /* =========================================
@@ -474,10 +423,13 @@ function getTrainDirection(train) {
   return "x+";
 }
 
+/*
+  SVGの座標は右がX＋、下がY＋。
+  MinecraftのZ座標をそのまま画面Yに使うため、
+  Z−は上、Z＋は下になる。
+*/
 function getDirectionAngle(train) {
-  const direction = getTrainDirection(train);
-
-  switch (direction) {
+  switch (getTrainDirection(train)) {
     case "z-": return -90;
     case "z+": return 90;
     case "x-": return 180;
@@ -497,28 +449,13 @@ function isPositiveDirection(train) {
 
 function getTrainDestination(train) {
   const type = getTrainType(train);
-
-  if (type.key === "waterline") {
-    return "草市～水山 往復";
-  }
-
   const positive = isPositiveDirection(train);
 
-  if (type.key === "local2") {
-    return positive ? "依丘" : "草市";
-  }
-
-  if (type.key === "local") {
-    return positive ? "波丘" : "吉山";
-  }
-
-  if (type.key === "exp") {
-    return positive ? "依丘" : "吉山";
-  }
-
-  if (type.key === "ltd") {
-    return positive ? "雨山" : "吉山";
-  }
+  if (type.key === "waterline") return "草市～水山 往復";
+  if (type.key === "local2") return positive ? "依丘" : "草市";
+  if (type.key === "local") return positive ? "波丘" : "吉山";
+  if (type.key === "exp") return positive ? "依丘" : "吉山";
+  if (type.key === "ltd") return positive ? "雨山" : "吉山";
 
   if (type.key === "sexp" || type.downgradedFromSemiExpress) {
     return positive ? "雨山" : "矢野";
@@ -534,28 +471,17 @@ function getTrainDestination(train) {
 function getDisplaySpeed(train) {
   const sokudo = Number(train?.sokudo);
 
-  if (sokudo === 59) {
-    return 120;
-  }
+  if (sokudo === 59) return 120;
 
   const raw = train?.speed;
 
-  if (
-    raw === null ||
-    raw === undefined ||
-    raw === "" ||
-    raw === "-" ||
-    raw === "—"
-  ) {
+  if (raw === null || raw === undefined || raw === "" || raw === "-" || raw === "—") {
     return 0;
   }
 
   const speed = Number(raw);
 
-  if (!Number.isFinite(speed) || speed < 0) {
-    return 0;
-  }
-
+  if (!Number.isFinite(speed) || speed < 0) return 0;
   return speed;
 }
 
@@ -569,9 +495,9 @@ function normalizeCollection(value) {
   if (value && typeof value === "object") {
     return Object.entries(value).map(([key, item]) => {
       if (item && typeof item === "object") {
-        return { ...item, id: item.id ?? key };
+        return { ...item, id:item.id ?? key };
       }
-      return { id: key, value: item };
+      return { id:key, value:item };
     });
   }
 
@@ -581,20 +507,13 @@ function normalizeCollection(value) {
 function extractDataLists(data) {
   const root = data?.data ?? data?.status ?? data ?? {};
 
-  const playerSource =
-    root.players ??
-    root.player ??
-    root.onlinePlayers ??
-    [];
+  players = normalizeCollection(
+    root.players ?? root.player ?? root.onlinePlayers ?? []
+  );
 
-  const trainSource =
-    root.trains ??
-    root.train ??
-    root.carts ??
-    [];
-
-  players = normalizeCollection(playerSource);
-  trains = normalizeCollection(trainSource);
+  trains = normalizeCollection(
+    root.trains ?? root.train ?? root.carts ?? []
+  );
 
   return root;
 }
@@ -606,28 +525,24 @@ function extractDataLists(data) {
 async function loadStaff() {
   try {
     const response = await fetch("./staff.html", {
-      method: "GET",
-      cache: "no-store"
+      method:"GET",
+      cache:"no-store"
     });
 
-    if (!response.ok) {
-      throw new Error("スタッフ一覧を取得できません");
-    }
+    if (!response.ok) throw new Error("スタッフ一覧を取得できません");
 
     const html = await response.text();
-    const documentData = new DOMParser().parseFromString(html, "text/html");
-
+    const doc = new DOMParser().parseFromString(html, "text/html");
     const nextMap = new Map();
 
-    documentData.querySelectorAll(".staff-card").forEach(card => {
+    doc.querySelectorAll(".staff-card").forEach(card => {
       const nameElement = card.querySelector(".staff-name");
       if (!nameElement) return;
 
       const name = nameElement.textContent.trim();
       if (!name) return;
 
-      const roleElements = card.querySelectorAll(".role-badge");
-      const roles = Array.from(roleElements)
+      const roles = Array.from(card.querySelectorAll(".role-badge"))
         .map(element => element.textContent.trim())
         .filter(Boolean);
 
@@ -641,12 +556,11 @@ async function loadStaff() {
 }
 
 function getPlayerRole(player) {
-  const name = getName(player);
-  return staffMap.get(name.toLowerCase()) || "";
+  return staffMap.get(getName(player).toLowerCase()) || "";
 }
 
 /* =========================================
-   マップ表示範囲
+   表示範囲・全体表示
 ========================================= */
 
 function fitViewToData() {
@@ -655,12 +569,12 @@ function fitViewToData() {
 
   players.forEach(player => {
     const p = getCoordinates(player);
-    points.push({ x: p.x, y: -p.z });
+    points.push({ x:p.x, y:p.z });
   });
 
   trains.forEach(train => {
     const p = getCoordinates(train);
-    points.push({ x: p.x, y: -p.z });
+    points.push({ x:p.x, y:p.z });
   });
 
   if (points.length === 0) {
@@ -680,53 +594,42 @@ function fitViewToData() {
   const minY = Math.min(...ys);
   const maxY = Math.max(...ys);
 
-  let width = Math.max(500, maxX - minX);
-  let height = Math.max(500, maxY - minY);
+  const centerX = (minX + maxX) / 2;
+  const centerY = (minY + maxY) / 2;
 
-  const margin = 1.35;
-  width *= margin;
-  height *= margin;
+  const dataWidth = Math.max(0, maxX - minX);
+  const dataHeight = Math.max(0, maxY - minY);
+
+  let width = Math.max(1000, dataWidth) * 1.12;
+  let height = Math.max(1000, dataHeight) * 1.12;
 
   let targetWidth = Math.max(width, height * size.aspect);
-  targetWidth = Math.max(500, targetWidth);
+  targetWidth = Math.max(1000, Math.min(MAX_VIEW_WIDTH, targetWidth));
 
   view.w = targetWidth;
   view.h = targetWidth / size.aspect;
-  view.x = (minX + maxX) / 2 - view.w / 2;
-  view.y = (minY + maxY) / 2 - view.h / 2;
+  view.x = centerX - view.w / 2;
+  view.y = centerY - view.h / 2;
 
   applyView();
 }
 
 function visibleBounds() {
-  return {
-    x: view.x,
-    y: view.y,
-    w: view.w,
-    h: view.h
-  };
+  return { x:view.x, y:view.y, w:view.w, h:view.h };
 }
 
 /* =========================================
-   軽量グリッド
+   グリッド
 ========================================= */
 
 function getAdaptiveGridStep() {
   const size = getMapSize();
-  const worldPerPixel = view.w / size.width;
-  const target = worldPerPixel * GRID_TARGET_PIXELS;
+  const target = (view.w / size.width) * GRID_TARGET_PIXELS;
 
-  if (!Number.isFinite(target) || target <= 0) {
-    return 500;
-  }
+  if (!Number.isFinite(target) || target <= 0) return 500;
 
   const exponent = Math.pow(10, Math.floor(Math.log10(target)));
-  const candidates = [
-    exponent,
-    exponent * 2,
-    exponent * 5,
-    exponent * 10
-  ];
+  const candidates = [exponent, exponent * 2, exponent * 5, exponent * 10];
 
   return candidates.find(step => step >= target) || exponent * 10;
 }
@@ -740,23 +643,23 @@ function renderGrid() {
   const top = Math.floor(bounds.y / step) * step;
   const bottom = Math.ceil((bounds.y + bounds.h) / step) * step;
 
-  const path = [];
+  const paths = [];
   let count = 0;
 
   for (let x = left; x <= right && count < GRID_MAX_LINES; x += step) {
-    path.push(`M${x} ${top}V${bottom}`);
+    paths.push(`M${x} ${top}V${bottom}`);
     count++;
   }
 
   count = 0;
 
   for (let y = top; y <= bottom && count < GRID_MAX_LINES; y += step) {
-    path.push(`M${left} ${y}H${right}`);
+    paths.push(`M${left} ${y}H${right}`);
     count++;
   }
 
   gridLayer.innerHTML =
-    `<path class="grid-line" d="${path.join("")}" fill="none"/>`;
+    `<path class="grid-line" d="${paths.join("")}" fill="none"/>`;
 }
 
 /* =========================================
@@ -765,13 +668,9 @@ function renderGrid() {
 
 function applyView(renderMarkerLayer = true) {
   const size = getMapSize();
-
   view.h = view.w / size.aspect;
 
-  map.setAttribute(
-    "viewBox",
-    `${view.x} ${view.y} ${view.w} ${view.h}`
-  );
+  map.setAttribute("viewBox", `${view.x} ${view.y} ${view.w} ${view.h}`);
 
   renderGrid();
 
@@ -784,23 +683,34 @@ function applyView(renderMarkerLayer = true) {
    列車マーカー
 ========================================= */
 
-/*
-  マーカー全体を座標へ移動する。
-  図形だけを進行方向に回転する。
-  文字は回転グループの外側に置く。
-  そのため文字は常に画面に対して水平になる。
-*/
-
 function makeTrainMarker(train, index, scale) {
   const { x, z } = getCoordinates(train);
-  const y = -z;
+
+  // Z座標をそのままSVGのY座標にする。
+  // これによりZ−が上、Z＋が下になる。
+  const y = z;
 
   const type = getTrainType(train);
   const angle = getDirectionAngle(train);
 
-  const size = 18.4 * scale;
-  const triangle = 7.6 * scale;
+  const width = 27 * scale;
+  const height = 16 * scale;
   const fontSize = 11.5 * scale;
+
+  // 右向きの車体と矢印先端を一体化した形
+  const arrowPath = `
+    M ${-width * 0.5} ${-height * 0.5}
+    H ${width * 0.18}
+    L ${width * 0.5} 0
+    L ${width * 0.18} ${height * 0.5}
+    H ${-width * 0.5}
+    Q ${-width * 0.62} ${height * 0.5}
+      ${-width * 0.62} ${height * 0.25}
+    V ${-height * 0.25}
+    Q ${-width * 0.62} ${-height * 0.5}
+      ${-width * 0.5} ${-height * 0.5}
+    Z
+  `;
 
   return `
     <g class="train-marker"
@@ -812,24 +722,11 @@ function makeTrainMarker(train, index, scale) {
        transform="translate(${x} ${y})">
 
       <g class="train-body" transform="rotate(${angle} 0 0)">
-        <rect
-          x="${-size / 2}"
-          y="${-size / 2}"
-          width="${size}"
-          height="${size}"
-          rx="${2.8 * scale}"
+        <path
+          d="${arrowPath}"
           fill="${type.color}"
           stroke="#ffffff"
           stroke-width="${1.2 * scale}"
-        />
-
-        <path
-          d="M ${size / 2 - triangle * .25} 0
-             L ${size / 2 + triangle} ${-triangle}
-             L ${size / 2 + triangle} ${triangle} Z"
-          fill="${type.color}"
-          stroke="#ffffff"
-          stroke-width="${.8 * scale}"
           stroke-linejoin="round"
         />
       </g>
@@ -846,14 +743,12 @@ function makeTrainMarker(train, index, scale) {
 
 function makePlayerMarker(player, index, scale) {
   const { x, z } = getCoordinates(player);
-  const y = -z;
+  const y = z;
 
   const name = getName(player);
   const faceSize = 19.2 * scale;
   const nameSize = 10.5 * scale;
-
-  const safeName = encodeURIComponent(name);
-  const faceUrl = `https://mc-heads.net/avatar/${safeName}/64`;
+  const faceUrl = `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
   return `
     <g class="player-marker"
@@ -864,13 +759,7 @@ function makePlayerMarker(player, index, scale) {
        aria-label="${escapeHtml(name)}"
        transform="translate(${x} ${y})">
 
-      <circle
-        class="player-hit-area"
-        cx="0"
-        cy="0"
-        r="${faceSize * .9}"
-        fill="transparent"
-      />
+      <circle cx="0" cy="0" r="${faceSize}" fill="transparent"/>
 
       <image
         class="player-face"
@@ -913,9 +802,7 @@ function renderMarkers() {
 
   renderPlayerList();
 
-  if (selectedEntityKey) {
-    refreshSelectedModal();
-  }
+  if (selectedEntityKey) refreshSelectedModal();
 }
 
 /* =========================================
@@ -950,10 +837,6 @@ function renderPlayerList() {
    詳細画面
 ========================================= */
 
-const detailModal = document.getElementById("detailModal");
-const modalContent = document.getElementById("modalContent");
-const modalTitle = document.getElementById("modalTitle");
-
 function openModal() {
   detailModal.classList.add("open");
 }
@@ -969,7 +852,6 @@ function showPlayerDetail(player) {
   const { x, z } = getCoordinates(player);
 
   selectedEntityKey = `player:${name}`;
-
   modalTitle.textContent = "プレイヤー情報";
 
   const face = `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
@@ -998,16 +880,22 @@ function showPlayerDetail(player) {
   openModal();
 }
 
-function showTrainDetail(train) {
+function showTrainDetail(train, index = trains.indexOf(train)) {
   const type = getTrainType(train);
   const destination = getTrainDestination(train);
   const speed = getDisplaySpeed(train);
+  const direction = getTrainDirection(train);
   const { x, z } = getCoordinates(train);
 
-  const trainIndex = trains.indexOf(train);
-  selectedEntityKey = `train:${trainIndex}`;
-
+  selectedEntityKey = `train:${index}`;
   modalTitle.textContent = "列車情報";
+
+  const directionText = {
+    "z-":"北方向（Z−）",
+    "z+":"南方向（Z＋）",
+    "x-":"西方向（X−）",
+    "x+":"東方向（X＋）"
+  }[direction] || "不明";
 
   modalContent.innerHTML = `
     <div class="train-summary" style="border-color:${type.color}">
@@ -1015,26 +903,35 @@ function showTrainDetail(train) {
         ${escapeHtml(type.name)}
       </span>
       <span class="train-destination">
-        ${escapeHtml(destination)}
+        ${escapeHtml(destination)} 行
       </span>
     </div>
 
     <div class="detail-grid">
       <div class="detail-item">
+        <div class="detail-label">種別</div>
+        <div class="detail-value">${escapeHtml(type.name)}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">行先</div>
+        <div class="detail-value">${escapeHtml(destination)}</div>
+      </div>
+      <div class="detail-item">
         <div class="detail-label">速度</div>
         <div class="detail-value">${formatNumber(speed, 0)} km/h</div>
       </div>
-
+      <div class="detail-item">
+        <div class="detail-label">進行方向</div>
+        <div class="detail-value">${escapeHtml(directionText)}</div>
+      </div>
       <div class="detail-item">
         <div class="detail-label">X座標</div>
         <div class="detail-value">${formatNumber(x, 2)}</div>
       </div>
-
       <div class="detail-item">
         <div class="detail-label">Z座標</div>
         <div class="detail-value">${formatNumber(z, 2)}</div>
       </div>
-
       <div class="detail-item">
         <div class="detail-label">路線</div>
         <div class="detail-value">${escapeHtml(type.alias || "波急線")}</div>
@@ -1046,16 +943,14 @@ function showTrainDetail(train) {
 }
 
 function refreshSelectedModal() {
-  if (!detailModal.classList.contains("open") || !selectedEntityKey) {
-    return;
-  }
+  if (!detailModal.classList.contains("open") || !selectedEntityKey) return;
 
   if (selectedEntityKey.startsWith("player:")) {
     const name = selectedEntityKey.slice("player:".length);
-    const current = players.find(player => getName(player) === name);
+    const index = players.findIndex(player => getName(player) === name);
 
-    if (current) {
-      showPlayerDetail(current);
+    if (index >= 0) {
+      showPlayerDetail(players[index]);
     } else {
       closeModal();
     }
@@ -1065,10 +960,9 @@ function refreshSelectedModal() {
 
   if (selectedEntityKey.startsWith("train:")) {
     const index = Number(selectedEntityKey.slice("train:".length));
-    const current = trains[index];
 
-    if (current) {
-      showTrainDetail(current);
+    if (Number.isInteger(index) && trains[index]) {
+      showTrainDetail(trains[index], index);
     } else {
       closeModal();
     }
@@ -1076,49 +970,60 @@ function refreshSelectedModal() {
 }
 
 /* =========================================
-   SVGクリック処理
+   マーカークリック
 ========================================= */
 
+/*
+  ドラッグ中にSVG全体のpointer captureを行わない。
+  これによりマーカーのクリックイベントを奪わない。
+*/
 markerLayer.addEventListener("click", event => {
   if (dragMoved) return;
 
-  const marker = event.target.closest("[data-kind]");
-  if (!marker) return;
+  const target = event.target instanceof Element
+    ? event.target.closest("[data-kind]")
+    : null;
 
-  const index = Number(marker.dataset.index);
+  if (!target) return;
 
-  if (marker.dataset.kind === "player") {
-    const player = players[index];
-    if (player) showPlayerDetail(player);
+  const index = Number(target.dataset.index);
+
+  if (target.dataset.kind === "player" && players[index]) {
+    showPlayerDetail(players[index]);
   }
 
-  if (marker.dataset.kind === "train") {
-    const train = trains[index];
-    if (train) showTrainDetail(train);
+  if (target.dataset.kind === "train" && trains[index]) {
+    showTrainDetail(trains[index], index);
   }
 });
 
 markerLayer.addEventListener("keydown", event => {
   if (event.key !== "Enter" && event.key !== " ") return;
 
-  const marker = event.target.closest("[data-kind]");
-  if (!marker) return;
+  const target = event.target instanceof Element
+    ? event.target.closest("[data-kind]")
+    : null;
+
+  if (!target) return;
 
   event.preventDefault();
 
-  const index = Number(marker.dataset.index);
+  const index = Number(target.dataset.index);
 
-  if (marker.dataset.kind === "player" && players[index]) {
+  if (target.dataset.kind === "player" && players[index]) {
     showPlayerDetail(players[index]);
   }
 
-  if (marker.dataset.kind === "train" && trains[index]) {
-    showTrainDetail(trains[index]);
+  if (target.dataset.kind === "train" && trains[index]) {
+    showTrainDetail(trains[index], index);
   }
 });
 
 playerList.addEventListener("click", event => {
-  const button = event.target.closest("[data-player-index]");
+  const button = event.target instanceof Element
+    ? event.target.closest("[data-player-index]")
+    : null;
+
   if (!button) return;
 
   const player = players[Number(button.dataset.playerIndex)];
@@ -1131,21 +1036,12 @@ playerList.addEventListener("click", event => {
 
 function updateStatusDisplay(root) {
   const worldTime =
-    root.worldTime ??
-    root.time ??
-    root.world_time ??
-    "--";
+    root.worldTime ?? root.time ?? root.world_time ?? "--";
 
   const weather =
-    root.weather ??
-    root.worldWeather ??
-    root.world_weather ??
-    "--";
+    root.weather ?? root.worldWeather ?? root.world_weather ?? "--";
 
-  const tps =
-    root.tps ??
-    root.TPS ??
-    "--";
+  const tps = root.tps ?? root.TPS ?? "--";
 
   worldTimeText.textContent = `ワールド時刻：${worldTime}`;
   weatherText.textContent = `天候：${weather}`;
@@ -1154,10 +1050,8 @@ function updateStatusDisplay(root) {
   playerCountText.textContent = `プレイヤー：${players.length}人`;
   trainCountText.textContent = `列車：${trains.length}編成`;
 
-  const now = new Date();
-
   lastUpdated.textContent =
-    `最終更新：${now.toLocaleTimeString("ja-JP", { hour12: false })}`;
+    `最終更新：${new Date().toLocaleTimeString("ja-JP", {hour12:false})}`;
 }
 
 function setOnline() {
@@ -1185,24 +1079,19 @@ async function fetchStatus() {
   isFetching = true;
 
   try {
-    /*
-      CORS対策：
-      独自のリクエストヘッダーを一切追加しない。
-      Cache-ControlやAcceptもheadersには指定しない。
-      cache:"no-store"はブラウザ側のキャッシュ制御。
-    */
-
     const response = await fetch(API_URL, {
-      method: "GET",
-      mode: "cors",
-      cache: "no-store"
+      method:"GET",
+      mode:"cors",
+      cache:"no-store"
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const data = await response.json();
+
+    if (data?.success === false) {
+      throw new Error(data.error || "API error");
+    }
 
     latestData = data;
 
@@ -1213,7 +1102,7 @@ async function fetchStatus() {
 
     lastSuccessfulFetch = Date.now();
 
-    if (!map.dataset.initialized) {
+    if (map.dataset.initialized !== "true") {
       fitViewToData();
       map.dataset.initialized = "true";
     } else {
@@ -1241,9 +1130,7 @@ async function fetchStatus() {
 let refreshTimer = null;
 
 function scheduleRefresh() {
-  if (refreshTimer !== null) {
-    clearTimeout(refreshTimer);
-  }
+  if (refreshTimer !== null) clearTimeout(refreshTimer);
 
   refreshTimer = setTimeout(async () => {
     refreshTimer = null;
@@ -1258,15 +1145,11 @@ function refreshImmediately() {
     refreshTimer = null;
   }
 
-  fetchStatus().finally(() => {
-    scheduleRefresh();
-  });
+  fetchStatus().finally(scheduleRefresh);
 }
 
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) {
-    refreshImmediately();
-  }
+  if (!document.hidden) refreshImmediately();
 });
 
 window.addEventListener("focus", refreshImmediately);
@@ -1286,7 +1169,6 @@ window.addEventListener("pagehide", () => {
 
 function zoomAt(factor, clientX, clientY) {
   const rect = map.getBoundingClientRect();
-
   if (rect.width <= 0 || rect.height <= 0) return;
 
   const px = (clientX - rect.left) / rect.width;
@@ -1340,34 +1222,46 @@ document.getElementById("resetView").addEventListener("click", () => {
 map.addEventListener("wheel", event => {
   event.preventDefault();
 
-  const delta = Math.max(-300, Math.min(300, event.deltaY));
-  const factor = Math.exp(delta * 0.0015);
+  const factor = event.deltaY < 0 ? 0.9 : 1.1;
 
   zoomAt(factor, event.clientX, event.clientY);
-}, { passive: false });
+}, { passive:false });
 
 /* =========================================
    ドラッグ移動
 ========================================= */
 
+/*
+  マーカーや操作パネル上ではドラッグを開始しない。
+  マーカーのクリック操作を優先する。
+*/
 map.addEventListener("pointerdown", event => {
   if (event.button !== 0) return;
+
+  if (event.target instanceof Element &&
+      event.target.closest("[data-kind]")) {
+    return;
+  }
 
   dragging = true;
   dragMoved = false;
 
+  if (dragResetTimer !== null) {
+    clearTimeout(dragResetTimer);
+    dragResetTimer = null;
+  }
+
   dragStart = {
-    x: event.clientX,
-    y: event.clientY,
-    viewX: view.x,
-    viewY: view.y
+    x:event.clientX,
+    y:event.clientY,
+    viewX:view.x,
+    viewY:view.y
   };
 
   map.classList.add("dragging");
-  map.setPointerCapture(event.pointerId);
 });
 
-map.addEventListener("pointermove", event => {
+window.addEventListener("pointermove", event => {
   if (!dragging || !dragStart) return;
 
   const dx = event.clientX - dragStart.x;
@@ -1394,14 +1288,14 @@ function stopDragging() {
 
   renderMarkers();
 
-  setTimeout(() => {
+  dragResetTimer = setTimeout(() => {
     dragMoved = false;
-  }, 0);
+    dragResetTimer = null;
+  }, 100);
 }
 
-map.addEventListener("pointerup", stopDragging);
-map.addEventListener("pointercancel", stopDragging);
-map.addEventListener("lostpointercapture", stopDragging);
+window.addEventListener("pointerup", stopDragging);
+window.addEventListener("pointercancel", stopDragging);
 
 /* =========================================
    キーボード移動
@@ -1409,15 +1303,15 @@ map.addEventListener("lostpointercapture", stopDragging);
 
 window.addEventListener("keydown", event => {
   if (detailModal.classList.contains("open")) {
-    if (event.key === "Escape") {
-      closeModal();
-    }
+    if (event.key === "Escape") closeModal();
     return;
   }
 
   if (
     event.target instanceof HTMLInputElement ||
-    event.target instanceof HTMLTextAreaElement
+    event.target instanceof HTMLTextAreaElement ||
+    event.target instanceof HTMLButtonElement ||
+    event.target instanceof HTMLAnchorElement
   ) {
     return;
   }
@@ -1470,7 +1364,6 @@ document.getElementById("collapsePlayers").addEventListener("click", () => {
   playerPanel.classList.toggle("collapsed");
 
   const button = document.getElementById("collapsePlayers");
-
   button.textContent =
     playerPanel.classList.contains("collapsed") ? "+" : "−";
 });
@@ -1482,9 +1375,7 @@ document.getElementById("collapsePlayers").addEventListener("click", () => {
 document.getElementById("closeModal").addEventListener("click", closeModal);
 
 detailModal.addEventListener("click", event => {
-  if (event.target === detailModal) {
-    closeModal();
-  }
+  if (event.target === detailModal) closeModal();
 });
 
 /* =========================================
@@ -1494,9 +1385,7 @@ detailModal.addEventListener("click", event => {
 let resizeFrame = null;
 
 function handleResize() {
-  if (resizeFrame !== null) {
-    cancelAnimationFrame(resizeFrame);
-  }
+  if (resizeFrame !== null) cancelAnimationFrame(resizeFrame);
 
   resizeFrame = requestAnimationFrame(() => {
     resizeFrame = null;
