@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -77,9 +76,16 @@ h2{margin:0;color:#142b49;font-size:21px}
 .train-marker:focus,.player-marker:focus{outline:none;opacity:.85}
 .train-body{pointer-events:none}
 .train-label{
-  fill:white;stroke:#26364a66;stroke-width:2px;paint-order:stroke fill;
-  font-weight:900;text-anchor:middle;dominant-baseline:central;
-  pointer-events:none;user-select:none
+  fill:white;
+  stroke:#26364a66;
+  stroke-width:1.5px;
+  paint-order:stroke fill;
+  font-family:"Yu Gothic UI","Meiryo",sans-serif;
+  font-weight:900;
+  text-anchor:middle;
+  dominant-baseline:central;
+  pointer-events:none;
+  user-select:none
 }
 .player-name-label{
   fill:#263e58;stroke:white;stroke-width:3px;paint-order:stroke fill;
@@ -314,6 +320,31 @@ const REFRESH_MS = 1000;
 const MIN_VIEW_WIDTH = 500;
 const MAX_VIEW_WIDTH = 50000;
 
+/*
+  路線判定の座標設定
+
+  水山線：
+    X -608 ～ 692
+    Z 3957 ～ 5257
+
+  川鉄線：
+    X 50以上
+
+  雨急線：
+    Z 6131より大きい範囲
+
+  矢野電：
+    Z -18未満の範囲
+*/
+const WATERLINE_MIN_X = -608;
+const WATERLINE_MAX_X = 692;
+const WATERLINE_MIN_Z = 3957;
+const WATERLINE_MAX_Z = 5257;
+
+const KAWATETSU_MIN_X = 50;
+const UKYU_MIN_Z = 6131;
+const YANODEN_MAX_Z = -18;
+
 const map = document.getElementById("map");
 const mapArea = document.getElementById("mapArea");
 const gridLayer = document.getElementById("gridLayer");
@@ -390,6 +421,7 @@ function getName(entity) {
 
 function getCoordinates(entity) {
   const location = entity?.location ?? entity?.position ?? entity ?? {};
+
   return {
     x:numberValue(location.x,0),
     z:numberValue(location.z,0)
@@ -420,6 +452,7 @@ function normalizeCollection(value) {
       if (item && typeof item === "object") {
         return {...item,id:item.id ?? key};
       }
+
       return {id:key,value:item};
     });
   }
@@ -431,6 +464,7 @@ function getMapSize() {
   const rect = map.getBoundingClientRect();
   const width = Math.max(1,rect.width);
   const height = Math.max(1,rect.height);
+
   return {width,height,aspect:width/height};
 }
 
@@ -443,22 +477,85 @@ function clamp(value,min,max) {
 }
 
 /* ======================================
+   路線判定
+====================================== */
+
+/*
+  列車の種別とは別に、座標から路線を判定する。
+
+  判定優先順位：
+  1. 水山線の座標範囲
+  2. X座標50以上なら川鉄線
+  3. Z座標6131より大きければ雨急線
+  4. Z座標-18未満なら矢野電
+  5. それ以外は波急線
+
+  この判定を使うことで、準急が各停に変わった後も
+  路線名は座標に応じたものになる。
+*/
+
+function getTrainRoute(train) {
+  const {x,z} = getCoordinates(train);
+
+  // 水山線を最優先
+  if (
+    x >= WATERLINE_MIN_X &&
+    x <= WATERLINE_MAX_X &&
+    z >= WATERLINE_MIN_Z &&
+    z <= WATERLINE_MAX_Z
+  ) {
+    return "水山線";
+  }
+
+  // X座標による川鉄線判定
+  if (x >= KAWATETSU_MIN_X) {
+    return "川鉄線";
+  }
+
+  // Z＋方向の雨急線
+  if (z > UKYU_MIN_Z) {
+    return "雨急線";
+  }
+
+  // Z−方向の矢野電
+  if (z < YANODEN_MAX_Z) {
+    return "矢野電";
+  }
+
+  return "波急線";
+}
+
+/* ======================================
    種別判定
 ====================================== */
 
 function getTrainType(train) {
   const tags = normalizeTags(train);
-  const {x,z} = getCoordinates(train);
+  const {z} = getCoordinates(train);
 
   if (tags.includes("ltd")) {
-    return {key:"ltd",name:"特急",label:"特",color:"#f97316"};
+    return {
+      key:"ltd",
+      name:"特急",
+      label:"特",
+      color:"#f97316"
+    };
   }
 
   if (tags.includes("exp")) {
-    return {key:"exp",name:"急行",label:"急",color:"#dc2626"};
+    return {
+      key:"exp",
+      name:"急行",
+      label:"急",
+      color:"#dc2626"
+    };
   }
 
   if (tags.includes("sexp")) {
+    /*
+      準急の運転区間外では各停表示にする。
+      ただし行先判定は元の準急として扱う。
+    */
     if (z < -18 || z > 6131) {
       return {
         key:"sexp-local",
@@ -469,7 +566,12 @@ function getTrainType(train) {
       };
     }
 
-    return {key:"sexp",name:"準急",label:"準",color:"#16a34a"};
+    return {
+      key:"sexp",
+      name:"準急",
+      label:"準",
+      color:"#16a34a"
+    };
   }
 
   if (tags.includes("local2")) {
@@ -477,26 +579,47 @@ function getTrainType(train) {
       key:"local2",
       name:"各駅停車",
       label:"各",
-      color:"#60a5fa",
-      alias:"川鉄線"
+      color:"#60a5fa"
     };
   }
 
   if (tags.includes("local")) {
-    return {key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
+    return {
+      key:"local",
+      name:"各駅停車",
+      label:"各",
+      color:"#2878c8"
+    };
   }
 
-  if (x >= -608 && x <= 692 && z >= 3957 && z <= 5257) {
+  if (
+    xInWaterline(train)
+  ) {
     return {
       key:"waterline",
       name:"普通",
       label:"普",
-      color:"#888888",
-      alias:"水山線"
+      color:"#888888"
     };
   }
 
-  return {key:"unknown",name:"その他",label:"不",color:"#222222"};
+  return {
+    key:"unknown",
+    name:"その他",
+    label:"不",
+    color:"#222222"
+  };
+}
+
+function xInWaterline(train) {
+  const {x,z} = getCoordinates(train);
+
+  return (
+    x >= WATERLINE_MIN_X &&
+    x <= WATERLINE_MAX_X &&
+    z >= WATERLINE_MIN_Z &&
+    z <= WATERLINE_MAX_Z
+  );
 }
 
 /* ======================================
@@ -518,9 +641,12 @@ function getTrainDirection(train) {
 }
 
 /*
-  右向きの矢印を基準に回転させる。
-  X＋=右0度、Z＋=下90度、
-  X−=左180度、Z−=上−90度。
+  右向きの矢印を基準に回転。
+
+  X＋=右0度
+  Z＋=下90度
+  X−=左180度
+  Z−=上−90度
 */
 function getDirectionAngle(train) {
   switch (getTrainDirection(train)) {
@@ -534,6 +660,7 @@ function getDirectionAngle(train) {
 
 function isPositiveDirection(train) {
   const direction = getTrainDirection(train);
+
   return direction === "z+" || direction === "x+";
 }
 
@@ -545,12 +672,30 @@ function getTrainDestination(train) {
   const type = getTrainType(train);
   const positive = isPositiveDirection(train);
 
-  if (type.key === "waterline") return "草市～水山 往復";
-  if (type.key === "local2") return positive ? "依丘" : "草市";
-  if (type.key === "local") return positive ? "波丘" : "吉山";
-  if (type.key === "exp") return positive ? "依丘" : "吉山";
-  if (type.key === "ltd") return positive ? "雨山" : "吉山";
+  if (type.key === "waterline") {
+    return "草市～水山 往復";
+  }
 
+  if (type.key === "local2") {
+    return positive ? "依丘" : "草市";
+  }
+
+  if (type.key === "local") {
+    return positive ? "波丘" : "吉山";
+  }
+
+  if (type.key === "exp") {
+    return positive ? "依丘" : "吉山";
+  }
+
+  if (type.key === "ltd") {
+    return positive ? "雨山" : "吉山";
+  }
+
+  /*
+    準急が各停に変更された場合でも、
+    行先は準急時のものを維持する。
+  */
   if (type.key === "sexp" || type.downgradedFromSemiExpress) {
     return positive ? "雨山" : "矢野";
   }
@@ -564,16 +709,26 @@ function getTrainDestination(train) {
 
 function getDisplaySpeed(train) {
   const special = Number(train?.sokudo);
+
   if (special === 59) return 120;
 
   const raw = train?.speed;
 
-  if (raw === null || raw === undefined || raw === "" || raw === "-" || raw === "—") {
+  if (
+    raw === null ||
+    raw === undefined ||
+    raw === "" ||
+    raw === "-" ||
+    raw === "—"
+  ) {
     return 0;
   }
 
   const speed = Number(raw);
-  if (!Number.isFinite(speed) || speed < 0) return 0;
+
+  if (!Number.isFinite(speed) || speed < 0) {
+    return 0;
+  }
 
   return speed;
 }
@@ -585,6 +740,7 @@ function getDisplaySpeed(train) {
 async function loadStaff() {
   try {
     const response = await fetch("./staff.html",{cache:"no-store"});
+
     if (!response.ok) return;
 
     const html = await response.text();
@@ -593,9 +749,11 @@ async function loadStaff() {
 
     doc.querySelectorAll(".staff-card").forEach(card => {
       const nameElement = card.querySelector(".staff-name");
+
       if (!nameElement) return;
 
       const name = nameElement.textContent.trim();
+
       if (!name) return;
 
       const roles = Array.from(card.querySelectorAll(".role-badge"))
@@ -606,6 +764,7 @@ async function loadStaff() {
     });
 
     staffMap = nextMap;
+
   } catch (error) {
     console.warn("スタッフ情報の取得に失敗:",error);
   }
@@ -623,11 +782,17 @@ function extractDataLists(data) {
   const root = data?.data ?? data?.status ?? data ?? {};
 
   players = normalizeCollection(
-    root.players ?? root.player ?? root.onlinePlayers ?? []
+    root.players ??
+    root.player ??
+    root.onlinePlayers ??
+    []
   );
 
   trains = normalizeCollection(
-    root.trains ?? root.train ?? root.carts ?? []
+    root.trains ??
+    root.train ??
+    root.carts ??
+    []
   );
 
   return root;
@@ -638,16 +803,24 @@ function extractDataLists(data) {
 ====================================== */
 
 /*
-  重要：
-  SVGはY＋が画面下方向。
-  MinecraftのZ＋も画面下方向として扱う。
-  よってY座標はZをそのまま使う。
+  マップの方向：
 
-  上=Z−、下=Z＋、右=X＋、左=X−。
+  上    = Z−
+  下    = Z＋
+  右    = X＋
+  左    = X−
+
+  SVGのY＋は画面下方向なので、
+  MinecraftのZ座標を反転せずそのまま使用する。
 */
+
 function worldToMap(entity) {
   const position = getCoordinates(entity);
-  return {x:position.x,y:position.z};
+
+  return {
+    x:position.x,
+    y:position.z
+  };
 }
 
 /* ======================================
@@ -658,14 +831,20 @@ function fitViewToData() {
   const size = getMapSize();
   const points = [];
 
-  players.forEach(player => points.push(worldToMap(player)));
-  trains.forEach(train => points.push(worldToMap(train)));
+  players.forEach(player => {
+    points.push(worldToMap(player));
+  });
+
+  trains.forEach(train => {
+    points.push(worldToMap(train));
+  });
 
   if (points.length === 0) {
     view.w = 10000;
     view.h = view.w / size.aspect;
     view.x = -view.w / 2;
     view.y = -view.h / 2;
+
     applyView();
     return;
   }
@@ -709,10 +888,19 @@ function fitViewToData() {
 
 function getGridStep() {
   const target = getScale() * 90;
-  const power = Math.pow(10,Math.floor(Math.log10(Math.max(1,target))));
-  const choices = [power,power*2,power*5,power*10];
+  const power = Math.pow(
+    10,
+    Math.floor(Math.log10(Math.max(1,target)))
+  );
 
-  return choices.find(step => step >= target) || power*10;
+  const choices = [
+    power,
+    power * 2,
+    power * 5,
+    power * 10
+  ];
+
+  return choices.find(step => step >= target) || power * 10;
 }
 
 function renderGrid() {
@@ -773,35 +961,42 @@ function makeTrainMarker(train,index,scale) {
   const angle = getDirectionAngle(train);
 
   /*
-    車体と矢印先端を一つのパスで描く。
-    別々の四角形・三角形にしないため、
-    接合部に隙間が発生しない。
-  */
-  const width = 30 * scale;
-  const height = 17 * scale;
+    列車マーカーの形状。
 
-  const left = -width * 0.5;
-  const bodyEnd = width * 0.12;
-  const tip = width * 0.5;
-  const backRadius = height * 0.28;
+    正方形部分：
+      横28 × 縦28
+
+    三角形部分：
+      正方形の右辺から先端まで接続
+
+    四角形と三角形は一つのSVGパスで描画するため、
+    接合部分に隙間ができない。
+
+    文字は回転グループの外側に配置する。
+    そのため、列車の向きが変わっても文字は水平。
+  */
+
+  const squareSize = 28 * scale;
+  const half = squareSize / 2;
+  const triangleLength = 18 * scale;
+
+  const tip = half + triangleLength;
 
   const path = [
-    `M ${left+backRadius} ${-height/2}`,
-    `H ${bodyEnd}`,
+    `M ${-half} ${-half}`,
+    `H ${half}`,
     `L ${tip} 0`,
-    `L ${bodyEnd} ${height/2}`,
-    `H ${left+backRadius}`,
-    `Q ${left} ${height/2} ${left} ${height/2-backRadius}`,
-    `V ${-height/2+backRadius}`,
-    `Q ${left} ${-height/2} ${left+backRadius} ${-height/2}`,
+    `L ${half} ${half}`,
+    `H ${-half}`,
     "Z"
   ].join(" ");
 
   /*
-    文字は回転グループの外側に配置。
-    そのため列車の向きが変わっても文字は水平。
+    文字は正方形の中央に配置。
+    textLengthやlengthAdjustは使用しないため、
+    文字の横幅が押しつぶされない。
   */
-  const labelSize = 11 * scale;
+  const labelSize = 18 * scale;
 
   return `
     <g class="train-marker"
@@ -812,6 +1007,7 @@ function makeTrainMarker(train,index,scale) {
        aria-label="${escapeHtml(type.name)} ${escapeHtml(getTrainDestination(train))}"
        transform="translate(${position.x} ${position.y})">
 
+      <!-- 進行方向に合わせて回転する車体 -->
       <g class="train-body" transform="rotate(${angle})">
         <path
           d="${path}"
@@ -822,12 +1018,14 @@ function makeTrainMarker(train,index,scale) {
         />
       </g>
 
+      <!-- 正方形の中心に置く文字。回転させない -->
       <text
         class="train-label"
         x="0"
         y="0"
         font-size="${labelSize}"
       >${escapeHtml(type.label)}</text>
+
     </g>
   `;
 }
@@ -840,20 +1038,12 @@ function makePlayerMarker(player,index,scale) {
   const position = worldToMap(player);
   const name = getName(player);
 
-  /*
-    文字サイズは画面上で10～14px相当に制限。
-    ズームしても極端に小さく・大きくならない。
-  */
   const faceScreenSize = 22;
   const labelScreenSize = 12;
 
   const faceSize = faceScreenSize * scale;
   const labelSize = labelScreenSize * scale;
 
-  /*
-    長い名前も省略しない。
-    文字数に合わせてラベルの背景幅を確保する。
-  */
   const estimatedTextWidth = Math.max(
     25,
     name.length * labelScreenSize * 0.95
@@ -927,7 +1117,7 @@ function renderMarkersNow() {
   ).join("");
 
   /*
-    列車を先に描き、プレイヤーを後に描く。
+    列車を先に描き、プレイヤーを後に描画。
     同じ位置に重なった場合はプレイヤーが前面。
   */
   markerLayer.innerHTML = trainHTML + playerHTML;
@@ -945,7 +1135,9 @@ function renderPlayerList() {
   playerList.innerHTML = players.map((player,index) => {
     const name = getName(player);
     const role = getPlayerRole(player);
-    const face = `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
+
+    const face =
+      `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
     return `
       <button class="player-row" type="button" data-player-index="${index}">
@@ -976,7 +1168,9 @@ function showPlayerDetail(player) {
   const name = getName(player);
   const role = getPlayerRole(player);
   const position = getCoordinates(player);
-  const face = `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
+
+  const face =
+    `https://mc-heads.net/avatar/${encodeURIComponent(name)}/64`;
 
   selectedEntityKey = `player:${name}`;
   modalTitle.textContent = "プレイヤー情報";
@@ -1008,6 +1202,7 @@ function showPlayerDetail(player) {
 function showTrainDetail(train,index) {
   const type = getTrainType(train);
   const destination = getTrainDestination(train);
+  const route = getTrainRoute(train);
   const speed = getDisplaySpeed(train);
   const direction = getTrainDirection(train);
   const position = getCoordinates(train);
@@ -1037,29 +1232,35 @@ function showTrainDetail(train,index) {
         <div class="detail-label">種別</div>
         <div class="detail-value">${escapeHtml(type.name)}</div>
       </div>
+
       <div class="detail-item">
         <div class="detail-label">行先</div>
         <div class="detail-value">${escapeHtml(destination)}</div>
       </div>
+
+      <div class="detail-item">
+        <div class="detail-label">路線</div>
+        <div class="detail-value">${escapeHtml(route)}</div>
+      </div>
+
       <div class="detail-item">
         <div class="detail-label">速度</div>
         <div class="detail-value">${formatNumber(speed,0)} km/h</div>
       </div>
+
       <div class="detail-item">
         <div class="detail-label">進行方向</div>
         <div class="detail-value">${escapeHtml(directionNames[direction] || "不明")}</div>
       </div>
+
       <div class="detail-item">
         <div class="detail-label">X座標</div>
         <div class="detail-value">${formatNumber(position.x,2)}</div>
       </div>
+
       <div class="detail-item">
         <div class="detail-label">Z座標</div>
         <div class="detail-value">${formatNumber(position.z,2)}</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">路線</div>
-        <div class="detail-value">${escapeHtml(type.alias || "波急線")}</div>
       </div>
     </div>
   `;
@@ -1075,6 +1276,7 @@ markerLayer.addEventListener("click",event => {
   if (dragMoved) return;
 
   const target = event.target.closest("[data-kind]");
+
   if (!target) return;
 
   const index = Number(target.dataset.index);
@@ -1092,6 +1294,7 @@ markerLayer.addEventListener("keydown",event => {
   if (event.key !== "Enter" && event.key !== " ") return;
 
   const target = event.target.closest("[data-kind]");
+
   if (!target) return;
 
   event.preventDefault();
@@ -1109,10 +1312,14 @@ markerLayer.addEventListener("keydown",event => {
 
 playerList.addEventListener("click",event => {
   const button = event.target.closest("[data-player-index]");
+
   if (!button) return;
 
   const player = players[Number(button.dataset.playerIndex)];
-  if (player) showPlayerDetail(player);
+
+  if (player) {
+    showPlayerDetail(player);
+  }
 });
 
 /* ======================================
@@ -1120,8 +1327,18 @@ playerList.addEventListener("click",event => {
 ====================================== */
 
 function updateStatus(root) {
-  const worldTime = root.worldTime ?? root.time ?? root.world_time ?? "--";
-  const weather = root.weather ?? root.worldWeather ?? root.world_weather ?? "--";
+  const worldTime =
+    root.worldTime ??
+    root.time ??
+    root.world_time ??
+    "--";
+
+  const weather =
+    root.weather ??
+    root.worldWeather ??
+    root.world_weather ??
+    "--";
+
   const tps = root.tps ?? root.TPS ?? "--";
 
   worldTimeText.textContent = `ワールド時刻：${worldTime}`;
@@ -1153,6 +1370,7 @@ function setOffline() {
 
 async function fetchStatus() {
   if (isFetching) return;
+
   isFetching = true;
 
   try {
@@ -1178,6 +1396,7 @@ async function fetchStatus() {
 
     updateStatus(root);
     setOnline();
+
     lastSuccessfulFetch = Date.now();
 
     if (map.dataset.initialized !== "true") {
@@ -1221,7 +1440,9 @@ function refreshNow() {
 }
 
 document.addEventListener("visibilitychange",() => {
-  if (!document.hidden) refreshNow();
+  if (!document.hidden) {
+    refreshNow();
+  }
 });
 
 window.addEventListener("focus",refreshNow);
@@ -1292,10 +1513,6 @@ document.getElementById("resetView").addEventListener("click",() => {
    ホイール操作
 ====================================== */
 
-/*
-  マップの外側ではズームしない。
-  マップ内ではページスクロールを止めてズームする。
-*/
 map.addEventListener("wheel",event => {
   event.preventDefault();
 
@@ -1312,7 +1529,6 @@ map.addEventListener("pointerdown",event => {
   if (event.button !== 0) return;
 
   if (event.target.closest("[data-kind]")) return;
-
   if (event.target.closest(".map-controls")) return;
 
   dragging = true;
@@ -1356,6 +1572,7 @@ function stopDragging() {
 
   dragging = false;
   dragStart = null;
+
   map.classList.remove("dragging");
 
   renderMarkersNow();
@@ -1375,7 +1592,10 @@ window.addEventListener("pointercancel",stopDragging);
 
 window.addEventListener("keydown",event => {
   if (detailModal.classList.contains("open")) {
-    if (event.key === "Escape") closeModal();
+    if (event.key === "Escape") {
+      closeModal();
+    }
+
     return;
   }
 
@@ -1384,7 +1604,9 @@ window.addEventListener("keydown",event => {
     event.target instanceof HTMLTextAreaElement ||
     event.target instanceof HTMLButtonElement ||
     event.target instanceof HTMLAnchorElement
-  ) return;
+  ) {
+    return;
+  }
 
   const amount = view.w*0.08;
 
@@ -1446,7 +1668,9 @@ document.getElementById("collapsePlayers").addEventListener("click",() => {
 document.getElementById("closeModal").addEventListener("click",closeModal);
 
 detailModal.addEventListener("click",event => {
-  if (event.target === detailModal) closeModal();
+  if (event.target === detailModal) {
+    closeModal();
+  }
 });
 
 /* ======================================
@@ -1464,6 +1688,7 @@ window.addEventListener("resize",() => {
     resizeFrame = null;
 
     const size = getMapSize();
+
     view.h = view.w/size.aspect;
 
     applyView(true);
