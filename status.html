@@ -633,15 +633,21 @@ rect(q.readingX-80,RY-100,q.readingX+80,RY+r.length*72+100)
 const fs=q.fontSize||145,
 rs=q.readingSize||99,
 dy=q.readingDy||100,
+rx=q.readingX??lx,
 w=Math.max(n.length*fs,r.length*rs)+100,
 h=fs+dy+rs+70,
 e=q.a==="end";
 
-l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" font-size="${fs}"><tspan>${esc(n)}</tspan> <tspan class="station-reading" x="${lx}" dy="${dy}" font-size="${rs}">${esc(r)}</tspan></text>`;
+l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" font-size="${fs}"><tspan>${esc(n)}</tspan> <tspan class="station-reading" x="${rx}" dy="${dy}" font-size="${rs}">${esc(r)}</tspan></text>`;
 
 OBST.push(
 e?rect(lx-w,ly-fs,lx+30,ly+h):
-rect(lx-30,ly-fs,lx+w,ly+h)
+rect(
+Math.min(lx-30,rx-30),
+ly-fs,
+Math.max(lx+w,rx+r.length*rs+30),
+ly+h
+)
 );
 }
 }
@@ -653,6 +659,3 @@ await loadStaff();
 await fetchStatus();
 scheduleRefresh();
 })();
-</script>
-</body>
-</html>
