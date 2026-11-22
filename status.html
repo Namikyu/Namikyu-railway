@@ -164,7 +164,12 @@ coords=e=>{const p=e?.location??e?.position??e??{};return{x:num(p.x),y:num(p.y),
 toMap=e=>{const p=coords(e);return{x:p.x,y:p.z}},
 xyz=p=>`${fmt(p.x,2)}, ${fmt(p.y,2)}, ${fmt(p.z,2)}`,
 clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),
-face=n=>`https://mc-heads.net/avatar/${encodeURIComponent(n)}/64`,
+face=p=>{
+const xuid=p?.xuid??p?.XUID;
+return xuid!=null&&/^\d+$/.test(String(xuid))
+?`https://mc-api.io/render/FACE/${encodeURIComponent(String(xuid))}?size=64`
+:`https://mc-api.io/render/FACE/${encodeURIComponent(getName(p))}/BEDROCK?size=64`
+},
 ANGLES={"x+":0,"z+":90,"x-":180,"z-":-90},TYPE_TAGS=["ltd","exp","sexp","local2","local"],
 DEST={local2:["依丘","草市"],local:["波丘","吉山"],exp:["依丘","吉山"],ltd:["雨山","吉山"],sexp:["雨山","矢野"],"sexp-local":["雨山","矢野"]},
 MODELS={1532:"波急3500系",2532:"矢野電5000系",3800:"雨急3800系",4722:"雨急4000系",5179:"波急5100系",6971:"水鉄1500系",8152:"川鉄9700系",7661:"波急3100系",8575:"波急2500系"},
@@ -263,20 +268,20 @@ playerPositions.set(key,{x:origin.x,y:origin.y,mx:chosen.x,my:chosen.y});
 return{player:p,index:i,pos:chosen,origin,w}})}
 function playerMarker({player:p,index:i,pos,w}){
 const n=getName(p),h=Math.max(90,w/2);
-return`<g class="player-marker" data-kind="player" data-index="${i}" tabindex="0" role="button" transform="translate(${pos.x} ${pos.y})"><rect x="${-h}" y="-90" width="${h*2}" height="310" fill="transparent"/><image href="${face(n)}" x="-90" y="-90" width="180" height="180" preserveAspectRatio="none"/><rect class="player-name-background" x="${-w/2}" y="100" width="${w}" height="120" rx="28"/><text class="player-name-label" x="0" y="160" font-size="85" textLength="${w-50}" lengthAdjust="spacingAndGlyphs">${esc(n)}</text></g>`}
+return`<g class="player-marker" data-kind="player" data-index="${i}" tabindex="0" role="button" transform="translate(${pos.x} ${pos.y})"><rect x="${-h}" y="-90" width="${h*2}" height="310" fill="transparent"/><image href="${face(p)}" x="-90" y="-90" width="180" height="180" preserveAspectRatio="none"/><rect class="player-name-background" x="${-w/2}" y="100" width="${w}" height="120" rx="28"/><text class="player-name-label" x="0" y="160" font-size="85" textLength="${w-50}" lengthAdjust="spacingAndGlyphs">${esc(n)}</text></g>`}
 function renderMarkers(){
 if(!latest)return;
 const layout=placePlayers(trains);
 set(haloLayer,layout.map(({origin:q,pos})=>q.x===pos.x&&q.y===pos.y?"":`<line class="player-link" x1="${q.x}" y1="${q.y}" x2="${pos.x}" y2="${pos.y}"/>`).join("")+layout.map(({origin:q})=>`<g transform="translate(${q.x} ${q.y})"><circle class="player-halo" r="145"/><circle class="player-halo-core" r="55"/></g>`).join(""));
 set(markerLayer,trains.map(trainMarker).join("")+layout.map(playerMarker).join(""));
 ppCount.textContent=players.length;
-set(pList,players.length?players.map((p,i)=>{const n=getName(p),r=getRole(p);return`<button class="player-row" type="button" data-player-index="${i}"><img src="${face(n)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${esc(n)}</span><span class="player-role-badge ${r.className}">${esc(r.label)}</span></span></button>`}).join(""):'<div class="player-empty">現在オンラインのプレイヤーはいません</div>')}
+set(pList,players.length?players.map((p,i)=>{const n=getName(p),r=getRole(p);return`<button class="player-row" type="button" data-player-index="${i}"><img src="${face(p)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${esc(n)}</span><span class="player-role-badge ${r.className}">${esc(r.label)}</span></span></button>`}).join(""):'<div class="player-empty">現在オンラインのプレイヤーはいません</div>')}
 function openModal(){modal.classList.add("open");document.body.style.overflow="hidden";closeBtn.focus()}
 function closeModal(){modal.classList.remove("open");document.body.style.overflow="";selectedPlayer=selectedTrain=null}
 function showPlayer(p){
 selectedPlayer=getName(p);selectedTrain=null;mTitle.textContent="プレイヤー情報";
 const r=getRole(p),n=selectedPlayer;
-mContent.innerHTML=`<div class="detail-player"><img src="${face(n)}" alt=""><div><div class="detail-player-name">${esc(n)}</div><div class="player-role-badge detail-player-role ${r.className}">${esc(r.label)}</div></div></div><div class="detail-grid">${item("座標 (X, Y, Z)",xyz(coords(p)),1)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;openModal()}
+mContent.innerHTML=`<div class="detail-player"><img src="${face(p)}" alt=""><div><div class="detail-player-name">${esc(n)}</div><div class="player-role-badge detail-player-role ${r.className}">${esc(r.label)}</div></div></div><div class="detail-grid">${item("座標 (X, Y, Z)",xyz(coords(p)),1)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;openModal()}
 function showTrain(t){
 const c=trainInfo(t),d={"x+":"東方向（X＋）","x-":"西方向（X−）","z+":"南方向（Z＋）","z-":"北方向（Z−）"};
 selectedTrain=c.id;selectedPlayer=null;mTitle.textContent="列車情報";
