@@ -315,7 +315,7 @@ if(g.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"}
 if(g.includes("sexp"))return z<-18||z>6131?{key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8"}:{key:"sexp",name:"準急",label:"準",color:"#16a34a"};
 if(g.includes("local2"))return{key:"local2",name:"各駅停車",label:"各",color:"#60a5fa"};
 if(g.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
-return water?{key:"waterline",name:"普通",label:"普",color:"#888"}:{key:"unknown",name:"その他",label:"不",color:"#222"}
+return water?{key:"waterline",name:"普通",label:"普",color:"#888"}:{key:"unknown",name:"不明",label:"不",color:"#222"}
 }
 function trainInfo(t){
 let c=TC.get(t);
