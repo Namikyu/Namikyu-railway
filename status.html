@@ -8,11 +8,13 @@
 <link rel="icon" href="./icon.png">
 <link rel="stylesheet" href="./theme.css">
 <script src="./theme.js" defer></script>
+
 <style>
 *{box-sizing:border-box}
 :root{--navy:#142b49;--blue:#087fc4;--text:#263e58;--muted:#8295a8;--border:#e1e9f1;--surface:#fff;--background:#f2f6fa}
 html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;overscroll-behavior:none;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;color:var(--text);background:var(--background);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 button{font:inherit;cursor:pointer}
+
 .header{height:120px;min-height:120px;max-height:120px;padding:8px 3%;display:flex;align-items:center;justify-content:space-between;gap:18px;overflow:hidden;background:linear-gradient(110deg,#075d9b,#087fc4 55%,#129bd2);font-family:"Yu Gothic UI","Meiryo",sans-serif}
 .header-top{display:flex;align-items:center;gap:14px;flex:0 1 42%;min-width:0}
 .logo{width:80px;height:80px;object-fit:contain;flex-shrink:0}
@@ -24,6 +26,7 @@ button{font:inherit;cursor:pointer}
 .navigation a:hover,.theme-toggle:hover{background:#ffffff47}
 .theme-toggle{display:flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;padding:0;color:#fff;font-size:20px;font-weight:700;border:1px solid #ffffff8c;border-radius:7px;background:#ffffff1f;transition:background .2s,transform .2s}
 .theme-toggle:active{transform:scale(.95)}
+
 main{height:calc(100dvh - 120px);padding:14px 17px 16px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 h2{margin:0;color:var(--navy);font-size:22px;font-weight:850;letter-spacing:.025em}
 .subtitle{margin:3px 0 10px;color:#8a9bad;font-size:9px;font-weight:700;letter-spacing:2px}
@@ -37,30 +40,47 @@ h2{margin:0;color:var(--navy);font-size:22px;font-weight:850;letter-spacing:.025
 .legend{display:flex;flex-wrap:wrap;gap:8px 15px;margin:4px 0 9px;font-size:10px;font-weight:650;color:#536b82}
 .legend span{display:flex;align-items:center;gap:5px}
 .legend i{width:9px;height:9px;border-radius:3px}
+
 #mapArea{position:relative;flex:1;min-height:0;overflow:hidden;border:1px solid #dce5ed;border-radius:12px;background:#f5f8fb;box-shadow:0 3px 14px #142b4910;overscroll-behavior:contain}
 #map{width:100%;height:100%;display:block;cursor:grab;touch-action:none;user-select:none}
 #map.dragging{cursor:grabbing}
+
 .grid-line{stroke:#dce5ed;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
-.route-line{fill:none;stroke:#38bfe8;stroke-width:5px;stroke-linecap:butt;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
-.station-dot{fill:#fff;stroke:#38bfe8;stroke-width:2px;vector-effect:non-scaling-stroke;pointer-events:none}
-.station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3px;paint-order:stroke fill;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:start;pointer-events:none}
+
+/* 路線は常に画面上で5px */
+.route-line{fill:none;stroke:#38bfe8;stroke-width:5;stroke-linecap:butt;vector-effect:non-scaling-stroke;pointer-events:none}
+
+/* 駅の丸は画面上で一定サイズ */
+.station-dot{fill:#fff;stroke:#38bfe8;stroke-width:2;vector-effect:non-scaling-stroke;pointer-events:none}
+
+/* 駅名と読み仮名 */
+.station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3px;paint-order:stroke fill;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:start;pointer-events:none;vector-effect:non-scaling-stroke}
 .station-reading{font-size:.68em;font-weight:600}
+
 .train-marker,.player-marker{cursor:pointer;pointer-events:all;outline:none}
 .train-marker:focus-visible,.player-marker:focus-visible{opacity:.88;filter:drop-shadow(0 0 4px #087fc4)}
 .train-body{pointer-events:all}
 .train-visual{pointer-events:none;filter:drop-shadow(0 1px 1.5px #142b4933)}
 .train-marker:hover .train-visual{filter:drop-shadow(0 1px 2px #142b4966)}
 .train-hit-area{fill:transparent;stroke:transparent;pointer-events:all}
-.train-label{fill:#fff;stroke:#26364a66;stroke-width:1.2px;paint-order:stroke fill;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:900;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
-.player-name-label{fill:#263e58;stroke:#fff;stroke-width:3px;paint-order:stroke fill;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
+.train-label{fill:#fff;stroke:#26364a66;stroke-width:1.2px;paint-order:stroke fill;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:900;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none;vector-effect:non-scaling-stroke}
+.player-name-label{fill:#263e58;stroke:#fff;stroke-width:3px;paint-order:stroke fill;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none;vector-effect:non-scaling-stroke}
 .player-name-background{fill:#fff;fill-opacity:.92;stroke:#dce5ed;stroke-width:.7px;pointer-events:none}
 .player-face{image-rendering:pixelated;pointer-events:none}
+
 .compass{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:3;display:grid;grid-template-columns:28px 28px 28px;grid-template-rows:20px 20px 20px;align-items:center;justify-items:center;pointer-events:none;color:#60778e;font-size:10px;font-weight:850;text-shadow:0 1px 3px #fff}
-.compass .north{grid-column:2;grid-row:1}.compass .west{grid-column:1;grid-row:2}.compass .center{grid-column:2;grid-row:2;color:#9aabba}.compass .east{grid-column:3;grid-row:2}.compass .south{grid-column:2;grid-row:3}
+.compass .north{grid-column:2;grid-row:1}
+.compass .west{grid-column:1;grid-row:2}
+.compass .center{grid-column:2;grid-row:2;color:#9aabba}
+.compass .east{grid-column:3;grid-row:2}
+.compass .south{grid-column:2;grid-row:3}
+
 .map-controls{position:absolute;right:12px;top:12px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .map-controls button{width:36px;height:36px;border:1px solid #d8e2ec;border-radius:9px;background:#fffffff2;color:#284967;font-size:19px;font-weight:800;box-shadow:0 2px 6px #142b4914;transition:background .15s,transform .15s}
-.map-controls button:hover{background:#eaf5fc}.map-controls button:active{transform:scale(.94)}
+.map-controls button:hover{background:#eaf5fc}
+.map-controls button:active{transform:scale(.94)}
 .map-help{position:absolute;right:12px;bottom:9px;z-index:2;padding:6px 9px;border-radius:6px;background:#ffffffdf;color:#8093a5;font-size:9px;font-weight:650;pointer-events:none}
+
 .player-panel{position:absolute;left:12px;top:12px;z-index:5;width:220px;max-height:calc(100% - 24px);display:flex;flex-direction:column;background:#fffffff5;border:1px solid #dce5ed;border-radius:12px;box-shadow:0 4px 16px #142b491b;overflow:hidden;backdrop-filter:blur(8px)}
 .player-panel.collapsed{width:135px}
 .player-panel-head{min-height:45px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 11px;border-bottom:1px solid #e8eef4;color:#29445f;font-size:11px;font-weight:850}
@@ -83,6 +103,7 @@ h2{margin:0;color:var(--navy);font-size:22px;font-weight:850;letter-spacing:.025
 .player-role-badge.role-participant{color:#555f69;background:#d9dee3;border-color:#b9c1c9}
 .player-empty{padding:17px 8px;color:#91a0ae;font-size:10px;text-align:center}
 .player-panel.collapsed .player-list{display:none}
+
 .modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:#0d1f327a;backdrop-filter:blur(4px)}
 .modal.open{display:flex}
 .modal-card{width:min(460px,100%);max-height:85vh;overflow:auto;padding:21px;background:#fff;border:1px solid #dce5ed;border-radius:15px;box-shadow:0 15px 50px #0003;overscroll-behavior:contain;animation:modalIn .16s ease-out}
@@ -104,6 +125,8 @@ h2{margin:0;color:var(--navy);font-size:22px;font-weight:850;letter-spacing:.025
 .detail-label{font-size:9px;color:#899aab;font-weight:750;letter-spacing:.04em}
 .detail-value{margin-top:5px;font-size:13px;color:#29445f;font-weight:850;overflow-wrap:anywhere;word-break:break-word;font-variant-numeric:tabular-nums}
 .detail-note{margin-top:12px;font-size:10px;color:#8a9aaa}
+
+/* ダークモード */
 html[data-theme=dark]{--navy:#eaf3ff;--blue:#2699df;--text:#e4edf7;--muted:#a4b8cc;--border:#354b62;--surface:#1c2b3e;--background:#111c2b;color-scheme:dark}
 html[data-theme=dark] body{background:#111c2b;color:#e4edf7}
 html[data-theme=dark] h2{color:#eaf3ff}
@@ -136,322 +159,1257 @@ html[data-theme=dark] .detail-player,html[data-theme=dark] .detail-item{backgrou
 html[data-theme=dark] .train-summary{background:#26384d}
 html[data-theme=dark] .player-name-background{fill:#172638;fill-opacity:.96;stroke:#52677d;stroke-width:1.5px}
 html[data-theme=dark] .player-name-label{fill:#fff;stroke:#172638}
+
 @media(max-width:760px){
-main{padding:9px}h2{font-size:17px}.subtitle{font-size:8px;margin-bottom:7px}
+main{padding:9px}
+h2{font-size:17px}
+.subtitle{font-size:8px;margin-bottom:7px}
 .status{padding:9px 11px;margin-bottom:6px;gap:7px 11px;font-size:11px}
-.online-count{padding:5px 9px}.online-count strong{font-size:14px}
+.online-count{padding:5px 9px}
+.online-count strong{font-size:14px}
 .legend{gap:6px 9px;font-size:9px;margin:4px 0 7px}
 .player-panel{width:155px;left:7px;top:7px;max-height:48%}
 .player-panel.collapsed{width:125px}
-.map-controls{right:7px;top:7px}.map-controls button{width:32px;height:32px}
+.map-controls{right:7px;top:7px}
+.map-controls button{width:32px;height:32px}
 .map-help{right:7px;bottom:6px;font-size:8px}
 }
 @media(max-width:650px){
 .header{height:150px;min-height:150px;max-height:150px;flex-basis:150px;flex-direction:column;justify-content:center;gap:8px;padding:6px 2%}
-.header-top{flex:0 0 auto;gap:8px}.logo{width:48px;height:48px}
-.brand-title{font-size:25px}.brand-subtitle{font-size:9px}
+.header-top{flex:0 0 auto;gap:8px}
+.logo{width:48px;height:48px}
+.brand-title{font-size:25px}
+.brand-subtitle{font-size:9px}
 .navigation{width:100%;flex:0 0 auto;gap:5px}
 .navigation a{height:42px;padding:5px 3px;font-size:10px}
 .theme-toggle{flex-basis:36px;width:36px;height:38px;font-size:18px}
 main{height:calc(100dvh - 150px)}
 }
-@media(max-width:430px){main{padding:7px}.player-panel{width:140px}.player-panel.collapsed{width:120px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(max-width:430px){
+main{padding:7px}
+.player-panel{width:140px}
+.player-panel.collapsed{width:120px}
+}
+@media(prefers-reduced-motion:reduce){
+*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
 </style>
 </head>
+
 <body>
 <header class="header">
-<div class="header-top">
-<img class="logo" src="./icon.png" alt="波急電鉄ロゴ">
-<div class="brand-text"><h1 class="brand-title">波急サーバー</h1><div class="brand-subtitle">NAMIKYU RAILWAY</div></div>
-</div>
-<nav class="navigation">
-<a href="./index.html">ホーム</a><a href="./news.html">お知らせ</a><a href="./join.html">サーバー参加</a><a href="./status.html">在線位置</a><a href="./staff.html">運営メンバー</a>
-<button class="theme-toggle" type="button" data-theme-toggle aria-label="ダークモードに切り替え">🌙</button>
-</nav>
+    <div class="header-top">
+        <img class="logo" src="./icon.png" alt="波急電鉄ロゴ">
+        <div class="brand-text">
+            <h1 class="brand-title">波急サーバー</h1>
+            <div class="brand-subtitle">NAMIKYU RAILWAY</div>
+        </div>
+    </div>
+
+    <nav class="navigation">
+        <a href="./index.html">ホーム</a>
+        <a href="./news.html">お知らせ</a>
+        <a href="./join.html">サーバー参加</a>
+        <a href="./status.html">在線位置</a>
+        <a href="./staff.html">運営メンバー</a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="ダークモードに切り替え">🌙</button>
+    </nav>
 </header>
+
 <main>
-<h2>在線位置</h2>
-<p class="subtitle">REAL-TIME PLAYER &amp; TRAIN POSITION</p>
-<div class="status">
-<span id="connectionDot" class="dot"></span><strong id="connectionText">接続しています...</strong>
-<span id="lastUpdated">最終更新：--:--:--</span><span id="worldTime">ワールド時刻：--</span>
-<span id="weatherText">天候：--</span><span id="tpsText">TPS：--</span>
-<span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span><span id="trainCount">列車：--編成</span>
-</div>
-<div class="legend">
-<span><i style="background:#f97316"></i>特急</span><span><i style="background:#dc2626"></i>急行</span><span><i style="background:#16a34a"></i>準急</span><span><i style="background:#2878c8"></i>各駅停車</span><span><i style="background:#888"></i>水鉄水山線</span><span><i style="background:#222"></i>その他</span><span>顔マーク：プレイヤー</span>
-</div>
-<section id="mapArea">
-<svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ"><g id="gridLayer"></g><g id="routeLayer"></g><g id="stationLayer"></g><g id="markerLayer"></g></svg>
-<div class="compass"><span class="north">Z−</span><span class="west">X−</span><span class="center">＋</span><span class="east">X＋</span><span class="south">Z＋</span></div>
-<div class="player-panel" id="playerPanel">
-<div class="player-panel-head"><div class="player-panel-heading">オンラインプレイヤー</div><span class="player-panel-count" id="playerPanelCount">0</span><button id="collapsePlayers" type="button" aria-label="プレイヤー一覧を開閉">−</button></div>
-<div class="player-list" id="playerList"><div class="player-empty">読み込み中...</div></div>
-</div>
-<div class="map-controls"><button id="zoomIn" type="button" title="拡大" aria-label="拡大">＋</button><button id="zoomOut" type="button" title="縮小" aria-label="縮小">−</button><button id="resetView" type="button" title="全体表示" aria-label="全体表示">⌂</button></div>
-<div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小 / マーカー：詳細</div>
-</section>
+    <h2>在線位置</h2>
+    <p class="subtitle">REAL-TIME PLAYER &amp; TRAIN POSITION</p>
+
+    <div class="status">
+        <span id="connectionDot" class="dot"></span>
+        <strong id="connectionText">接続しています...</strong>
+        <span id="lastUpdated">最終更新：--:--:--</span>
+        <span id="worldTime">ワールド時刻：--</span>
+        <span id="weatherText">天候：--</span>
+        <span id="tpsText">TPS：--</span>
+        <span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span>
+        <span id="trainCount">列車：--編成</span>
+    </div>
+
+    <div class="legend">
+        <span><i style="background:#f97316"></i>特急</span>
+        <span><i style="background:#dc2626"></i>急行</span>
+        <span><i style="background:#16a34a"></i>準急</span>
+        <span><i style="background:#2878c8"></i>各駅停車</span>
+        <span><i style="background:#888"></i>水鉄水山線</span>
+        <span><i style="background:#222"></i>その他</span>
+        <span>顔マーク：プレイヤー</span>
+    </div>
+
+    <section id="mapArea">
+        <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ">
+            <g id="gridLayer"></g>
+            <g id="routeLayer"></g>
+            <g id="stationLayer"></g>
+            <g id="markerLayer"></g>
+        </svg>
+
+        <div class="compass">
+            <span class="north">Z−</span>
+            <span class="west">X−</span>
+            <span class="center">＋</span>
+            <span class="east">X＋</span>
+            <span class="south">Z＋</span>
+        </div>
+
+        <div class="player-panel" id="playerPanel">
+            <div class="player-panel-head">
+                <div class="player-panel-heading">オンラインプレイヤー</div>
+                <span class="player-panel-count" id="playerPanelCount">0</span>
+                <button id="collapsePlayers" type="button" aria-label="プレイヤー一覧を開閉">−</button>
+            </div>
+            <div class="player-list" id="playerList">
+                <div class="player-empty">読み込み中...</div>
+            </div>
+        </div>
+
+        <div class="map-controls">
+            <button id="zoomIn" type="button" title="拡大" aria-label="拡大">＋</button>
+            <button id="zoomOut" type="button" title="縮小" aria-label="縮小">−</button>
+            <button id="resetView" type="button" title="全体表示" aria-label="全体表示">⌂</button>
+        </div>
+
+        <div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小 / マーカー：詳細</div>
+    </section>
 </main>
+
 <div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-<div class="modal-card"><div class="modal-head"><h3 class="modal-title" id="modalTitle">詳細情報</h3><button class="modal-close" id="closeModal" type="button" aria-label="閉じる">×</button></div><div id="modalContent"></div></div>
+    <div class="modal-card">
+        <div class="modal-head">
+            <h3 class="modal-title" id="modalTitle">詳細情報</h3>
+            <button class="modal-close" id="closeModal" type="button" aria-label="閉じる">×</button>
+        </div>
+        <div id="modalContent"></div>
+    </div>
 </div>
+
 <script>
 "use strict";
-const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status",MIN_W=500,MAX_W=50000,GRID=500,$=id=>document.getElementById(id),
-map=$("map"),gridLayer=$("gridLayer"),routeLayer=$("routeLayer"),stationLayer=$("stationLayer"),markerLayer=$("markerLayer"),connDot=$("connectionDot"),connText=$("connectionText"),lastUpd=$("lastUpdated"),wtText=$("worldTime"),wxText=$("weatherText"),tpsText=$("tpsText"),pcText=$("playerCount"),tcText=$("trainCount"),ppCount=$("playerPanelCount"),pList=$("playerList"),pPanel=$("playerPanel"),modal=$("detailModal"),mContent=$("modalContent"),mTitle=$("modalTitle"),collapseBtn=$("collapsePlayers"),closeBtn=$("closeModal"),
-esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[c]),
-num=(v,f=0)=>{const n=Number(v);return Number.isFinite(n)?n:f},
-fmt=(v,d=1)=>{const n=Number(v);return Number.isFinite(n)?n.toFixed(d):"--"},
-getName=e=>String(e?.name??e?.playerName??e?.player??e?.id??"不明"),
-coords=e=>{const p=e?.location??e?.position??e??{};return{x:num(p.x),y:p.y,z:num(p.z)}},
-xyz=p=>`${fmt(p.x,2)}, ${fmt(p.y,2)}, ${fmt(p.z,2)}`,
-clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),
-face=n=>`https://mc-heads.net/avatar/${encodeURIComponent(n)}/64`,
-TYPE_TAGS=["ltd","exp","sexp","local2","local"],ANGLES={"x+":0,"z+":90,"x-":180,"z-":-90},
-DEST={local2:["依丘","草市"],local:["波丘","吉山"],exp:["依丘","吉山"],ltd:["雨山","吉山"],sexp:["雨山","矢野"],"sexp-local":["雨山","矢野"]},
-MODELS={1532:"波急3500系",2532:"矢野電5000系",3800:"雨急3800系",4722:"雨急4000系",5179:"波急5100系",6971:"水鉄1500系",8152:"川鉄9700系",7661:"波急3100系",8575:"波急2500系"},
-KTS=/kts:kts(\d{4})_1/i,
-ROLES=[["role-owner","オーナー"],["role-developer","デベロッパー"],["role-moderator","モデレーター"]],
-toMap=e=>{const p=coords(e);return{x:p.x,y:p.z}},
-size=()=>{const r=map.getBoundingClientRect(),w=Math.max(1,r.width);return{width:w,aspect:w/Math.max(1,r.height)}},
-getScale=()=>view.w/size().width,
-getRole=p=>staffMap.get(getName(p).toLowerCase())||{label:"参加者",className:"role-participant"},
-stableId=t=>{const v=t?.id??t?.uuid??t?.uniqueId??t?.unique_id??t?.entityId??t?.entity_id??null;return v==null||v===""?null:String(v)},
-set=(el,h)=>{if(el._h!==h){el._h=h;el.innerHTML=h}},
-C=new WeakMap,
-item=(l,v,w)=>`<div class="detail-item${w?" wide":""}"><div class="detail-label">${l}</div><div class="detail-value">${v}</div></div>`;
-let latest=null,players=[],trains=[],staffMap=new Map(),view={x:-5000,y:-5000,w:10000,h:10000},dragging=false,dragStart=null,dragMoved=false,dragTimer=null,isFetching=false,refreshTimer=null,lastOk=0,selKey=null,selTrain=null,resizeFrame=null;
 
-function tags(e){const v=e?.tags??e?.tag??[];return Array.isArray(v)?v.map(x=>String(x).toLowerCase()):typeof v==="string"?v.split(/[,\s]+/).map(x=>x.trim().toLowerCase()).filter(Boolean):[]}
-function toList(v){return Array.isArray(v)?v:v&&typeof v==="object"?Object.entries(v).map(([k,x])=>x&&typeof x==="object"?{...x,id:x.id??k}:{id:k,value:x}):[]}
+const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status";
+const MIN_W=500;
+const MAX_W=50000;
+const GRID=500;
+
+const $=id=>document.getElementById(id);
+
+const map=$("map");
+const gridLayer=$("gridLayer");
+const routeLayer=$("routeLayer");
+const stationLayer=$("stationLayer");
+const markerLayer=$("markerLayer");
+
+const connDot=$("connectionDot");
+const connText=$("connectionText");
+const lastUpd=$("lastUpdated");
+const wtText=$("worldTime");
+const wxText=$("weatherText");
+const tpsText=$("tpsText");
+const pcText=$("playerCount");
+const tcText=$("trainCount");
+const ppCount=$("playerPanelCount");
+const pList=$("playerList");
+const pPanel=$("playerPanel");
+const modal=$("detailModal");
+const mContent=$("modalContent");
+const mTitle=$("modalTitle");
+const collapseBtn=$("collapsePlayers");
+const closeBtn=$("closeModal");
+
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+})[c]);
+
+const num=(v,f=0)=>{
+    const n=Number(v);
+    return Number.isFinite(n)?n:f;
+};
+
+const fmt=(v,d=1)=>{
+    const n=Number(v);
+    return Number.isFinite(n)?n.toFixed(d):"--";
+};
+
+const getName=e=>String(e?.name??e?.playerName??e?.player??e?.id??"不明");
+
+const coords=e=>{
+    const p=e?.location??e?.position??e??{};
+    return{x:num(p.x),y:p.y,z:num(p.z)};
+};
+
+const xyz=p=>`${fmt(p.x,2)}, ${fmt(p.y,2)}, ${fmt(p.z,2)}`;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const face=n=>`https://mc-heads.net/avatar/${encodeURIComponent(n)}/64`;
+
+const TYPE_TAGS=["ltd","exp","sexp","local2","local"];
+const ANGLES={"x+":0,"z+":90,"x-":180,"z-":-90};
+
+const DEST={
+    local2:["依丘","草市"],
+    local:["波丘","吉山"],
+    exp:["依丘","吉山"],
+    ltd:["雨山","吉山"],
+    sexp:["雨山","矢野"],
+    "sexp-local":["雨山","矢野"]
+};
+
+const MODELS={
+    1532:"波急3500系",
+    2532:"矢野電5000系",
+    3800:"雨急3800系",
+    4722:"雨急4000系",
+    5179:"波急5100系",
+    6971:"水鉄1500系",
+    8152:"川鉄9700系",
+    7661:"波急3100系",
+    8575:"波急2500系"
+};
+
+const KTS=/kts:kts(\d{4})_1/i;
+
+const ROLES=[
+    ["role-owner","オーナー"],
+    ["role-developer","デベロッパー"],
+    ["role-moderator","モデレーター"]
+];
+
+const toMap=e=>{
+    const p=coords(e);
+    return{x:p.x,y:p.z};
+};
+
+const size=()=>{
+    const r=map.getBoundingClientRect();
+    const w=Math.max(1,r.width);
+    return{
+        width:w,
+        aspect:w/Math.max(1,r.height)
+    };
+};
+
+/*
+    view.w / mapの画面幅 がSVG座標1単位あたりの画面上の倍率。
+    マーカーの寸法にこの値を掛けることで、
+    ズームしても画面上の大きさを一定に保つ。
+*/
+const getScale=()=>view.w/size().width;
+
+const getRole=p=>staffMap.get(getName(p).toLowerCase())||{
+    label:"参加者",
+    className:"role-participant"
+};
+
+const stableId=t=>{
+    const v=t?.id??t?.uuid??t?.uniqueId??t?.unique_id??t?.entityId??t?.entity_id??null;
+    return v==null||v===""?null:String(v);
+};
+
+const set=(el,h)=>{
+    if(el._h!==h){
+        el._h=h;
+        el.innerHTML=h;
+    }
+};
+
+const C=new WeakMap;
+
+const item=(l,v,w)=>`<div class="detail-item${w?" wide":""}">
+    <div class="detail-label">${l}</div>
+    <div class="detail-value">${v}</div>
+</div>`;
+
+let latest=null;
+let players=[];
+let trains=[];
+let staffMap=new Map();
+
+let view={
+    x:-5000,
+    y:-5000,
+    w:10000,
+    h:10000
+};
+
+let dragging=false;
+let dragStart=null;
+let dragMoved=false;
+let dragTimer=null;
+let isFetching=false;
+let refreshTimer=null;
+let lastOk=0;
+let selKey=null;
+let selTrain=null;
+let resizeFrame=null;
+
+function tags(e){
+    const v=e?.tags??e?.tag??[];
+
+    return Array.isArray(v)
+        ?v.map(x=>String(x).toLowerCase())
+        :typeof v==="string"
+            ?v.split(/[,\s]+/).map(x=>x.trim().toLowerCase()).filter(Boolean)
+            :[];
+}
+
+function toList(v){
+    return Array.isArray(v)
+        ?v
+        :v&&typeof v==="object"
+            ?Object.entries(v).map(([k,x])=>x&&typeof x==="object"?{...x,id:x.id??k}:{id:k,value:x})
+            :[];
+}
+
 function trainType(g,z,w){
-if(g.includes("ltd"))return{key:"ltd",name:"特急",label:"特",color:"#f97316"};
-if(g.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"};
-if(g.includes("sexp"))return z<-18||z>6131?{key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8"}:{key:"sexp",name:"準急",label:"準",color:"#16a34a"};
-if(g.includes("local2"))return{key:"local2",name:"各駅停車",label:"各",color:"#60a5fa"};
-if(g.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
-if(w)return{key:"waterline",name:"普通",label:"普",color:"#888"};
-return{key:"unknown",name:"その他",label:"不",color:"#222"}}
+    if(g.includes("ltd"))return{key:"ltd",name:"特急",label:"特",color:"#f97316"};
+    if(g.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"};
+
+    if(g.includes("sexp")){
+        return z<-18||z>6131
+            ?{key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8"}
+            :{key:"sexp",name:"準急",label:"準",color:"#16a34a"};
+    }
+
+    if(g.includes("local2"))return{key:"local2",name:"各駅停車",label:"各",color:"#60a5fa"};
+    if(g.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
+    if(w)return{key:"waterline",name:"普通",label:"普",color:"#888"};
+
+    return{key:"unknown",name:"その他",label:"不",color:"#222"};
+}
+
 /* 列車ごとの派生情報は1回だけ計算してキャッシュ */
 function I(t){
-let c=C.get(t);if(c)return c;
-const g=tags(t),p=coords(t),w=p.x>=-608&&p.x<=692&&p.z>=3957&&p.z<=5257&&!g.some(x=>TYPE_TAGS.includes(x)),
-d=g.includes("z-")?"z-":g.includes("z+")||g.includes("z")?"z+":g.includes("x-")?"x-":"x+",a=ANGLES[d]*Math.PI/180,
-m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name),ty=trainType(g,p.z,w);
-c={...p,w,d,c:Math.cos(a),s:Math.sin(a),ty,id:stableId(t),mo:MODELS[m?.[1]]||"不明",
-rt:w?"水鉄水山線":p.x>=50?"川鉄依丘線":p.z>6131?"雨急雨波線":p.z<-18?"矢野電鉄":"波急波川線",
-de:ty.key==="waterline"?"草市～水山 往復":DEST[ty.key]?DEST[ty.key][d==="z+"||d==="x+"?0:1]:"不明"};
-C.set(t,c);return c}
-function speedOf(t){const s=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));if(s===59)return 120;if(Number.isFinite(s)&&s<0)return 0;const p=Number(t?.speed);return!Number.isFinite(p)||p<0?0:p}
+    let c=C.get(t);
+    if(c)return c;
+
+    const g=tags(t);
+    const p=coords(t);
+
+    const w=p.x>=-608&&p.x<=692&&p.z>=3957&&p.z<=5257&&!g.some(x=>TYPE_TAGS.includes(x));
+
+    const d=g.includes("z-")
+        ?"z-"
+        :g.includes("z+")||g.includes("z")
+            ?"z+"
+            :g.includes("x-")
+                ?"x-"
+                :"x+";
+
+    const a=ANGLES[d]*Math.PI/180;
+    const m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name);
+    const ty=trainType(g,p.z,w);
+
+    c={
+        ...p,
+        w,
+        d,
+        c:Math.cos(a),
+        s:Math.sin(a),
+        ty,
+        id:stableId(t),
+        mo:MODELS[m?.[1]]||"不明",
+        rt:w
+            ?"水鉄水山線"
+            :p.x>=50
+                ?"川鉄依丘線"
+                :p.z>6131
+                    ?"雨急雨波線"
+                    :p.z<-18
+                        ?"矢野電鉄"
+                        :"波急波川線",
+        de:ty.key==="waterline"
+            ?"草市～水山 往復"
+            :DEST[ty.key]
+                ?DEST[ty.key][d==="z+"||d==="x+"?0:1]
+                :"不明"
+    };
+
+    C.set(t,c);
+    return c;
+}
+
+function speedOf(t){
+    const s=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));
+
+    if(s===59)return 120;
+    if(Number.isFinite(s)&&s<0)return 0;
+
+    const p=Number(t?.speed);
+    return!Number.isFinite(p)||p<0?0:p;
+}
 
 async function loadStaff(){
-try{
-const r=await fetch("./staff.html",{cache:"no-store"});
-if(!r.ok)throw Error(`HTTP ${r.status}`);
-const doc=new DOMParser().parseFromString(await r.text(),"text/html"),m=new Map();
-doc.querySelectorAll(".staff-card").forEach(c=>{
-const name=c.querySelector(".staff-name")?.textContent.trim(),b=c.querySelector(".role-badge");
-if(!name||!b)return;
-const label=b.textContent.trim();
-m.set(name.toLowerCase(),{label:label||"運営",className:(ROLES.find(([k,w])=>b.classList.contains(k)||label.includes(w))||[])[0]||"role-participant"})});
-staffMap=m
-}catch(e){console.warn("スタッフ情報の取得に失敗:",e)}}
+    try{
+        const r=await fetch("./staff.html",{cache:"no-store"});
+        if(!r.ok)throw Error(`HTTP ${r.status}`);
+
+        const doc=new DOMParser().parseFromString(await r.text(),"text/html");
+        const m=new Map();
+
+        doc.querySelectorAll(".staff-card").forEach(c=>{
+            const name=c.querySelector(".staff-name")?.textContent.trim();
+            const b=c.querySelector(".role-badge");
+
+            if(!name||!b)return;
+
+            const label=b.textContent.trim();
+
+            m.set(name.toLowerCase(),{
+                label:label||"運営",
+                className:(ROLES.find(([k,w])=>b.classList.contains(k)||label.includes(w))||[])[0]||"role-participant"
+            });
+        });
+
+        staffMap=m;
+    }catch(e){
+        console.warn("スタッフ情報の取得に失敗:",e);
+    }
+}
+
+/* 波急波川線の駅座標 */
+const NAMIKAWA_STATIONS=[
+    {name:"中市",reading:"なかいち",z:-17},
+    {name:"大白",reading:"おおしろ",z:1051},
+    {name:"水浜",reading:"みずはま",z:2020},
+    {name:"竹ヶ丘",reading:"たけがおか",z:3100},
+    {name:"草市",reading:"くさし",z:4080},
+    {name:"長立",reading:"ながたち",z:5000},
+    {name:"波丘",reading:"なみおか",z:6132}
+];
 
 function fitView(){
-const s=size(),pts=[...players,...trains].map(toMap).concat([{x:0,y:-17},{x:0,y:6132}]);
-if(!pts.length){view.w=1e4;view.h=view.w/s.aspect;view.x=-view.w/2;view.y=-view.h/2;return applyView()}
-const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),
-pad=Math.max(1000,Math.max(x1-x0,y1-y0)*.12),w=clamp(Math.max(x1-x0+pad*2,(y1-y0+pad*2)*s.aspect),MIN_W,MAX_W);
-view.w=w;view.h=w/s.aspect;view.x=(x0+x1)/2-w/2;view.y=(y0+y1)/2-view.h/2;applyView()}
-const NAMIKAWA_STATIONS=[
-{name:"中市",reading:"なかいち",z:-17},
-{name:"大白",reading:"おおしろ",z:1051},
-{name:"水浜",reading:"みずはま",z:2020},
-{name:"竹ヶ丘",reading:"たけがおか",z:3100},
-{name:"草市",reading:"くさし",z:4080},
-{name:"長立",reading:"ながたち",z:5000},
-{name:"波丘",reading:"なみおか",z:6132}
-];
+    const s=size();
+
+    const pts=[...players,...trains]
+        .map(toMap)
+        .concat([
+            {x:0,y:-17},
+            {x:0,y:6132}
+        ]);
+
+    if(!pts.length){
+        view.w=1e4;
+        view.h=view.w/s.aspect;
+        view.x=-view.w/2;
+        view.y=-view.h/2;
+        return applyView();
+    }
+
+    const xs=pts.map(p=>p.x);
+    const ys=pts.map(p=>p.y);
+
+    const x0=Math.min(...xs);
+    const x1=Math.max(...xs);
+    const y0=Math.min(...ys);
+    const y1=Math.max(...ys);
+
+    const pad=Math.max(1000,Math.max(x1-x0,y1-y0)*.12);
+
+    const w=clamp(
+        Math.max(
+            x1-x0+pad*2,
+            (y1-y0+pad*2)*s.aspect
+        ),
+        MIN_W,
+        MAX_W
+    );
+
+    view.w=w;
+    view.h=w/s.aspect;
+    view.x=(x0+x1)/2-w/2;
+    view.y=(y0+y1)/2-view.h/2;
+
+    applyView();
+}
+
+/*
+    路線・駅のサイズを画面上で固定する。
+    SVGの拡大率に合わせて寸法を逆補正する。
+*/
 function renderRoute(){
-/* 線路の太さ・駅表示は画面上の大きさを固定し、ズームで巨大化しないようにする */
-const s=getScale(),dotRadius=5*s,labelX=14*s,labelSize=13*s,readingGap=10*s;
-set(routeLayer,'<path class="route-line" d="M 0 -17 L 0 6132"/>');
-set(stationLayer,NAMIKAWA_STATIONS.map(st=>`<g transform="translate(0 ${st.z})">
-<circle class="station-dot" r="${dotRadius}"/>
-<text class="station-label" x="${labelX}" y="${-2*s}" font-size="${labelSize}">
-<tspan>${esc(st.name)}</tspan><tspan class="station-reading" x="${labelX}" dy="${readingGap}">${esc(st.reading)}</tspan>
-</text></g>`).join(""));
+    const s=getScale();
+
+    const dotRadius=5*s;
+    const labelX=14*s;
+    const labelSize=13*s;
+    const readingGap=10*s;
+
+    /* 波急波川線：X=0、Z=-17～6132の直線 */
+    set(
+        routeLayer,
+        '<path class="route-line" d="M 0 -17 L 0 6132"/>'
+    );
+
+    set(
+        stationLayer,
+        NAMIKAWA_STATIONS.map(st=>`
+            <g transform="translate(0 ${st.z})">
+                <circle
+                    class="station-dot"
+                    r="${dotRadius}"
+                />
+                <text
+                    class="station-label"
+                    x="${labelX}"
+                    y="${-2*s}"
+                    font-size="${labelSize}"
+                >
+                    <tspan>${esc(st.name)}</tspan>
+                    <tspan
+                        class="station-reading"
+                        x="${labelX}"
+                        dy="${readingGap}"
+                    >${esc(st.reading)}</tspan>
+                </text>
+            </g>
+        `).join("")
+    );
 }
 
 function applyView(r=true){
-view.h=view.w/size().aspect;
-map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
-const l=view.x,rt=l+view.w,t=view.y,b=t+view.h,p=[];
-for(let x=Math.floor(l/GRID);x<=Math.ceil(rt/GRID);x++)p.push(`M${x*GRID} ${t}V${b}`);
-for(let y=Math.floor(t/GRID);y<=Math.ceil(b/GRID);y++)p.push(`M${l} ${y*GRID}H${rt}`);
-set(gridLayer,`<path class="grid-line" d="${p.join(" ")}" fill="none"/>`);
-renderRoute();
-if(r&&latest)renderMarkers()}
+    view.h=view.w/size().aspect;
 
+    map.setAttribute(
+        "viewBox",
+        `${view.x} ${view.y} ${view.w} ${view.h}`
+    );
+
+    const l=view.x;
+    const rt=l+view.w;
+    const t=view.y;
+    const b=t+view.h;
+    const p=[];
+
+    for(let x=Math.floor(l/GRID);x<=Math.ceil(rt/GRID);x++){
+        p.push(`M${x*GRID} ${t}V${b}`);
+    }
+
+    for(let y=Math.floor(t/GRID);y<=Math.ceil(b/GRID);y++){
+        p.push(`M${l} ${y*GRID}H${rt}`);
+    }
+
+    set(
+        gridLayer,
+        `<path class="grid-line" d="${p.join(" ")}" fill="none"/>`
+    );
+
+    renderRoute();
+
+    if(r&&latest)renderMarkers();
+}
+
+/* 列車マーカーの形 */
 const P=(h,t)=>`M${-h} ${-h}L${h} ${-h}L${t} 0L${h} ${h}L${-h} ${h}Z`;
-function trainMarker(t,i,s){
-const c=I(t),y=c.ty,vh=13.8*s;
-return`<g class="train-marker" data-kind="train" data-index="${i}" tabindex="0" role="button" aria-label="${esc(y.name)}" transform="translate(${c.x} ${c.z})"><g class="train-body" transform="rotate(${ANGLES[c.d]??0})"><path class="train-hit-area" d="${P(15*s,15*s+17*s)}" stroke-width="${14*s}"/><path class="train-visual" d="${P(vh,vh+15.64*s)}" fill="${y.color}" stroke="#fff" stroke-width="${1.104*s}" stroke-linejoin="round" stroke-linecap="round"/></g><text class="train-label" x="0" y="0" font-size="${15.64*s}">${esc(y.label)}</text></g>`}
-function playerMarker(pl,i,s,p){
-const n=getName(pl),f=22*s,lw=Math.max(25,n.length*12*.95)*s,lh=17*s,ly=f*.65;
-return`<g class="player-marker" data-kind="player" data-index="${i}" tabindex="0" role="button" aria-label="${esc(n)}" transform="translate(${p.x} ${p.y})"><rect x="${-f/2-4*s}" y="${-f/2-4*s}" width="${f+8*s}" height="${f+8*s}" fill="transparent" pointer-events="all"/><image class="player-face" href="${face(n)}" x="${-f/2}" y="${-f/2}" width="${f}" height="${f}" preserveAspectRatio="none" pointer-events="none"/><rect class="player-name-background" x="${-lw/2}" y="${ly}" width="${lw}" height="${lh}" rx="${4*s}" fill="#fff" fill-opacity=".92" stroke="#dce5ed" stroke-width="${.7*s}" pointer-events="none"/><text class="player-name-label" x="0" y="${ly+lh/2}" font-size="${12*s}" pointer-events="none">${esc(n)}</text></g>`}
-const markerOf=t=>(t instanceof Element?t:t?.parentElement)?.closest("[data-kind][data-index]");
-function openMarker(el){
-if(!el)return;
-const i=Number(el.getAttribute("data-index")),k=el.getAttribute("data-kind");
-if(!Number.isInteger(i)||i<0)return;
-if(k==="player"){if(players[i])showPlayer(players[i])}else if(k==="train"&&trains[i])showTrain(trains[i])}
-markerLayer.addEventListener("click",e=>{const m=markerOf(e.target);if(!m)return;e.preventDefault();e.stopPropagation();if(!dragMoved)openMarker(m)});
-markerLayer.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const m=markerOf(e.target);if(!m)return;e.preventDefault();e.stopPropagation();openMarker(m)});
 
+/*
+    列車マーカーのサイズは画面上で一定。
+    sを掛けることで地図のズームによるサイズ変化を打ち消す。
+*/
+function trainMarker(t,i,s){
+    const c=I(t);
+    const y=c.ty;
+
+    const vh=13.8*s;
+    const tip=vh+15.64*s;
+
+    return`
+        <g
+            class="train-marker"
+            data-kind="train"
+            data-index="${i}"
+            tabindex="0"
+            role="button"
+            aria-label="${esc(y.name)}"
+            transform="translate(${c.x} ${c.z})"
+        >
+            <g
+                class="train-body"
+                transform="rotate(${ANGLES[c.d]??0})"
+            >
+                <path
+                    class="train-hit-area"
+                    d="${P(15*s,32*s)}"
+                    stroke-width="${14*s}"
+                />
+
+                <path
+                    class="train-visual"
+                    d="${P(vh,tip)}"
+                    fill="${y.color}"
+                    stroke="#fff"
+                    stroke-width="${1.104*s}"
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                />
+            </g>
+
+            <text
+                class="train-label"
+                x="0"
+                y="0"
+                font-size="${15.64*s}"
+            >${esc(y.label)}</text>
+        </g>
+    `;
+}
+
+/*
+    プレイヤーマーカーも画面上で一定サイズ。
+*/
+function playerMarker(pl,i,s,p){
+    const n=getName(pl);
+
+    const f=22*s;
+    const lw=Math.max(25,n.length*12*.95)*s;
+    const lh=17*s;
+    const ly=f*.65;
+
+    return`
+        <g
+            class="player-marker"
+            data-kind="player"
+            data-index="${i}"
+            tabindex="0"
+            role="button"
+            aria-label="${esc(n)}"
+            transform="translate(${p.x} ${p.y})"
+        >
+            <rect
+                x="${-f/2-4*s}"
+                y="${-f/2-4*s}"
+                width="${f+8*s}"
+                height="${f+8*s}"
+                fill="transparent"
+                pointer-events="all"
+            />
+
+            <image
+                class="player-face"
+                href="${face(n)}"
+                x="${-f/2}"
+                y="${-f/2}"
+                width="${f}"
+                height="${f}"
+                preserveAspectRatio="none"
+                pointer-events="none"
+            />
+
+            <rect
+                class="player-name-background"
+                x="${-lw/2}"
+                y="${ly}"
+                width="${lw}"
+                height="${lh}"
+                rx="${4*s}"
+                fill="#fff"
+                fill-opacity=".92"
+                stroke="#dce5ed"
+                stroke-width="${.7*s}"
+                pointer-events="none"
+            />
+
+            <text
+                class="player-name-label"
+                x="0"
+                y="${ly+lh/2}"
+                font-size="${12*s}"
+                pointer-events="none"
+            >${esc(n)}</text>
+        </g>
+    `;
+}
+
+const markerOf=t=>(t instanceof Element?t:t?.parentElement)?.closest("[data-kind][data-index]");
+
+function openMarker(el){
+    if(!el)return;
+
+    const i=Number(el.getAttribute("data-index"));
+    const k=el.getAttribute("data-kind");
+
+    if(!Number.isInteger(i)||i<0)return;
+
+    if(k==="player"){
+        if(players[i])showPlayer(players[i]);
+    }else if(k==="train"&&trains[i]){
+        showTrain(trains[i]);
+    }
+}
+
+markerLayer.addEventListener("click",e=>{
+    const m=markerOf(e.target);
+    if(!m)return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if(!dragMoved)openMarker(m);
+});
+
+markerLayer.addEventListener("keydown",e=>{
+    if(e.key!=="Enter"&&e.key!==" ")return;
+
+    const m=markerOf(e.target);
+    if(!m)return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    openMarker(m);
+});
+
+/* 列車とプレイヤーの重なり回避 */
 function avoidTrains(pos,s,tp){
-const h=15*s,tip=h+17*s,r=13*s,poly=[[-h,-h],[h,-h],[tip,0],[h,h],[-h,h]],lim=(tip+r)*(tip+r);
-let x=pos.x,y=pos.y;
-for(let pass=0;pass<4;pass++){
-let moved=false;
-for(const t of tp){
-const dx=x-t.x,dy=y-t.z;
-if(dx*dx+dy*dy>lim)continue;
-const lx=dx*t.c+dy*t.s,ly=-dx*t.s+dy*t.c;
-let best=Infinity,qx=0,qy=0,inside=true;
-for(let i=0;i<5;i++){
-const a=poly[i],b=poly[(i+1)%5],abx=b[0]-a[0],aby=b[1]-a[1],k=clamp(((lx-a[0])*abx+(ly-a[1])*aby)/(abx*abx+aby*aby),0,1),px=a[0]+abx*k,py=a[1]+aby*k,d=Math.hypot(lx-px,ly-py);
-if(d<best){best=d;qx=px;qy=py}
-if(abx*(ly-a[1])-aby*(lx-a[0])<0)inside=false}
-if(!inside&&best>=r-1e-9)continue;
-let ux=inside?qx-lx:lx-qx,uy=inside?qy-ly:ly-qy;
-const len=Math.hypot(ux,uy);
-if(len<1e-9){ux=0;uy=-1}else{ux/=len;uy/=len}
-const nx=qx+ux*r,ny=qy+uy*r;
-x=t.x+nx*t.c-ny*t.s;y=t.z+nx*t.s+ny*t.c;moved=true}
-if(!moved)break}
-return{x,y}}
+    const h=15*s;
+    const tip=h+17*s;
+    const r=13*s;
+
+    const poly=[
+        [-h,-h],
+        [h,-h],
+        [tip,0],
+        [h,h],
+        [-h,h]
+    ];
+
+    const lim=(tip+r)*(tip+r);
+
+    let x=pos.x;
+    let y=pos.y;
+
+    for(let pass=0;pass<4;pass++){
+        let moved=false;
+
+        for(const t of tp){
+            const dx=x-t.x;
+            const dy=y-t.z;
+
+            if(dx*dx+dy*dy>lim)continue;
+
+            const lx=dx*t.c+dy*t.s;
+            const ly=-dx*t.s+dy*t.c;
+
+            let best=Infinity;
+            let qx=0;
+            let qy=0;
+            let inside=true;
+
+            for(let i=0;i<5;i++){
+                const a=poly[i];
+                const b=poly[(i+1)%5];
+
+                const abx=b[0]-a[0];
+                const aby=b[1]-a[1];
+
+                const k=clamp(
+                    ((lx-a[0])*abx+(ly-a[1])*aby)/(abx*abx+aby*aby),
+                    0,
+                    1
+                );
+
+                const px=a[0]+abx*k;
+                const py=a[1]+aby*k;
+                const d=Math.hypot(lx-px,ly-py);
+
+                if(d<best){
+                    best=d;
+                    qx=px;
+                    qy=py;
+                }
+
+                if(abx*(ly-a[1])-aby*(lx-a[0])<0){
+                    inside=false;
+                }
+            }
+
+            if(!inside&&best>=r-1e-9)continue;
+
+            let ux=inside?qx-lx:lx-qx;
+            let uy=inside?qy-ly:ly-qy;
+
+            const len=Math.hypot(ux,uy);
+
+            if(len<1e-9){
+                ux=0;
+                uy=-1;
+            }else{
+                ux/=len;
+                uy/=len;
+            }
+
+            const nx=qx+ux*r;
+            const ny=qy+uy*r;
+
+            x=t.x+nx*t.c-ny*t.s;
+            y=t.z+nx*t.s+ny*t.c;
+            moved=true;
+        }
+
+        if(!moved)break;
+    }
+
+    return{x,y};
+}
 
 function renderMarkers(){
-if(!latest)return;
-const s=getScale(),tp=trains.map(I);
-set(markerLayer,trains.map((t,i)=>trainMarker(t,i,s)).join("")+players.map((p,i)=>playerMarker(p,i,s,avoidTrains(toMap(p),s,tp))).join(""));
-ppCount.textContent=players.length;
-set(pList,players.length?players.map((p,i)=>{const n=getName(p),r=getRole(p),e=esc(n);return`<button class="player-row" type="button" data-player-index="${i}" aria-label="${e}の詳細を表示"><img src="${face(n)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${e}</span><span class="player-role-badge ${r.className}">${esc(r.label)}</span></span></button>`}).join(""):'<div class="player-empty">現在オンラインのプレイヤーはいません</div>')}
+    if(!latest)return;
 
-function openModal(){const was=modal.classList.contains("open");modal.classList.add("open");document.body.style.overflow="hidden";if(!was)closeBtn.focus()}
-function closeModal(){modal.classList.remove("open");document.body.style.overflow="";selKey=null;selTrain=null}
+    const s=getScale();
+    const tp=trains.map(I);
+
+    set(
+        markerLayer,
+        trains.map((t,i)=>trainMarker(t,i,s)).join("")+
+        players.map((p,i)=>
+            playerMarker(
+                p,
+                i,
+                s,
+                avoidTrains(toMap(p),s,tp)
+            )
+        ).join("")
+    );
+
+    ppCount.textContent=players.length;
+
+    set(
+        pList,
+        players.length
+            ?players.map((p,i)=>{
+                const n=getName(p);
+                const r=getRole(p);
+                const e=esc(n);
+
+                return`
+                    <button
+                        class="player-row"
+                        type="button"
+                        data-player-index="${i}"
+                        aria-label="${e}の詳細を表示"
+                    >
+                        <img src="${face(n)}" alt="" loading="lazy">
+                        <span class="player-row-info">
+                            <span class="player-row-name">${e}</span>
+                            <span class="player-role-badge ${r.className}">${esc(r.label)}</span>
+                        </span>
+                    </button>
+                `;
+            }).join("")
+            :'<div class="player-empty">現在オンラインのプレイヤーはいません</div>'
+    );
+}
+
+function openModal(){
+    const was=modal.classList.contains("open");
+
+    modal.classList.add("open");
+    document.body.style.overflow="hidden";
+
+    if(!was)closeBtn.focus();
+}
+
+function closeModal(){
+    modal.classList.remove("open");
+    document.body.style.overflow="";
+    selKey=null;
+    selTrain=null;
+}
+
 function showPlayer(p){
-const n=getName(p),r=getRole(p);
-selKey=`player:${n}`;selTrain=null;
-mTitle.textContent="プレイヤー情報";
-mContent.innerHTML=`<div class="detail-player"><img src="${face(n)}" alt=""><div><div class="detail-player-name">${esc(n)}</div><div class="player-role-badge detail-player-role ${r.className}">${esc(r.label)}</div></div></div><div class="detail-grid">${item("座標 (X, Y, Z)",xyz(coords(p)),1)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;
-openModal()}
+    const n=getName(p);
+    const r=getRole(p);
+
+    selKey=`player:${n}`;
+    selTrain=null;
+
+    mTitle.textContent="プレイヤー情報";
+
+    mContent.innerHTML=`
+        <div class="detail-player">
+            <img src="${face(n)}" alt="">
+            <div>
+                <div class="detail-player-name">${esc(n)}</div>
+                <div class="player-role-badge detail-player-role ${r.className}">${esc(r.label)}</div>
+            </div>
+        </div>
+        <div class="detail-grid">
+            ${item("座標 (X, Y, Z)",xyz(coords(p)),1)}
+        </div>
+        <div class="detail-note">在線情報は自動更新されます。</div>
+    `;
+
+    openModal();
+}
+
 function showTrain(t){
-const c=I(t),y=c.ty,names={"x+":"東方向（X＋）","x-":"西方向（X−）","z+":"南方向（Z＋）","z-":"北方向（Z−）"};
-selKey="train";selTrain=c.id;
-mTitle.textContent="列車情報";
-mContent.innerHTML=`<div class="train-summary" style="border-color:${y.color}"><span class="train-type" style="background:${y.color}">${esc(y.name)}</span><span class="train-destination">${esc(c.de)} 行</span></div><div class="detail-grid">${item("種別",esc(y.name))}${item("形式",esc(c.mo))}${item("行先",esc(c.de))}${item("路線",c.rt)}${item("速度",fmt(speedOf(t),0)+" km/h")}${item("進行方向",names[c.d]||"不明")}${item("座標 (X, Y, Z)",xyz(c),1)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;
-openModal()}
+    const c=I(t);
+    const y=c.ty;
+
+    const names={
+        "x+":"東方向（X＋）",
+        "x-":"西方向（X−）",
+        "z+":"南方向（Z＋）",
+        "z-":"北方向（Z−）"
+    };
+
+    selKey="train";
+    selTrain=c.id;
+
+    mTitle.textContent="列車情報";
+
+    mContent.innerHTML=`
+        <div class="train-summary" style="border-color:${y.color}">
+            <span class="train-type" style="background:${y.color}">${esc(y.name)}</span>
+            <span class="train-destination">${esc(c.de)} 行</span>
+        </div>
+
+        <div class="detail-grid">
+            ${item("種別",esc(y.name))}
+            ${item("形式",esc(c.mo))}
+            ${item("行先",esc(c.de))}
+            ${item("路線",c.rt)}
+            ${item("速度",fmt(speedOf(t),0)+" km/h")}
+            ${item("進行方向",names[c.d]||"不明")}
+            ${item("座標 (X, Y, Z)",xyz(c),1)}
+        </div>
+
+        <div class="detail-note">在線情報は自動更新されます。</div>
+    `;
+
+    openModal();
+}
+
 function refreshDetail(){
-if(!modal.classList.contains("open")||!selKey)return;
-if(selKey.startsWith("player:")){
-const n=selKey.slice(7),p=players.find(i=>getName(i)===n);
-if(p)showPlayer(p);else{mTitle.textContent="プレイヤー情報";mContent.innerHTML='<div class="player-empty">このプレイヤーは現在オンラインではありません。</div>'}
-return}
-if(selKey==="train"){
-const t=selTrain==null?null:trains.find(t=>I(t).id===selTrain);
-if(t)showTrain(t);else{mTitle.textContent="列車情報";mContent.innerHTML='<div class="player-empty">選択中の列車を確認しています。<br>次回の更新で再検索します。</div>'}}}
+    if(!modal.classList.contains("open")||!selKey)return;
+
+    if(selKey.startsWith("player:")){
+        const n=selKey.slice(7);
+        const p=players.find(i=>getName(i)===n);
+
+        if(p){
+            showPlayer(p);
+        }else{
+            mTitle.textContent="プレイヤー情報";
+            mContent.innerHTML='<div class="player-empty">このプレイヤーは現在オンラインではありません。</div>';
+        }
+
+        return;
+    }
+
+    if(selKey==="train"){
+        const t=selTrain==null?null:trains.find(t=>I(t).id===selTrain);
+
+        if(t){
+            showTrain(t);
+        }else{
+            mTitle.textContent="列車情報";
+            mContent.innerHTML='<div class="player-empty">選択中の列車を確認しています。<br>次回の更新で再検索します。</div>';
+        }
+    }
+}
 
 pList.addEventListener("click",e=>{
-const b=(e.target instanceof Element?e.target:e.target?.parentElement)?.closest("[data-player-index]");
-if(!b||!pList.contains(b))return;
-const p=players[Number(b.dataset.playerIndex)];
-if(p)showPlayer(p)});
+    const b=(e.target instanceof Element?e.target:e.target?.parentElement)?.closest("[data-player-index]");
 
-function setConn(on){connDot.classList.remove(on?"offline":"online");connDot.classList.add(on?"online":"offline");connText.textContent=on?"サーバー接続中":"サーバーに接続できません"}
+    if(!b||!pList.contains(b))return;
+
+    const p=players[Number(b.dataset.playerIndex)];
+
+    if(p)showPlayer(p);
+});
+
+function setConn(on){
+    connDot.classList.remove(on?"offline":"online");
+    connDot.classList.add(on?"online":"offline");
+
+    connText.textContent=on
+        ?"サーバー接続中"
+        :"サーバーに接続できません";
+}
+
 async function fetchStatus(){
-if(isFetching)return;
-isFetching=true;
-try{
-const res=await fetch(API_URL,{method:"GET",mode:"cors",cache:"no-store"});
-if(!res.ok)throw Error(`HTTP ${res.status}`);
-const data=await res.json();
-if(data?.success===false)throw Error(data.error||"API error");
-latest=data;
-const r=data?.data??data?.status??data??{};
-players=toList(r.players??r.player??r.onlinePlayers??[]);
-trains=toList(r.trains??r.train??r.carts??[]);
-wtText.textContent=`ワールド時刻：${r.worldTime??r.time??r.world_time??"--"}`;
-wxText.textContent=`天候：${r.weather??r.worldWeather??r.world_weather??"--"}`;
-tpsText.textContent=`TPS：${fmt(r.tps??r.TPS??"--",0)}`;
-pcText.textContent=players.length;
-tcText.textContent=`列車：${trains.length}編成`;
-lastUpd.textContent=`最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
-setConn(true);lastOk=Date.now();
-if(map.dataset.initialized!=="true"){fitView();map.dataset.initialized="true"}else renderMarkers();
-refreshDetail()
-}catch(e){console.error("在線データ取得エラー:",e);setConn(false)}
-finally{isFetching=false}}
-function startRefresh(){if(refreshTimer!==null)clearTimeout(refreshTimer);refreshTimer=setTimeout(async()=>{await fetchStatus();startRefresh()},1000)}
-function stopRefresh(){if(refreshTimer!==null){clearTimeout(refreshTimer);refreshTimer=null}}
-function refreshNow(){stopRefresh();fetchStatus().finally(startRefresh)}
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshNow()});
+    if(isFetching)return;
+
+    isFetching=true;
+
+    try{
+        const res=await fetch(API_URL,{
+            method:"GET",
+            mode:"cors",
+            cache:"no-store"
+        });
+
+        if(!res.ok)throw Error(`HTTP ${res.status}`);
+
+        const data=await res.json();
+
+        if(data?.success===false)throw Error(data.error||"API error");
+
+        latest=data;
+
+        const r=data?.data??data?.status??data??{};
+
+        players=toList(r.players??r.player??r.onlinePlayers??[]);
+        trains=toList(r.trains??r.train??r.carts??[]);
+
+        wtText.textContent=`ワールド時刻：${r.worldTime??r.time??r.world_time??"--"}`;
+        wxText.textContent=`天候：${r.weather??r.worldWeather??r.world_weather??"--"}`;
+        tpsText.textContent=`TPS：${fmt(r.tps??r.TPS??"--",0)}`;
+
+        pcText.textContent=players.length;
+        tcText.textContent=`列車：${trains.length}編成`;
+
+        lastUpd.textContent=`最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
+
+        setConn(true);
+        lastOk=Date.now();
+
+        if(map.dataset.initialized!=="true"){
+            fitView();
+            map.dataset.initialized="true";
+        }else{
+            renderMarkers();
+        }
+
+        refreshDetail();
+
+    }catch(e){
+        console.error("在線データ取得エラー:",e);
+        setConn(false);
+    }finally{
+        isFetching=false;
+    }
+}
+
+function startRefresh(){
+    if(refreshTimer!==null)clearTimeout(refreshTimer);
+
+    refreshTimer=setTimeout(async()=>{
+        await fetchStatus();
+        startRefresh();
+    },1000);
+}
+
+function stopRefresh(){
+    if(refreshTimer!==null){
+        clearTimeout(refreshTimer);
+        refreshTimer=null;
+    }
+}
+
+function refreshNow(){
+    stopRefresh();
+    fetchStatus().finally(startRefresh);
+}
+
+document.addEventListener("visibilitychange",()=>{
+    if(!document.hidden)refreshNow();
+});
+
 window.addEventListener("focus",refreshNow);
 window.addEventListener("online",refreshNow);
 window.addEventListener("pagehide",stopRefresh);
 
+/* 拡大・縮小 */
 function zoomAt(f,cx,cy){
-const r=map.getBoundingClientRect();
-if(r.width<=0||r.height<=0)return;
-const px=(cx-r.left)/r.width,py=(cy-r.top)/r.height,wx=view.x+px*view.w,wy=view.y+py*view.h,w=clamp(view.w*f,MIN_W,MAX_W),h=w/size().aspect;
-view.x=wx-px*w;view.y=wy-py*h;view.w=w;view.h=h;applyView()}
-function zoomCenter(f){const r=map.getBoundingClientRect();zoomAt(f,r.left+r.width/2,r.top+r.height/2)}
+    const r=map.getBoundingClientRect();
+
+    if(r.width<=0||r.height<=0)return;
+
+    const px=(cx-r.left)/r.width;
+    const py=(cy-r.top)/r.height;
+
+    const wx=view.x+px*view.w;
+    const wy=view.y+py*view.h;
+
+    const w=clamp(view.w*f,MIN_W,MAX_W);
+    const h=w/size().aspect;
+
+    view.x=wx-px*w;
+    view.y=wy-py*h;
+    view.w=w;
+    view.h=h;
+
+    applyView();
+}
+
+function zoomCenter(f){
+    const r=map.getBoundingClientRect();
+
+    zoomAt(
+        f,
+        r.left+r.width/2,
+        r.top+r.height/2
+    );
+}
+
 $("zoomIn").addEventListener("click",()=>zoomCenter(.75));
 $("zoomOut").addEventListener("click",()=>zoomCenter(1.33));
 $("resetView").addEventListener("click",fitView);
-map.addEventListener("wheel",e=>{e.preventDefault();zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY)},{passive:false});
 
+map.addEventListener("wheel",e=>{
+    e.preventDefault();
+
+    zoomAt(
+        e.deltaY<0?.9:1.1,
+        e.clientX,
+        e.clientY
+    );
+},{passive:false});
+
+/* マップのドラッグ移動 */
 map.addEventListener("pointerdown",e=>{
-if(e.button!==0)return;
-if(markerOf(e.target)){dragMoved=false;return}
-const t=e.target instanceof Element?e.target:e.target?.parentElement;
-if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
-dragging=true;dragMoved=false;
-if(dragTimer!==null){clearTimeout(dragTimer);dragTimer=null}
-dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};
-map.classList.add("dragging")});
+    if(e.button!==0)return;
+
+    if(markerOf(e.target)){
+        dragMoved=false;
+        return;
+    }
+
+    const t=e.target instanceof Element
+        ?e.target
+        :e.target?.parentElement;
+
+    if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
+
+    dragging=true;
+    dragMoved=false;
+
+    if(dragTimer!==null){
+        clearTimeout(dragTimer);
+        dragTimer=null;
+    }
+
+    dragStart={
+        x:e.clientX,
+        y:e.clientY,
+        vx:view.x,
+        vy:view.y
+    };
+
+    map.classList.add("dragging");
+});
+
 window.addEventListener("pointermove",e=>{
-if(!dragging||!dragStart)return;
-const dx=e.clientX-dragStart.x,dy=e.clientY-dragStart.y,s=getScale();
-if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true;
-view.x=dragStart.vx-dx*s;view.y=dragStart.vy-dy*s;applyView(false)});
+    if(!dragging||!dragStart)return;
+
+    const dx=e.clientX-dragStart.x;
+    const dy=e.clientY-dragStart.y;
+    const s=getScale();
+
+    if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true;
+
+    view.x=dragStart.vx-dx*s;
+    view.y=dragStart.vy-dy*s;
+
+    applyView(false);
+});
+
 function stopDragging(){
-if(!dragging)return;
-dragging=false;dragStart=null;
-map.classList.remove("dragging");
-renderMarkers();
-if(dragTimer!==null)clearTimeout(dragTimer);
-dragTimer=setTimeout(()=>{dragMoved=false;dragTimer=null},150)}
+    if(!dragging)return;
+
+    dragging=false;
+    dragStart=null;
+
+    map.classList.remove("dragging");
+
+    renderMarkers();
+
+    if(dragTimer!==null)clearTimeout(dragTimer);
+
+    dragTimer=setTimeout(()=>{
+        dragMoved=false;
+        dragTimer=null;
+    },150);
+}
+
 window.addEventListener("pointerup",stopDragging);
 window.addEventListener("pointercancel",stopDragging);
 
+/* キーボード操作 */
 window.addEventListener("keydown",e=>{
-if(modal.classList.contains("open")){if(e.key==="Escape")closeModal();return}
-if(e.target instanceof HTMLInputElement||e.target instanceof HTMLTextAreaElement||e.target instanceof HTMLButtonElement||e.target instanceof HTMLAnchorElement)return;
-const a=view.w*.08,k={ArrowUp:["y",-a],ArrowDown:["y",a],ArrowLeft:["x",-a],ArrowRight:["x",a]}[e.key];
-if(k){e.preventDefault();view[k[0]]+=k[1];applyView(false)}
-else if(e.key==="+"||e.key==="="){e.preventDefault();zoomCenter(.75)}
-else if(e.key==="-"){e.preventDefault();zoomCenter(1.33)}});
-collapseBtn.addEventListener("click",()=>{pPanel.classList.toggle("collapsed");collapseBtn.textContent=pPanel.classList.contains("collapsed")?"+":"−"});
+    if(modal.classList.contains("open")){
+        if(e.key==="Escape")closeModal();
+        return;
+    }
+
+    if(
+        e.target instanceof HTMLInputElement||
+        e.target instanceof HTMLTextAreaElement||
+        e.target instanceof HTMLButtonElement||
+        e.target instanceof HTMLAnchorElement
+    )return;
+
+    const a=view.w*.08;
+
+    const k={
+        ArrowUp:["y",-a],
+        ArrowDown:["y",a],
+        ArrowLeft:["x",-a],
+        ArrowRight:["x",a]
+    }[e.key];
+
+    if(k){
+        e.preventDefault();
+        view[k[0]]+=k[1];
+        applyView(false);
+    }else if(e.key==="+"||e.key==="="){
+        e.preventDefault();
+        zoomCenter(.75);
+    }else if(e.key==="-"){
+        e.preventDefault();
+        zoomCenter(1.33);
+    }
+});
+
+/* プレイヤー一覧の開閉 */
+collapseBtn.addEventListener("click",()=>{
+    pPanel.classList.toggle("collapsed");
+
+    collapseBtn.textContent=pPanel.classList.contains("collapsed")
+        ?"+"
+        :"−";
+});
+
+/* モーダル */
 closeBtn.addEventListener("click",closeModal);
-modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
+
+modal.addEventListener("click",e=>{
+    if(e.target===modal)closeModal();
+});
+
+/* 画面サイズ変更 */
 window.addEventListener("resize",()=>{
-if(resizeFrame!==null)cancelAnimationFrame(resizeFrame);
-resizeFrame=requestAnimationFrame(()=>{resizeFrame=null;view.h=view.w/size().aspect;applyView()})});
-setInterval(()=>{if(lastOk>0&&Date.now()-lastOk>10000)setConn(false)},3000);
-(async()=>{await loadStaff();await fetchStatus();startRefresh()})();
+    if(resizeFrame!==null)cancelAnimationFrame(resizeFrame);
+
+    resizeFrame=requestAnimationFrame(()=>{
+        resizeFrame=null;
+        view.h=view.w/size().aspect;
+        applyView();
+    });
+});
+
+/* 接続状態監視 */
+setInterval(()=>{
+    if(lastOk>0&&Date.now()-lastOk>10000){
+        setConn(false);
+    }
+},3000);
+
+/* 初期起動 */
+(async()=>{
+    await loadStaff();
+    await fetchStatus();
+    startRefresh();
+})();
 </script>
 </body>
 </html>
