@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -35,10 +36,10 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 #map{display:block;width:100%;height:100%;cursor:grab;touch-action:none}#map.dragging{cursor:grabbing}
 .grid-line{stroke:#dce5ed;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
 .route-line{fill:none;stroke-width:32;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
-.route-wave{stroke:#38bfe8}.route-yano{stroke:#f97316}.route-kawatei{stroke:#dc2626}.route-rain{stroke:#84cc16}
+.route-wave{stroke:#38bfe8}.route-yano{stroke:#f97316}.route-kawatei{stroke:#dc2626}.route-rain{stroke:#84cc16}.route-mizuyama{stroke:#22c55e}
 .route-depot{stroke:#888;stroke-width:21}.route-experiment{stroke:#111;stroke-width:25}.route-factory{stroke:#888;stroke-width:22}
 .station-dot{fill:#fff;stroke-width:12;pointer-events:none}
-.station-wave{stroke:#38bfe8}.station-yano{stroke:#f97316}.station-kawatei{stroke:#dc2626}.station-rain{stroke:#84cc16}.station-depot,.station-factory{stroke:#888}.station-experiment{stroke:#111}
+.station-wave{stroke:#38bfe8}.station-yano{stroke:#f97316}.station-kawatei{stroke:#dc2626}.station-rain{stroke:#84cc16}.station-mizuyama{stroke:#22c55e}.station-depot,.station-factory{stroke:#888}.station-experiment{stroke:#111}
 .station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3px;paint-order:stroke fill;font-family:"Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;font-weight:800;text-anchor:start;pointer-events:none}
 .station-label-end{text-anchor:end}.station-reading{font-weight:600}.station-label-vertical{font-weight:850}.station-reading-vertical{font-weight:650}
 .player-halo{fill:#38bfe8;fill-opacity:.17;stroke:#38bfe8;stroke-opacity:.38;stroke-width:12;pointer-events:none}
@@ -136,7 +137,7 @@ html[data-theme=dark] .player-name-label{fill:#fff;stroke:#172638}
 <span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span><span id="trainCount">列車：--編成</span>
 </div>
 <div class="legend">
-<span><i style="background:#38bfe8"></i>波急波川線</span><span><i style="background:#f97316"></i>矢野電鉄線</span><span><i style="background:#dc2626"></i>川鉄依丘線</span><span><i style="background:#84cc16"></i>雨急雨波線</span><span><i style="background:#111"></i>波急実験線</span><span><i style="background:#888"></i>留置線・車庫・製造工場</span>
+<span><i style="background:#38bfe8"></i>波急波川線</span><span><i style="background:#f97316"></i>矢野電鉄線</span><span><i style="background:#dc2626"></i>川鉄依丘線</span><span><i style="background:#84cc16"></i>雨急雨波線</span><span><i style="background:#22c55e"></i>水山線</span><span><i style="background:#111"></i>波急実験線</span><span><i style="background:#888"></i>留置線・車庫・製造工場</span>
 <span><i style="background:#f97316"></i>特急</span><span><i style="background:#dc2626"></i>急行</span><span><i style="background:#16a34a"></i>準急</span><span><i style="background:#2878c8"></i>各駅停車</span><span>水色の丸・顔マーク：プレイヤー</span>
 </div>
 <section id="mapArea">
@@ -196,9 +197,21 @@ const STATIONS=[
 ["新草市","しんくさし",124,4498,"kawatei",90,4380,{fontSize:130,readingDy:75,readingSize:68}],
 ["北ノ宮","きたのみや",600,4498,"kawatei",680,0,{vertical:1,readingX:560,shiftY:-144}],["依丘空港","よりおかくうこう",1145,4498,"kawatei",1225,0,{vertical:1,readingX:1105,shiftY:-144}],["芝田町","しばたちょう",1509,4498,"kawatei",1589,0,{vertical:1,readingX:1469,shiftY:-144}],["鷺川","さぎがわ",1974,4498,"kawatei",2054,0,{vertical:1,readingX:1934,shiftY:-144}],["依丘","よりおか",2542,4498,"kawatei",2622,0,{vertical:1,readingX:2502,shiftY:-144}],["依丘車庫","よりおかしゃこ",2680,4492,"depot",2810,4545],
 ["新川","しんかわ",0,7385,"rain",220,7430],["雨波","あめなみ",0,8761,"rain",220,8806],["蛙ヶ丘","かえるがおか",-122,10387,"rain",98,10432],["新雨岡","しんあめおか",-122,11761,"rain",98,11806],["雨岡","あめおか",-122,13030,"rain",98,13075],["雨山","あめやま",-122,14627,"rain",98,14672],["雨山車両センター","あめやましゃりょうセンター",-124,14941,"depot",-300,14986,{a:"end"}],["中市出庫区","なかいちしゅっこく",13,-404,"depot",230,-360],
-["高ノ宮","たかのみや",589,4727,"experiment",650,4930,{vertical:1,readingX:790,readingY:4930}],["高宮製造工場","たかみやせいぞうこうじょう",995,4727,"factory",1080,4930,{vertical:1,readingX:1220,readingY:4930}]
+["高ノ宮","たかのみや",589,4727,"experiment",650,4930,{vertical:1,readingX:790,readingY:4930}],["高宮製造工場","たかみやせいぞうこうじょう",995,4727,"factory",1080,4930,{vertical:1,readingX:1220,readingY:4930}],
+
+/* 水山線：草市から分岐 */
+["北長立","きたながたち",-10,4612,"mizuyama",-260,4520,{fontSize:112,readingSize:67,readingDy:67}],
+["坂川","さかがわ",-388,4758,"mizuyama",-690,4685,{fontSize:112,readingSize:67,readingDy:67}],
+["九和","くわ",-606,4477,"mizuyama",-900,4440,{fontSize:112,readingSize:67,readingDy:67}],
+["水山","みずやま",-411,4321,"mizuyama",-190,4240,{fontSize:112,readingSize:67,readingDy:67}]
 ];
-const ROUTE_HTML=`<path class="route-line route-wave" d="M0 -17 L0 6132"/><path class="route-line route-yano" d="M0 -17 L0 -7323"/><path class="route-line route-depot" d="M0 -7323 L-9 -7550"/><path class="route-line route-kawatei" d="M0 4080 C0 4330 0 4498 124 4498 L2542 4498"/><path class="route-line route-depot" d="M2542 4498 L2680 4492"/><path class="route-line route-rain" d="M0 6132 L0 8761 C0 9483 -122 9348 -122 10070 L-122 14627"/><path class="route-line route-depot" d="M-122 14627 L-124 14941"/><path class="route-line route-depot" d="M0 -17 L13 -404"/><path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/><path class="route-line route-factory" d="M589 4727 L995 4727"/>`;
+const ROUTE_HTML=`<path class="route-line route-wave" d="M0 -17 L0 6132"/><path class="route-line route-yano" d="M0 -17 L0 -7323"/><path class="route-line route-depot" d="M0 -7323 L-9 -7550"/><path class="route-line route-kawatei" d="M0 4080 C0 4330 0 4498 124 4498 L2542 4498"/><path class="route-line route-depot" d="M2542 4498 L2680 4492"/><path class="route-line route-rain" d="M0 6132 L0 8761 C0 9483 -122 9348 -122 10070 L-122 14627"/><path class="route-line route-depot" d="M-122 14627 L-124 14941"/><path class="route-line route-depot" d="M0 -17 L13 -404"/><path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/><path class="route-line route-factory" d="M589 4727 L995 4727"/>
+
+/* 水山線：草市～北長立～坂川～九和～水山 */
+<path class="route-line route-mizuyama" d="M0 4080 L-10 4288 L-10 4662 Q-10 4758 -132 4758 L-388 4758 L-468 4758 Q-606 4758 -606 4594 L-606 4477 L-606 4244 Q-606 4142 -529 4142 L-497 4142 Q-411 4142 -411 4235 L-411 4321"/>
+
+/* 水山駅から伸びる灰色の無名線路 */
+<path class="route-line route-depot" d="M-411 4321 L-415 4528"/>`;
 const OBST=[];
 const STATION_HTML=(()=>{let c="",l="";
 for(const[n,r,x,z,ln,lx,ly,q={}]of STATIONS){
@@ -226,7 +239,7 @@ let c=TC.get(t);if(c)return c;
 const g=tags(t),p=coords(t),water=p.x>=-608&&p.x<=692&&p.z>=3957&&p.z<=5257&&!g.some(x=>TYPE_TAGS.includes(x)),
 d=g.includes("z-")?"z-":g.includes("z+")||g.includes("z")?"z+":g.includes("x-")?"x-":"x+",
 m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name),type=trainType(g,p.z,water);
-c={...p,id:stableId(t),d,type,model:MODELS[m?.[1]]||"不明",route:water?"水鉄水山線":p.x>=50&&p.z>=4000&&p.z<=5000?"川鉄依丘線":p.z>6131?"雨急雨波線":p.z<-18?"矢野電鉄線":"波急波川線",destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
+c={...p,id:stableId(t),d,type,model:MODELS[m?.[1]]||"不明",route:water?"水山線":p.x>=50&&p.z>=4000&&p.z<=5000?"川鉄依丘線":p.z>6131?"雨急雨波線":p.z<-18?"矢野電鉄線":"波急波川線",destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
 TC.set(t,c);return c}
 function speedOf(t){const s=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));if(s===59)return 120;if(Number.isFinite(s)&&s<0)return 0;const p=Number(t?.speed);return!Number.isFinite(p)||p<0?0:p}
 async function loadStaff(){
