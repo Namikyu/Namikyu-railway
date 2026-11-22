@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -52,10 +51,12 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 .train-label{fill:#fff;stroke:#26364a66;stroke-width:1.2px;paint-order:stroke fill;font-weight:900;text-anchor:middle;dominant-baseline:central;pointer-events:none}
 .player-name-background{fill:#fff;fill-opacity:.94;stroke:#dce5ed;stroke-width:1;pointer-events:none}
 .player-name-label{fill:#263e58;stroke:#fff;stroke-width:3px;paint-order:stroke fill;font-weight:800;text-anchor:middle;dominant-baseline:central;pointer-events:none}
-.compass{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:3;display:grid;grid-template-columns:28px 28px 28px;grid-template-rows:20px 20px 20px;align-items:center;justify-items:center;pointer-events:none;color:#60778e;font-size:10px;font-weight:850;text-shadow:0 1px 3px #fff}
-.north{grid-column:2;grid-row:1}.west{grid-column:1;grid-row:2}.center{grid-column:2;grid-row:2;color:#9aabba}.east{grid-column:3;grid-row:2}.south{grid-column:2;grid-row:3}
+.compass{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:3;display:grid;grid-template:repeat(3,20px)/repeat(3,28px);align-items:center;justify-items:center;pointer-events:none;color:#60778e;font-size:10px;font-weight:850;text-shadow:0 1px 3px #fff}
+.north{grid-area:1/2}.west{grid-area:2/1}.center{grid-area:2/2;color:#9aabba}.east{grid-area:2/3}.south{grid-area:3/2}
 .map-controls{position:absolute;right:12px;top:12px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .map-controls button{width:36px;height:36px;border:1px solid #d8e2ec;border-radius:9px;background:#fffffff2;color:#284967;font-size:19px;font-weight:800;cursor:pointer}
+.train-toggle{position:absolute;right:12px;top:138px;z-index:5;display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #d8e2ec;border-radius:9px;background:#fffffff2;color:#284967;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px #142b4912}
+.train-toggle input{width:16px;height:16px;margin:0;accent-color:#087fc4;cursor:pointer}
 .map-help{position:absolute;right:12px;bottom:9px;z-index:2;padding:6px 9px;border-radius:6px;background:#ffffffdf;color:#8093a5;font-size:9px;font-weight:650;pointer-events:none}
 .player-panel{position:absolute;left:12px;top:12px;z-index:5;width:220px;max-height:calc(100% - 24px);display:flex;flex-direction:column;background:#fffffff5;border:1px solid #dce5ed;border-radius:12px;box-shadow:0 4px 16px #142b491b;overflow:hidden}
 .player-panel.collapsed{width:135px}
@@ -91,12 +92,12 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 .detail-note{margin-top:12px;font-size:10px;color:#8a9aaa}
 html[data-theme=dark]{color-scheme:dark}
 html[data-theme=dark] body{background:#111c2b;color:#e4edf7}
-html[data-theme=dark] h2{color:#eaf3ff}
+html[data-theme=dark] h2,html[data-theme=dark] .modal-title{color:#eaf3ff}
 html[data-theme=dark] .status{background:#1c2b3e;color:#b5c7d9;border-color:#354b62}
-html[data-theme=dark] .status strong,html[data-theme=dark] .detail-value{color:#e4edf7}
+html[data-theme=dark] .status strong,html[data-theme=dark] .detail-value,html[data-theme=dark] .player-row-name,html[data-theme=dark] .detail-player-name,html[data-theme=dark] .train-destination{color:#e4edf7}
 html[data-theme=dark] .online-count,html[data-theme=dark] .player-panel-count{background:#173d32;color:#79dfae}
 html[data-theme=dark] .online-count strong{color:#79dfae}
-html[data-theme=dark] .legend{color:#b5c7d9}
+html[data-theme=dark] .legend,html[data-theme=dark] .map-help{color:#b5c7d9}
 html[data-theme=dark] #mapArea{background:#172538;border-color:#354b62}
 html[data-theme=dark] .grid-line{stroke:#354b62}
 html[data-theme=dark] .station-label{fill:#f3f7fc;stroke:#172538}
@@ -105,20 +106,17 @@ html[data-theme=dark] .player-panel-head{color:#e4edf7;border-color:#354b62}
 html[data-theme=dark] .player-panel-head button,html[data-theme=dark] .modal-close{background:#30465d;color:#e4edf7}
 html[data-theme=dark] .player-row{color:#d5e3f0}
 html[data-theme=dark] .player-row:hover{background:#263d53;border-color:#405a73}
-html[data-theme=dark] .player-row-name,html[data-theme=dark] .detail-player-name{color:#e4edf7}
 html[data-theme=dark] .player-row img,html[data-theme=dark] .detail-player img{background:#30465d}
-html[data-theme=dark] .map-controls button{background:#26384d;color:#e4edf7;border-color:#40566e}
-html[data-theme=dark] .map-help{background:#1c2b3ee8;color:#b5c7d9}
+html[data-theme=dark] .map-controls button,html[data-theme=dark] .train-toggle{background:#26384d;color:#e4edf7;border-color:#40566e}
+html[data-theme=dark] .map-help{background:#1c2b3ee8}
 html[data-theme=dark] .compass{color:#c0d0df;text-shadow:0 1px 3px #111c2b}
 html[data-theme=dark] .modal-card{background:#1c2b3e;border-color:#40566e}
-html[data-theme=dark] .modal-title{color:#eaf3ff}
-html[data-theme=dark] .detail-player,html[data-theme=dark] .detail-item{background:#26384d;border-color:#40566e}
-html[data-theme=dark] .train-summary{background:#26384d}
-html[data-theme=dark] .train-destination{color:#e4edf7}
+html[data-theme=dark] .detail-player,html[data-theme=dark] .detail-item,html[data-theme=dark] .train-summary{background:#26384d}
+html[data-theme=dark] .detail-player,html[data-theme=dark] .detail-item{border-color:#40566e}
 html[data-theme=dark] .player-name-background{fill:#172638;stroke:#52677d}
 html[data-theme=dark] .player-name-label{fill:#fff;stroke:#172638}
 @media(max-width:900px){.header{gap:10px}.header-top{flex-basis:38%}.navigation{flex-basis:62%;gap:6px}.brand-title{font-size:clamp(25px,3vw,36px)}}
-@media(max-width:760px){main{padding:9px}h2{font-size:17px}.status{padding:9px 11px;gap:7px 11px;font-size:11px}.legend{gap:6px 9px;font-size:9px}.player-panel{width:155px;left:7px;top:7px;max-height:48%}.player-panel.collapsed{width:125px}.map-controls{right:7px;top:7px}.map-controls button{width:32px;height:32px}.map-help{right:7px;bottom:6px;font-size:8px}}
+@media(max-width:760px){main{padding:9px}h2{font-size:17px}.status{padding:9px 11px;gap:7px 11px;font-size:11px}.legend{gap:6px 9px;font-size:9px}.player-panel{width:155px;left:7px;top:7px;max-height:48%}.player-panel.collapsed{width:125px}.map-controls{right:7px;top:7px}.map-controls button{width:32px;height:32px}.map-help{right:7px;bottom:6px;font-size:8px}.train-toggle{right:7px;top:119px}}
 @media(max-width:650px){.header{height:150px;min-height:150px;flex-direction:column;justify-content:center;gap:8px;padding:6px 2%}.header-top{flex:0 0 auto;gap:8px}.logo{width:48px;height:48px}.brand-title{font-size:25px}.brand-subtitle{font-size:9px}.navigation{width:100%;flex:0 0 auto;gap:5px}.navigation a{height:42px;padding:5px 3px;font-size:10px}.theme-toggle{width:36px;height:38px;font-size:18px}main{height:calc(100dvh - 150px)}}
 @media(max-width:430px){main{padding:7px}.player-panel{width:140px}.player-panel.collapsed{width:120px}}
 </style>
@@ -148,6 +146,7 @@ html[data-theme=dark] .player-name-label{fill:#fff;stroke:#172638}
 <div class="player-list" id="playerList"><div class="player-empty">読み込み中...</div></div>
 </div>
 <div class="map-controls"><button id="zoomIn" type="button" aria-label="拡大">＋</button><button id="zoomOut" type="button" aria-label="縮小">−</button><button id="resetView" type="button" aria-label="全体表示">⌂</button></div>
+<label class="train-toggle"><input id="hideTrains" type="checkbox">列車非表示</label>
 <div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小 / マーカー：詳細</div>
 </section>
 </main>
@@ -166,12 +165,7 @@ coords=e=>{const p=e?.location??e?.position??e??{};return{x:num(p.x),y:num(p.y),
 toMap=e=>{const p=coords(e);return{x:p.x,y:p.z}},
 xyz=p=>`${fmt(p.x,2)}, ${fmt(p.y,2)}, ${fmt(p.z,2)}`,
 clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),
-face=p=>{
-const xuid=p?.xuid??p?.XUID;
-return xuid!=null&&/^\d+$/.test(String(xuid))
-?`https://mc-api.io/render/FACE/${encodeURIComponent(String(xuid))}?size=64`
-:`https://mc-api.io/render/FACE/${encodeURIComponent(getName(p))}/BEDROCK?size=64`
-},
+face=p=>{const xuid=p?.xuid??p?.XUID;return xuid!=null&&/^\d+$/.test(String(xuid))?`https://mc-api.io/render/FACE/${encodeURIComponent(String(xuid))}?size=64`:`https://mc-api.io/render/FACE/${encodeURIComponent(getName(p))}/BEDROCK?size=64`},
 ANGLES={"x+":0,"z+":90,"x-":180,"z-":-90},TYPE_TAGS=["ltd","exp","sexp","local2","local"],
 DEST={local2:["依丘","草市"],local:["波丘","吉山"],exp:["依丘","吉山"],ltd:["雨山","吉山"],sexp:["雨山","矢野"],"sexp-local":["雨山","矢野"]},
 MODELS={1532:"波急3500系",2532:"矢野電5000系",3800:"雨急3800系",4722:"雨急4000系",5179:"波急5100系",6971:"水鉄1500系",8152:"川鉄9700系",7661:"波急3100系",8575:"波急2500系"},
@@ -188,45 +182,8 @@ pathShape=(h,t)=>`M${-h} ${-h}L${h} ${-h}L${t} 0L${h} ${h}L${-h} ${h}Z`,
 markerOf=t=>(t instanceof Element?t:t?.parentElement)?.closest("[data-kind][data-index]"),
 item=(l,v,w)=>`<div class="detail-item${w?" wide":""}"><div class="detail-label">${l}</div><div class="detail-value">${v}</div></div>`,
 playerPositions=new Map,TC=new WeakMap;
-let latest=null,players=[],trains=[],staffMap=new Map(),view={x:-5000,y:-5000,w:10000,h:10000},dragging=false,dragStart=null,dragMoved=false,isFetching=false,refreshTimer=null,lastOk=0,resizeFrame=null,selectedPlayer=null,selectedTrain=null;
-
-/* 駅・路線は固定データなので起動時に1回だけ生成 */
-const STATIONS=[
-["中市","なかいち",0,-17,"both",220,30],["大白","おおしろ",0,1051,"wave",220,1098],["水浜","みずはま",0,2020,"wave",220,2067],["竹ヶ丘","たけがおか",0,3100,"wave",220,3147],["草市","くさし",0,4080,"wave",220,4127],["長立","ながたち",0,5000,"wave",55,5000],["波丘","なみおか",0,6132,"wave",220,6179],
-["矢野空港","やのくうこう",0,-1327,"yano",220,-1272],["矢野","やの",0,-2483,"yano",220,-2428],["大東","だいとう",0,-3787,"yano",220,-3732],["浜口","はまぐち",0,-4988,"yano",220,-4933],["新矢野","しんやの",0,-5989,"yano",220,-5934],["吉山","よしやま",0,-7323,"yano",220,-7268],["吉山留置線","よしやまりゅうせん",-9,-7550,"depot",230,-7495],
-["新草市","しんくさし",124,4498,"kawatei",90,4380,{fontSize:130,readingDy:75,readingSize:68}],
-["北ノ宮","きたのみや",600,4498,"kawatei",680,0,{vertical:1,readingX:560,shiftY:-144}],["依丘空港","よりおかくうこう",1145,4498,"kawatei",1225,0,{vertical:1,readingX:1105,shiftY:-144}],["芝田町","しばたちょう",1509,4498,"kawatei",1589,0,{vertical:1,readingX:1469,shiftY:-144}],["鷺川","さぎがわ",1974,4498,"kawatei",2054,0,{vertical:1,readingX:1934,shiftY:-144}],["依丘","よりおか",2542,4498,"kawatei",2622,0,{vertical:1,readingX:2502,shiftY:-144}],["依丘車庫","よりおかしゃこ",2680,4492,"depot",2810,4545],
-["新川","しんかわ",0,7385,"rain",220,7430],["雨波","あめなみ",0,8761,"rain",220,8806],["蛙ヶ丘","かえるがおか",-122,10387,"rain",98,10432],["新雨岡","しんあめおか",-122,11761,"rain",98,11806],["雨岡","あめおか",-122,13030,"rain",98,13075],["雨山","あめやま",-122,14627,"rain",98,14672],["雨山車両センター","あめやましゃりょうセンター",-124,14941,"depot",-300,14986,{a:"end"}],["中市出庫区","なかいちしゅっこく",13,-404,"depot",230,-360],
-["高ノ宮","たかのみや",589,4727,"experiment",650,4930,{vertical:1,readingX:790,readingY:4930}],["高宮製造工場","たかみやせいぞうこうじょう",995,4727,"factory",1080,4930,{vertical:1,readingX:1220,readingY:4930}],
-
-/* 水山線：草市から分岐 */
-["北長立","きたながたち",-10,4612,"mizuyama",-260,4520,{fontSize:112,readingSize:67,readingDy:67}],
-["坂川","さかがわ",-388,4758,"mizuyama",-690,4685,{fontSize:112,readingSize:67,readingDy:67}],
-["九和","くわ",-606,4477,"mizuyama",-900,4440,{fontSize:112,readingSize:67,readingDy:67}],
-["水山","みずやま",-411,4321,"mizuyama",-190,4240,{fontSize:112,readingSize:67,readingDy:67}]
-];
-const ROUTE_HTML=`<path class="route-line route-wave" d="M0 -17 L0 6132"/><path class="route-line route-yano" d="M0 -17 L0 -7323"/><path class="route-line route-depot" d="M0 -7323 L-9 -7550"/><path class="route-line route-kawatei" d="M0 4080 C0 4330 0 4498 124 4498 L2542 4498"/><path class="route-line route-depot" d="M2542 4498 L2680 4492"/><path class="route-line route-rain" d="M0 6132 L0 8761 C0 9483 -122 9348 -122 10070 L-122 14627"/><path class="route-line route-depot" d="M-122 14627 L-124 14941"/><path class="route-line route-depot" d="M0 -17 L13 -404"/><path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/><path class="route-line route-factory" d="M589 4727 L995 4727"/>
-
-/* 水山線：草市～北長立～坂川～九和～水山 */
-<path class="route-line route-mizuyama" d="M0 4080 L-10 4288 L-10 4662 Q-10 4758 -132 4758 L-388 4758 L-468 4758 Q-606 4758 -606 4594 L-606 4477 L-606 4244 Q-606 4142 -529 4142 L-497 4142 Q-411 4142 -411 4235 L-411 4321"/>
-
-/* 水山駅から伸びる灰色の無名線路 */
-<path class="route-line route-depot" d="M-411 4321 L-415 4528"/>`;
-const OBST=[];
-const STATION_HTML=(()=>{let c="",l="";
-for(const[n,r,x,z,ln,lx,ly,q={}]of STATIONS){
-c+=`<g transform="translate(${x} ${z})"><circle class="station-dot station-${ln==="both"?"wave":ln}" r="38"/></g>`;
-OBST.push(rect(x-95,z-95,x+95,z+95));
-if(q.vertical){
-const fs=125,rs=72,sh=q.shiftY||0,Y=(ly||4498-n.length*fs-18)+sh,RY=(q.readingY??4498-r.length*rs-18)+sh;
-l+=`<text class="station-label station-label-vertical" x="${lx}" y="${Y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(n)}</text><text class="station-label station-reading-vertical" x="${q.readingX}" y="${RY}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(r)}</text>`;
-OBST.push(rect(lx-110,Y-100,lx+110,Y+n.length*125+100),rect(q.readingX-80,RY-100,q.readingX+80,RY+r.length*72+100))
-}else{
-const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100,w=Math.max(n.length*fs,r.length*rs)+100,h=fs+dy+rs+70,e=q.a==="end";
-l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" font-size="${fs}"><tspan>${esc(n)}</tspan><tspan class="station-reading" x="${lx}" dy="${dy}" font-size="${rs}">${esc(r)}</tspan></text>`;
-OBST.push(e?rect(lx-w,ly-fs,lx+30,ly+h):rect(lx-30,ly-fs,lx+w,ly+h))}}
-return c+l})();
-
+let latest=null,players=[],trains=[],staffMap=new Map(),view={x:-5000,y:-5000,w:10000,h:10000},dragging=false,dragStart=null,dragMoved=false,isFetching=false,refreshTimer=null,lastOk=0,resizeFrame=null,selectedPlayer=null,selectedTrain=null,hideTrains=false;
+$("hideTrains").addEventListener("change",e=>{hideTrains=e.target.checked;renderMarkers()});
 function trainType(g,z,water){
 if(g.includes("ltd"))return{key:"ltd",name:"特急",label:"特",color:"#f97316"};
 if(g.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"};
@@ -265,7 +222,6 @@ const c=trainInfo(t);
 return`<g class="train-marker" data-kind="train" data-index="${i}" tabindex="0" role="button" transform="translate(${c.x} ${c.z})"><g transform="rotate(${ANGLES[c.d]||0})"><path class="train-hit-area" d="${pathShape(90,180)}" stroke-width="95"/><path class="train-visual" d="${pathShape(75,165)}" fill="${c.type.color}" stroke="white" stroke-width="7" stroke-linejoin="round"/></g><text class="train-label" font-size="90">${esc(c.type.label)}</text></g>`}
 const playerRect=(pos,w)=>{const h=Math.max(90,w/2);return rect(pos.x-h-35,pos.y-115,pos.x+h+35,pos.y+265)},
 DIRS=[[0,-1],[1,0],[0,1],[-1,0],[.707,-.707],[.707,.707],[-.707,.707],[-.707,-.707]];
-/* 8方向の直線上を近い順に探索。列車や他プレイヤーの移動も毎回判定 */
 function placePlayers(tp){
 const obstacles=OBST.concat(tp.map(t=>rect(t.x-260,t.z-260,t.x+260,t.z+260))),placed=[];
 return players.map((p,i)=>{
@@ -287,7 +243,7 @@ function renderMarkers(){
 if(!latest)return;
 const layout=placePlayers(trains);
 set(haloLayer,layout.map(({origin:q,pos})=>q.x===pos.x&&q.y===pos.y?"":`<line class="player-link" x1="${q.x}" y1="${q.y}" x2="${pos.x}" y2="${pos.y}"/>`).join("")+layout.map(({origin:q})=>`<g transform="translate(${q.x} ${q.y})"><circle class="player-halo" r="145"/><circle class="player-halo-core" r="55"/></g>`).join(""));
-set(markerLayer,trains.map(trainMarker).join("")+layout.map(playerMarker).join(""));
+set(markerLayer,(hideTrains?"":trains.map(trainMarker).join(""))+layout.map(playerMarker).join(""));
 ppCount.textContent=players.length;
 set(pList,players.length?players.map((p,i)=>{const n=getName(p),r=getRole(p);return`<button class="player-row" type="button" data-player-index="${i}"><img src="${face(p)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${esc(n)}</span><span class="player-role-badge ${r.className}">${esc(r.label)}</span></span></button>`}).join(""):'<div class="player-empty">現在オンラインのプレイヤーはいません</div>')}
 function openModal(){modal.classList.add("open");document.body.style.overflow="hidden";closeBtn.focus()}
@@ -328,9 +284,8 @@ function scheduleRefresh(){clearTimeout(refreshTimer);refreshTimer=setTimeout(as
 function refreshNow(){clearTimeout(refreshTimer);fetchStatus().finally(scheduleRefresh)}
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshNow()});
 addEventListener("focus",refreshNow);addEventListener("online",refreshNow);
-addEventListener("pagehide",()=>clearTimeout(refreshTimer));
 const staleTimer=setInterval(()=>{if(lastOk&&Date.now()-lastOk>10000)setConnection(false)},3000);
-addEventListener("pagehide",()=>clearInterval(staleTimer));
+addEventListener("pagehide",()=>{clearTimeout(refreshTimer);clearInterval(staleTimer)});
 function zoomAt(f,cx,cy){
 const r=map.getBoundingClientRect();if(!r.width||!r.height)return;
 const px=(cx-r.left)/r.width,py=(cy-r.top)/r.height,wx=view.x+px*view.w,wy=view.y+py*view.h;
@@ -343,7 +298,7 @@ map.addEventListener("wheel",e=>{e.preventDefault();zoomAt(e.deltaY<0?.9:1.1,e.c
 map.addEventListener("pointerdown",e=>{
 if(e.button!==0||markerOf(e.target))return;
 const t=e.target instanceof Element?e.target:e.target?.parentElement;
-if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
+if(t?.closest(".map-controls")||t?.closest(".player-panel")||t?.closest(".train-toggle"))return;
 dragging=true;dragMoved=false;dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};map.classList.add("dragging")});
 addEventListener("pointermove",e=>{
 if(!dragging||!dragStart)return;
@@ -363,6 +318,35 @@ collapseBtn.addEventListener("click",()=>{pPanel.classList.toggle("collapsed");c
 closeBtn.addEventListener("click",closeModal);
 modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
 addEventListener("resize",()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{view.h=view.w/dimensions().aspect;applyView()})});
+const STATIONS=[
+["中市","なかいち",0,-17,"both",220,30],["大白","おおしろ",0,1051,"wave",220,1098],["水浜","みずはま",0,2020,"wave",220,2067],["竹ヶ丘","たけがおか",0,3100,"wave",220,3147],["草市","くさし",0,4080,"wave",220,4127],["長立","ながたち",0,5000,"wave",55,5000],["波丘","なみおか",0,6132,"wave",220,6179],
+["矢野空港","やのくうこう",0,-1327,"yano",220,-1272],["矢野","やの",0,-2483,"yano",220,-2428],["大東","だいとう",0,-3787,"yano",220,-3732],["浜口","はまぐち",0,-4988,"yano",220,-4933],["新矢野","しんやの",0,-5989,"yano",220,-5934],["吉山","よしやま",0,-7323,"yano",220,-7268],["吉山留置線","よしやまりゅうせん",-9,-7550,"depot",230,-7495],
+["新草市","しんくさし",124,4498,"kawatei",90,4380,{fontSize:130,readingDy:75,readingSize:68}],
+["北ノ宮","きたのみや",600,4498,"kawatei",680,0,{vertical:1,readingX:560,shiftY:-144}],["依丘空港","よりおかくうこう",1145,4498,"kawatei",1225,0,{vertical:1,readingX:1105,shiftY:-144}],["芝田町","しばたちょう",1509,4498,"kawatei",1589,0,{vertical:1,readingX:1469,shiftY:-144}],["鷺川","さぎがわ",1974,4498,"kawatei",2054,0,{vertical:1,readingX:1934,shiftY:-144}],["依丘","よりおか",2542,4498,"kawatei",2622,0,{vertical:1,readingX:2502,shiftY:-144}],["依丘車庫","よりおかしゃこ",2680,4492,"depot",2810,4545],
+["新川","しんかわ",0,7385,"rain",220,7430],["雨波","あめなみ",0,8761,"rain",220,8806],["蛙ヶ丘","かえるがおか",-122,10387,"rain",98,10432],["新雨岡","しんあめおか",-122,11761,"rain",98,11806],["雨岡","あめおか",-122,13030,"rain",98,13075],["雨山","あめやま",-122,14627,"rain",98,14672],["雨山車両センター","あめやましゃりょうセンター",-124,14941,"depot",-300,14986,{a:"end"}],["中市出庫区","なかいちしゅっこく",13,-404,"depot",230,-360],
+["高ノ宮","たかのみや",589,4727,"experiment",650,4930,{vertical:1,readingX:790,readingY:4930}],["高宮製造工場","たかみやせいぞうこうじょう",995,4727,"factory",1080,4930,{vertical:1,readingX:1220,readingY:4930}],
+["北長立","きたながたち",-10,4612,"mizuyama",-260,4520,{fontSize:112,readingSize:67,readingDy:67}],
+["坂川","さかがわ",-388,4758,"mizuyama",-690,4685,{fontSize:112,readingSize:67,readingDy:67}],
+["九和","くわ",-606,4477,"mizuyama",-900,4440,{fontSize:112,readingSize:67,readingDy:67}],
+["水山","みずやま",-411,4321,"mizuyama",-190,4240,{fontSize:112,readingSize:67,readingDy:67}]
+];
+const OBST=[];
+const STATION_HTML=(()=>{
+let c="",l="";
+for(const[n,r,x,z,ln,lx,ly,q={}]of STATIONS){
+c+=`<g transform="translate(${x} ${z})"><circle class="station-dot station-${ln==="both"?"wave":ln}" r="38"/></g>`;
+OBST.push(rect(x-95,z-95,x+95,z+95));
+if(q.vertical){
+const fs=125,rs=72,sh=q.shiftY||0,Y=(ly||4498-n.length*fs-18)+sh,RY=(q.readingY??4498-r.length*rs-18)+sh;
+l+=`<text class="station-label station-label-vertical" x="${lx}" y="${Y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(n)}</text><text class="station-label station-reading-vertical" x="${q.readingX}" y="${RY}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(r)}</text>`;
+OBST.push(rect(lx-110,Y-100,lx+110,Y+n.length*125+100),rect(q.readingX-80,RY-100,q.readingX+80,RY+r.length*72+100))
+}else{
+const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100,w=Math.max(n.length*fs,r.length*rs)+100,h=fs+dy+rs+70,e=q.a==="end";
+l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" font-size="${fs}"><tspan>${esc(n)}</tspan><tspan class="station-reading" x="${lx}" dy="${dy}" font-size="${rs}">${esc(r)}</tspan></text>`;
+OBST.push(e?rect(lx-w,ly-fs,lx+30,ly+h):rect(lx-30,ly-fs,lx+w,ly+h))
+}}
+return c+l
+})();
 (async()=>{await loadStaff();await fetchStatus();scheduleRefresh()})();
 </script>
 </body>
