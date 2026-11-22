@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -41,10 +42,21 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 #map.dragging{cursor:grabbing}
 .grid-line{stroke:#dce5ed;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
 .route-line{fill:none;stroke-width:32;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
-.route-wave{stroke:#38bfe8}.route-yano{stroke:#f97316}.route-kawatei{stroke:#dc2626}.route-rain{stroke:#84cc16}
-.route-depot{stroke:#888;stroke-width:21}.route-experiment{stroke:#111;stroke-width:25}.route-factory{stroke:#888;stroke-width:22}
+.route-wave{stroke:#38bfe8}
+.route-yano{stroke:#f97316}
+.route-kawatei{stroke:#dc2626}
+.route-rain{stroke:#84cc16}
+.route-depot{stroke:#888;stroke-width:21}
+.route-experiment{stroke:#111;stroke-width:25}
+.route-factory{stroke:#888;stroke-width:22}
 .station-dot{fill:white;stroke-width:12;pointer-events:none}
-.station-wave{stroke:#38bfe8}.station-yano{stroke:#f97316}.station-kawatei{stroke:#dc2626}.station-rain{stroke:#84cc16}.station-depot{stroke:#888}.station-experiment{stroke:#111}.station-factory{stroke:#888}
+.station-wave{stroke:#38bfe8}
+.station-yano{stroke:#f97316}
+.station-kawatei{stroke:#dc2626}
+.station-rain{stroke:#84cc16}
+.station-depot{stroke:#888}
+.station-experiment{stroke:#111}
+.station-factory{stroke:#888}
 .station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3px;paint-order:stroke fill;font-family:"Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;font-weight:800;text-anchor:start;pointer-events:none}
 .station-label-end{text-anchor:end}
 .station-reading{font-weight:600}
@@ -157,9 +169,12 @@ html[data-theme=dark] .player-name-label{fill:white;stroke:#172638}
  <span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span><span id="trainCount">列車：--編成</span>
 </div>
 <div class="legend">
- <span><i style="background:#38bfe8"></i>波急波川線</span><span><i style="background:#f97316"></i>矢野電鉄線</span>
- <span><i style="background:#dc2626"></i>川鉄依丘線</span><span><i style="background:#84cc16"></i>雨急雨波線</span>
- <span><i style="background:#111"></i>波急実験線</span><span><i style="background:#888"></i>留置線・車庫・製造工場</span>
+ <span><i style="background:#38bfe8"></i>波急波川線</span>
+ <span><i style="background:#f97316"></i>矢野電鉄線</span>
+ <span><i style="background:#dc2626"></i>川鉄依丘線</span>
+ <span><i style="background:#84cc16"></i>雨急雨波線</span>
+ <span><i style="background:#111"></i>波急実験線</span>
+ <span><i style="background:#888"></i>留置線・車庫・製造工場</span>
  <span><i style="background:#f97316"></i>特急</span><span><i style="background:#dc2626"></i>急行</span>
  <span><i style="background:#16a34a"></i>準急</span><span><i style="background:#2878c8"></i>各駅停車</span>
  <span>水色の丸・顔マーク：プレイヤー</span>
@@ -218,7 +233,7 @@ const stations=[
  {name:"浜口",reading:"はまぐち",x:0,z:-4988,line:"yano"},
  {name:"新矢野",reading:"しんやの",x:0,z:-5989,line:"yano"},
  {name:"吉山",reading:"よしやま",x:0,z:-7323,line:"yano"},
- {name:"吉山留置線",reading:"よしやまりゅうちせん",x:-9,z:-7550,line:"depot"},
+ {name:"吉山留置線",reading:"よしやまりゅうせん",x:-9,z:-7550,line:"depot"},
  {name:"新草市",reading:"しんくさし",x:124,z:4498,line:"kawatei"},
  {name:"北ノ宮",reading:"きたのみや",x:600,z:4498,line:"kawatei"},
  {name:"依丘空港",reading:"よりおかくうこう",x:1145,z:4498,line:"kawatei"},
@@ -281,24 +296,42 @@ async function loadStaff(){
 function dimensions(){const r=map.getBoundingClientRect();return{width:Math.max(1,r.width),aspect:r.width/Math.max(1,r.height)}}
 const scale=()=>view.w/dimensions().width;
 
-/* 駅名配置：縦書き駅名は全駅同じサイズ */
+/* 駅名の表示位置。駅・線路の座標は変更しない */
 const stationLabelLayout={
- "中市":{x:220,y:30},"大白":{x:220,y:1098},"水浜":{x:220,y:2067},"竹ヶ丘":{x:220,y:3147},"草市":{x:220,y:4127},
- "長立":{x:55,y:5000},"波丘":{x:220,y:6179},"矢野空港":{x:220,y:-1272},"矢野":{x:220,y:-2428},
- "大東":{x:220,y:-3732},"浜口":{x:220,y:-4933},"新矢野":{x:220,y:-5934},"吉山":{x:220,y:-7268},
+ "中市":{x:220,y:30},
+ "大白":{x:220,y:1098},
+ "水浜":{x:220,y:2067},
+ "竹ヶ丘":{x:220,y:3147},
+ "草市":{x:220,y:4127},
+ "長立":{x:55,y:5000},
+ "波丘":{x:220,y:6179},
+ "矢野空港":{x:220,y:-1272},
+ "矢野":{x:220,y:-2428},
+ "大東":{x:220,y:-3732},
+ "浜口":{x:220,y:-4933},
+ "新矢野":{x:220,y:-5934},
+ "吉山":{x:220,y:-7268},
  "吉山留置線":{x:230,y:-7495},
- /* 新草市は草市の読み仮名より左下へ */
- "新草市":{x:-340,y:4460,readingDy:70,fontSize:125,readingSize:72},
- /* 川鉄：マーカーのすぐ上、同じ高さ・同じ文字サイズ */
- "北ノ宮":{x:680,y:4250,vertical:true,readingX:560,readingY:4250},
- "依丘空港":{x:1225,y:4250,vertical:true,readingX:1105,readingY:4250},
- "芝田町":{x:1589,y:4250,vertical:true,readingX:1469,readingY:4250},
- "鷺川":{x:2054,y:4250,vertical:true,readingX:1934,readingY:4250},
- "依丘":{x:2622,y:4250,vertical:true,readingX:2502,readingY:4250},
- "依丘車庫":{x:2810,y:4545},"新川":{x:220,y:7430},"雨波":{x:220,y:8806},
- "蛙ヶ丘":{x:98,y:10432},"新雨岡":{x:98,y:11806},"雨岡":{x:98,y:13075},"雨山":{x:98,y:14672},
- "雨山車両センター":{x:-300,y:14986,a:"end"},"中市出庫区":{x:230,y:-360},
- /* この3駅は位置を維持 */
+
+ /* 草市の読み仮名と重ならないよう少し左下 */
+ "新草市":{x:90,y:4450,fontSize:130,readingDy:75,readingSize:68},
+
+ /* 北ノ宮～依丘：横位置は維持し、全駅を少し上へ */
+ "北ノ宮":{x:680,y:4380,vertical:true,readingX:560,readingY:4380},
+ "依丘空港":{x:1225,y:4380,vertical:true,readingX:1105,readingY:4380},
+ "芝田町":{x:1589,y:4380,vertical:true,readingX:1469,readingY:4380},
+ "鷺川":{x:2054,y:4380,vertical:true,readingX:1934,readingY:4380},
+ "依丘":{x:2622,y:4380,vertical:true,readingX:2502,readingY:4380},
+
+ "依丘車庫":{x:2810,y:4545},
+ "新川":{x:220,y:7430},
+ "雨波":{x:220,y:8806},
+ "蛙ヶ丘":{x:98,y:10432},
+ "新雨岡":{x:98,y:11806},
+ "雨岡":{x:98,y:13075},
+ "雨山":{x:98,y:14672},
+ "雨山車両センター":{x:-300,y:14986,a:"end"},
+ "中市出庫区":{x:230,y:-360},
  "高ノ宮":{x:650,y:4930,vertical:true,readingX:790,readingY:4930},
  "高宮製造工場":{x:1080,y:4930,vertical:true,readingX:1220,readingY:4930}
 };
@@ -315,6 +348,7 @@ function renderRoute(){
  <path class="route-line route-depot" d="M0 -17 L13 -404"/>
  <path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/>
  <path class="route-line route-factory" d="M589 4727 L995 4727"/>`);
+
  const circles=stations.map(s=>`<g transform="translate(${s.x} ${s.z})"><circle class="station-dot station-${s.line==="both"?"wave":s.line}" r="38"/></g>`).join("");
  const labels=stations.map(s=>{
   const q=stationLabelLayout[s.name];if(!q)return"";
@@ -326,12 +360,14 @@ function renderRoute(){
  }).join("");
  set(stationLayer,circles+labels);
 }
+
 function applyView(render=true){
  view.h=view.w/dimensions().aspect;map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
  const right=view.x+view.w,bottom=view.y+view.h,lines=[];
  for(let x=Math.floor(view.x/GRID);x<=Math.ceil(right/GRID);x++)lines.push(`M${x*GRID} ${view.y}V${bottom}`);
  for(let y=Math.floor(view.y/GRID);y<=Math.ceil(bottom/GRID);y++)lines.push(`M${view.x} ${y*GRID}H${right}`);
- set(gridLayer,`<path class="grid-line" d="${lines.join(" ")}"/>`);renderRoute();if(render&&latest)renderMarkers();
+ set(gridLayer,`<path class="grid-line" d="${lines.join(" ")}"/>`);
+ renderRoute();if(render&&latest)renderMarkers();
 }
 function setInitialView(){
  const a=dimensions().aspect;view.h=2800;view.w=view.h*a;view.x=-view.w/2;view.y=-138-view.h/2;applyView();
@@ -351,51 +387,51 @@ const overlaps=(a,b,g=0)=>a.x0<b.x1+g&&a.x1>b.x0-g&&a.y0<b.y1+g&&a.y1>b.y0-g;
 function stationObstacles(){
  const out=[];
  for(const s of stations){
-  out.push(rect(s.x-100,s.z-100,s.x+100,s.z+100));
+  out.push(rect(s.x-95,s.z-95,s.x+95,s.z+95));
   const q=stationLabelLayout[s.name];if(!q)continue;
   if(q.vertical){
-   /* 縦書き文字は下方向へ伸びるため、実際の文字領域を広めに確保 */
-   const nameH=s.name.length*125+100,readH=s.reading.length*72+100;
-   out.push(rect(Math.min(q.x,q.readingX)-100,q.y-100,Math.max(q.x,q.readingX)+110,q.y+Math.max(nameH,readH)));
+   const nh=s.name.length*125,rh=s.reading.length*72;
+   out.push(rect(q.x-110,q.y-100,q.x+110,q.y+nh+100));
+   out.push(rect(q.readingX-80,q.readingY-100,q.readingX+80,q.readingY+rh+100));
   }else{
-   const w=Math.max(s.name.length*(q.fontSize||145),s.reading.length*(q.readingSize||99))+120;
-   out.push(q.a==="end"?rect(q.x-w,q.y-200,q.x+30,q.y+160):rect(q.x-40,q.y-200,q.x+w,q.y+200));
+   const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100;
+   const w=Math.max(s.name.length*fs,s.reading.length*rs)+100,h=fs+dy+rs+70;
+   out.push(q.a==="end"?rect(q.x-w,q.y-fs,q.x+30,q.y+h):rect(q.x-30,q.y-fs,q.x+w,q.y+h));
   }
  }
  return out;
 }
-function playerRect(pos,w){const half=Math.max(90,w/2);return rect(pos.x-half-25,pos.y-115,pos.x+half+25,pos.y+250)}
+function playerRect(pos,w){
+ const half=Math.max(90,w/2);
+ return rect(pos.x-half-35,pos.y-115,pos.x+half+35,pos.y+265);
+}
 
-/* プレイヤーの位置は本人が移動した場合だけ再計算 */
+/* 本人が移動したときだけ位置を再計算。駅名・列車・他プレイヤーを回避 */
 function placePlayers(tp){
- const fixed=stationObstacles(),trainBlocks=tp.map(t=>rect(t.x-230,t.z-230,t.x+230,t.z+230)),placed=[];
- const dirs=Array.from({length:32},(_,i)=>[Math.cos(i*Math.PI/16),Math.sin(i*Math.PI/16)]);
+ const obstacles=stationObstacles();
+ tp.forEach(t=>obstacles.push(rect(t.x-250,t.z-250,t.x+250,t.z+250)));
+ const placed=[],dirs=Array.from({length:48},(_,i)=>[Math.cos(i*Math.PI/24),Math.sin(i*Math.PI/24)]);
  return players.map((p,i)=>{
   const n=getName(p),w=clamp(n.length*65,250,1000),origin=toMap(p),key=playerKey(p),saved=playerPositions.get(key);
   if(saved&&Math.hypot(saved.x-origin.x,saved.y-origin.y)<1){
-   const pos={x:saved.mx,y:saved.my},box=playerRect(pos,w);
-   if(!fixed.some(o=>overlaps(box,o,8))&&!placed.some(o=>overlaps(box,o,8))){
-    placed.push(box);return{player:p,index:i,pos,origin,w};
-   }
+   const pos={x:saved.mx,y:saved.my};placed.push(playerRect(pos,w));return{player:p,index:i,pos,origin,w};
   }
   let chosen=null;
-  /* 駅名・駅マーカー・他プレイヤーを避け、遠くまで候補を探す */
-  for(const d of [0,190,230,270,310,350,400,460,530,610,700,800,920,1060,1220,1400,1600,1850,2200,2600,3100,3700,4400]){
+  for(const d of [0,190,230,270,310,350,400,460,530,610,700,800,920,1060,1220,1400,1600,1850,2150,2500,3000]){
    for(const [dx,dy] of d===0?[[0,0]]:dirs.map(([x,y])=>[x*d,y*d])){
     const pos={x:origin.x+dx,y:origin.y+dy},box=playerRect(pos,w);
-    if(fixed.some(o=>overlaps(box,o,12))||placed.some(o=>overlaps(box,o,12))||trainBlocks.some(o=>overlaps(box,o,12)))continue;
+    if(obstacles.some(o=>overlaps(box,o,12))||placed.some(o=>overlaps(box,o,12)))continue;
     chosen=pos;placed.push(box);break;
    }
    if(chosen)break;
   }
   if(!chosen){
-   /* 最終候補も駅名から十分離した位置に配置 */
-   for(let d=5000;d<=10000;d+=500){
-    const pos={x:origin.x+d,y:origin.y-d},box=playerRect(pos,w);
-    if(!fixed.some(o=>overlaps(box,o,12))&&!placed.some(o=>overlaps(box,o,12))){chosen=pos;placed.push(box);break}
+   for(let j=1;j<=30;j++){
+    const pos={x:origin.x,y:origin.y-3000-j*500},box=playerRect(pos,w);
+    if(!obstacles.some(o=>overlaps(box,o,12))&&!placed.some(o=>overlaps(box,o,12))){chosen=pos;placed.push(box);break}
    }
   }
-  if(!chosen){chosen={x:origin.x+10000,y:origin.y-10000};placed.push(playerRect(chosen,w))}
+  if(!chosen){chosen={x:origin.x,y:origin.y-18000-i*700};placed.push(playerRect(chosen,w))}
   playerPositions.set(key,{x:origin.x,y:origin.y,mx:chosen.x,my:chosen.y});
   return{player:p,index:i,pos:chosen,origin,w};
  });
@@ -436,18 +472,22 @@ function refreshDetail(){
 const markerOf=t=>(t instanceof Element?t:t?.parentElement)?.closest("[data-kind][data-index]");
 markerLayer.addEventListener("click",e=>{
  const el=markerOf(e.target);if(!el||dragMoved)return;const i=Number(el.dataset.index);
- if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
+ if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);
+ if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
 });
 markerLayer.addEventListener("keydown",e=>{
- if(e.key!=="Enter"&&e.key!==" ")return;const el=markerOf(e.target);if(!el)return;e.preventDefault();const i=Number(el.dataset.index);
- if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
+ if(e.key!=="Enter"&&e.key!==" ")return;
+ const el=markerOf(e.target);if(!el)return;e.preventDefault();const i=Number(el.dataset.index);
+ if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);
+ if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
 });
 pList.addEventListener("click",e=>{
  const b=(e.target instanceof Element?e.target:e.target?.parentElement)?.closest("[data-player-index]");
  if(b&&players[Number(b.dataset.playerIndex)])showPlayer(players[Number(b.dataset.playerIndex)]);
 });
 function setConnection(ok){
- connDot.classList.toggle("online",ok);connDot.classList.toggle("offline",!ok);connText.textContent=ok?"サーバー接続中":"サーバーに接続できません";
+ connDot.classList.toggle("online",ok);connDot.classList.toggle("offline",!ok);
+ connText.textContent=ok?"サーバー接続中":"サーバーに接続できません";
 }
 async function fetchStatus(){
  if(isFetching)return;isFetching=true;
@@ -455,19 +495,24 @@ async function fetchStatus(){
   const res=await fetch(API_URL,{cache:"no-store"});if(!res.ok)throw Error(`HTTP ${res.status}`);
   const data=await res.json();if(data?.success===false)throw Error(data.error||"API error");
   latest=data;const r=data?.data??data?.status??data??{};
-  players=list(r.players??r.player??r.onlinePlayers??[]);trains=list(r.trains??r.train??r.carts??[]);
+  players=list(r.players??r.player??r.onlinePlayers??[]);
+  trains=list(r.trains??r.train??r.carts??[]);
   wtText.textContent=`ワールド時刻：${r.worldTime??r.time??r.world_time??"--"}`;
   wxText.textContent=`天候：${r.weather??r.worldWeather??r.world_weather??"--"}`;
   tpsText.textContent=`TPS：${fmt(r.tps??r.TPS??"--",0)}`;
   pcText.textContent=players.length;tcText.textContent=`列車：${trains.length}編成`;
   lastUpd.textContent=`最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
   setConnection(true);lastOk=Date.now();
-  if(map.dataset.initialized!=="true"){setInitialView();map.dataset.initialized="true"}else renderMarkers();
+  if(map.dataset.initialized!=="true"){setInitialView();map.dataset.initialized="true"}
+  else renderMarkers();
   refreshDetail();
  }catch(e){console.error("在線データ取得エラー:",e);setConnection(false)}
  finally{isFetching=false}
 }
-function scheduleRefresh(){clearTimeout(refreshTimer);refreshTimer=setTimeout(async()=>{await fetchStatus();scheduleRefresh()},1000)}
+function scheduleRefresh(){
+ clearTimeout(refreshTimer);
+ refreshTimer=setTimeout(async()=>{await fetchStatus();scheduleRefresh()},1000);
+}
 function refreshNow(){clearTimeout(refreshTimer);fetchStatus().finally(scheduleRefresh)}
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshNow()});
 window.addEventListener("focus",refreshNow);
@@ -475,28 +520,41 @@ window.addEventListener("online",refreshNow);
 window.addEventListener("pagehide",()=>clearTimeout(refreshTimer));
 const staleTimer=setInterval(()=>{if(lastOk&&Date.now()-lastOk>10000)setConnection(false)},3000);
 window.addEventListener("pagehide",()=>clearInterval(staleTimer));
+
 function zoomAt(f,cx,cy){
  const r=map.getBoundingClientRect();if(!r.width||!r.height)return;
  const px=(cx-r.left)/r.width,py=(cy-r.top)/r.height,wx=view.x+px*view.w,wy=view.y+py*view.h;
- view.w=clamp(view.w*f,MIN_W,MAX_W);view.h=view.w/dimensions().aspect;view.x=wx-px*view.w;view.y=wy-py*view.h;applyView();
+ view.w=clamp(view.w*f,MIN_W,MAX_W);view.h=view.w/dimensions().aspect;
+ view.x=wx-px*view.w;view.y=wy-py*view.h;applyView();
 }
-function zoomCenter(f){const r=map.getBoundingClientRect();zoomAt(f,r.left+r.width/2,r.top+r.height/2)}
+function zoomCenter(f){
+ const r=map.getBoundingClientRect();
+ zoomAt(f,r.left+r.width/2,r.top+r.height/2);
+}
 $("zoomIn").addEventListener("click",()=>zoomCenter(.75));
 $("zoomOut").addEventListener("click",()=>zoomCenter(1.33));
 $("resetView").addEventListener("click",setInitialView);
-map.addEventListener("wheel",e=>{e.preventDefault();zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY)},{passive:false});
+map.addEventListener("wheel",e=>{
+ e.preventDefault();zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY);
+},{passive:false});
 map.addEventListener("pointerdown",e=>{
  if(e.button!==0||markerOf(e.target))return;
- const t=e.target instanceof Element?e.target:e.target?.parentElement;if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
- dragging=true;dragMoved=false;dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};map.classList.add("dragging");
+ const t=e.target instanceof Element?e.target:e.target?.parentElement;
+ if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
+ dragging=true;dragMoved=false;
+ dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};
+ map.classList.add("dragging");
 });
 window.addEventListener("pointermove",e=>{
- if(!dragging||!dragStart)return;const dx=e.clientX-dragStart.x,dy=e.clientY-dragStart.y,s=scale();
+ if(!dragging||!dragStart)return;
+ const dx=e.clientX-dragStart.x,dy=e.clientY-dragStart.y,s=scale();
  if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true;
  view.x=dragStart.vx-dx*s;view.y=dragStart.vy-dy*s;applyView(false);
 });
 function stopDragging(){
- if(!dragging)return;dragging=false;dragStart=null;map.classList.remove("dragging");renderMarkers();setTimeout(()=>dragMoved=false,120);
+ if(!dragging)return;
+ dragging=false;dragStart=null;map.classList.remove("dragging");
+ renderMarkers();setTimeout(()=>dragMoved=false,120);
 }
 window.addEventListener("pointerup",stopDragging);
 window.addEventListener("pointercancel",stopDragging);
@@ -508,11 +566,15 @@ window.addEventListener("keydown",e=>{
  else if(e.key==="+"||e.key==="="){e.preventDefault();zoomCenter(.75)}
  else if(e.key==="-"){e.preventDefault();zoomCenter(1.33)}
 });
-collapseBtn.addEventListener("click",()=>{pPanel.classList.toggle("collapsed");collapseBtn.textContent=pPanel.classList.contains("collapsed")?"+":"−"});
+collapseBtn.addEventListener("click",()=>{
+ pPanel.classList.toggle("collapsed");
+ collapseBtn.textContent=pPanel.classList.contains("collapsed")?"+":"−";
+});
 closeBtn.addEventListener("click",closeModal);
 modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
 window.addEventListener("resize",()=>{
- cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{view.h=view.w/dimensions().aspect;applyView()});
+ cancelAnimationFrame(resizeFrame);
+ resizeFrame=requestAnimationFrame(()=>{view.h=view.w/dimensions().aspect;applyView()});
 });
 (async()=>{await loadStaff();await fetchStatus();scheduleRefresh()})();
 </script>
