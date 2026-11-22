@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -171,8 +170,16 @@ html[data-theme=dark] .player-name-label{fill:white;stroke:#172638}
  <span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span><span id="trainCount">列車：--編成</span>
 </div>
 <div class="legend">
- <span><i style="background:#38bfe8"></i>波急波川線</span><span><i style="background:#f97316"></i>矢野電</span><span><i style="background:#dc2626"></i>川鉄依丘線</span><span><i style="background:#84cc16"></i>雨急</span><span><i style="background:#888"></i>留置線・車庫線</span>
- <span><i style="background:#f97316"></i>特急</span><span><i style="background:#dc2626"></i>急行</span><span><i style="background:#16a34a"></i>準急</span><span><i style="background:#2878c8"></i>各駅停車</span><span>水色の丸・顔マーク：プレイヤー</span>
+ <span><i style="background:#38bfe8"></i>波急波川線</span>
+ <span><i style="background:#f97316"></i>矢野電鉄線</span>
+ <span><i style="background:#dc2626"></i>川鉄依丘線</span>
+ <span><i style="background:#84cc16"></i>雨急雨波線</span>
+ <span><i style="background:#888"></i>留置線・車庫線</span>
+ <span><i style="background:#f97316"></i>特急</span>
+ <span><i style="background:#dc2626"></i>急行</span>
+ <span><i style="background:#16a34a"></i>準急</span>
+ <span><i style="background:#2878c8"></i>各駅停車</span>
+ <span>水色の丸・顔マーク：プレイヤー</span>
 </div>
 <section id="mapArea">
  <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ">
@@ -270,7 +277,7 @@ function trainInfo(t){
  const g=tags(t),p=coords(t),water=p.x>=-608&&p.x<=692&&p.z>=3957&&p.z<=5257&&!g.some(x=>TYPE_TAGS.includes(x));
  const d=g.includes("z-")?"z-":g.includes("z+")||g.includes("z")?"z+":g.includes("x-")?"x-":"x+";
  const a=(ANGLES[d]||0)*Math.PI/180,match=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name),type=trainType(g,p.z,water);
- return{...p,id:stableId(t),d,c:Math.cos(a),s:Math.sin(a),type,model:MODELS[match?.[1]]||"不明",route:water?"水鉄水山線":p.x>=50&&p.z>=4000&&p.z<=5000?"川鉄依丘線":p.z>6131?"雨急雨波線":p.z<-18?"矢野電鉄":"波急波川線",destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
+ return{...p,id:stableId(t),d,c:Math.cos(a),s:Math.sin(a),type,model:MODELS[match?.[1]]||"不明",route:water?"水鉄水山線":p.x>=50&&p.z>=4000&&p.z<=5000?"川鉄依丘線":p.z>6131?"雨急雨波線":p.z<-18?"矢野電鉄線":"波急波川線",destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
 }
 function speedOf(t){
  const s=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));
@@ -296,7 +303,7 @@ function dimensions(){const r=map.getBoundingClientRect();return{width:Math.max(
 const scale=()=>view.w/dimensions().width;
 const stationLabelLayout={
  "中市":{x:220,y:30},"大白":{x:220,y:1098},"水浜":{x:220,y:2067},"竹ヶ丘":{x:220,y:3147},"草市":{x:220,y:4127},
- "長立":{x:-300,y:5047,a:"end"},"波丘":{x:220,y:6179},"矢野空港":{x:220,y:-1272},"矢野":{x:220,y:-2428},"大東":{x:220,y:-3732},
+ "長立":{x:205,y:5200},"波丘":{x:220,y:6179},"矢野空港":{x:220,y:-1272},"矢野":{x:220,y:-2428},"大東":{x:220,y:-3732},
  "浜口":{x:220,y:-4933},"新矢野":{x:220,y:-5934},"吉山":{x:220,y:-7268},"吉山留置線":{x:230,y:-7495},
  "新草市":{x:205,y:4558,vertical:true,readingX:85,readingY:4558},
  "北ノ宮":{x:680,y:4558,vertical:true,readingX:560,readingY:4558},
@@ -384,7 +391,6 @@ function placePlayers(tp){
   const n=getName(p),w=clamp(n.length*65,250,1000),origin=toMap(p),key=playerKey(p);
   const saved=playerPositions.get(key);
 
-  // 同じ座標なら障害物や他プレイヤーの変化を無視して固定
   if(saved&&saved.x===origin.x&&saved.y===origin.y){
    const pos={x:saved.mx,y:saved.my};
    placed.push(playerRect(pos,w));
