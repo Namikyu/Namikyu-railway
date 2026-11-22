@@ -574,6 +574,7 @@ addEventListener("resize",()=>{
 cancelAnimationFrame(resizeFrame);
 resizeFrame=requestAnimationFrame(()=>{view.h=view.w/dimensions().aspect;applyView()})
 });
+
 const STATIONS=[
 ["中市","なかいち",0,-17,"both",220,30],
 ["大白","おおしろ",0,1051,"wave",220,1098],
@@ -606,30 +607,54 @@ const STATIONS=[
 ["中市出庫区","なかいちしゅっこく",13,-404,"depot",230,-360],
 ["高ノ宮","たかのみや",589,4727,"experiment",650,4930,{vertical:1,readingX:790,readingY:4930}],
 ["高ノ宮製造工場","たかのみやせいぞうこうじょう",995,4727,"factory",1080,4930,{vertical:1,readingX:1220,readingY:4930}],
-["北長立","きたながたち",-10,4612,"mizuyama",-260,4520,{fontSize:85,readingSize:55,dx:0,dy:25,readingDy:67}],
-["坂川","さかがわ",-388,4758,"mizuyama",-690,4685,{fontSize:112,readingSize:67,dx:112,dy:112,readingDy:179}],
+
+/* 水山線：駅名のみ位置・サイズ調整。駅マーカー座標は変更なし */
+["北長立","きたながたち",-10,4612,"mizuyama",-260,4560,{fontSize:85,readingSize:55,readingDy:67}],
+["坂川","さかがわ",-388,4758,"mizuyama",-578,4797,{fontSize:112,readingSize:67,readingDy:67}],
 ["九和","くわ",-606,4477,"mizuyama",-900,4440,{fontSize:112,readingSize:67,readingDy:67}],
-["水山","みずやま",-411,4321,"mizuyama",-190,4240,{fontSize:112,readingSize:67,readingDy:67}]
+["水山","みずやま",-411,4321,"mizuyama",-190,4400,{fontSize:112,readingSize:67,readingDy:67}]
 ];
+
 const OBST=[];
 const STATION_HTML=(()=>{
 let c="",l="";
 for(const[n,r,x,z,ln,lx,ly,q={}]of STATIONS){
 c+=`<circle class="station-dot station-${ln==="both"?"wave":ln}" cx="${x}" cy="${z}" r="38"/>`;
 OBST.push(rect(x-95,z-95,x+95,z+95));
+
 if(q.vertical){
-const fs=125,rs=72,sh=q.shiftY||0,Y=(ly||4498-n.length*fs-18)+sh,RY=(q.readingY??4498-r.length*rs-18)+sh;
+const fs=125,rs=72,sh=q.shiftY||0,
+Y=(ly||4498-n.length*fs-18)+sh,
+RY=(q.readingY??4498-r.length*rs-18)+sh;
 l+=`<text class="station-label station-label-vertical" x="${lx}" y="${Y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(n)}</text><text class="station-label station-reading-vertical" x="${q.readingX}" y="${RY}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(r)}</text>`;
-OBST.push(rect(lx-110,Y-100,lx+110,Y+n.length*125+100),rect(q.readingX-80,RY-100,q.readingX+80,RY+r.length*72+100))
+OBST.push(
+rect(lx-110,Y-100,lx+110,Y+n.length*125+100),
+rect(q.readingX-80,RY-100,q.readingX+80,RY+r.length*72+100)
+);
 }else{
-const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100,w=Math.max(n.length*fs,r.length*rs)+100,h=fs+dy+rs+70,e=q.a==="end";
+const fs=q.fontSize||145,
+rs=q.readingSize||99,
+dy=q.readingDy||100,
+w=Math.max(n.length*fs,r.length*rs)+100,
+h=fs+dy+rs+70,
+e=q.a==="end";
+
 l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" font-size="${fs}"><tspan>${esc(n)}</tspan> <tspan class="station-reading" x="${lx}" dy="${dy}" font-size="${rs}">${esc(r)}</tspan></text>`;
-OBST.push(e?rect(lx-w,ly-fs,lx+30,ly+h):rect(lx-30,ly-fs,lx+w,ly+h))
+
+OBST.push(
+e?rect(lx-w,ly-fs,lx+30,ly+h):
+rect(lx-30,ly-fs,lx+w,ly+h)
+);
 }
 }
-return c+l
+return c+l;
 })();
-(async()=>{await loadStaff();await fetchStatus();scheduleRefresh()})();
+
+(async()=>{
+await loadStaff();
+await fetchStatus();
+scheduleRefresh();
+})();
 </script>
 </body>
 </html>
