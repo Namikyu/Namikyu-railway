@@ -614,22 +614,30 @@ const STATIONS=[
 ];
 
 const OBST=[];
+
 const STATION_HTML=(()=>{
 let c="",l="";
+
 for(const[n,r,x,z,ln,lx,ly,q={}]of STATIONS){
+
 c+=`<circle class="station-dot station-${ln==="both"?"wave":ln}" cx="${x}" cy="${z}" r="38"/>`;
 OBST.push(rect(x-95,z-95,x+95,z+95));
 
 if(q.vertical){
+
 const fs=125,rs=72,sh=q.shiftY||0,
 Y=(ly||4498-n.length*fs-18)+sh,
 RY=(q.readingY??4498-r.length*rs-18)+sh;
+
 l+=`<text class="station-label station-label-vertical" x="${lx}" y="${Y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(n)}</text><text class="station-label station-reading-vertical" x="${q.readingX}" y="${RY}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(r)}</text>`;
+
 OBST.push(
 rect(lx-110,Y-100,lx+110,Y+n.length*125+100),
 rect(q.readingX-80,RY-100,q.readingX+80,RY+r.length*72+100)
 );
+
 }else{
+
 const fs=q.fontSize||145,
 rs=q.readingSize||99,
 dy=q.readingDy||100,
@@ -642,16 +650,15 @@ l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" 
 
 OBST.push(
 e?rect(lx-w,ly-fs,lx+30,ly+h):
-rect(
-Math.min(lx-30,rx-30),
-ly-fs,
-Math.max(lx+w,rx+r.length*rs+30),
-ly+h
-)
+rect(lx-30,ly-fs,lx+w,ly+h)
 );
+
 }
+
 }
+
 return c+l;
+
 })();
 
 (async()=>{
