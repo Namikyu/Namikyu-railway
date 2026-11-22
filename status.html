@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -59,10 +58,10 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 .station-factory{stroke:#888}
 .station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3px;paint-order:stroke fill;font-family:"Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;font-weight:800;text-anchor:start;pointer-events:none}
 .station-label-end{text-anchor:end}
-.station-reading{font-size:.68em;font-weight:600}
+.station-reading{font-size:72px;font-weight:600}
 .station-label-vertical{font-weight:850}
 .station-reading-vertical{font-weight:650}
-.station-label-center{text-anchor:middle}
+.station-small{font-size:105px;font-weight:800}
 .player-halo{fill:#38bfe8;fill-opacity:.17;stroke:#38bfe8;stroke-opacity:.38;stroke-width:12;pointer-events:none}
 .player-halo-core{fill:#38bfe8;fill-opacity:.2;pointer-events:none}
 .train-marker,.player-marker{cursor:pointer;pointer-events:all;outline:none}
@@ -73,7 +72,11 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 .player-name-background{fill:white;fill-opacity:.94;stroke:#dce5ed;stroke-width:1;pointer-events:none}
 .player-name-label{fill:#263e58;stroke:white;stroke-width:3px;paint-order:stroke fill;font-weight:800;text-anchor:middle;dominant-baseline:central;pointer-events:none}
 .compass{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:3;display:grid;grid-template-columns:28px 28px 28px;grid-template-rows:20px 20px 20px;align-items:center;justify-items:center;pointer-events:none;color:#60778e;font-size:10px;font-weight:850;text-shadow:0 1px 3px white}
-.north{grid-column:2;grid-row:1}.west{grid-column:1;grid-row:2}.center{grid-column:2;grid-row:2;color:#9aabba}.east{grid-column:3;grid-row:2}.south{grid-column:2;grid-row:3}
+.north{grid-column:2;grid-row:1}
+.west{grid-column:1;grid-row:2}
+.center{grid-column:2;grid-row:2;color:#9aabba}
+.east{grid-column:3;grid-row:2}
+.south{grid-column:2;grid-row:3}
 .map-controls{position:absolute;right:12px;top:12px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .map-controls button{width:36px;height:36px;border:1px solid #d8e2ec;border-radius:9px;background:#fffffff2;color:#284967;font-size:19px;font-weight:800;cursor:pointer}
 .map-help{position:absolute;right:12px;bottom:9px;z-index:2;padding:6px 9px;border-radius:6px;background:#ffffffdf;color:#8093a5;font-size:9px;font-weight:650;pointer-events:none}
@@ -291,21 +294,20 @@ async function loadStaff(){
    const n=c.querySelector(".staff-name")?.textContent.trim(),b=c.querySelector(".role-badge");if(!n||!b)return;
    const role=b.classList.contains("role-owner")?"role-owner":b.classList.contains("role-developer")?"role-developer":b.classList.contains("role-moderator")?"role-moderator":"role-participant";
    m.set(n.toLowerCase(),{label:b.textContent.trim()||"運営",className:role});
-  });
-  staffMap=m;
+  });staffMap=m;
  }catch(e){console.warn("スタッフ情報の取得に失敗:",e)}
 }
 function dimensions(){const r=map.getBoundingClientRect();return{width:Math.max(1,r.width),aspect:r.width/Math.max(1,r.height)}}
 const scale=()=>view.w/dimensions().width;
 
-/* 駅名配置。縦書き駅はマーカーより上側に配置 */
+/* 駅名の位置。SVGはY座標が大きいほど画面下側 */
 const stationLabelLayout={
  "中市":{x:220,y:30},
  "大白":{x:220,y:1098},
  "水浜":{x:220,y:2067},
  "竹ヶ丘":{x:220,y:3147},
  "草市":{x:220,y:4127},
- "長立":{x:35,y:5200},
+ "長立":{x:55,y:5200},
  "波丘":{x:220,y:6179},
  "矢野空港":{x:220,y:-1272},
  "矢野":{x:220,y:-2428},
@@ -314,13 +316,18 @@ const stationLabelLayout={
  "新矢野":{x:220,y:-5934},
  "吉山":{x:220,y:-7268},
  "吉山留置線":{x:230,y:-7495},
- "新草市":{x:124,y:4380,horizontal:true},
- "北ノ宮":{x:690,y:4070,vertical:true,readingX:535,readingY:4100,font:100,readingFont:48},
- "依丘空港":{x:1240,y:3990,vertical:true,readingX:1100,readingY:4030,font:95,readingFont:45},
- "芝田町":{x:1630,y:4070,vertical:true,readingX:1480,readingY:4100,font:100,readingFont:48},
- "鷺川":{x:2090,y:4070,vertical:true,readingX:1950,readingY:4100,font:100,readingFont:48},
- "依丘":{x:2650,y:4070,vertical:true,readingX:2500,readingY:4100,font:105,readingFont:50},
+
+ /* 新草市は横書きのまま。右へ移動し、少し下げてマーカー上に配置 */
+ "新草市":{x:260,y:4400,small:true},
+
+ /* 川鉄の駅名はすべて線路・丸マーカーより上側 */
+ "北ノ宮":{x:600,y:4380,vertical:true,readingX:475,readingY:4380},
+ "依丘空港":{x:1145,y:4380,vertical:true,readingX:1020,readingY:4380},
+ "芝田町":{x:1509,y:4380,vertical:true,readingX:1384,readingY:4380},
+ "鷺川":{x:1974,y:4380,vertical:true,readingX:1849,readingY:4380},
+ "依丘":{x:2542,y:4380,vertical:true,readingX:2417,readingY:4380},
  "依丘車庫":{x:2810,y:4545},
+
  "新川":{x:220,y:7430},
  "雨波":{x:220,y:8806},
  "蛙ヶ丘":{x:98,y:10432},
@@ -329,8 +336,10 @@ const stationLabelLayout={
  "雨山":{x:98,y:14672},
  "雨山車両センター":{x:-300,y:14986,a:"end"},
  "中市出庫区":{x:230,y:-360},
- "高ノ宮":{x:680,y:4340,vertical:true,readingX:540,readingY:4380,font:95,readingFont:46},
- "高宮製造工場":{x:1110,y:4000,vertical:true,readingX:970,readingY:4040,font:75,readingFont:38}
+
+ /* 実験線の2駅は線路の下側。駅名と読み仮名は別列 */
+ "高ノ宮":{x:620,y:4800,vertical:true,readingX:750,readingY:4800,below:true},
+ "高宮製造工場":{x:1030,y:4800,vertical:true,readingX:1160,readingY:4800,below:true}
 };
 
 function renderRoute(){
@@ -347,18 +356,31 @@ function renderRoute(){
  <path class="route-line route-factory" d="M589 4727 L995 4727"/>`);
 
  const circles=stations.map(s=>`<g transform="translate(${s.x} ${s.z})"><circle class="station-dot station-${s.line==="both"?"wave":s.line}" r="38"/></g>`).join("");
+
  const labels=stations.map(s=>{
   const q=stationLabelLayout[s.name];if(!q)return"";
-  if(q.horizontal)return`
-   <text class="station-label station-label-center" x="${q.x}" y="${q.y}" font-size="92">
-    <tspan x="${q.x}">${esc(s.name)}</tspan>
-    <tspan x="${q.x}" dy="62" font-size="46" class="station-reading">${esc(s.reading)}</tspan>
-   </text>`;
-  if(q.vertical)return`
-   <text class="station-label station-label-vertical" x="${q.x}" y="${q.y}" font-size="${q.font||125}" writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text>
-   <text class="station-label station-reading-vertical" x="${q.readingX}" y="${q.readingY}" font-size="${q.readingFont||72}" writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
-  return`<text class="station-label ${q.a==="end"?"station-label-end":""}" x="${q.x}" y="${q.y}" font-size="145"><tspan>${esc(s.name)}</tspan><tspan class="station-reading" x="${q.x}" dy="100">${esc(s.reading)}</tspan></text>`;
+
+  if(q.small){
+   return `<text class="station-label station-small" x="${q.x}" y="${q.y}" font-size="105">${esc(s.name)}</text>`;
+  }
+
+  if(q.vertical){
+   return `
+    <text class="station-label station-label-vertical"
+     x="${q.x}" y="${q.y}" font-size="145"
+     writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text>
+    <text class="station-label station-reading-vertical"
+     x="${q.readingX}" y="${q.readingY}" font-size="72"
+     writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
+  }
+
+  return `<text class="station-label ${q.a==="end"?"station-label-end":""}"
+   x="${q.x}" y="${q.y}" font-size="145">
+   <tspan>${esc(s.name)}</tspan>
+   <tspan class="station-reading" x="${q.x}" dy="100">${esc(s.reading)}</tspan>
+  </text>`;
  }).join("");
+
  set(stationLayer,circles+labels);
 }
 
@@ -386,29 +408,23 @@ function trainMarker(t,i){
 }
 const rect=(x0,y0,x1,y1)=>({x0,y0,x1,y1});
 const overlaps=(a,b,g=0)=>a.x0<b.x1+g&&a.x1>b.x0-g&&a.y0<b.y1+g&&a.y1>b.y0-g;
-
 function stationObstacles(){
  const out=[];
  for(const s of stations){
   out.push(rect(s.x-95,s.z-95,s.x+95,s.z+95));
   const q=stationLabelLayout[s.name];if(!q)continue;
   if(q.vertical){
-   const h=Math.max(s.name.length*(q.font||125),s.reading.length*(q.readingFont||72));
-   out.push(rect(Math.min(q.x,q.readingX)-100,q.y-90,Math.max(q.x,q.readingX)+100,Math.max(q.y,q.readingY)+h+80));
-  }else if(q.horizontal){
-   out.push(rect(q.x-230,q.y-110,q.x+230,q.y+140));
+   const bottom=q.y+Math.max(s.name.length*145,s.reading.length*72);
+   out.push(rect(Math.min(q.x,q.readingX)-100,q.y-80,Math.max(q.x,q.readingX)+100,bottom+100));
   }else{
-   const w=Math.max(s.name.length*145,s.reading.length*99)+100;
+   const w=Math.max(s.name.length*(q.small?105:145),s.reading.length*72)+100;
    out.push(q.a==="end"?rect(q.x-w,q.y-190,q.x+30,q.y+150):rect(q.x-30,q.y-190,q.x+w,q.y+150));
   }
  }
  return out;
 }
-function playerRect(pos,w){
- const half=Math.max(90,w/2);return rect(pos.x-half-25,pos.y-115,pos.x+half+25,pos.y+250);
-}
 
-/* プレイヤーの表示位置は本人の移動時だけ再計算 */
+/* プレイヤーの表示位置は、本人が移動したときだけ再計算 */
 function placePlayers(tp){
  const obstacles=stationObstacles();
  tp.forEach(t=>obstacles.push(rect(t.x-230,t.z-230,t.x+230,t.z+230)));
@@ -432,6 +448,9 @@ function placePlayers(tp){
   return{player:p,index:i,pos:chosen,origin,w};
  });
 }
+function playerRect(pos,w){
+ const half=Math.max(90,w/2);return rect(pos.x-half-25,pos.y-115,pos.x+half+25,pos.y+250);
+}
 function playerMarker(item){
  const {player:p,index:i,pos,w}=item,n=getName(p),size=180,ly=100,half=Math.max(90,w/2);
  return`<g class="player-marker" data-kind="player" data-index="${i}" tabindex="0" role="button" transform="translate(${pos.x} ${pos.y})"><rect x="${-half}" y="-90" width="${half*2}" height="310" fill="transparent"/><image href="${face(n)}" x="${-size/2}" y="${-size/2}" width="${size}" height="${size}" preserveAspectRatio="none"/><rect class="player-name-background" x="${-w/2}" y="${ly}" width="${w}" height="120" rx="28"/><text class="player-name-label" x="0" y="${ly+60}" font-size="85" textLength="${w-50}" lengthAdjust="spacingAndGlyphs">${esc(n)}</text></g>`;
@@ -447,7 +466,6 @@ function renderMarkers(){
   return`<button class="player-row" type="button" data-player-index="${i}"><img src="${face(n)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${esc(n)}</span><span class="player-role-badge ${r.className}">${esc(r.label)}</span></span></button>`;
  }).join(""):'<div class="player-empty">現在オンラインのプレイヤーはいません</div>');
 }
-
 const detailItem=(label,value,wide=false)=>`<div class="detail-item${wide?" wide":""}"><div class="detail-label">${label}</div><div class="detail-value">${value}</div></div>`;
 function openModal(){modal.classList.add("open");document.body.style.overflow="hidden";closeBtn.focus()}
 function closeModal(){modal.classList.remove("open");document.body.style.overflow="";selectedPlayer=null;selectedTrain=null}
@@ -469,22 +487,18 @@ function refreshDetail(){
 const markerOf=t=>(t instanceof Element?t:t?.parentElement)?.closest("[data-kind][data-index]");
 markerLayer.addEventListener("click",e=>{
  const el=markerOf(e.target);if(!el||dragMoved)return;const i=Number(el.dataset.index);
- if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);
- if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
+ if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
 });
 markerLayer.addEventListener("keydown",e=>{
- if(e.key!=="Enter"&&e.key!==" ")return;
- const el=markerOf(e.target);if(!el)return;e.preventDefault();const i=Number(el.dataset.index);
- if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);
- if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
+ if(e.key!=="Enter"&&e.key!==" ")return;const el=markerOf(e.target);if(!el)return;e.preventDefault();const i=Number(el.dataset.index);
+ if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
 });
 pList.addEventListener("click",e=>{
  const b=(e.target instanceof Element?e.target:e.target?.parentElement)?.closest("[data-player-index]");
  if(b&&players[Number(b.dataset.playerIndex)])showPlayer(players[Number(b.dataset.playerIndex)]);
 });
 function setConnection(ok){
- connDot.classList.toggle("online",ok);connDot.classList.toggle("offline",!ok);
- connText.textContent=ok?"サーバー接続中":"サーバーに接続できません";
+ connDot.classList.toggle("online",ok);connDot.classList.toggle("offline",!ok);connText.textContent=ok?"サーバー接続中":"サーバーに接続できません";
 }
 async function fetchStatus(){
  if(isFetching)return;isFetching=true;
@@ -492,16 +506,14 @@ async function fetchStatus(){
   const res=await fetch(API_URL,{cache:"no-store"});if(!res.ok)throw Error(`HTTP ${res.status}`);
   const data=await res.json();if(data?.success===false)throw Error(data.error||"API error");
   latest=data;const r=data?.data??data?.status??data??{};
-  players=list(r.players??r.player??r.onlinePlayers??[]);
-  trains=list(r.trains??r.train??r.carts??[]);
+  players=list(r.players??r.player??r.onlinePlayers??[]);trains=list(r.trains??r.train??r.carts??[]);
   wtText.textContent=`ワールド時刻：${r.worldTime??r.time??r.world_time??"--"}`;
   wxText.textContent=`天候：${r.weather??r.worldWeather??r.world_weather??"--"}`;
   tpsText.textContent=`TPS：${fmt(r.tps??r.TPS??"--",0)}`;
   pcText.textContent=players.length;tcText.textContent=`列車：${trains.length}編成`;
   lastUpd.textContent=`最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
   setConnection(true);lastOk=Date.now();
-  if(map.dataset.initialized!=="true"){setInitialView();map.dataset.initialized="true"}
-  else renderMarkers();
+  if(map.dataset.initialized!=="true"){setInitialView();map.dataset.initialized="true"}else renderMarkers();
   refreshDetail();
  }catch(e){console.error("在線データ取得エラー:",e);setConnection(false)}
  finally{isFetching=false}
@@ -514,12 +526,10 @@ window.addEventListener("online",refreshNow);
 window.addEventListener("pagehide",()=>clearTimeout(refreshTimer));
 const staleTimer=setInterval(()=>{if(lastOk&&Date.now()-lastOk>10000)setConnection(false)},3000);
 window.addEventListener("pagehide",()=>clearInterval(staleTimer));
-
 function zoomAt(f,cx,cy){
  const r=map.getBoundingClientRect();if(!r.width||!r.height)return;
  const px=(cx-r.left)/r.width,py=(cy-r.top)/r.height,wx=view.x+px*view.w,wy=view.y+py*view.h;
- view.w=clamp(view.w*f,MIN_W,MAX_W);view.h=view.w/dimensions().aspect;
- view.x=wx-px*view.w;view.y=wy-py*view.h;applyView();
+ view.w=clamp(view.w*f,MIN_W,MAX_W);view.h=view.w/dimensions().aspect;view.x=wx-px*view.w;view.y=wy-py*view.h;applyView();
 }
 function zoomCenter(f){const r=map.getBoundingClientRect();zoomAt(f,r.left+r.width/2,r.top+r.height/2)}
 $("zoomIn").addEventListener("click",()=>zoomCenter(.75));
@@ -530,8 +540,7 @@ map.addEventListener("pointerdown",e=>{
  if(e.button!==0||markerOf(e.target))return;
  const t=e.target instanceof Element?e.target:e.target?.parentElement;
  if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
- dragging=true;dragMoved=false;dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};
- map.classList.add("dragging");
+ dragging=true;dragMoved=false;dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};map.classList.add("dragging");
 });
 window.addEventListener("pointermove",e=>{
  if(!dragging||!dragStart)return;
@@ -541,8 +550,7 @@ window.addEventListener("pointermove",e=>{
 });
 function stopDragging(){
  if(!dragging)return;
- dragging=false;dragStart=null;map.classList.remove("dragging");renderMarkers();
- setTimeout(()=>dragMoved=false,120);
+ dragging=false;dragStart=null;map.classList.remove("dragging");renderMarkers();setTimeout(()=>dragMoved=false,120);
 }
 window.addEventListener("pointerup",stopDragging);
 window.addEventListener("pointercancel",stopDragging);
