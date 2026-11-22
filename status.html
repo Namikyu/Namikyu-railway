@@ -151,7 +151,10 @@ html[data-theme=dark] .player-name-label{fill:white;stroke:#172638}
 </head>
 <body>
 <header class="header">
- <div class="header-top"><img class="logo" src="./icon.png" alt="波急電鉄ロゴ"><div class="brand-text"><h1 class="brand-title">波急サーバー</h1><div class="brand-subtitle">NAMIKYU RAILWAY</div></div></div>
+ <div class="header-top">
+  <img class="logo" src="./icon.png" alt="波急電鉄ロゴ">
+  <div class="brand-text"><h1 class="brand-title">波急サーバー</h1><div class="brand-subtitle">NAMIKYU RAILWAY</div></div>
+ </div>
  <nav class="navigation">
   <a href="./index.html">ホーム</a><a href="./news.html">お知らせ</a><a href="./join.html">サーバー参加</a><a href="./status.html">在線位置</a><a href="./staff.html">運営メンバー</a>
   <button class="theme-toggle" type="button" data-theme-toggle aria-label="ダークモードに切り替え">🌙</button>
@@ -166,8 +169,15 @@ html[data-theme=dark] .player-name-label{fill:white;stroke:#172638}
  <span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span><span id="trainCount">列車：--編成</span>
 </div>
 <div class="legend">
- <span><i style="background:#38bfe8"></i>波急波川線</span><span><i style="background:#f97316"></i>矢野電鉄線</span><span><i style="background:#dc2626"></i>川鉄依丘線</span><span><i style="background:#84cc16"></i>雨急雨波線</span><span><i style="background:#111"></i>波急実験線</span><span><i style="background:#888"></i>留置線・車庫・製造工場</span>
- <span><i style="background:#f97316"></i>特急</span><span><i style="background:#dc2626"></i>急行</span><span><i style="background:#16a34a"></i>準急</span><span><i style="background:#2878c8"></i>各駅停車</span><span>水色の丸・顔マーク：プレイヤー</span>
+ <span><i style="background:#38bfe8"></i>波急波川線</span>
+ <span><i style="background:#f97316"></i>矢野電鉄線</span>
+ <span><i style="background:#dc2626"></i>川鉄依丘線</span>
+ <span><i style="background:#84cc16"></i>雨急雨波線</span>
+ <span><i style="background:#111"></i>波急実験線</span>
+ <span><i style="background:#888"></i>留置線・車庫・製造工場</span>
+ <span><i style="background:#f97316"></i>特急</span><span><i style="background:#dc2626"></i>急行</span>
+ <span><i style="background:#16a34a"></i>準急</span><span><i style="background:#2878c8"></i>各駅停車</span>
+ <span>水色の丸・顔マーク：プレイヤー</span>
 </div>
 <section id="mapArea">
  <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ">
@@ -183,7 +193,10 @@ html[data-theme=dark] .player-name-label{fill:white;stroke:#172638}
 </section>
 </main>
 <div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
- <div class="modal-card"><div class="modal-head"><h3 class="modal-title" id="modalTitle">詳細情報</h3><button class="modal-close" id="closeModal" type="button">×</button></div><div id="modalContent"></div></div>
+ <div class="modal-card">
+  <div class="modal-head"><h3 class="modal-title" id="modalTitle">詳細情報</h3><button class="modal-close" id="closeModal" type="button">×</button></div>
+  <div id="modalContent"></div>
+ </div>
 </div>
 <script>
 "use strict";
@@ -283,23 +296,46 @@ async function loadStaff(){
 function dimensions(){const r=map.getBoundingClientRect();return{width:Math.max(1,r.width),aspect:r.width/Math.max(1,r.height)}}
 const scale=()=>view.w/dimensions().width;
 
-/* 駅名の配置。北ノ宮～依丘は文字の下端を駅マーカー直前に揃える */
+/* 駅名の表示位置。駅・線路の座標は変更しない */
 const stationLabelLayout={
- "中市":{x:220,y:30},"大白":{x:220,y:1098},"水浜":{x:220,y:2067},"竹ヶ丘":{x:220,y:3147},"草市":{x:220,y:4127},
- "長立":{x:55,y:5000},"波丘":{x:220,y:6179},"矢野空港":{x:220,y:-1272},"矢野":{x:220,y:-2428},"大東":{x:220,y:-3732},
- "浜口":{x:220,y:-4933},"新矢野":{x:220,y:-5934},"吉山":{x:220,y:-7268},"吉山留置線":{x:230,y:-7495},
- "新草市":{x:90,y:4250,fontSize:130,readingDy:75,readingSize:68},
- "北ノ宮":{vertical:true,x:680,readingX:560},
- "依丘空港":{vertical:true,x:1225,readingX:1105},
- "芝田町":{vertical:true,x:1589,readingX:1469},
- "鷺川":{vertical:true,x:2054,readingX:1934},
- "依丘":{vertical:true,x:2622,readingX:2502},
- "依丘車庫":{x:2810,y:4545},"新川":{x:220,y:7430},"雨波":{x:220,y:8806},
- "蛙ヶ丘":{x:98,y:10432},"新雨岡":{x:98,y:11806},"雨岡":{x:98,y:13075},"雨山":{x:98,y:14672},
- "雨山車両センター":{x:-300,y:14986,a:"end"},"中市出庫区":{x:230,y:-360},
- "高ノ宮":{vertical:true,x:650,y:4930,readingX:790,readingY:4930},
- "高宮製造工場":{vertical:true,x:1080,y:4930,readingX:1220,readingY:4930}
+ "中市":{x:220,y:30},
+ "大白":{x:220,y:1098},
+ "水浜":{x:220,y:2067},
+ "竹ヶ丘":{x:220,y:3147},
+ "草市":{x:220,y:4127},
+ "長立":{x:55,y:5000},
+ "波丘":{x:220,y:6179},
+ "矢野空港":{x:220,y:-1272},
+ "矢野":{x:220,y:-2428},
+ "大東":{x:220,y:-3732},
+ "浜口":{x:220,y:-4933},
+ "新矢野":{x:220,y:-5934},
+ "吉山":{x:220,y:-7268},
+ "吉山留置線":{x:230,y:-7495},
+
+ /* 新草市：駅名を少し下げ、読み仮名との間隔を広げる */
+ "新草市":{x:90,y:4470,fontSize:130,readingDy:90,readingSize:68},
+
+ /* 北ノ宮～依丘：駅名・読み仮名を約1文字分上へ */
+ "北ノ宮":{x:680,y:4308,vertical:true,readingX:560,readingY:4308},
+ "依丘空港":{x:1225,y:4308,vertical:true,readingX:1105,readingY:4308},
+ "芝田町":{x:1589,y:4308,vertical:true,readingX:1469,readingY:4308},
+ "鷺川":{x:2054,y:4308,vertical:true,readingX:1934,readingY:4308},
+ "依丘":{x:2622,y:4308,vertical:true,readingX:2502,readingY:4308},
+
+ "依丘車庫":{x:2810,y:4545},
+ "新川":{x:220,y:7430},
+ "雨波":{x:220,y:8806},
+ "蛙ヶ丘":{x:98,y:10432},
+ "新雨岡":{x:98,y:11806},
+ "雨岡":{x:98,y:13075},
+ "雨山":{x:98,y:14672},
+ "雨山車両センター":{x:-300,y:14986,a:"end"},
+ "中市出庫区":{x:230,y:-360},
+ "高ノ宮":{x:650,y:4930,vertical:true,readingX:790,readingY:4930},
+ "高宮製造工場":{x:1080,y:4930,vertical:true,readingX:1220,readingY:4930}
 };
+
 function renderRoute(){
  set(routeLayer,`
  <path class="route-line route-wave" d="M0 -17 L0 6132"/>
@@ -312,21 +348,19 @@ function renderRoute(){
  <path class="route-line route-depot" d="M0 -17 L13 -404"/>
  <path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/>
  <path class="route-line route-factory" d="M589 4727 L995 4727"/>`);
+
  const circles=stations.map(s=>`<g transform="translate(${s.x} ${s.z})"><circle class="station-dot station-${s.line==="both"?"wave":s.line}" r="38"/></g>`).join("");
  const labels=stations.map(s=>{
   const q=stationLabelLayout[s.name];if(!q)return"";
-  if(q.vertical){
-   const fs=125,rs=72;
-   const y=q.y??(4498-s.name.length*fs-18);
-   const ry=q.readingY??(4498-s.reading.length*rs-18);
-   return`<text class="station-label station-label-vertical" x="${q.x}" y="${y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text>
-   <text class="station-label station-reading-vertical" x="${q.readingX}" y="${ry}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
-  }
+  if(q.vertical)return`
+   <text class="station-label station-label-vertical" x="${q.x}" y="${q.y}" font-size="125" writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text>
+   <text class="station-label station-reading-vertical" x="${q.readingX}" y="${q.readingY}" font-size="72" writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
   const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100;
   return`<text class="station-label ${q.a==="end"?"station-label-end":""}" x="${q.x}" y="${q.y}" font-size="${fs}"><tspan>${esc(s.name)}</tspan><tspan class="station-reading" x="${q.x}" dy="${dy}" font-size="${rs}">${esc(s.reading)}</tspan></text>`;
  }).join("");
  set(stationLayer,circles+labels);
 }
+
 function applyView(render=true){
  view.h=view.w/dimensions().aspect;map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
  const right=view.x+view.w,bottom=view.y+view.h,lines=[];
@@ -356,20 +390,23 @@ function stationObstacles(){
   out.push(rect(s.x-95,s.z-95,s.x+95,s.z+95));
   const q=stationLabelLayout[s.name];if(!q)continue;
   if(q.vertical){
-   const y=q.y??(4498-s.name.length*125-18),ry=q.readingY??(4498-s.reading.length*72-18);
-   out.push(rect(q.x-110,y-100,q.x+110,y+s.name.length*125+100));
-   out.push(rect(q.readingX-80,ry-100,q.readingX+80,ry+s.reading.length*72+100));
+   const nh=s.name.length*125,rh=s.reading.length*72;
+   out.push(rect(q.x-110,q.y-100,q.x+110,q.y+nh+100));
+   out.push(rect(q.readingX-80,q.readingY-100,q.readingX+80,q.readingY+rh+100));
   }else{
-   const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100,w=Math.max(s.name.length*fs,s.reading.length*rs)+100,h=fs+dy+rs+70;
+   const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100;
+   const w=Math.max(s.name.length*fs,s.reading.length*rs)+100,h=fs+dy+rs+70;
    out.push(q.a==="end"?rect(q.x-w,q.y-fs,q.x+30,q.y+h):rect(q.x-30,q.y-fs,q.x+w,q.y+h));
   }
  }
  return out;
 }
 function playerRect(pos,w){
- const half=Math.max(90,w/2);return rect(pos.x-half-35,pos.y-115,pos.x+half+35,pos.y+265);
+ const half=Math.max(90,w/2);
+ return rect(pos.x-half-35,pos.y-115,pos.x+half+35,pos.y+265);
 }
-/* プレイヤーが動いた場合だけ位置を再計算。静止中は表示位置を固定 */
+
+/* 本人が移動したときだけ位置を再計算。駅名・列車・他プレイヤーを回避 */
 function placePlayers(tp){
  const obstacles=stationObstacles();
  tp.forEach(t=>obstacles.push(rect(t.x-250,t.z-250,t.x+250,t.z+250)));
@@ -388,9 +425,11 @@ function placePlayers(tp){
    }
    if(chosen)break;
   }
-  if(!chosen)for(let j=1;j<=30;j++){
-   const pos={x:origin.x,y:origin.y-3000-j*500},box=playerRect(pos,w);
-   if(!obstacles.some(o=>overlaps(box,o,12))&&!placed.some(o=>overlaps(box,o,12))){chosen=pos;placed.push(box);break}
+  if(!chosen){
+   for(let j=1;j<=30;j++){
+    const pos={x:origin.x,y:origin.y-3000-j*500},box=playerRect(pos,w);
+    if(!obstacles.some(o=>overlaps(box,o,12))&&!placed.some(o=>overlaps(box,o,12))){chosen=pos;placed.push(box);break}
+   }
   }
   if(!chosen){chosen={x:origin.x,y:origin.y-18000-i*700};placed.push(playerRect(chosen,w))}
   playerPositions.set(key,{x:origin.x,y:origin.y,mx:chosen.x,my:chosen.y});
@@ -481,6 +520,7 @@ window.addEventListener("online",refreshNow);
 window.addEventListener("pagehide",()=>clearTimeout(refreshTimer));
 const staleTimer=setInterval(()=>{if(lastOk&&Date.now()-lastOk>10000)setConnection(false)},3000);
 window.addEventListener("pagehide",()=>clearInterval(staleTimer));
+
 function zoomAt(f,cx,cy){
  const r=map.getBoundingClientRect();if(!r.width||!r.height)return;
  const px=(cx-r.left)/r.width,py=(cy-r.top)/r.height,wx=view.x+px*view.w,wy=view.y+py*view.h;
@@ -488,17 +528,22 @@ function zoomAt(f,cx,cy){
  view.x=wx-px*view.w;view.y=wy-py*view.h;applyView();
 }
 function zoomCenter(f){
- const r=map.getBoundingClientRect();zoomAt(f,r.left+r.width/2,r.top+r.height/2);
+ const r=map.getBoundingClientRect();
+ zoomAt(f,r.left+r.width/2,r.top+r.height/2);
 }
 $("zoomIn").addEventListener("click",()=>zoomCenter(.75));
 $("zoomOut").addEventListener("click",()=>zoomCenter(1.33));
 $("resetView").addEventListener("click",setInitialView);
-map.addEventListener("wheel",e=>{e.preventDefault();zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY)},{passive:false});
+map.addEventListener("wheel",e=>{
+ e.preventDefault();zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY);
+},{passive:false});
 map.addEventListener("pointerdown",e=>{
  if(e.button!==0||markerOf(e.target))return;
  const t=e.target instanceof Element?e.target:e.target?.parentElement;
  if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
- dragging=true;dragMoved=false;dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};map.classList.add("dragging");
+ dragging=true;dragMoved=false;
+ dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};
+ map.classList.add("dragging");
 });
 window.addEventListener("pointermove",e=>{
  if(!dragging||!dragStart)return;
@@ -508,7 +553,8 @@ window.addEventListener("pointermove",e=>{
 });
 function stopDragging(){
  if(!dragging)return;
- dragging=false;dragStart=null;map.classList.remove("dragging");renderMarkers();setTimeout(()=>dragMoved=false,120);
+ dragging=false;dragStart=null;map.classList.remove("dragging");
+ renderMarkers();setTimeout(()=>dragMoved=false,120);
 }
 window.addEventListener("pointerup",stopDragging);
 window.addEventListener("pointercancel",stopDragging);
@@ -521,12 +567,14 @@ window.addEventListener("keydown",e=>{
  else if(e.key==="-"){e.preventDefault();zoomCenter(1.33)}
 });
 collapseBtn.addEventListener("click",()=>{
- pPanel.classList.toggle("collapsed");collapseBtn.textContent=pPanel.classList.contains("collapsed")?"+":"−";
+ pPanel.classList.toggle("collapsed");
+ collapseBtn.textContent=pPanel.classList.contains("collapsed")?"+":"−";
 });
 closeBtn.addEventListener("click",closeModal);
 modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
 window.addEventListener("resize",()=>{
- cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{view.h=view.w/dimensions().aspect;applyView()});
+ cancelAnimationFrame(resizeFrame);
+ resizeFrame=requestAnimationFrame(()=>{view.h=view.w/dimensions().aspect;applyView()});
 });
 (async()=>{await loadStaff();await fetchStatus();scheduleRefresh()})();
 </script>
