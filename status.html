@@ -43,6 +43,7 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 .station-label-end{text-anchor:end}.station-reading{font-weight:600}.station-label-vertical{font-weight:850}.station-reading-vertical{font-weight:650}
 .player-halo{fill:#38bfe8;fill-opacity:.17;stroke:#38bfe8;stroke-opacity:.38;stroke-width:12;pointer-events:none}
 .player-halo-core{fill:#38bfe8;fill-opacity:.2;pointer-events:none}
+.player-link{stroke:#38bfe8;stroke-width:14;stroke-opacity:.7;stroke-linecap:round;pointer-events:none}
 .train-marker,.player-marker{cursor:pointer;pointer-events:all;outline:none}
 .train-marker:focus-visible,.player-marker:focus-visible{filter:drop-shadow(0 0 4px #087fc4)}
 .train-visual{pointer-events:none;filter:drop-shadow(0 1px 1.5px #142b4933)}
@@ -266,7 +267,7 @@ return`<g class="player-marker" data-kind="player" data-index="${i}" tabindex="0
 function renderMarkers(){
 if(!latest)return;
 const layout=placePlayers(trains);
-set(haloLayer,players.map(p=>{const q=toMap(p);return`<g transform="translate(${q.x} ${q.y})"><circle class="player-halo" r="145"/><circle class="player-halo-core" r="55"/></g>`}).join(""));
+set(haloLayer,layout.map(({origin:q,pos})=>q.x===pos.x&&q.y===pos.y?"":`<line class="player-link" x1="${q.x}" y1="${q.y}" x2="${pos.x}" y2="${pos.y}"/>`).join("")+layout.map(({origin:q})=>`<g transform="translate(${q.x} ${q.y})"><circle class="player-halo" r="145"/><circle class="player-halo-core" r="55"/></g>`).join(""));
 set(markerLayer,trains.map(trainMarker).join("")+layout.map(playerMarker).join(""));
 ppCount.textContent=players.length;
 set(pList,players.length?players.map((p,i)=>{const n=getName(p),r=getRole(p);return`<button class="player-row" type="button" data-player-index="${i}"><img src="${face(n)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${esc(n)}</span><span class="player-role-badge ${r.className}">${esc(r.label)}</span></span></button>`}).join(""):'<div class="player-empty">現在オンラインのプレイヤーはいません</div>')}
