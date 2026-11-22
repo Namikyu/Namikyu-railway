@@ -41,9 +41,9 @@ h2{margin:0;color:var(--navy);font-size:22px;font-weight:850;letter-spacing:.025
 #map{width:100%;height:100%;display:block;cursor:grab;touch-action:none;user-select:none}
 #map.dragging{cursor:grabbing}
 .grid-line{stroke:#dce5ed;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
-.route-line{fill:none;stroke:#38bfe8;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
-.station-dot{fill:#fff;stroke:#38bfe8;stroke-width:2.5;vector-effect:non-scaling-stroke;pointer-events:none}
-.station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3.5px;paint-order:stroke fill;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:start;pointer-events:none}
+.route-line{fill:none;stroke:#38bfe8;stroke-width:5px;stroke-linecap:butt;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
+.station-dot{fill:#fff;stroke:#38bfe8;stroke-width:2px;vector-effect:non-scaling-stroke;pointer-events:none}
+.station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3px;paint-order:stroke fill;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:start;pointer-events:none}
 .station-reading{font-size:.68em;font-weight:600}
 .train-marker,.player-marker{cursor:pointer;pointer-events:all;outline:none}
 .train-marker:focus-visible,.player-marker:focus-visible{opacity:.88;filter:drop-shadow(0 0 4px #087fc4)}
@@ -274,12 +274,13 @@ const NAMIKAWA_STATIONS=[
 {name:"波丘",reading:"なみおか",z:6132}
 ];
 function renderRoute(){
-const s=getScale(),lineWidth=5*s,dotRadius=8*s,labelX=22*s;
-set(routeLayer,`<path class="route-line" d="M 0 -17 L 0 6132" style="stroke-width:${lineWidth}"/>`);
+/* 線路の太さ・駅表示は画面上の大きさを固定し、ズームで巨大化しないようにする */
+const s=getScale(),dotRadius=5*s,labelX=14*s,labelSize=13*s,readingGap=10*s;
+set(routeLayer,'<path class="route-line" d="M 0 -17 L 0 6132"/>');
 set(stationLayer,NAMIKAWA_STATIONS.map(st=>`<g transform="translate(0 ${st.z})">
 <circle class="station-dot" r="${dotRadius}"/>
-<text class="station-label" x="${labelX}" y="${-5*s}" font-size="${18*s}">
-<tspan>${esc(st.name)}</tspan><tspan class="station-reading" x="${labelX}" dy="${14*s}">${esc(st.reading)}</tspan>
+<text class="station-label" x="${labelX}" y="${-2*s}" font-size="${labelSize}">
+<tspan>${esc(st.name)}</tspan><tspan class="station-reading" x="${labelX}" dy="${readingGap}">${esc(st.reading)}</tspan>
 </text></g>`).join(""));
 }
 
