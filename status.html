@@ -77,19 +77,28 @@ h2{margin:0;color:var(--navy);font-size:22px;font-weight:850}
 
 /* 路線は画面上で常に15px */
 .route-line{
- fill:none;stroke:#38bfe8;stroke-width:15;
- stroke-linecap:round;vector-effect:non-scaling-stroke;pointer-events:none
-}
-.station-dot{
- fill:#fff;stroke:#38bfe8;stroke-width:2;
+ fill:none;stroke-width:15;stroke-linecap:round;
  vector-effect:non-scaling-stroke;pointer-events:none
 }
+.route-wave{stroke:#38bfe8}
+.route-yano{stroke:#f97316}
+.route-depot{stroke:#888;stroke-width:10}
+.station-dot{
+ fill:#fff;stroke-width:2.5;
+ vector-effect:non-scaling-stroke;pointer-events:none
+}
+.station-wave{stroke:#38bfe8}
+.station-yano{stroke:#f97316}
+.station-depot{stroke:#888}
 .station-label{
  fill:#111827;stroke:#f5f8fb;stroke-width:3px;paint-order:stroke fill;
  font-family:"Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;
  font-weight:800;text-anchor:start;pointer-events:none
 }
 .station-reading{font-size:.68em;font-weight:600}
+html[data-theme=dark] .station-label{
+ fill:#f8fafc;stroke:#172536;stroke-width:3px
+}
 .train-marker,.player-marker{cursor:pointer;pointer-events:all;outline:none}
 .train-marker:focus-visible,.player-marker:focus-visible{filter:drop-shadow(0 0 4px #087fc4)}
 .train-visual{pointer-events:none;filter:drop-shadow(0 1px 1.5px #142b4933)}
@@ -283,12 +292,13 @@ html[data-theme=dark] .player-name-label{fill:#fff;stroke:#172638}
   <span id="trainCount">列車：--編成</span>
  </div>
  <div class="legend">
+  <span><i style="background:#38bfe8"></i>波急波川線</span>
+  <span><i style="background:#f97316"></i>矢野電</span>
+  <span><i style="background:#888"></i>吉山留置線</span>
   <span><i style="background:#f97316"></i>特急</span>
   <span><i style="background:#dc2626"></i>急行</span>
   <span><i style="background:#16a34a"></i>準急</span>
   <span><i style="background:#2878c8"></i>各駅停車</span>
-  <span><i style="background:#888"></i>水鉄水山線</span>
-  <span><i style="background:#222"></i>その他</span>
   <span>顔マーク：プレイヤー</span>
  </div>
  <section id="mapArea">
@@ -362,13 +372,20 @@ const DEST={local2:["依丘","草市"],local:["波丘","吉山"],exp:["依丘","
 const MODELS={1532:"波急3500系",2532:"矢野電5000系",3800:"雨急3800系",4722:"雨急4000系",5179:"波急5100系",6971:"水鉄1500系",8152:"川鉄9700系",7661:"波急3100系",8575:"波急2500系"};
 const KTS=/kts:kts(\d{4})_1/i;
 const stations=[
- {name:"中市",reading:"なかいち",z:-17},
- {name:"大白",reading:"おおしろ",z:1051},
- {name:"水浜",reading:"みずはま",z:2020},
- {name:"竹ヶ丘",reading:"たけがおか",z:3100},
- {name:"草市",reading:"くさし",z:4080},
- {name:"長立",reading:"ながたち",z:5000},
- {name:"波丘",reading:"なみおか",z:6132}
+ {name:"中市",reading:"なかいち",x:0,z:-17,line:"both"},
+ {name:"大白",reading:"おおしろ",x:0,z:1051,line:"wave"},
+ {name:"水浜",reading:"みずはま",x:0,z:2020,line:"wave"},
+ {name:"竹ヶ丘",reading:"たけがおか",x:0,z:3100,line:"wave"},
+ {name:"草市",reading:"くさし",x:0,z:4080,line:"wave"},
+ {name:"長立",reading:"ながたち",x:0,z:5000,line:"wave"},
+ {name:"波丘",reading:"なみおか",x:0,z:6132,line:"wave"},
+ {name:"矢野空港",reading:"やのくうこう",x:0,z:-1327,line:"yano"},
+ {name:"矢野",reading:"やの",x:0,z:-2483,line:"yano"},
+ {name:"大東",reading:"だいとう",x:0,z:-3787,line:"yano"},
+ {name:"浜口",reading:"はまぐち",x:0,z:-4988,line:"yano"},
+ {name:"新矢野",reading:"しんやの",x:0,z:-5989,line:"yano"},
+ {name:"吉山",reading:"よしやま",x:0,z:-7323,line:"yano"},
+ {name:"吉山留置線",reading:"よしやまりゅうちせん",x:-9,z:-7550,line:"depot"}
 ];
 
 let latest=null,players=[],trains=[],staffMap=new Map();
@@ -451,15 +468,22 @@ const scale=()=>view.w/dimensions().width;
 
 function renderRoute(){
  const s=scale();
- set(routeLayer,'<path class="route-line" d="M0 -17 L0 6132"/>');
- set(stationLayer,stations.map(st=>`
-  <g transform="translate(0 ${st.z})">
-   <circle class="station-dot" r="${5*s}"/>
+ set(routeLayer,`
+  <path class="route-line route-wave" d="M0 -17 L0 6132"/>
+  <path class="route-line route-yano" d="M0 -17 L0 -7323"/>
+  <path class="route-line route-depot" d="M0 -7323 L-9 -7550"/>
+ `);
+ set(stationLayer,stations.map(st=>{
+  const lineClass=st.line==="depot"?"station-depot":st.line==="yano"?"station-yano":st.line==="both"?"station-wave":"station-wave";
+  return`
+  <g transform="translate(${st.x} ${st.z})">
+   <circle class="station-dot ${lineClass}" r="${5*s}"/>
    <text class="station-label" x="${14*s}" y="${-2*s}" font-size="${13*s}">
     <tspan>${esc(st.name)}</tspan>
     <tspan class="station-reading" x="${14*s}" dy="${10*s}">${esc(st.reading)}</tspan>
    </text>
-  </g>`).join(""));
+  </g>`;
+ }).join(""));
 }
 function applyView(render=true){
  view.h=view.w/dimensions().aspect;
@@ -473,7 +497,10 @@ function applyView(render=true){
 }
 function fitView(){
  const a=dimensions().aspect;
- const pts=[...players,...trains].map(toMap).concat([{x:0,y:-17},{x:0,y:6132}]);
+ const pts=[...players,...trains].map(toMap).concat(
+  stations.map(st=>({x:st.x,y:st.z})),
+  [{x:0,y:-17},{x:0,y:6132},{x:0,y:-7323},{x:-9,y:-7550}]
+ );
  const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
  const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
  const pad=Math.max(1000,Math.max(x1-x0,y1-y0)*.12);
