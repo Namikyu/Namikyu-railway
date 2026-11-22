@@ -232,7 +232,7 @@ function I(t){
 let c=C.get(t);if(c)return c;
 const g=tags(t),p=coords(t),w=p.x>=-608&&p.x<=692&&p.z>=3957&&p.z<=5257&&!g.some(x=>TYPE_TAGS.includes(x)),
 d=g.includes("z-")?"z-":g.includes("z+")||g.includes("z")?"z+":g.includes("x-")?"x-":"x+",a=ANGLES[d]*Math.PI/180,
-m=KTS.exec(JSON.stringify(t)),ty=trainType(g,p.z,w);
+m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name),ty=trainType(g,p.z,w);
 c={...p,w,d,c:Math.cos(a),s:Math.sin(a),ty,id:stableId(t),mo:MODELS[m?.[1]]||"不明",
 rt:w?"水鉄水山線":p.x>=50?"川鉄依丘線":p.z>6131?"雨急雨波線":p.z<-18?"矢野電鉄":"波急波川線",
 de:ty.key==="waterline"?"草市～水山 往復":DEST[ty.key]?DEST[ty.key][d==="z+"||d==="x+"?0:1]:"不明"};
