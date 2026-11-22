@@ -41,6 +41,10 @@ h2{margin:0;color:var(--navy);font-size:22px;font-weight:850;letter-spacing:.025
 #map{width:100%;height:100%;display:block;cursor:grab;touch-action:none;user-select:none}
 #map.dragging{cursor:grabbing}
 .grid-line{stroke:#dce5ed;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
+.route-line{fill:none;stroke:#38bfe8;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
+.station-dot{fill:#fff;stroke:#38bfe8;stroke-width:2.5;vector-effect:non-scaling-stroke;pointer-events:none}
+.station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3.5px;paint-order:stroke fill;font-family:Inter,"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;font-weight:800;text-anchor:start;pointer-events:none}
+.station-reading{font-size:.68em;font-weight:600}
 .train-marker,.player-marker{cursor:pointer;pointer-events:all;outline:none}
 .train-marker:focus-visible,.player-marker:focus-visible{opacity:.88;filter:drop-shadow(0 0 4px #087fc4)}
 .train-body{pointer-events:all}
@@ -111,6 +115,8 @@ html[data-theme=dark] .online-count strong{color:#79dfae}
 html[data-theme=dark] .legend,html[data-theme=dark] .map-help{color:#b5c7d9}
 html[data-theme=dark] #mapArea{background:#172538;border-color:#354b62}
 html[data-theme=dark] .grid-line{stroke:#354b62}
+html[data-theme=dark] .station-label{fill:#f3f7fc;stroke:#172538}
+html[data-theme=dark] .station-dot{fill:#fff;stroke:#38bfe8}
 html[data-theme=dark] .player-panel{background:#1c2b3ef5;border-color:#354b62}
 html[data-theme=dark] .player-panel-head{color:#e4edf7;border-bottom-color:#354b62}
 html[data-theme=dark] .player-panel-head button,html[data-theme=dark] .modal-close{background:#30465d;color:#d4e3f2}
@@ -177,7 +183,7 @@ main{height:calc(100dvh - 150px)}
 <span><i style="background:#f97316"></i>特急</span><span><i style="background:#dc2626"></i>急行</span><span><i style="background:#16a34a"></i>準急</span><span><i style="background:#2878c8"></i>各駅停車</span><span><i style="background:#888"></i>水鉄水山線</span><span><i style="background:#222"></i>その他</span><span>顔マーク：プレイヤー</span>
 </div>
 <section id="mapArea">
-<svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ"><g id="gridLayer"></g><g id="markerLayer"></g></svg>
+<svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ"><g id="gridLayer"></g><g id="routeLayer"></g><g id="stationLayer"></g><g id="markerLayer"></g></svg>
 <div class="compass"><span class="north">Z−</span><span class="west">X−</span><span class="center">＋</span><span class="east">X＋</span><span class="south">Z＋</span></div>
 <div class="player-panel" id="playerPanel">
 <div class="player-panel-head"><div class="player-panel-heading">オンラインプレイヤー</div><span class="player-panel-count" id="playerPanelCount">0</span><button id="collapsePlayers" type="button" aria-label="プレイヤー一覧を開閉">−</button></div>
@@ -193,7 +199,7 @@ main{height:calc(100dvh - 150px)}
 <script>
 "use strict";
 const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status",MIN_W=500,MAX_W=50000,GRID=500,$=id=>document.getElementById(id),
-map=$("map"),gridLayer=$("gridLayer"),markerLayer=$("markerLayer"),connDot=$("connectionDot"),connText=$("connectionText"),lastUpd=$("lastUpdated"),wtText=$("worldTime"),wxText=$("weatherText"),tpsText=$("tpsText"),pcText=$("playerCount"),tcText=$("trainCount"),ppCount=$("playerPanelCount"),pList=$("playerList"),pPanel=$("playerPanel"),modal=$("detailModal"),mContent=$("modalContent"),mTitle=$("modalTitle"),collapseBtn=$("collapsePlayers"),closeBtn=$("closeModal"),
+map=$("map"),gridLayer=$("gridLayer"),routeLayer=$("routeLayer"),stationLayer=$("stationLayer"),markerLayer=$("markerLayer"),connDot=$("connectionDot"),connText=$("connectionText"),lastUpd=$("lastUpdated"),wtText=$("worldTime"),wxText=$("weatherText"),tpsText=$("tpsText"),pcText=$("playerCount"),tcText=$("trainCount"),ppCount=$("playerPanelCount"),pList=$("playerList"),pPanel=$("playerPanel"),modal=$("detailModal"),mContent=$("modalContent"),mTitle=$("modalTitle"),collapseBtn=$("collapsePlayers"),closeBtn=$("closeModal"),
 esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[c]),
 num=(v,f=0)=>{const n=Number(v);return Number.isFinite(n)?n:f},
 fmt=(v,d=1)=>{const n=Number(v);return Number.isFinite(n)?n.toFixed(d):"--"},
@@ -253,11 +259,30 @@ staffMap=m
 }catch(e){console.warn("スタッフ情報の取得に失敗:",e)}}
 
 function fitView(){
-const s=size(),pts=[...players,...trains].map(toMap);
+const s=size(),pts=[...players,...trains].map(toMap).concat([{x:0,y:-17},{x:0,y:6132}]);
 if(!pts.length){view.w=1e4;view.h=view.w/s.aspect;view.x=-view.w/2;view.y=-view.h/2;return applyView()}
 const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),
 pad=Math.max(1000,Math.max(x1-x0,y1-y0)*.12),w=clamp(Math.max(x1-x0+pad*2,(y1-y0+pad*2)*s.aspect),MIN_W,MAX_W);
 view.w=w;view.h=w/s.aspect;view.x=(x0+x1)/2-w/2;view.y=(y0+y1)/2-view.h/2;applyView()}
+const NAMIKAWA_STATIONS=[
+{name:"中市",reading:"なかいち",z:-17},
+{name:"大白",reading:"おおしろ",z:1051},
+{name:"水浜",reading:"みずはま",z:2020},
+{name:"竹ヶ丘",reading:"たけがおか",z:3100},
+{name:"草市",reading:"くさし",z:4080},
+{name:"長立",reading:"ながたち",z:5000},
+{name:"波丘",reading:"なみおか",z:6132}
+];
+function renderRoute(){
+const s=getScale(),lineWidth=5*s,dotRadius=8*s,labelX=22*s;
+set(routeLayer,`<path class="route-line" d="M 0 -17 L 0 6132" style="stroke-width:${lineWidth}"/>`);
+set(stationLayer,NAMIKAWA_STATIONS.map(st=>`<g transform="translate(0 ${st.z})">
+<circle class="station-dot" r="${dotRadius}"/>
+<text class="station-label" x="${labelX}" y="${-5*s}" font-size="${18*s}">
+<tspan>${esc(st.name)}</tspan><tspan class="station-reading" x="${labelX}" dy="${14*s}">${esc(st.reading)}</tspan>
+</text></g>`).join(""));
+}
+
 function applyView(r=true){
 view.h=view.w/size().aspect;
 map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
@@ -265,6 +290,7 @@ const l=view.x,rt=l+view.w,t=view.y,b=t+view.h,p=[];
 for(let x=Math.floor(l/GRID);x<=Math.ceil(rt/GRID);x++)p.push(`M${x*GRID} ${t}V${b}`);
 for(let y=Math.floor(t/GRID);y<=Math.ceil(b/GRID);y++)p.push(`M${l} ${y*GRID}H${rt}`);
 set(gridLayer,`<path class="grid-line" d="${p.join(" ")}" fill="none"/>`);
+renderRoute();
 if(r&&latest)renderMarkers()}
 
 const P=(h,t)=>`M${-h} ${-h}L${h} ${-h}L${t} 0L${h} ${h}L${-h} ${h}Z`;
