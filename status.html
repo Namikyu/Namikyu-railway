@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -41,12 +42,19 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 #map.dragging{cursor:grabbing}
 .grid-line{stroke:#dce5ed;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
 .route-line{fill:none;stroke-width:32;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
-.route-wave{stroke:#38bfe8}.route-yano{stroke:#f97316}.route-kawatei{stroke:#dc2626}.route-rain{stroke:#84cc16}
+.route-wave{stroke:#38bfe8}
+.route-yano{stroke:#f97316}
+.route-kawatei{stroke:#dc2626}
+.route-rain{stroke:#84cc16}
 .route-depot{stroke:#888;stroke-width:21}
 .route-experiment{stroke:#111;stroke-width:25}
 .route-factory{stroke:#888;stroke-width:22}
 .station-dot{fill:white;stroke-width:12;pointer-events:none}
-.station-wave{stroke:#38bfe8}.station-yano{stroke:#f97316}.station-kawatei{stroke:#dc2626}.station-rain{stroke:#84cc16}.station-depot{stroke:#888}
+.station-wave{stroke:#38bfe8}
+.station-yano{stroke:#f97316}
+.station-kawatei{stroke:#dc2626}
+.station-rain{stroke:#84cc16}
+.station-depot{stroke:#888}
 .station-experiment{stroke:#111}
 .station-factory{stroke:#888}
 .station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3px;paint-order:stroke fill;font-family:"Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;font-weight:800;text-anchor:start;pointer-events:none}
@@ -64,7 +72,11 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 .player-name-background{fill:white;fill-opacity:.94;stroke:#dce5ed;stroke-width:1;pointer-events:none}
 .player-name-label{fill:#263e58;stroke:white;stroke-width:3px;paint-order:stroke fill;font-weight:800;text-anchor:middle;dominant-baseline:central;pointer-events:none}
 .compass{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:3;display:grid;grid-template-columns:28px 28px 28px;grid-template-rows:20px 20px 20px;align-items:center;justify-items:center;pointer-events:none;color:#60778e;font-size:10px;font-weight:850;text-shadow:0 1px 3px white}
-.north{grid-column:2;grid-row:1}.west{grid-column:1;grid-row:2}.center{grid-column:2;grid-row:2;color:#9aabba}.east{grid-column:3;grid-row:2}.south{grid-column:2;grid-row:3}
+.north{grid-column:2;grid-row:1}
+.west{grid-column:1;grid-row:2}
+.center{grid-column:2;grid-row:2;color:#9aabba}
+.east{grid-column:3;grid-row:2}
+.south{grid-column:2;grid-row:3}
 .map-controls{position:absolute;right:12px;top:12px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .map-controls button{width:36px;height:36px;border:1px solid #d8e2ec;border-radius:9px;background:#fffffff2;color:#284967;font-size:19px;font-weight:800;cursor:pointer}
 .map-help{position:absolute;right:12px;bottom:9px;z-index:2;padding:6px 9px;border-radius:6px;background:#ffffffdf;color:#8093a5;font-size:9px;font-weight:650;pointer-events:none}
@@ -135,20 +147,56 @@ html[data-theme=dark] .train-summary{background:#26384d}
 html[data-theme=dark] .train-destination{color:#e4edf7}
 html[data-theme=dark] .player-name-background{fill:#172638;stroke:#52677d}
 html[data-theme=dark] .player-name-label{fill:white;stroke:#172638}
-@media(max-width:900px){.header{gap:10px}.header-top{flex-basis:38%}.navigation{flex-basis:62%;gap:6px}.brand-title{font-size:clamp(25px,3vw,36px)}}
-@media(max-width:760px){main{padding:9px}h2{font-size:17px}.status{padding:9px 11px;gap:7px 11px;font-size:11px}.legend{gap:6px 9px;font-size:9px}.player-panel{width:155px;left:7px;top:7px;max-height:48%}.player-panel.collapsed{width:125px}.map-controls{right:7px;top:7px}.map-controls button{width:32px;height:32px}.map-help{right:7px;bottom:6px;font-size:8px}}
-@media(max-width:650px){.header{height:150px;min-height:150px;flex-direction:column;justify-content:center;gap:8px;padding:6px 2%}.header-top{flex:0 0 auto;gap:8px}.logo{width:48px;height:48px}.brand-title{font-size:25px}.brand-subtitle{font-size:9px}.navigation{width:100%;flex:0 0 auto;gap:5px}.navigation a{height:42px;padding:5px 3px;font-size:10px}.theme-toggle{width:36px;height:38px;font-size:18px}main{height:calc(100dvh - 150px)}}
-@media(max-width:430px){main{padding:7px}.player-panel{width:140px}.player-panel.collapsed{width:120px}}
+@media(max-width:900px){
+ .header{gap:10px}
+ .header-top{flex-basis:38%}
+ .navigation{flex-basis:62%;gap:6px}
+ .brand-title{font-size:clamp(25px,3vw,36px)}
+}
+@media(max-width:760px){
+ main{padding:9px}
+ h2{font-size:17px}
+ .status{padding:9px 11px;gap:7px 11px;font-size:11px}
+ .legend{gap:6px 9px;font-size:9px}
+ .player-panel{width:155px;left:7px;top:7px;max-height:48%}
+ .player-panel.collapsed{width:125px}
+ .map-controls{right:7px;top:7px}
+ .map-controls button{width:32px;height:32px}
+ .map-help{right:7px;bottom:6px;font-size:8px}
+}
+@media(max-width:650px){
+ .header{height:150px;min-height:150px;flex-direction:column;justify-content:center;gap:8px;padding:6px 2%}
+ .header-top{flex:0 0 auto;gap:8px}
+ .logo{width:48px;height:48px}
+ .brand-title{font-size:25px}
+ .brand-subtitle{font-size:9px}
+ .navigation{width:100%;flex:0 0 auto;gap:5px}
+ .navigation a{height:42px;padding:5px 3px;font-size:10px}
+ .theme-toggle{width:36px;height:38px;font-size:18px}
+ main{height:calc(100dvh - 150px)}
+}
+@media(max-width:430px){
+ main{padding:7px}
+ .player-panel{width:140px}
+ .player-panel.collapsed{width:120px}
+}
 </style>
 </head>
 <body>
 <header class="header">
  <div class="header-top">
   <img class="logo" src="./icon.png" alt="波急電鉄ロゴ">
-  <div class="brand-text"><h1 class="brand-title">波急サーバー</h1><div class="brand-subtitle">NAMIKYU RAILWAY</div></div>
+  <div class="brand-text">
+   <h1 class="brand-title">波急サーバー</h1>
+   <div class="brand-subtitle">NAMIKYU RAILWAY</div>
+  </div>
  </div>
  <nav class="navigation">
-  <a href="./index.html">ホーム</a><a href="./news.html">お知らせ</a><a href="./join.html">サーバー参加</a><a href="./status.html">在線位置</a><a href="./staff.html">運営メンバー</a>
+  <a href="./index.html">ホーム</a>
+  <a href="./news.html">お知らせ</a>
+  <a href="./join.html">サーバー参加</a>
+  <a href="./status.html">在線位置</a>
+  <a href="./staff.html">運営メンバー</a>
   <button class="theme-toggle" type="button" data-theme-toggle aria-label="ダークモードに切り替え">🌙</button>
  </nav>
 </header>
@@ -156,9 +204,14 @@ html[data-theme=dark] .player-name-label{fill:white;stroke:#172638}
 <h2>在線位置</h2>
 <p class="subtitle">REAL-TIME PLAYER &amp; TRAIN POSITION</p>
 <div class="status">
- <span id="connectionDot" class="dot"></span><strong id="connectionText">接続しています...</strong>
- <span id="lastUpdated">最終更新：--:--:--</span><span id="worldTime">ワールド時刻：--</span><span id="weatherText">天候：--</span><span id="tpsText">TPS：--</span>
- <span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span><span id="trainCount">列車：--編成</span>
+ <span id="connectionDot" class="dot"></span>
+ <strong id="connectionText">接続しています...</strong>
+ <span id="lastUpdated">最終更新：--:--:--</span>
+ <span id="worldTime">ワールド時刻：--</span>
+ <span id="weatherText">天候：--</span>
+ <span id="tpsText">TPS：--</span>
+ <span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span>
+ <span id="trainCount">列車：--編成</span>
 </div>
 <div class="legend">
  <span><i style="background:#38bfe8"></i>波急波川線</span>
@@ -167,50 +220,95 @@ html[data-theme=dark] .player-name-label{fill:white;stroke:#172638}
  <span><i style="background:#84cc16"></i>雨急雨波線</span>
  <span><i style="background:#111"></i>波急実験線</span>
  <span><i style="background:#888"></i>留置線・車庫・製造工場</span>
- <span><i style="background:#f97316"></i>特急</span><span><i style="background:#dc2626"></i>急行</span>
- <span><i style="background:#16a34a"></i>準急</span><span><i style="background:#2878c8"></i>各駅停車</span>
+ <span><i style="background:#f97316"></i>特急</span>
+ <span><i style="background:#dc2626"></i>急行</span>
+ <span><i style="background:#16a34a"></i>準急</span>
+ <span><i style="background:#2878c8"></i>各駅停車</span>
  <span>水色の丸・顔マーク：プレイヤー</span>
 </div>
 <section id="mapArea">
  <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ">
-  <g id="gridLayer"></g><g id="routeLayer"></g><g id="playerHaloLayer"></g><g id="stationLayer"></g><g id="markerLayer"></g>
+  <g id="gridLayer"></g>
+  <g id="routeLayer"></g>
+  <g id="playerHaloLayer"></g>
+  <g id="stationLayer"></g>
+  <g id="markerLayer"></g>
  </svg>
- <div class="compass"><span class="north">Z−</span><span class="west">X−</span><span class="center">＋</span><span class="east">X＋</span><span class="south">Z＋</span></div>
+ <div class="compass">
+  <span class="north">Z−</span>
+  <span class="west">X−</span>
+  <span class="center">＋</span>
+  <span class="east">X＋</span>
+  <span class="south">Z＋</span>
+ </div>
  <div class="player-panel" id="playerPanel">
-  <div class="player-panel-head"><div class="player-panel-heading">オンラインプレイヤー</div><span class="player-panel-count" id="playerPanelCount">0</span><button id="collapsePlayers" type="button">−</button></div>
+  <div class="player-panel-head">
+   <div class="player-panel-heading">オンラインプレイヤー</div>
+   <span class="player-panel-count" id="playerPanelCount">0</span>
+   <button id="collapsePlayers" type="button">−</button>
+  </div>
   <div class="player-list" id="playerList"><div class="player-empty">読み込み中...</div></div>
  </div>
- <div class="map-controls"><button id="zoomIn" type="button" aria-label="拡大">＋</button><button id="zoomOut" type="button" aria-label="縮小">−</button><button id="resetView" type="button" aria-label="全体表示">⌂</button></div>
+ <div class="map-controls">
+  <button id="zoomIn" type="button" aria-label="拡大">＋</button>
+  <button id="zoomOut" type="button" aria-label="縮小">−</button>
+  <button id="resetView" type="button" aria-label="全体表示">⌂</button>
+ </div>
  <div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小 / マーカー：詳細</div>
 </section>
 </main>
 <div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
  <div class="modal-card">
-  <div class="modal-head"><h3 class="modal-title" id="modalTitle">詳細情報</h3><button class="modal-close" id="closeModal" type="button">×</button></div>
+  <div class="modal-head">
+   <h3 class="modal-title" id="modalTitle">詳細情報</h3>
+   <button class="modal-close" id="closeModal" type="button">×</button>
+  </div>
   <div id="modalContent"></div>
  </div>
 </div>
 <script>
 "use strict";
+
 const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status";
 const MIN_W=1100,MAX_W=28000,GRID=500,$=id=>document.getElementById(id);
-const map=$("map"),gridLayer=$("gridLayer"),routeLayer=$("routeLayer"),haloLayer=$("playerHaloLayer"),stationLayer=$("stationLayer"),markerLayer=$("markerLayer");
-const connDot=$("connectionDot"),connText=$("connectionText"),lastUpd=$("lastUpdated"),wtText=$("worldTime"),wxText=$("weatherText"),tpsText=$("tpsText"),pcText=$("playerCount"),tcText=$("trainCount");
-const ppCount=$("playerPanelCount"),pList=$("playerList"),pPanel=$("playerPanel"),modal=$("detailModal"),mContent=$("modalContent"),mTitle=$("modalTitle"),closeBtn=$("closeModal"),collapseBtn=$("collapsePlayers");
+const map=$("map"),gridLayer=$("gridLayer"),routeLayer=$("routeLayer");
+const haloLayer=$("playerHaloLayer"),stationLayer=$("stationLayer"),markerLayer=$("markerLayer");
+const connDot=$("connectionDot"),connText=$("connectionText"),lastUpd=$("lastUpdated");
+const wtText=$("worldTime"),wxText=$("weatherText"),tpsText=$("tpsText");
+const pcText=$("playerCount"),tcText=$("trainCount"),ppCount=$("playerPanelCount");
+const pList=$("playerList"),pPanel=$("playerPanel"),modal=$("detailModal");
+const mContent=$("modalContent"),mTitle=$("modalTitle");
+const closeBtn=$("closeModal"),collapseBtn=$("collapsePlayers");
+
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 const num=(v,f=0)=>Number.isFinite(Number(v))?Number(v):f;
 const fmt=(v,d=1)=>Number.isFinite(Number(v))?Number(v).toFixed(d):"--";
 const getName=e=>String(e?.name??e?.playerName??e?.player??e?.id??"不明");
-const coords=e=>{const p=e?.location??e?.position??e??{};return{x:num(p.x),y:num(p.y),z:num(p.z)}};
+const coords=e=>{
+ const p=e?.location??e?.position??e??{};
+ return{x:num(p.x),y:num(p.y),z:num(p.z)};
+};
 const toMap=e=>{const p=coords(e);return{x:p.x,y:p.z}};
 const xyz=p=>`${fmt(p.x,2)}, ${fmt(p.y,2)}, ${fmt(p.z,2)}`;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const face=n=>`https://mc-heads.net/avatar/${encodeURIComponent(n)}/64`;
 const ANGLES={"x+":0,"z+":90,"x-":180,"z-":-90};
 const TYPE_TAGS=["ltd","exp","sexp","local2","local"];
-const DEST={local2:["依丘","草市"],local:["波丘","吉山"],exp:["依丘","吉山"],ltd:["雨山","吉山"],sexp:["雨山","矢野"],"sexp-local":["雨山","矢野"]};
-const MODELS={1532:"波急3500系",2532:"矢野電5000系",3800:"雨急3800系",4722:"雨急4000系",5179:"波急5100系",6971:"水鉄1500系",8152:"川鉄9700系",7661:"波急3100系",8575:"波急2500系"};
+const DEST={
+ local2:["依丘","草市"],
+ local:["波丘","吉山"],
+ exp:["依丘","吉山"],
+ ltd:["雨山","吉山"],
+ sexp:["雨山","矢野"],
+ "sexp-local":["雨山","矢野"]
+};
+const MODELS={
+ 1532:"波急3500系",2532:"矢野電5000系",3800:"雨急3800系",
+ 4722:"雨急4000系",5179:"波急5100系",6971:"水鉄1500系",
+ 8152:"川鉄9700系",7661:"波急3100系",8575:"波急2500系"
+};
 const KTS=/kts:kts(\d{4})_1/i;
+
 const stations=[
  {name:"中市",reading:"なかいち",x:0,z:-17,line:"both"},
  {name:"大白",reading:"おおしろ",x:0,z:1051,line:"wave"},
@@ -244,53 +342,123 @@ const stations=[
  {name:"高ノ宮",reading:"たかのみや",x:589,z:4727,line:"experiment"},
  {name:"高宮製造工場",reading:"たかみやせいぞうこうじょう",x:995,z:4727,line:"factory"}
 ];
+
 let latest=null,players=[],trains=[],staffMap=new Map();
-let view={x:-5000,y:-5000,w:10000,h:10000},dragging=false,dragStart=null,dragMoved=false,isFetching=false,refreshTimer=null,lastOk=0,resizeFrame=null,selectedPlayer=null,selectedTrain=null;
-const set=(el,html)=>{if(el._html!==html){el._html=html;el.innerHTML=html}};
-const list=v=>Array.isArray(v)?v:v&&typeof v==="object"?Object.entries(v).map(([k,x])=>x&&typeof x==="object"?{...x,id:x.id??k}:{id:k,value:x}):[];
-const stableId=t=>{const v=t?.id??t?.uuid??t?.uniqueId??t?.unique_id??t?.entityId??t?.entity_id;return v==null||v===""?null:String(v)};
-const tags=e=>{const v=e?.tags??e?.tag??[];return Array.isArray(v)?v.map(x=>String(x).toLowerCase()):typeof v==="string"?v.toLowerCase().split(/[,\s]+/).filter(Boolean):[]};
-const getRole=p=>staffMap.get(getName(p).toLowerCase())||{label:"参加者",className:"role-participant"};
+let view={x:-5000,y:-5000,w:10000,h:10000};
+let dragging=false,dragStart=null,dragMoved=false;
+let isFetching=false,refreshTimer=null,lastOk=0,resizeFrame=null;
+let selectedPlayer=null,selectedTrain=null;
+
+const set=(el,html)=>{
+ if(el._html!==html){el._html=html;el.innerHTML=html}
+};
+const list=v=>Array.isArray(v)?v:
+ v&&typeof v==="object"?Object.entries(v).map(([k,x])=>
+  x&&typeof x==="object"?{...x,id:x.id??k}:{id:k,value:x}
+ ):[];
+
+const stableId=t=>{
+ const v=t?.id??t?.uuid??t?.uniqueId??t?.unique_id??t?.entityId??t?.entity_id;
+ return v==null||v===""?null:String(v);
+};
+const tags=e=>{
+ const v=e?.tags??e?.tag??[];
+ return Array.isArray(v)?v.map(x=>String(x).toLowerCase()):
+  typeof v==="string"?v.toLowerCase().split(/[,\s]+/).filter(Boolean):[];
+};
+const getRole=p=>staffMap.get(getName(p).toLowerCase())||
+ {label:"参加者",className:"role-participant"};
+
 const playerPositions=new Map();
 const playerKey=p=>String(p?.xuid??p?.uuid??p?.uniqueId??p?.id??getName(p));
 
 function trainType(g,z,water){
  if(g.includes("ltd"))return{key:"ltd",name:"特急",label:"特",color:"#f97316"};
+ if(g.includes("sexp"))return z<-18||z>6131?
+  {key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8"}:
+  {key:"sexp",name:"準急",label:"準",color:"#16a34a"};
  if(g.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"};
- if(g.includes("sexp"))return z<-18||z>6131?{key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8"}:{key:"sexp",name:"準急",label:"準",color:"#16a34a"};
  if(g.includes("local2"))return{key:"local2",name:"各駅停車",label:"各",color:"#60a5fa"};
  if(g.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
- return water?{key:"waterline",name:"普通",label:"普",color:"#888"}:{key:"unknown",name:"その他",label:"不",color:"#222"};
+ return water?
+  {key:"waterline",name:"普通",label:"普",color:"#888"}:
+  {key:"unknown",name:"その他",label:"不",color:"#222"};
 }
+
 function trainInfo(t){
- const g=tags(t),p=coords(t),water=p.x>=-608&&p.x<=692&&p.z>=3957&&p.z<=5257&&!g.some(x=>TYPE_TAGS.includes(x));
- const d=g.includes("z-")?"z-":g.includes("z+")||g.includes("z")?"z+":g.includes("x-")?"x-":"x+";
- const a=(ANGLES[d]||0)*Math.PI/180,m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name),type=trainType(g,p.z,water);
- return{...p,id:stableId(t),d,c:Math.cos(a),s:Math.sin(a),type,model:MODELS[m?.[1]]||"不明",route:water?"水鉄水山線":p.x>=50&&p.z>=4000&&p.z<=5000?"川鉄依丘線":p.z>6131?"雨急雨波線":p.z<-18?"矢野電鉄線":"波急波川線",destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
+ const g=tags(t),p=coords(t);
+ const water=p.x>=-608&&p.x<=692&&p.z>=3957&&p.z<=5257&&
+  !g.some(x=>TYPE_TAGS.includes(x));
+ const d=g.includes("z-")?"z-":
+  g.includes("z+")||g.includes("z")?"z+":
+  g.includes("x-")?"x-":"x+";
+ const a=(ANGLES[d]||0)*Math.PI/180;
+ const m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name);
+ const type=trainType(g,p.z,water);
+ return{
+  ...p,id:stableId(t),d,c:Math.cos(a),s:Math.sin(a),type,
+  model:MODELS[m?.[1]]||"不明",
+  route:water?"水鉄水山線":
+   p.x>=50&&p.z>=4000&&p.z<=5000?"川鉄依丘線":
+   p.z>6131?"雨急雨波線":
+   p.z<-18?"矢野電鉄線":"波急波川線",
+  destination:water?"草市～水山 往復":
+   DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"
+ };
 }
+
 function speedOf(t){
  const s=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));
  if(s===59)return 120;
  if(Number.isFinite(s)&&s<0)return 0;
- const p=Number(t?.speed);return!Number.isFinite(p)||p<0?0:p;
+ const p=Number(t?.speed);
+ return!Number.isFinite(p)||p<0?0:p;
 }
+
 async function loadStaff(){
  try{
-  const r=await fetch("./staff.html",{cache:"no-store"});if(!r.ok)throw Error(r.status);
-  const doc=new DOMParser().parseFromString(await r.text(),"text/html"),m=new Map();
+  const r=await fetch("./staff.html",{cache:"no-store"});
+  if(!r.ok)throw Error(r.status);
+  const doc=new DOMParser().parseFromString(await r.text(),"text/html");
+  const m=new Map();
   doc.querySelectorAll(".staff-card").forEach(c=>{
-   const n=c.querySelector(".staff-name")?.textContent.trim(),b=c.querySelector(".role-badge");if(!n||!b)return;
-   const role=b.classList.contains("role-owner")?"role-owner":b.classList.contains("role-developer")?"role-developer":b.classList.contains("role-moderator")?"role-moderator":"role-participant";
+   const n=c.querySelector(".staff-name")?.textContent.trim();
+   const b=c.querySelector(".role-badge");
+   if(!n||!b)return;
+   const role=b.classList.contains("role-owner")?"role-owner":
+    b.classList.contains("role-developer")?"role-developer":
+    b.classList.contains("role-moderator")?"role-moderator":"role-participant";
    m.set(n.toLowerCase(),{label:b.textContent.trim()||"運営",className:role});
-  });staffMap=m;
+  });
+  staffMap=m;
  }catch(e){console.warn("スタッフ情報の取得に失敗:",e)}
 }
-function dimensions(){const r=map.getBoundingClientRect();return{width:Math.max(1,r.width),aspect:r.width/Math.max(1,r.height)}}
+
+function dimensions(){
+ const r=map.getBoundingClientRect();
+ return{width:Math.max(1,r.width),aspect:r.width/Math.max(1,r.height)};
+}
 const scale=()=>view.w/dimensions().width;
+
 const stationLabelLayout={
- "中市":{x:220,y:30},"大白":{x:220,y:1098},"水浜":{x:220,y:2067},"竹ヶ丘":{x:220,y:3147},"草市":{x:220,y:4127},
- "長立":{x:205,y:5200},"波丘":{x:220,y:6179},"矢野空港":{x:220,y:-1272},"矢野":{x:220,y:-2428},"大東":{x:220,y:-3732},
- "浜口":{x:220,y:-4933},"新矢野":{x:220,y:-5934},"吉山":{x:220,y:-7268},"吉山留置線":{x:230,y:-7495},
+ "中市":{x:220,y:30},
+ "大白":{x:220,y:1098},
+ "水浜":{x:220,y:2067},
+ "竹ヶ丘":{x:220,y:3147},
+ "草市":{x:220,y:4127},
+
+ /* 長立：線路のすぐ横に配置 */
+ "長立":{x:65,y:5085},
+
+ "波丘":{x:220,y:6179},
+ "矢野空港":{x:220,y:-1272},
+ "矢野":{x:220,y:-2428},
+ "大東":{x:220,y:-3732},
+ "浜口":{x:220,y:-4933},
+ "新矢野":{x:220,y:-5934},
+ "吉山":{x:220,y:-7268},
+ "吉山留置線":{x:230,y:-7495},
+
  "新草市":{x:205,y:4558,vertical:true,readingX:85,readingY:4558},
  "北ノ宮":{x:680,y:4558,vertical:true,readingX:560,readingY:4558},
  "依丘空港":{x:1225,y:4558,vertical:true,readingX:1105,readingY:4558},
@@ -298,11 +466,23 @@ const stationLabelLayout={
  "鷺川":{x:2055,y:4558,vertical:true,readingX:1935,readingY:4558},
  "依丘":{x:2620,y:4558,vertical:true,readingX:2500,readingY:4558},
  "依丘車庫":{x:2810,y:4545},
- "新川":{x:220,y:7430},"雨波":{x:220,y:8806},"蛙ヶ丘":{x:98,y:10432},
- "新雨岡":{x:98,y:11806},"雨岡":{x:98,y:13075},"雨山":{x:98,y:14672},
- "雨山車両センター":{x:-300,y:14986,a:"end"},"中市出庫区":{x:230,y:-360},
- "高ノ宮":{x:589,y:4930},"高宮製造工場":{x:995,y:4930}
+
+ "新川":{x:220,y:7430},
+ "雨波":{x:220,y:8806},
+ "蛙ヶ丘":{x:98,y:10432},
+ "新雨岡":{x:98,y:11806},
+ "雨岡":{x:98,y:13075},
+ "雨山":{x:98,y:14672},
+ "雨山車両センター":{x:-300,y:14986,a:"end"},
+ "中市出庫区":{x:230,y:-360},
+
+ /* 高ノ宮：縦書き */
+ "高ノ宮":{x:700,y:4800,vertical:true,readingX:640,readingY:4800},
+
+ /* 高宮製造工場：縦書き */
+ "高宮製造工場":{x:1110,y:4800,vertical:true,readingX:1050,readingY:4800}
 };
+
 function renderRoute(){
  set(routeLayer,`
  <path class="route-line route-wave" d="M0 -17 L0 6132"/>
@@ -315,185 +495,444 @@ function renderRoute(){
  <path class="route-line route-depot" d="M0 -17 L13 -404"/>
  <path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/>
  <path class="route-line route-factory" d="M589 4727 L995 4727"/>`);
- const circles=stations.map(s=>`<g transform="translate(${s.x} ${s.z})"><circle class="station-dot station-${s.line==="both"?"wave":s.line}" r="38"/></g>`).join("");
+
+ const circles=stations.map(s=>
+  `<g transform="translate(${s.x} ${s.z})"><circle class="station-dot station-${s.line==="both"?"wave":s.line}" r="38"/></g>`
+ ).join("");
+
  const labels=stations.map(s=>{
-  const q=stationLabelLayout[s.name];if(!q)return"";
-  if(q.vertical)return`<text class="station-label station-label-vertical" x="${q.x}" y="${q.y}" font-size="125" writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text><text class="station-label station-reading-vertical" x="${q.readingX}" y="${q.readingY}" font-size="72" writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
-  return`<text class="station-label ${q.a==="end"?"station-label-end":""}" x="${q.x}" y="${q.y}" font-size="145"><tspan>${esc(s.name)}</tspan><tspan class="station-reading" x="${q.x}" dy="100">${esc(s.reading)}</tspan></text>`;
+  const q=stationLabelLayout[s.name];
+  if(!q)return"";
+  if(q.vertical){
+   return`
+   <text class="station-label station-label-vertical" x="${q.x}" y="${q.y}" font-size="125" writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text>
+   <text class="station-label station-reading-vertical" x="${q.readingX}" y="${q.readingY}" font-size="72" writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
+  }
+  return`
+   <text class="station-label ${q.a==="end"?"station-label-end":""}" x="${q.x}" y="${q.y}" font-size="145">
+    <tspan>${esc(s.name)}</tspan>
+    <tspan class="station-reading" x="${q.x}" dy="100">${esc(s.reading)}</tspan>
+   </text>`;
  }).join("");
+
  set(stationLayer,circles+labels);
 }
+
 function applyView(render=true){
- view.h=view.w/dimensions().aspect;map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
+ view.h=view.w/dimensions().aspect;
+ map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
  const right=view.x+view.w,bottom=view.y+view.h,lines=[];
- for(let x=Math.floor(view.x/GRID);x<=Math.ceil(right/GRID);x++)lines.push(`M${x*GRID} ${view.y}V${bottom}`);
- for(let y=Math.floor(view.y/GRID);y<=Math.ceil(bottom/GRID);y++)lines.push(`M${view.x} ${y*GRID}H${right}`);
- set(gridLayer,`<path class="grid-line" d="${lines.join(" ")}"/>`);renderRoute();if(render&&latest)renderMarkers();
+ for(let x=Math.floor(view.x/GRID);x<=Math.ceil(right/GRID);x++)
+  lines.push(`M${x*GRID} ${view.y}V${bottom}`);
+ for(let y=Math.floor(view.y/GRID);y<=Math.ceil(bottom/GRID);y++)
+  lines.push(`M${view.x} ${y*GRID}H${right}`);
+ set(gridLayer,`<path class="grid-line" d="${lines.join(" ")}"/>`);
+ if(render&&latest)renderMarkers();
 }
+
 function setInitialView(){
- const a=dimensions().aspect;view.h=2800;view.w=view.h*a;view.x=-view.w/2;view.y=-138-view.h/2;applyView();
+ const a=dimensions().aspect;
+ view.h=2800;
+ view.w=view.h*a;
+ view.x=-view.w/2;
+ view.y=-138-view.h/2;
+ applyView();
 }
+
 function fitView(){
- const pts=[...players,...trains].map(toMap).concat(stations.map(s=>({x:s.x,y:s.z}))),xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
- const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),pad=Math.max(650,Math.max(x1-x0,y1-y0)*.055),a=dimensions().aspect;
- view.w=clamp(Math.max(x1-x0+pad*2,(y1-y0+pad*2)*a),MIN_W,MAX_W);view.h=view.w/a;view.x=(x0+x1)/2-view.w/2;view.y=(y0+y1)/2-view.h/2;applyView();
+ const pts=[...players,...trains].map(toMap).concat(stations.map(s=>({x:s.x,y:s.z})));
+ const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
+ const x0=Math.min(...xs),x1=Math.max(...xs);
+ const y0=Math.min(...ys),y1=Math.max(...ys);
+ const pad=Math.max(650,Math.max(x1-x0,y1-y0)*.055),a=dimensions().aspect;
+ view.w=clamp(Math.max(x1-x0+pad*2,(y1-y0+pad*2)*a),MIN_W,MAX_W);
+ view.h=view.w/a;
+ view.x=(x0+x1)/2-view.w/2;
+ view.y=(y0+y1)/2-view.h/2;
+ applyView();
 }
+
 const pathShape=(h,t)=>`M${-h} ${-h}L${h} ${-h}L${t} 0L${h} ${h}L${-h} ${h}Z`;
+
 function trainMarker(t,i){
  const c=trainInfo(t);
  return`<g class="train-marker" data-kind="train" data-index="${i}" tabindex="0" role="button" transform="translate(${c.x} ${c.z})"><g transform="rotate(${ANGLES[c.d]||0})"><path class="train-hit-area" d="${pathShape(90,180)}" stroke-width="95"/><path class="train-visual" d="${pathShape(75,165)}" fill="${c.type.color}" stroke="white" stroke-width="7" stroke-linejoin="round"/></g><text class="train-label" font-size="90">${esc(c.type.label)}</text></g>`;
 }
+
 const rect=(x0,y0,x1,y1)=>({x0,y0,x1,y1});
 const overlaps=(a,b,g=0)=>a.x0<b.x1+g&&a.x1>b.x0-g&&a.y0<b.y1+g&&a.y1>b.y0-g;
+
 function stationObstacles(){
  const out=[];
  for(const s of stations){
   out.push(rect(s.x-95,s.z-95,s.x+95,s.z+95));
-  const q=stationLabelLayout[s.name];if(!q)continue;
-  if(q.vertical)out.push(rect(Math.min(q.x,q.readingX)-100,q.y-70,Math.max(q.x,q.readingX)+70,q.y+Math.max(s.name.length,s.reading.length)*100));
-  else{const w=Math.max(s.name.length*145,s.reading.length*99)+100;out.push(q.a==="end"?rect(q.x-w,q.y-190,q.x+30,q.y+150):rect(q.x-30,q.y-190,q.x+w,q.y+150))}
+  const q=stationLabelLayout[s.name];
+  if(!q)continue;
+  if(q.vertical){
+   out.push(rect(
+    Math.min(q.x,q.readingX)-100,
+    q.y-70,
+    Math.max(q.x,q.readingX)+70,
+    q.y+Math.max(s.name.length,s.reading.length)*140
+   ));
+  }else{
+   const w=Math.max(s.name.length*145,s.reading.length*99)+100;
+   out.push(q.a==="end"?
+    rect(q.x-w,q.y-190,q.x+30,q.y+150):
+    rect(q.x-30,q.y-190,q.x+w,q.y+150)
+   );
+  }
  }
  return out;
 }
+
 function playerRect(pos,w){
- const half=Math.max(90,w/2);return rect(pos.x-half-25,pos.y-115,pos.x+half+25,pos.y+250);
+ const half=Math.max(90,w/2);
+ return rect(pos.x-half-25,pos.y-115,pos.x+half+25,pos.y+250);
 }
-/* 位置は初回決定後、本人が移動したときだけ再計算 */
+
+/* プレイヤーの表示位置は本人が移動したときだけ再計算 */
 function placePlayers(tp){
- const obstacles=stationObstacles();tp.forEach(t=>obstacles.push(rect(t.x-230,t.z-230,t.x+230,t.z+230)));
- const placed=[],dirs=Array.from({length:32},(_,i)=>[Math.cos(i*Math.PI/16),Math.sin(i*Math.PI/16)]);
+ const obstacles=stationObstacles();
+ tp.forEach(t=>obstacles.push(rect(t.x-230,t.z-230,t.x+230,t.z+230)));
+ const placed=[];
+ const dirs=Array.from({length:32},(_,i)=>[
+  Math.cos(i*Math.PI/16),Math.sin(i*Math.PI/16)
+ ]);
+
  return players.map((p,i)=>{
-  const n=getName(p),w=clamp(n.length*65,250,1000),origin=toMap(p),key=playerKey(p),saved=playerPositions.get(key);
+  const n=getName(p),w=clamp(n.length*65,250,1000);
+  const origin=toMap(p),key=playerKey(p);
+  const saved=playerPositions.get(key);
+
   if(saved&&Math.hypot(saved.x-origin.x,saved.y-origin.y)<1){
-   const pos={x:saved.mx,y:saved.my};placed.push(playerRect(pos,w));return{player:p,index:i,pos,origin,w};
+   const pos={x:saved.mx,y:saved.my};
+   placed.push(playerRect(pos,w));
+   return{player:p,index:i,pos,origin,w};
   }
+
   let chosen=null;
   for(const d of [0,190,230,270,310,350,400,460,530,610,700,800,920,1060,1220,1400,1600,1850]){
-   for(const [dx,dy] of d===0?[[0,0]]:dirs.map(([x,y])=>[x*d,y*d])){
-    const pos={x:origin.x+dx,y:origin.y+dy},box=playerRect(pos,w);
+   const candidates=d===0?[[0,0]]:dirs.map(([x,y])=>[x*d,y*d]);
+   for(const [dx,dy] of candidates){
+    const pos={x:origin.x+dx,y:origin.y+dy};
+    const box=playerRect(pos,w);
     if(obstacles.some(o=>overlaps(box,o,8))||placed.some(o=>overlaps(box,o,8)))continue;
-    chosen=pos;placed.push(box);break;
+    chosen=pos;
+    placed.push(box);
+    break;
    }
    if(chosen)break;
   }
-  if(!chosen){chosen={x:origin.x,y:origin.y-2000-i*450};placed.push(playerRect(chosen,w))}
-  playerPositions.set(key,{x:origin.x,y:origin.y,mx:chosen.x,my:chosen.y});
+
+  if(!chosen){
+   chosen={x:origin.x,y:origin.y-2000-i*450};
+   placed.push(playerRect(chosen,w));
+  }
+
+  playerPositions.set(key,{
+   x:origin.x,y:origin.y,mx:chosen.x,my:chosen.y
+  });
   return{player:p,index:i,pos:chosen,origin,w};
  });
 }
+
 function playerMarker(item){
- const {player:p,index:i,pos,w}=item,n=getName(p),size=180,ly=100,half=Math.max(90,w/2);
+ const {player:p,index:i,pos,w}=item;
+ const n=getName(p),size=180,ly=100,half=Math.max(90,w/2);
  return`<g class="player-marker" data-kind="player" data-index="${i}" tabindex="0" role="button" transform="translate(${pos.x} ${pos.y})"><rect x="${-half}" y="-90" width="${half*2}" height="310" fill="transparent"/><image href="${face(n)}" x="${-size/2}" y="${-size/2}" width="${size}" height="${size}" preserveAspectRatio="none"/><rect class="player-name-background" x="${-w/2}" y="${ly}" width="${w}" height="120" rx="28"/><text class="player-name-label" x="0" y="${ly+60}" font-size="85" textLength="${w-50}" lengthAdjust="spacingAndGlyphs">${esc(n)}</text></g>`;
 }
+
 function renderMarkers(){
  if(!latest)return;
  const layout=placePlayers(trains);
- set(haloLayer,players.map(p=>{const q=toMap(p);return`<g transform="translate(${q.x} ${q.y})"><circle class="player-halo" r="145"/><circle class="player-halo-core" r="55"/></g>`}).join(""));
+ set(haloLayer,players.map(p=>{
+  const q=toMap(p);
+  return`<g transform="translate(${q.x} ${q.y})"><circle class="player-halo" r="145"/><circle class="player-halo-core" r="55"/></g>`;
+ }).join(""));
+
  set(markerLayer,trains.map(trainMarker).join("")+layout.map(playerMarker).join(""));
  ppCount.textContent=players.length;
+
  set(pList,players.length?players.map((p,i)=>{
   const n=getName(p),r=getRole(p);
   return`<button class="player-row" type="button" data-player-index="${i}"><img src="${face(n)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${esc(n)}</span><span class="player-role-badge ${r.className}">${esc(r.label)}</span></span></button>`;
  }).join(""):'<div class="player-empty">現在オンラインのプレイヤーはいません</div>');
 }
-const detailItem=(label,value,wide=false)=>`<div class="detail-item${wide?" wide":""}"><div class="detail-label">${label}</div><div class="detail-value">${value}</div></div>`;
-function openModal(){modal.classList.add("open");document.body.style.overflow="hidden";closeBtn.focus()}
-function closeModal(){modal.classList.remove("open");document.body.style.overflow="";selectedPlayer=null;selectedTrain=null}
+
+const detailItem=(label,value,wide=false)=>
+ `<div class="detail-item${wide?" wide":""}"><div class="detail-label">${label}</div><div class="detail-value">${value}</div></div>`;
+
+function openModal(){
+ modal.classList.add("open");
+ document.body.style.overflow="hidden";
+ closeBtn.focus();
+}
+function closeModal(){
+ modal.classList.remove("open");
+ document.body.style.overflow="";
+ selectedPlayer=null;
+ selectedTrain=null;
+}
+
 function showPlayer(p){
- selectedPlayer=getName(p);selectedTrain=null;mTitle.textContent="プレイヤー情報";
+ selectedPlayer=getName(p);
+ selectedTrain=null;
+ mTitle.textContent="プレイヤー情報";
  const role=getRole(p),n=getName(p);
- mContent.innerHTML=`<div class="detail-player"><img src="${face(n)}" alt=""><div><div class="detail-player-name">${esc(n)}</div><div class="player-role-badge detail-player-role ${role.className}">${esc(role.label)}</div></div></div><div class="detail-grid">${detailItem("座標 (X, Y, Z)",xyz(coords(p)),true)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;openModal();
+ mContent.innerHTML=`
+ <div class="detail-player">
+  <img src="${face(n)}" alt="">
+  <div>
+   <div class="detail-player-name">${esc(n)}</div>
+   <div class="player-role-badge detail-player-role ${role.className}">${esc(role.label)}</div>
+  </div>
+ </div>
+ <div class="detail-grid">${detailItem("座標 (X, Y, Z)",xyz(coords(p)),true)}</div>
+ <div class="detail-note">在線情報は自動更新されます。</div>`;
+ openModal();
 }
+
 function showTrain(t){
- const c=trainInfo(t),d={"x+":"東方向（X＋）","x-":"西方向（X−）","z+":"南方向（Z＋）","z-":"北方向（Z−）"};
- selectedTrain=c.id;selectedPlayer=null;mTitle.textContent="列車情報";
- mContent.innerHTML=`<div class="train-summary" style="border-color:${c.type.color}"><span class="train-type" style="background:${c.type.color}">${esc(c.type.name)}</span><span class="train-destination">${esc(c.destination)} 行</span></div><div class="detail-grid">${detailItem("種別",esc(c.type.name))}${detailItem("形式",esc(c.model))}${detailItem("行先",esc(c.destination))}${detailItem("路線",esc(c.route))}${detailItem("速度",fmt(speedOf(t),0)+" km/h")}${detailItem("進行方向",d[c.d]||"不明")}${detailItem("座標 (X, Y, Z)",xyz(c),true)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;openModal();
+ const c=trainInfo(t);
+ const d={"x+":"東方向（X＋）","x-":"西方向（X−）","z+":"南方向（Z＋）","z-":"北方向（Z−）"};
+ selectedTrain=c.id;
+ selectedPlayer=null;
+ mTitle.textContent="列車情報";
+ mContent.innerHTML=`
+ <div class="train-summary" style="border-color:${c.type.color}">
+  <span class="train-type" style="background:${c.type.color}">${esc(c.type.name)}</span>
+  <span class="train-destination">${esc(c.destination)} 行</span>
+ </div>
+ <div class="detail-grid">
+  ${detailItem("種別",esc(c.type.name))}
+  ${detailItem("形式",esc(c.model))}
+  ${detailItem("行先",esc(c.destination))}
+  ${detailItem("路線",esc(c.route))}
+  ${detailItem("速度",fmt(speedOf(t),0)+" km/h")}
+  ${detailItem("進行方向",d[c.d]||"不明")}
+  ${detailItem("座標 (X, Y, Z)",xyz(c),true)}
+ </div>
+ <div class="detail-note">在線情報は自動更新されます。</div>`;
+ openModal();
 }
+
 function refreshDetail(){
  if(!modal.classList.contains("open"))return;
- if(selectedPlayer){const p=players.find(x=>getName(x)===selectedPlayer);if(p)showPlayer(p);else mContent.innerHTML='<div class="player-empty">このプレイヤーは現在オンラインではありません。</div>'}
- else if(selectedTrain!==null){const t=trains.find(x=>trainInfo(x).id===selectedTrain);if(t)showTrain(t);else mContent.innerHTML='<div class="player-empty">選択中の列車は現在見つかりません。</div>'}
+ if(selectedPlayer){
+  const p=players.find(x=>getName(x)===selectedPlayer);
+  if(p)showPlayer(p);
+  else mContent.innerHTML='<div class="player-empty">このプレイヤーは現在オンラインではありません。</div>';
+ }else if(selectedTrain!==null){
+  const t=trains.find(x=>trainInfo(x).id===selectedTrain);
+  if(t)showTrain(t);
+  else mContent.innerHTML='<div class="player-empty">選択中の列車は現在見つかりません。</div>';
+ }
 }
+
 const markerOf=t=>(t instanceof Element?t:t?.parentElement)?.closest("[data-kind][data-index]");
+
 markerLayer.addEventListener("click",e=>{
- const el=markerOf(e.target);if(!el||dragMoved)return;const i=Number(el.dataset.index);
- if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
+ const el=markerOf(e.target);
+ if(!el||dragMoved)return;
+ const i=Number(el.dataset.index);
+ if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);
+ if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
 });
+
 markerLayer.addEventListener("keydown",e=>{
- if(e.key!=="Enter"&&e.key!==" ")return;const el=markerOf(e.target);if(!el)return;e.preventDefault();const i=Number(el.dataset.index);
- if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
+ if(e.key!=="Enter"&&e.key!==" ")return;
+ const el=markerOf(e.target);
+ if(!el)return;
+ e.preventDefault();
+ const i=Number(el.dataset.index);
+ if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);
+ if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i]);
 });
+
 pList.addEventListener("click",e=>{
  const b=(e.target instanceof Element?e.target:e.target?.parentElement)?.closest("[data-player-index]");
  if(b&&players[Number(b.dataset.playerIndex)])showPlayer(players[Number(b.dataset.playerIndex)]);
 });
+
 function setConnection(ok){
- connDot.classList.toggle("online",ok);connDot.classList.toggle("offline",!ok);connText.textContent=ok?"サーバー接続中":"サーバーに接続できません";
+ connDot.classList.toggle("online",ok);
+ connDot.classList.toggle("offline",!ok);
+ connText.textContent=ok?"サーバー接続中":"サーバーに接続できません";
 }
+
 async function fetchStatus(){
- if(isFetching)return;isFetching=true;
+ if(isFetching)return;
+ isFetching=true;
  try{
-  const res=await fetch(API_URL,{cache:"no-store"});if(!res.ok)throw Error(`HTTP ${res.status}`);
-  const data=await res.json();if(data?.success===false)throw Error(data.error||"API error");
-  latest=data;const r=data?.data??data?.status??data??{};
-  players=list(r.players??r.player??r.onlinePlayers??[]);trains=list(r.trains??r.train??r.carts??[]);
+  const res=await fetch(API_URL,{cache:"no-store"});
+  if(!res.ok)throw Error(`HTTP ${res.status}`);
+  const data=await res.json();
+  if(data?.success===false)throw Error(data.error||"API error");
+
+  latest=data;
+  const r=data?.data??data?.status??data??{};
+  players=list(r.players??r.player??r.onlinePlayers??[]);
+  trains=list(r.trains??r.train??r.carts??[]);
+
   wtText.textContent=`ワールド時刻：${r.worldTime??r.time??r.world_time??"--"}`;
   wxText.textContent=`天候：${r.weather??r.worldWeather??r.world_weather??"--"}`;
   tpsText.textContent=`TPS：${fmt(r.tps??r.TPS??"--",0)}`;
-  pcText.textContent=players.length;tcText.textContent=`列車：${trains.length}編成`;
+  pcText.textContent=players.length;
+  tcText.textContent=`列車：${trains.length}編成`;
   lastUpd.textContent=`最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
-  setConnection(true);lastOk=Date.now();
-  if(map.dataset.initialized!=="true"){setInitialView();map.dataset.initialized="true"}else renderMarkers();
+
+  setConnection(true);
+  lastOk=Date.now();
+
+  if(map.dataset.initialized!=="true"){
+   setInitialView();
+   map.dataset.initialized="true";
+  }else{
+   renderMarkers();
+  }
   refreshDetail();
- }catch(e){console.error("在線データ取得エラー:",e);setConnection(false)}
- finally{isFetching=false}
+ }catch(e){
+  console.error("在線データ取得エラー:",e);
+  setConnection(false);
+ }finally{
+  isFetching=false;
+ }
 }
-function scheduleRefresh(){clearTimeout(refreshTimer);refreshTimer=setTimeout(async()=>{await fetchStatus();scheduleRefresh()},1000)}
-function refreshNow(){clearTimeout(refreshTimer);fetchStatus().finally(scheduleRefresh)}
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshNow()});
-window.addEventListener("focus",refreshNow);window.addEventListener("online",refreshNow);
+
+function scheduleRefresh(){
+ clearTimeout(refreshTimer);
+ refreshTimer=setTimeout(async()=>{
+  await fetchStatus();
+  scheduleRefresh();
+ },1000);
+}
+
+function refreshNow(){
+ clearTimeout(refreshTimer);
+ fetchStatus().finally(scheduleRefresh);
+}
+
+document.addEventListener("visibilitychange",()=>{
+ if(!document.hidden)refreshNow();
+});
+window.addEventListener("focus",refreshNow);
+window.addEventListener("online",refreshNow);
 window.addEventListener("pagehide",()=>clearTimeout(refreshTimer));
-const staleTimer=setInterval(()=>{if(lastOk&&Date.now()-lastOk>10000)setConnection(false)},3000);
+
+const staleTimer=setInterval(()=>{
+ if(lastOk&&Date.now()-lastOk>10000)setConnection(false);
+},3000);
 window.addEventListener("pagehide",()=>clearInterval(staleTimer));
+
 function zoomAt(f,cx,cy){
- const r=map.getBoundingClientRect();if(!r.width||!r.height)return;
- const px=(cx-r.left)/r.width,py=(cy-r.top)/r.height,wx=view.x+px*view.w,wy=view.y+py*view.h;
- view.w=clamp(view.w*f,MIN_W,MAX_W);view.h=view.w/dimensions().aspect;view.x=wx-px*view.w;view.y=wy-py*view.h;applyView();
+ const r=map.getBoundingClientRect();
+ if(!r.width||!r.height)return;
+ const px=(cx-r.left)/r.width,py=(cy-r.top)/r.height;
+ const wx=view.x+px*view.w,wy=view.y+py*view.h;
+ view.w=clamp(view.w*f,MIN_W,MAX_W);
+ view.h=view.w/dimensions().aspect;
+ view.x=wx-px*view.w;
+ view.y=wy-py*view.h;
+ applyView();
 }
-function zoomCenter(f){const r=map.getBoundingClientRect();zoomAt(f,r.left+r.width/2,r.top+r.height/2)}
+
+function zoomCenter(f){
+ const r=map.getBoundingClientRect();
+ zoomAt(f,r.left+r.width/2,r.top+r.height/2);
+}
+
 $("zoomIn").addEventListener("click",()=>zoomCenter(.75));
 $("zoomOut").addEventListener("click",()=>zoomCenter(1.33));
 $("resetView").addEventListener("click",setInitialView);
-map.addEventListener("wheel",e=>{e.preventDefault();zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY)},{passive:false});
+
+map.addEventListener("wheel",e=>{
+ e.preventDefault();
+ zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY);
+},{passive:false});
+
 map.addEventListener("pointerdown",e=>{
  if(e.button!==0||markerOf(e.target))return;
- const t=e.target instanceof Element?e.target:e.target?.parentElement;if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
- dragging=true;dragMoved=false;dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};map.classList.add("dragging");
+ const t=e.target instanceof Element?e.target:e.target?.parentElement;
+ if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
+ dragging=true;
+ dragMoved=false;
+ dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};
+ map.classList.add("dragging");
 });
+
 window.addEventListener("pointermove",e=>{
- if(!dragging||!dragStart)return;const dx=e.clientX-dragStart.x,dy=e.clientY-dragStart.y,s=scale();
+ if(!dragging||!dragStart)return;
+ const dx=e.clientX-dragStart.x,dy=e.clientY-dragStart.y,s=scale();
  if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true;
- view.x=dragStart.vx-dx*s;view.y=dragStart.vy-dy*s;applyView(false);
+ view.x=dragStart.vx-dx*s;
+ view.y=dragStart.vy-dy*s;
+ applyView(false);
 });
+
 function stopDragging(){
- if(!dragging)return;dragging=false;dragStart=null;map.classList.remove("dragging");renderMarkers();setTimeout(()=>dragMoved=false,120);
+ if(!dragging)return;
+ dragging=false;
+ dragStart=null;
+ map.classList.remove("dragging");
+ renderMarkers();
+ setTimeout(()=>dragMoved=false,120);
 }
-window.addEventListener("pointerup",stopDragging);window.addEventListener("pointercancel",stopDragging);
+window.addEventListener("pointerup",stopDragging);
+window.addEventListener("pointercancel",stopDragging);
+
 window.addEventListener("keydown",e=>{
- if(modal.classList.contains("open")){if(e.key==="Escape")closeModal();return}
+ if(modal.classList.contains("open")){
+  if(e.key==="Escape")closeModal();
+  return;
+ }
  if(e.target instanceof HTMLElement&&e.target.matches("input,textarea,button,a"))return;
- const step=view.w*.08,moves={ArrowUp:[0,-step],ArrowDown:[0,step],ArrowLeft:[-step,0],ArrowRight:[step,0]};
- if(moves[e.key]){e.preventDefault();view.x+=moves[e.key][0];view.y+=moves[e.key][1];applyView(false)}
- else if(e.key==="+"||e.key==="="){e.preventDefault();zoomCenter(.75)}
- else if(e.key==="-"){e.preventDefault();zoomCenter(1.33)}
+
+ const step=view.w*.08;
+ const moves={
+  ArrowUp:[0,-step],ArrowDown:[0,step],
+  ArrowLeft:[-step,0],ArrowRight:[step,0]
+ };
+ if(moves[e.key]){
+  e.preventDefault();
+  view.x+=moves[e.key][0];
+  view.y+=moves[e.key][1];
+  applyView(false);
+ }else if(e.key==="+"||e.key==="="){
+  e.preventDefault();
+  zoomCenter(.75);
+ }else if(e.key==="-"){
+  e.preventDefault();
+  zoomCenter(1.33);
+ }
 });
-collapseBtn.addEventListener("click",()=>{pPanel.classList.toggle("collapsed");collapseBtn.textContent=pPanel.classList.contains("collapsed")?"+":"−"});
+
+collapseBtn.addEventListener("click",()=>{
+ pPanel.classList.toggle("collapsed");
+ collapseBtn.textContent=pPanel.classList.contains("collapsed")?"+":"−";
+});
+
 closeBtn.addEventListener("click",closeModal);
-modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
-window.addEventListener("resize",()=>{
- cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{view.h=view.w/dimensions().aspect;applyView()});
+modal.addEventListener("click",e=>{
+ if(e.target===modal)closeModal();
 });
-(async()=>{await loadStaff();await fetchStatus();scheduleRefresh()})();
+
+window.addEventListener("resize",()=>{
+ cancelAnimationFrame(resizeFrame);
+ resizeFrame=requestAnimationFrame(()=>{
+  view.h=view.w/dimensions().aspect;
+  applyView();
+ });
+});
+
+/* 路線と駅は初回だけ描画して再利用 */
+renderRoute();
+
+(async()=>{
+ await loadStaff();
+ await fetchStatus();
+ scheduleRefresh();
+})();
 </script>
 </body>
 </html>
