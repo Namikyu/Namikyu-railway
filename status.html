@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -42,21 +41,10 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 #map.dragging{cursor:grabbing}
 .grid-line{stroke:#dce5ed;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
 .route-line{fill:none;stroke-width:32;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
-.route-wave{stroke:#38bfe8}
-.route-yano{stroke:#f97316}
-.route-kawatei{stroke:#dc2626}
-.route-rain{stroke:#84cc16}
-.route-depot{stroke:#888;stroke-width:21}
-.route-experiment{stroke:#111;stroke-width:25}
-.route-factory{stroke:#888;stroke-width:22}
+.route-wave{stroke:#38bfe8}.route-yano{stroke:#f97316}.route-kawatei{stroke:#dc2626}.route-rain{stroke:#84cc16}
+.route-depot{stroke:#888;stroke-width:21}.route-experiment{stroke:#111;stroke-width:25}.route-factory{stroke:#888;stroke-width:22}
 .station-dot{fill:white;stroke-width:12;pointer-events:none}
-.station-wave{stroke:#38bfe8}
-.station-yano{stroke:#f97316}
-.station-kawatei{stroke:#dc2626}
-.station-rain{stroke:#84cc16}
-.station-depot{stroke:#888}
-.station-experiment{stroke:#111}
-.station-factory{stroke:#888}
+.station-wave{stroke:#38bfe8}.station-yano{stroke:#f97316}.station-kawatei{stroke:#dc2626}.station-rain{stroke:#84cc16}.station-depot{stroke:#888}.station-experiment{stroke:#111}.station-factory{stroke:#888}
 .station-label{fill:#111827;stroke:#f5f8fb;stroke-width:3px;paint-order:stroke fill;font-family:"Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;font-weight:800;text-anchor:start;pointer-events:none}
 .station-label-end{text-anchor:end}
 .station-reading{font-weight:600}
@@ -169,12 +157,9 @@ html[data-theme=dark] .player-name-label{fill:white;stroke:#172638}
  <span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span><span id="trainCount">列車：--編成</span>
 </div>
 <div class="legend">
- <span><i style="background:#38bfe8"></i>波急波川線</span>
- <span><i style="background:#f97316"></i>矢野電鉄線</span>
- <span><i style="background:#dc2626"></i>川鉄依丘線</span>
- <span><i style="background:#84cc16"></i>雨急雨波線</span>
- <span><i style="background:#111"></i>波急実験線</span>
- <span><i style="background:#888"></i>留置線・車庫・製造工場</span>
+ <span><i style="background:#38bfe8"></i>波急波川線</span><span><i style="background:#f97316"></i>矢野電鉄線</span>
+ <span><i style="background:#dc2626"></i>川鉄依丘線</span><span><i style="background:#84cc16"></i>雨急雨波線</span>
+ <span><i style="background:#111"></i>波急実験線</span><span><i style="background:#888"></i>留置線・車庫・製造工場</span>
  <span><i style="background:#f97316"></i>特急</span><span><i style="background:#dc2626"></i>急行</span>
  <span><i style="background:#16a34a"></i>準急</span><span><i style="background:#2878c8"></i>各駅停車</span>
  <span>水色の丸・顔マーク：プレイヤー</span>
@@ -296,38 +281,24 @@ async function loadStaff(){
 function dimensions(){const r=map.getBoundingClientRect();return{width:Math.max(1,r.width),aspect:r.width/Math.max(1,r.height)}}
 const scale=()=>view.w/dimensions().width;
 
-/* 駅名配置 */
+/* 駅名配置：縦書き駅名は全駅同じサイズ */
 const stationLabelLayout={
- "中市":{x:220,y:30},
- "大白":{x:220,y:1098},
- "水浜":{x:220,y:2067},
- "竹ヶ丘":{x:220,y:3147},
- "草市":{x:220,y:4127},
- "長立":{x:55,y:5000},
- "波丘":{x:220,y:6179},
- "矢野空港":{x:220,y:-1272},
- "矢野":{x:220,y:-2428},
- "大東":{x:220,y:-3732},
- "浜口":{x:220,y:-4933},
- "新矢野":{x:220,y:-5934},
- "吉山":{x:220,y:-7268},
+ "中市":{x:220,y:30},"大白":{x:220,y:1098},"水浜":{x:220,y:2067},"竹ヶ丘":{x:220,y:3147},"草市":{x:220,y:4127},
+ "長立":{x:55,y:5000},"波丘":{x:220,y:6179},"矢野空港":{x:220,y:-1272},"矢野":{x:220,y:-2428},
+ "大東":{x:220,y:-3732},"浜口":{x:220,y:-4933},"新矢野":{x:220,y:-5934},"吉山":{x:220,y:-7268},
  "吉山留置線":{x:230,y:-7495},
- "新草市":{x:155,y:4260,readingDy:70,fontSize:130,readingSize:68},
- "北ノ宮":{x:680,readingX:560,vertical:true},
- "依丘空港":{x:1225,readingX:1105,vertical:true},
- "芝田町":{x:1589,readingX:1469,vertical:true},
- "鷺川":{x:2054,readingX:1934,vertical:true},
- "依丘":{x:2622,readingX:2502,vertical:true},
- "依丘車庫":{x:2810,y:4545},
- "新川":{x:220,y:7430},
- "雨波":{x:220,y:8806},
- "蛙ヶ丘":{x:98,y:10432},
- "新雨岡":{x:98,y:11806},
- "雨岡":{x:98,y:13075},
- "雨山":{x:98,y:14672},
- "雨山車両センター":{x:-300,y:14986,a:"end"},
- "中市出庫区":{x:230,y:-360},
- /* この3駅のラベル位置は変更しない */
+ /* 新草市は草市の読み仮名より左下へ */
+ "新草市":{x:-340,y:4460,readingDy:70,fontSize:125,readingSize:72},
+ /* 川鉄：マーカーのすぐ上、同じ高さ・同じ文字サイズ */
+ "北ノ宮":{x:680,y:4250,vertical:true,readingX:560,readingY:4250},
+ "依丘空港":{x:1225,y:4250,vertical:true,readingX:1105,readingY:4250},
+ "芝田町":{x:1589,y:4250,vertical:true,readingX:1469,readingY:4250},
+ "鷺川":{x:2054,y:4250,vertical:true,readingX:1934,readingY:4250},
+ "依丘":{x:2622,y:4250,vertical:true,readingX:2502,readingY:4250},
+ "依丘車庫":{x:2810,y:4545},"新川":{x:220,y:7430},"雨波":{x:220,y:8806},
+ "蛙ヶ丘":{x:98,y:10432},"新雨岡":{x:98,y:11806},"雨岡":{x:98,y:13075},"雨山":{x:98,y:14672},
+ "雨山車両センター":{x:-300,y:14986,a:"end"},"中市出庫区":{x:230,y:-360},
+ /* この3駅は位置を維持 */
  "高ノ宮":{x:650,y:4930,vertical:true,readingX:790,readingY:4930},
  "高宮製造工場":{x:1080,y:4930,vertical:true,readingX:1220,readingY:4930}
 };
@@ -344,26 +315,17 @@ function renderRoute(){
  <path class="route-line route-depot" d="M0 -17 L13 -404"/>
  <path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/>
  <path class="route-line route-factory" d="M589 4727 L995 4727"/>`);
-
  const circles=stations.map(s=>`<g transform="translate(${s.x} ${s.z})"><circle class="station-dot station-${s.line==="both"?"wave":s.line}" r="38"/></g>`).join("");
  const labels=stations.map(s=>{
   const q=stationLabelLayout[s.name];if(!q)return"";
-  if(q.vertical){
-   /* 川鉄依丘線の駅名は文字サイズ統一。線路の直上に下端をそろえる */
-   const fixed=["北ノ宮","依丘空港","芝田町","鷺川","依丘"].includes(s.name);
-   const y=fixed?4498-s.name.length*125-12:q.y;
-   const ry=fixed?4498-s.reading.length*72-12:q.readingY??q.y;
-   const fs=fixed?125:125,rs=fixed?72:72;
-   return`
-   <text class="station-label station-label-vertical" x="${q.x}" y="${y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text>
-   <text class="station-label station-reading-vertical" x="${q.readingX}" y="${ry}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
-  }
+  if(q.vertical)return`
+   <text class="station-label station-label-vertical" x="${q.x}" y="${q.y}" font-size="125" writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text>
+   <text class="station-label station-reading-vertical" x="${q.readingX}" y="${q.readingY}" font-size="72" writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
   const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100;
   return`<text class="station-label ${q.a==="end"?"station-label-end":""}" x="${q.x}" y="${q.y}" font-size="${fs}"><tspan>${esc(s.name)}</tspan><tspan class="station-reading" x="${q.x}" dy="${dy}" font-size="${rs}">${esc(s.reading)}</tspan></text>`;
  }).join("");
  set(stationLayer,circles+labels);
 }
-
 function applyView(render=true){
  view.h=view.w/dimensions().aspect;map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
  const right=view.x+view.w,bottom=view.y+view.h,lines=[];
@@ -389,36 +351,51 @@ const overlaps=(a,b,g=0)=>a.x0<b.x1+g&&a.x1>b.x0-g&&a.y0<b.y1+g&&a.y1>b.y0-g;
 function stationObstacles(){
  const out=[];
  for(const s of stations){
-  out.push(rect(s.x-95,s.z-95,s.x+95,s.z+95));
+  out.push(rect(s.x-100,s.z-100,s.x+100,s.z+100));
   const q=stationLabelLayout[s.name];if(!q)continue;
-  if(q.vertical)out.push(rect(Math.min(q.x,q.readingX)-100,q.y-550,Math.max(q.x,q.readingX)+70,q.y+100));
-  else{const w=Math.max(s.name.length*145,s.reading.length*99)+100;out.push(q.a==="end"?rect(q.x-w,q.y-190,q.x+30,q.y+150):rect(q.x-30,q.y-190,q.x+w,q.y+150))}
+  if(q.vertical){
+   /* 縦書き文字は下方向へ伸びるため、実際の文字領域を広めに確保 */
+   const nameH=s.name.length*125+100,readH=s.reading.length*72+100;
+   out.push(rect(Math.min(q.x,q.readingX)-100,q.y-100,Math.max(q.x,q.readingX)+110,q.y+Math.max(nameH,readH)));
+  }else{
+   const w=Math.max(s.name.length*(q.fontSize||145),s.reading.length*(q.readingSize||99))+120;
+   out.push(q.a==="end"?rect(q.x-w,q.y-200,q.x+30,q.y+160):rect(q.x-40,q.y-200,q.x+w,q.y+200));
+  }
  }
  return out;
 }
-function playerRect(pos,w){
- const half=Math.max(90,w/2);return rect(pos.x-half-25,pos.y-115,pos.x+half+25,pos.y+250);
-}
+function playerRect(pos,w){const half=Math.max(90,w/2);return rect(pos.x-half-25,pos.y-115,pos.x+half+25,pos.y+250)}
 
-/* プレイヤーの表示位置は、本人が移動したときだけ再計算 */
+/* プレイヤーの位置は本人が移動した場合だけ再計算 */
 function placePlayers(tp){
- const obstacles=stationObstacles();tp.forEach(t=>obstacles.push(rect(t.x-230,t.z-230,t.x+230,t.z+230)));
- const placed=[],dirs=Array.from({length:32},(_,i)=>[Math.cos(i*Math.PI/16),Math.sin(i*Math.PI/16)]);
+ const fixed=stationObstacles(),trainBlocks=tp.map(t=>rect(t.x-230,t.z-230,t.x+230,t.z+230)),placed=[];
+ const dirs=Array.from({length:32},(_,i)=>[Math.cos(i*Math.PI/16),Math.sin(i*Math.PI/16)]);
  return players.map((p,i)=>{
   const n=getName(p),w=clamp(n.length*65,250,1000),origin=toMap(p),key=playerKey(p),saved=playerPositions.get(key);
   if(saved&&Math.hypot(saved.x-origin.x,saved.y-origin.y)<1){
-   const pos={x:saved.mx,y:saved.my};placed.push(playerRect(pos,w));return{player:p,index:i,pos,origin,w};
+   const pos={x:saved.mx,y:saved.my},box=playerRect(pos,w);
+   if(!fixed.some(o=>overlaps(box,o,8))&&!placed.some(o=>overlaps(box,o,8))){
+    placed.push(box);return{player:p,index:i,pos,origin,w};
+   }
   }
   let chosen=null;
-  for(const d of [0,190,230,270,310,350,400,460,530,610,700,800,920,1060,1220,1400,1600,1850]){
+  /* 駅名・駅マーカー・他プレイヤーを避け、遠くまで候補を探す */
+  for(const d of [0,190,230,270,310,350,400,460,530,610,700,800,920,1060,1220,1400,1600,1850,2200,2600,3100,3700,4400]){
    for(const [dx,dy] of d===0?[[0,0]]:dirs.map(([x,y])=>[x*d,y*d])){
     const pos={x:origin.x+dx,y:origin.y+dy},box=playerRect(pos,w);
-    if(obstacles.some(o=>overlaps(box,o,8))||placed.some(o=>overlaps(box,o,8)))continue;
+    if(fixed.some(o=>overlaps(box,o,12))||placed.some(o=>overlaps(box,o,12))||trainBlocks.some(o=>overlaps(box,o,12)))continue;
     chosen=pos;placed.push(box);break;
    }
    if(chosen)break;
   }
-  if(!chosen){chosen={x:origin.x,y:origin.y-2000-i*450};placed.push(playerRect(chosen,w))}
+  if(!chosen){
+   /* 最終候補も駅名から十分離した位置に配置 */
+   for(let d=5000;d<=10000;d+=500){
+    const pos={x:origin.x+d,y:origin.y-d},box=playerRect(pos,w);
+    if(!fixed.some(o=>overlaps(box,o,12))&&!placed.some(o=>overlaps(box,o,12))){chosen=pos;placed.push(box);break}
+   }
+  }
+  if(!chosen){chosen={x:origin.x+10000,y:origin.y-10000};placed.push(playerRect(chosen,w))}
   playerPositions.set(key,{x:origin.x,y:origin.y,mx:chosen.x,my:chosen.y});
   return{player:p,index:i,pos:chosen,origin,w};
  });
