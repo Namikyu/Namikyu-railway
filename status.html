@@ -314,6 +314,21 @@ if(g.includes("local2"))return{key:"local2",name:"各駅停車",label:"各",colo
 if(g.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
 return water?{key:"waterline",name:"普通",label:"普",color:"#888"}:{key:"unknown",name:"不明",label:"不",color:"#222"}
 }
+
+/* 現在位置と進行方向から、終点までに残っている種別変更だけを返す */
+function getTypeChange(g,z,d){
+if(!g.includes("sexp")||g.includes("exp")||g.includes("ltd"))return"なし";
+const changes=[];
+if(d==="z-"){
+if(z>6131)changes.push("波丘から準急");
+if(z>-18)changes.push("中市から各駅停車");
+}else if(d==="z+"){
+if(z<-18)changes.push("中市から準急");
+if(z<6132)changes.push("波丘から各駅停車");
+}
+return changes.length?changes.join("、"):"なし"
+}
+
 function trainInfo(t){
 let c=TC.get(t);
 if(c)return c;
@@ -327,7 +342,7 @@ else if(p.z>6131)route="雨急雨波線";
 else if(g.includes("kawa2")||(g.includes("exp")&&p.z>4081))route="川鉄依丘線";
 else if(water)route="水山線";
 else if(p.x>=50&&p.z>=4000&&p.z<=5000)route="川鉄依丘線";
-c={...p,id:stableId(t),d,type,model:MODELS[m?.[1]]||"不明",route,destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
+c={...p,id:stableId(t),d,type,typeChange:getTypeChange(g,p.z,d),model:MODELS[m?.[1]]||"不明",route,destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
 TC.set(t,c);
 return c
 }
@@ -433,7 +448,7 @@ const c=trainInfo(t);
 selectedTrain=c.id;
 selectedPlayer=null;
 mTitle.textContent="列車情報";
-mContent.innerHTML=`<div class="train-summary" style="border-color:${c.type.color}"><span class="train-type" style="background:${c.type.color}">${esc(c.type.name)}</span><span class="train-destination">${esc(c.destination)} 行</span></div><div class="detail-grid">${item("種別",esc(c.type.name))}${item("形式",esc(c.model))}${item("行先",esc(c.destination))}${item("路線",esc(c.route))}${item("速度",fmt(speedOf(t),0)+" km/h")}${item("進行方向",DIR_JA[c.d]||"不明")}${item("座標 (X, Y, Z)",xyz(c),1)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;
+mContent.innerHTML=`<div class="train-summary" style="border-color:${c.type.color}"><span class="train-type" style="background:${c.type.color}">${esc(c.type.name)}</span><span class="train-destination">${esc(c.destination)} 行</span></div><div class="detail-grid">${item("種別",esc(c.type.name))}${item("形式",esc(c.model))}${item("行先",esc(c.destination))}${item("路線",esc(c.route))}${item("種別変更",esc(c.typeChange),1)}${item("速度",fmt(speedOf(t),0)+" km/h")}${item("進行方向",DIR_JA[c.d]||"不明")}${item("座標 (X, Y, Z)",xyz(c),1)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;
 openModal()
 }
 function refreshDetail(){
