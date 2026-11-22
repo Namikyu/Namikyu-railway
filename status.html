@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -242,11 +243,7 @@ main{padding:7px}
 <g id="markerLayer"></g>
 </svg>
 <div class="compass">
-<span class="north">Z−</span>
-<span class="west">X−</span>
-<span class="center">＋</span>
-<span class="east">X＋</span>
-<span class="south">Z＋</span>
+<span class="north">Z−</span><span class="west">X−</span><span class="center">＋</span><span class="east">X＋</span><span class="south">Z＋</span>
 </div>
 <div class="player-panel" id="playerPanel">
 <div class="player-panel-head">
@@ -320,8 +317,17 @@ return water?{key:"waterline",name:"普通",label:"普",color:"#888"}:{key:"unkn
 function trainInfo(t){
 let c=TC.get(t);
 if(c)return c;
-const g=tags(t),p=coords(t),water=p.x>=-608&&p.x<=692&&p.z>=3957&&p.z<=5257&&!g.some(x=>TYPE_TAGS.includes(x)),d=g.includes("z-")?"z-":g.includes("z+")||g.includes("z")?"z+":g.includes("x-")?"x-":"x+",m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name),type=trainType(g,p.z,water);
-c={...p,id:stableId(t),d,type,model:MODELS[m?.[1]]||"不明",route:water?"水山線":p.x>=50&&p.z>=4000&&p.z<=5000?"川鉄依丘線":p.z>6131?"雨急雨波線":p.z<-18?"矢野電鉄線":"波急波川線",destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
+const g=tags(t),p=coords(t);
+const water=!g.some(x=>TYPE_TAGS.includes(x))&&p.x>=-656&&p.x<=50&&p.z>=4030&&p.z<=4808;
+const d=g.includes("z-")?"z-":g.includes("z+")||g.includes("z")?"z+":g.includes("x-")?"x-":"x+";
+const m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name),type=trainType(g,p.z,water);
+let route="波急波川線";
+if(p.z<-18)route="矢野電鉄線";
+else if(p.z>6131)route="雨急雨波線";
+else if(g.includes("kawa2")||(g.includes("exp")&&p.z>4081))route="川鉄依丘線";
+else if(water)route="水山線";
+else if(p.x>=50&&p.z>=4000&&p.z<=5000)route="川鉄依丘線";
+c={...p,id:stableId(t),d,type,model:MODELS[m?.[1]]||"不明",route,destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
 TC.set(t,c);
 return c
 }
@@ -622,9 +628,9 @@ const fs=125,rs=72,sh=q.shiftY||0,Y=(ly||4498-n.length*fs-18)+sh,RY=(q.readingY?
 l+=`<text class="station-label station-label-vertical" x="${lx}" y="${Y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(n)}</text><text class="station-label station-reading-vertical" x="${q.readingX}" y="${RY}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(r)}</text>`;
 OBST.push(rect(lx-110,Y-100,lx+110,Y+n.length*125+100),rect(q.readingX-80,RY-100,q.readingX+80,RY+r.length*72+100))
 }else{
-const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100,w=Math.max(n.length*fs,r.length*rs)+100,h=fs+dy+rs+70,e=q.a==="end";
-l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" font-size="${fs}"><tspan>${esc(n)}</tspan> <tspan class="station-reading" x="${lx}" dy="${dy}" font-size="${rs}">${esc(r)}</tspan></text>`;
-OBST.push(e?rect(lx-w,ly-fs,lx+30,ly+h):rect(lx-30,ly-fs,lx+w,ly+h))
+const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100,w=Math.max(n.length*fs,r.length*rs)+100,h=fs+dy+rs+70,e=q.a==="end",rx=q.readingX??lx;
+l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" font-size="${fs}"><tspan>${esc(n)}</tspan><tspan class="station-reading" x="${rx}" dy="${dy}" font-size="${rs}">${esc(r)}</tspan></text>`;
+OBST.push(e?rect(Math.min(lx-w,rx-w),ly-fs,Math.max(lx,rx)+30,ly+h):rect(Math.min(lx,rx)-30,ly-fs,Math.max(lx+w,rx+w),ly+h))
 }
 }
 return c+l
