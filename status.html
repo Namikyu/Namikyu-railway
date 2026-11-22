@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -191,1033 +190,446 @@ main{padding:7px}
 </head>
 <body>
 <header class="header">
-  <div class="header-top">
-    <img class="logo" src="./icon.png" alt="波急電鉄ロゴ">
-    <div class="brand-text">
-      <h1 class="brand-title">波急サーバー</h1>
-      <div class="brand-subtitle">NAMIKYU RAILWAY</div>
-    </div>
-  </div>
-  <nav class="navigation">
-    <a href="./index.html">ホーム</a>
-    <a href="./news.html">お知らせ</a>
-    <a href="./join.html">サーバー参加</a>
-    <a href="./status.html">在線位置</a>
-    <a href="./staff.html">運営メンバー</a>
-    <button class="theme-toggle" type="button" data-theme-toggle aria-label="ダークモードに切り替え">🌙</button>
-  </nav>
-</header>
-
-<main>
-  <h2>在線位置</h2>
-  <p class="subtitle">REAL-TIME PLAYER &amp; TRAIN POSITION</p>
-
-  <div class="status">
-    <span id="connectionDot" class="dot"></span>
-    <strong id="connectionText">接続しています...</strong>
-    <span id="lastUpdated">最終更新：--:--:--</span>
-    <span id="worldTime">ワールド時刻：--</span>
-    <span id="weatherText">天候：--</span>
-    <span id="tpsText">TPS：--</span>
-    <span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span>
-    <span id="trainCount">列車：--編成</span>
-  </div>
-
-  <div class="legend">
-    <span><i style="background:#38bfe8"></i>波急波川線</span>
-    <span><i style="background:#f97316"></i>矢野電鉄線</span>
-    <span><i style="background:#dc2626"></i>川鉄依丘線</span>
-    <span><i style="background:#84cc16"></i>雨急雨波線</span>
-    <span><i style="background:#22c55e"></i>水山線</span>
-    <span><i style="background:#111"></i>波急実験線</span>
-    <span><i style="background:#888"></i>留置線・車庫・製造工場</span>
-    <span><i style="background:#f97316"></i>特急</span>
-    <span><i style="background:#dc2626"></i>急行</span>
-    <span><i style="background:#16a34a"></i>準急</span>
-    <span><i style="background:#2878c8"></i>各駅停車</span>
-    <span>水色の丸・顔マーク：プレイヤー</span>
-  </div>
-
-  <section id="mapArea">
-    <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ">
-      <g id="gridLayer"></g>
-      <g id="routeLayer"></g>
-      <g id="playerHaloLayer"></g>
-      <g id="stationLayer"></g>
-      <g id="markerLayer"></g>
-    </svg>
-
-    <div class="compass">
-      <span class="north">Z−</span>
-      <span class="west">X−</span>
-      <span class="center">＋</span>
-      <span class="east">X＋</span>
-      <span class="south">Z＋</span>
-    </div>
-
-    <div class="player-panel" id="playerPanel">
-      <div class="player-panel-head">
-        <div class="player-panel-heading">オンラインプレイヤー</div>
-        <span class="player-panel-count" id="playerPanelCount">0</span>
-        <button id="collapsePlayers" type="button">−</button>
-      </div>
-      <div class="player-list" id="playerList">
-        <div class="player-empty">読み込み中...</div>
-      </div>
-    </div>
-
-    <div class="map-controls">
-      <button id="zoomIn" type="button" aria-label="拡大">＋</button>
-      <button id="zoomOut" type="button" aria-label="縮小">−</button>
-      <button id="resetView" type="button" aria-label="全体表示">⌂</button>
-      <button id="trainToggle" class="train-toggle" type="button" aria-pressed="true">列車：表示</button>
-    </div>
-
-    <div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小 / マーカー：詳細</div>
-  </section>
-</main>
-
-<div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-card">
-    <div class="modal-head">
-      <h3 class="modal-title" id="modalTitle">詳細情報</h3>
-      <button class="modal-close" id="closeModal" type="button">×</button>
-    </div>
-    <div id="modalContent"></div>
-  </div>
+<div class="header-top">
+<img class="logo" src="./icon.png" alt="波急電鉄ロゴ">
+<div class="brand-text">
+<h1 class="brand-title">波急サーバー</h1>
+<div class="brand-subtitle">NAMIKYU RAILWAY</div>
 </div>
-
+</div>
+<nav class="navigation">
+<a href="./index.html">ホーム</a>
+<a href="./news.html">お知らせ</a>
+<a href="./join.html">サーバー参加</a>
+<a href="./status.html">在線位置</a>
+<a href="./staff.html">運営メンバー</a>
+<button class="theme-toggle" type="button" data-theme-toggle aria-label="ダークモードに切り替え">🌙</button>
+</nav>
+</header>
+<main>
+<h2>在線位置</h2>
+<p class="subtitle">REAL-TIME PLAYER &amp; TRAIN POSITION</p>
+<div class="status">
+<span id="connectionDot" class="dot"></span>
+<strong id="connectionText">接続しています...</strong>
+<span id="lastUpdated">最終更新：--:--:--</span>
+<span id="worldTime">ワールド時刻：--</span>
+<span id="weatherText">天候：--</span>
+<span id="tpsText">TPS：--</span>
+<span class="online-count">オンライン <strong id="playerCount">--</strong> 人</span>
+<span id="trainCount">列車：--編成</span>
+</div>
+<div class="legend">
+<span><i style="background:#38bfe8"></i>波急波川線</span>
+<span><i style="background:#f97316"></i>矢野電鉄線</span>
+<span><i style="background:#dc2626"></i>川鉄依丘線</span>
+<span><i style="background:#84cc16"></i>雨急雨波線</span>
+<span><i style="background:#22c55e"></i>水山線</span>
+<span><i style="background:#111"></i>波急実験線</span>
+<span><i style="background:#888"></i>留置線・車庫・製造工場</span>
+<span><i style="background:#f97316"></i>特急</span>
+<span><i style="background:#dc2626"></i>急行</span>
+<span><i style="background:#16a34a"></i>準急</span>
+<span><i style="background:#2878c8"></i>各駅停車</span>
+<span>水色の丸・顔マーク：プレイヤー</span>
+</div>
+<section id="mapArea">
+<svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="在線位置マップ">
+<g id="gridLayer"></g>
+<g id="routeLayer"></g>
+<g id="playerHaloLayer"></g>
+<g id="stationLayer"></g>
+<g id="markerLayer"></g>
+</svg>
+<div class="compass">
+<span class="north">Z−</span>
+<span class="west">X−</span>
+<span class="center">＋</span>
+<span class="east">X＋</span>
+<span class="south">Z＋</span>
+</div>
+<div class="player-panel" id="playerPanel">
+<div class="player-panel-head">
+<div class="player-panel-heading">オンラインプレイヤー</div>
+<span class="player-panel-count" id="playerPanelCount">0</span>
+<button id="collapsePlayers" type="button">−</button>
+</div>
+<div class="player-list" id="playerList"><div class="player-empty">読み込み中...</div></div>
+</div>
+<div class="map-controls">
+<button id="zoomIn" type="button" aria-label="拡大">＋</button>
+<button id="zoomOut" type="button" aria-label="縮小">−</button>
+<button id="resetView" type="button" aria-label="全体表示">⌂</button>
+<button id="trainToggle" class="train-toggle" type="button" aria-pressed="true">列車：表示</button>
+</div>
+<div class="map-help">ドラッグ：移動 / ホイール：拡大・縮小 / マーカー：詳細</div>
+</section>
+</main>
+<div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-card">
+<div class="modal-head">
+<h3 class="modal-title" id="modalTitle">詳細情報</h3>
+<button class="modal-close" id="closeModal" type="button">×</button>
+</div>
+<div id="modalContent"></div>
+</div>
+</div>
 <script>
 "use strict";
-
-["contextmenu","copy","cut","selectstart","dragstart"].forEach(t=>
-  addEventListener(t,e=>e.preventDefault())
-);
-
-const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status";
-const MIN_W=1100,MAX_W=28000,GRID=500;
-const $=id=>document.getElementById(id);
-
-const map=$("map");
-const gridLayer=$("gridLayer");
-const routeLayer=$("routeLayer");
-const haloLayer=$("playerHaloLayer");
-const stationLayer=$("stationLayer");
-const markerLayer=$("markerLayer");
-const connDot=$("connectionDot");
-const connText=$("connectionText");
-const lastUpd=$("lastUpdated");
-const wtText=$("worldTime");
-const wxText=$("weatherText");
-const tpsText=$("tpsText");
-const pcText=$("playerCount");
-const tcText=$("trainCount");
-const ppCount=$("playerPanelCount");
-const pList=$("playerList");
-const pPanel=$("playerPanel");
-const modal=$("detailModal");
-const mContent=$("modalContent");
-const mTitle=$("modalTitle");
-const closeBtn=$("closeModal");
-const collapseBtn=$("collapsePlayers");
-const trainToggle=$("trainToggle");
-
-const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;",
-  "<":"&lt;",
-  ">":"&gt;",
-  '"':"&quot;",
-  "'":"&#039;"
-}[c]));
-
+["contextmenu","copy","cut","selectstart","dragstart"].forEach(t=>addEventListener(t,e=>e.preventDefault()));
+const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status",MIN_W=1100,MAX_W=28000,GRID=500,$=id=>document.getElementById(id);
+const map=$("map"),gridLayer=$("gridLayer"),routeLayer=$("routeLayer"),haloLayer=$("playerHaloLayer"),stationLayer=$("stationLayer"),markerLayer=$("markerLayer"),connDot=$("connectionDot"),connText=$("connectionText"),lastUpd=$("lastUpdated"),wtText=$("worldTime"),wxText=$("weatherText"),tpsText=$("tpsText"),pcText=$("playerCount"),tcText=$("trainCount"),ppCount=$("playerPanelCount"),pList=$("playerList"),pPanel=$("playerPanel"),modal=$("detailModal"),mContent=$("modalContent"),mTitle=$("modalTitle"),closeBtn=$("closeModal"),collapseBtn=$("collapsePlayers"),trainToggle=$("trainToggle");
+const ESC={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"};
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>ESC[c]);
 const num=(v,f=0)=>Number.isFinite(Number(v))?Number(v):f;
 const fmt=(v,d=1)=>Number.isFinite(Number(v))?Number(v).toFixed(d):"--";
 const getName=e=>String(e?.name??e?.playerName??e?.player??e?.id??"不明");
-
-const coords=e=>{
-  const p=e?.location??e?.position??e??{};
-  return{x:num(p.x),y:num(p.y),z:num(p.z)};
-};
-
-const toMap=e=>{
-  const p=coords(e);
-  return{x:p.x,y:p.z};
-};
-
+const coords=e=>{const p=e?.location??e?.position??e??{};return{x:num(p.x),y:num(p.y),z:num(p.z)}};
+const toMap=e=>{const p=coords(e);return{x:p.x,y:p.z}};
 const xyz=p=>`${fmt(p.x,2)}, ${fmt(p.y,2)}, ${fmt(p.z,2)}`;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-
-const face=p=>{
-  const xuid=p?.xuid??p?.XUID;
-  return xuid!=null&&/^\d+$/.test(String(xuid))
-    ?`https://mc-api.io/render/FACE/${encodeURIComponent(String(xuid))}?size=64`
-    :`https://mc-api.io/render/FACE/${encodeURIComponent(getName(p))}/BEDROCK?size=64`;
-};
-
+const face=p=>{const x=p?.xuid??p?.XUID;return x!=null&&/^\d+$/.test(String(x))?`https://mc-api.io/render/FACE/${encodeURIComponent(String(x))}?size=64`:`https://mc-api.io/render/FACE/${encodeURIComponent(getName(p))}/BEDROCK?size=64`};
 const ANGLES={"x+":0,"z+":90,"x-":180,"z-":-90};
 const TYPE_TAGS=["ltd","exp","sexp","local2","local"];
-
-const DEST={
-  local2:["依丘","草市"],
-  local:["波丘","吉山"],
-  exp:["依丘","吉山"],
-  ltd:["雨山","吉山"],
-  sexp:["雨山","矢野"],
-  "sexp-local":["雨山","矢野"]
-};
-
-const MODELS={
-  1532:"波急3500系",
-  2532:"矢野電5000系",
-  3800:"雨急3800系",
-  4722:"雨急4000系",
-  5179:"波急5100系",
-  6971:"水鉄1500系",
-  8152:"川鉄9700系",
-  7661:"波急3100系",
-  8575:"波急2500系"
-};
-
+const DEST={local2:["依丘","草市"],local:["波丘","吉山"],exp:["依丘","吉山"],ltd:["雨山","吉山"],sexp:["雨山","矢野"],"sexp-local":["雨山","矢野"]};
+const MODELS={1532:"波急3500系",2532:"矢野電5000系",3800:"雨急3800系",4722:"雨急4000系",5179:"波急5100系",6971:"水鉄1500系",8152:"川鉄9700系",7661:"波急3100系",8575:"波急2500系"};
 const KTS=/kts:kts(\d{4})_1/i;
-
-const set=(el,h)=>{
-  if(el._h!==h){
-    el._h=h;
-    el.innerHTML=h;
-  }
-};
-
-const list=v=>Array.isArray(v)
-  ?v
-  :v&&typeof v==="object"
-    ?Object.entries(v).map(([k,x])=>
-      x&&typeof x==="object"
-        ?{...x,id:x.id??k}
-        :{id:k,value:x}
-    )
-    :[];
-
-const stableId=t=>{
-  const v=t?.id??t?.uuid??t?.uniqueId??t?.unique_id??t?.entityId??t?.entity_id;
-  return v==null||v===""?null:String(v);
-};
-
-const tags=e=>{
-  const v=e?.tags??e?.tag??[];
-  return Array.isArray(v)
-    ?v.map(x=>String(x).toLowerCase())
-    :typeof v==="string"
-      ?v.toLowerCase().split(/[,\s]+/).filter(Boolean)
-      :[];
-};
-
-let staffMap=new Map();
-
-const getRole=p=>
-  staffMap.get(getName(p).toLowerCase())||
-  {label:"参加者",className:"role-participant"};
-
-const playerKey=p=>String(
-  p?.xuid??p?.uuid??p?.uniqueId??p?.id??getName(p)
-);
-
+const set=(el,h)=>{if(el._h!==h){el._h=h;el.innerHTML=h}};
+const list=v=>Array.isArray(v)?v:v&&typeof v==="object"?Object.entries(v).map(([k,x])=>x&&typeof x==="object"?{...x,id:x.id??k}:{id:k,value:x}):[];
+const stableId=t=>{const v=t?.id??t?.uuid??t?.uniqueId??t?.unique_id??t?.entityId??t?.entity_id;return v==null||v===""?null:String(v)};
+const tags=e=>{const v=e?.tags??e?.tag??[];return Array.isArray(v)?v.map(x=>String(x).toLowerCase()):typeof v==="string"?v.toLowerCase().split(/[,\s]+/).filter(Boolean):[]};
+let staffMap=new Map;
+const getRole=p=>staffMap.get(getName(p).toLowerCase())||{label:"参加者",className:"role-participant"};
+const playerKey=p=>String(p?.xuid??p?.uuid??p?.uniqueId??p?.id??getName(p));
 const rect=(x0,y0,x1,y1)=>({x0,y0,x1,y1});
-
-const overlaps=(a,b,g=0)=>
-  a.x0<b.x1+g&&a.x1>b.x0-g&&a.y0<b.y1+g&&a.y1>b.y0-g;
-
-const pathShape=(h,t)=>
-  `M${-h} ${-h}L${h} ${-h}L${t} 0L${h} ${h}L${-h} ${h}Z`;
-
-const markerOf=t=>
-  (t instanceof Element?t:t?.parentElement)?.closest("[data-kind][data-index]");
-
-const item=(l,v,w)=>
-  `<div class="detail-item${w?" wide":""}">
-    <div class="detail-label">${l}</div>
-    <div class="detail-value">${v}</div>
-  </div>`;
-
-const playerPositions=new Map();
-const TC=new WeakMap();
-
-let latest=null;
-let players=[];
-let trains=[];
-let view={x:-5000,y:-5000,w:10000,h:10000};
-let dragging=false;
-let dragStart=null;
-let dragMoved=false;
-let isFetching=false;
-let refreshTimer=null;
-let lastOk=0;
-let resizeFrame=null;
-let selectedPlayer=null;
-let selectedTrain=null;
-
-/* 列車表示状態。初期状態は表示 */
-let showTrains=true;
-
-/* 路線データ */
-const ROUTE_HTML=`
-<path class="route-line route-wave" d="M0 -17 L0 6132"/>
-<path class="route-line route-yano" d="M0 -17 L0 -7323"/>
-<path class="route-line route-depot" d="M0 -7323 L-9 -7550"/>
-<path class="route-line route-kawatei" d="M0 4080 C0 4330 0 4498 124 4498 L2542 4498"/>
-<path class="route-line route-depot" d="M2542 4498 L2680 4492"/>
-<path class="route-line route-rain" d="M0 6132 L0 8761 C0 9483 -122 9348 -122 10070 L-122 14627"/>
-<path class="route-line route-depot" d="M-122 14627 L-124 14941"/>
-<path class="route-line route-depot" d="M0 -17 L13 -404"/>
-<path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/>
-<path class="route-line route-factory" d="M589 4727 L995 4727"/>
-
-/* 水山線：草市～北長立～坂川～九和～水山 */
-<path class="route-line route-mizuyama" d="M0 4080 L-10 4288 L-10 4662 Q-10 4758 -132 4758 L-388 4758 L-468 4758 Q-606 4758 -606 4594 L-606 4477 L-606 4244 Q-606 4142 -529 4142 L-497 4142 Q-411 4142 -411 4235 L-411 4321"/>
-
-/* 水山駅から伸びる灰色の無名線路 */
-<path class="route-line route-depot" d="M-411 4321 L-415 4528"/>
-`;
-
+const overlaps=(a,b,g=0)=>a.x0<b.x1+g&&a.x1>b.x0-g&&a.y0<b.y1+g&&a.y1>b.y0-g;
+const pathShape=(h,t)=>`M${-h} ${-h}L${h} ${-h}L${t} 0L${h} ${h}L${-h} ${h}Z`;
+const markerOf=t=>(t instanceof Element?t:t?.parentElement)?.closest("[data-kind][data-index]");
+const item=(l,v,w)=>`<div class="detail-item${w?" wide":""}"><div class="detail-label">${l}</div><div class="detail-value">${v}</div></div>`;
+const playerPositions=new Map,TC=new WeakMap;
+let latest=null,players=[],trains=[],view={x:-5000,y:-5000,w:10000,h:10000},dragging=false,dragStart=null,dragMoved=false,isFetching=false,refreshTimer=null,lastOk=0,resizeFrame=null,selectedPlayer=null,selectedTrain=null,showTrains=true;
+const ROUTE_HTML=`<path class="route-line route-wave" d="M0 -17 L0 6132"/><path class="route-line route-yano" d="M0 -17 L0 -7323"/><path class="route-line route-depot" d="M0 -7323 L-9 -7550"/><path class="route-line route-kawatei" d="M0 4080 C0 4330 0 4498 124 4498 L2542 4498"/><path class="route-line route-depot" d="M2542 4498 L2680 4492"/><path class="route-line route-rain" d="M0 6132 L0 8761 C0 9483 -122 9348 -122 10070 L-122 14627"/><path class="route-line route-depot" d="M-122 14627 L-124 14941"/><path class="route-line route-depot" d="M0 -17 L13 -404"/><path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/><path class="route-line route-factory" d="M589 4727 L995 4727"/><path class="route-line route-mizuyama" d="M0 4080 L-10 4288 L-10 4662 Q-10 4758 -132 4758 L-388 4758 L-468 4758 Q-606 4758 -606 4594 L-606 4477 L-606 4244 Q-606 4142 -529 4142 L-497 4142 Q-411 4142 -411 4235 L-411 4321"/><path class="route-line route-depot" d="M-411 4321 L-415 4528"/>`;
 function trainType(g,z,water){
-  if(g.includes("ltd"))
-    return{key:"ltd",name:"特急",label:"特",color:"#f97316"};
-  if(g.includes("exp"))
-    return{key:"exp",name:"急行",label:"急",color:"#dc2626"};
-  if(g.includes("sexp"))
-    return z<-18||z>6131
-      ?{key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8"}
-      :{key:"sexp",name:"準急",label:"準",color:"#16a34a"};
-  if(g.includes("local2"))
-    return{key:"local2",name:"各駅停車",label:"各",color:"#60a5fa"};
-  if(g.includes("local"))
-    return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
-  return water
-    ?{key:"waterline",name:"普通",label:"普",color:"#888"}
-    :{key:"unknown",name:"その他",label:"不",color:"#222"};
+if(g.includes("ltd"))return{key:"ltd",name:"特急",label:"特",color:"#f97316"};
+if(g.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"};
+if(g.includes("sexp"))return z<-18||z>6131?{key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8"}:{key:"sexp",name:"準急",label:"準",color:"#16a34a"};
+if(g.includes("local2"))return{key:"local2",name:"各駅停車",label:"各",color:"#60a5fa"};
+if(g.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
+return water?{key:"waterline",name:"普通",label:"普",color:"#888"}:{key:"unknown",name:"その他",label:"不",color:"#222"}
 }
-
 function trainInfo(t){
-  let c=TC.get(t);
-  if(c)return c;
-
-  const g=tags(t);
-  const p=coords(t);
-  const water=
-    p.x>=-608&&p.x<=692&&
-    p.z>=3957&&p.z<=5257&&
-    !g.some(x=>TYPE_TAGS.includes(x));
-
-  const d=
-    g.includes("z-")?"z-":
-    g.includes("z+")||g.includes("z")?"z+":
-    g.includes("x-")?"x-":"x+";
-
-  const m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name);
-  const type=trainType(g,p.z,water);
-
-  c={
-    ...p,
-    id:stableId(t),
-    d,
-    type,
-    model:MODELS[m?.[1]]||"不明",
-    route:water
-      ?"水山線"
-      :p.x>=50&&p.z>=4000&&p.z<=5000
-        ?"川鉄依丘線"
-        :p.z>6131
-          ?"雨急雨波線"
-          :p.z<-18
-            ?"矢野電鉄線"
-            :"波急波川線",
-    destination:water
-      ?"草市～水山 往復"
-      :DEST[type.key]
-        ?DEST[type.key][d==="z+"||d==="x+"?0:1]
-        :"不明"
-  };
-
-  TC.set(t,c);
-  return c;
+let c=TC.get(t);
+if(c)return c;
+const g=tags(t),p=coords(t),water=p.x>=-608&&p.x<=692&&p.z>=3957&&p.z<=5257&&!g.some(x=>TYPE_TAGS.includes(x)),d=g.includes("z-")?"z-":g.includes("z+")||g.includes("z")?"z+":g.includes("x-")?"x-":"x+",m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name),type=trainType(g,p.z,water);
+c={...p,id:stableId(t),d,type,model:MODELS[m?.[1]]||"不明",route:water?"水山線":p.x>=50&&p.z>=4000&&p.z<=5000?"川鉄依丘線":p.z>6131?"雨急雨波線":p.z<-18?"矢野電鉄線":"波急波川線",destination:water?"草市～水山 往復":DEST[type.key]?DEST[type.key][d==="z+"||d==="x+"?0:1]:"不明"};
+TC.set(t,c);
+return c
 }
-
 function speedOf(t){
-  const s=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));
-  if(s===59)return 120;
-  if(Number.isFinite(s)&&s<0)return 0;
-  const p=Number(t?.speed);
-  return!Number.isFinite(p)||p<0?0:p;
+const s=Number(t?.sokudo??(t?.speed!=null?t.speed/2:NaN));
+if(s===59)return 120;
+if(Number.isFinite(s)&&s<0)return 0;
+const p=Number(t?.speed);
+return!Number.isFinite(p)||p<0?0:p
 }
-
 async function loadStaff(){
-  try{
-    const r=await fetch("./staff.html",{cache:"no-store"});
-    if(!r.ok)throw Error(r.status);
-
-    const m=new Map;
-    new DOMParser()
-      .parseFromString(await r.text(),"text/html")
-      .querySelectorAll(".staff-card")
-      .forEach(c=>{
-        const n=c.querySelector(".staff-name")?.textContent.trim();
-        const b=c.querySelector(".role-badge");
-        if(!n||!b)return;
-
-        m.set(n.toLowerCase(),{
-          label:b.textContent.trim()||"運営",
-          className:["owner","developer","moderator"]
-            .map(k=>"role-"+k)
-            .find(k=>b.classList.contains(k))||"role-participant"
-        });
-      });
-
-    staffMap=m;
-  }catch(e){
-    console.warn("スタッフ情報の取得に失敗:",e);
-  }
+try{
+const r=await fetch("./staff.html",{cache:"no-store"});
+if(!r.ok)throw Error(r.status);
+const m=new Map;
+new DOMParser().parseFromString(await r.text(),"text/html").querySelectorAll(".staff-card").forEach(c=>{
+const n=c.querySelector(".staff-name")?.textContent.trim(),b=c.querySelector(".role-badge");
+if(!n||!b)return;
+m.set(n.toLowerCase(),{label:b.textContent.trim()||"運営",className:["owner","developer","moderator"].map(k=>"role-"+k).find(k=>b.classList.contains(k))||"role-participant"})
+});
+staffMap=m
+}catch(e){console.warn("スタッフ情報の取得に失敗:",e)}
 }
-
-const dimensions=()=>{
-  const r=map.getBoundingClientRect();
-  return{
-    width:Math.max(1,r.width),
-    aspect:r.width/Math.max(1,r.height)
-  };
-};
-
+const dimensions=()=>{const r=map.getBoundingClientRect();return{width:Math.max(1,r.width),aspect:r.width/Math.max(1,r.height)}};
 const scale=()=>view.w/dimensions().width;
-
 function applyView(render=true){
-  view.h=view.w/dimensions().aspect;
-  map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
-
-  const right=view.x+view.w;
-  const bottom=view.y+view.h;
-  const lines=[];
-
-  for(let x=Math.floor(view.x/GRID);x<=Math.ceil(right/GRID);x++)
-    lines.push(`M${x*GRID} ${view.y}V${bottom}`);
-
-  for(let y=Math.floor(view.y/GRID);y<=Math.ceil(bottom/GRID);y++)
-    lines.push(`M${view.x} ${y*GRID}H${right}`);
-
-  set(gridLayer,`<path class="grid-line" d="${lines.join(" ")}"/>`);
-  set(routeLayer,ROUTE_HTML);
-  set(stationLayer,STATION_HTML);
-
-  if(render&&latest)renderMarkers();
+view.h=view.w/dimensions().aspect;
+map.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
+const right=view.x+view.w,bottom=view.y+view.h,lines=[];
+for(let x=Math.floor(view.x/GRID);x<=Math.ceil(right/GRID);x++)lines.push(`M${x*GRID} ${view.y}V${bottom}`);
+for(let y=Math.floor(view.y/GRID);y<=Math.ceil(bottom/GRID);y++)lines.push(`M${view.x} ${y*GRID}H${right}`);
+set(gridLayer,`<path class="grid-line" d="${lines.join(" ")}"/>`);
+set(routeLayer,ROUTE_HTML);
+set(stationLayer,STATION_HTML);
+if(render&&latest)renderMarkers()
 }
-
 function setInitialView(){
-  view.h=2800;
-  view.w=view.h*dimensions().aspect;
-  view.x=-view.w/2;
-  view.y=-138-view.h/2;
-  applyView();
+view.h=2800;
+view.w=view.h*dimensions().aspect;
+view.x=-view.w/2;
+view.y=-138-view.h/2;
+applyView()
 }
-
 function trainMarker(t,i){
-  const c=trainInfo(t);
-
-  return `<g class="train-marker" data-kind="train" data-index="${i}" tabindex="0" role="button" transform="translate(${c.x} ${c.z})">
-    <g transform="rotate(${ANGLES[c.d]||0})">
-      <path class="train-hit-area" d="${pathShape(90,180)}" stroke-width="95"/>
-      <path class="train-visual" d="${pathShape(75,165)}" fill="${c.type.color}" stroke="white" stroke-width="7" stroke-linejoin="round"/>
-    </g>
-    <text class="train-label" font-size="90">${esc(c.type.label)}</text>
-  </g>`;
+const c=trainInfo(t);
+return`<g class="train-marker" data-kind="train" data-index="${i}" tabindex="0" role="button" transform="translate(${c.x} ${c.z})"><g transform="rotate(${ANGLES[c.d]||0})"><path class="train-hit-area" d="${pathShape(90,180)}" stroke-width="95"/><path class="train-visual" d="${pathShape(75,165)}" fill="${c.type.color}" stroke="white" stroke-width="7" stroke-linejoin="round"/></g><text class="train-label" font-size="90">${esc(c.type.label)}</text></g>`
 }
-
-const playerRect=(pos,w)=>{
-  const h=Math.max(90,w/2);
-  return rect(pos.x-h-35,pos.y-115,pos.x+h+35,pos.y+265);
-};
-
-const DIRS=[
-  [0,-1],[1,0],[0,1],[-1,0],
-  [.707,-.707],[.707,.707],[-.707,.707],[-.707,-.707]
-];
-
-/* 8方向の直線上を近い順に探索 */
+const playerRect=(pos,w)=>{const h=Math.max(90,w/2);return rect(pos.x-h-35,pos.y-115,pos.x+h+35,pos.y+265)};
+const DIRS=[[0,-1],[1,0],[0,1],[-1,0],[.707,-.707],[.707,.707],[-.707,.707],[-.707,-.707]];
 function placePlayers(tp){
-  const obstacles=OBST.concat(
-    tp.map(t=>rect(t.x-260,t.z-260,t.x+260,t.z+260))
-  );
-
-  const placed=[];
-
-  return players.map((p,i)=>{
-    const n=getName(p);
-    const w=clamp(n.length*65,250,1000);
-    const origin=toMap(p);
-    const key=playerKey(p);
-    const saved=playerPositions.get(key);
-
-    const valid=pos=>{
-      const b=playerRect(pos,w);
-      return !obstacles.some(o=>overlaps(b,o,15))&&
-             !placed.some(o=>overlaps(b,o,15));
-    };
-
-    if(saved&&Math.hypot(saved.x-origin.x,saved.y-origin.y)<1){
-      const old={x:saved.mx,y:saved.my};
-      if(valid(old)){
-        placed.push(playerRect(old,w));
-        return{player:p,index:i,pos:old,origin,w};
-      }
-    }
-
-    let chosen=valid(origin)?origin:null;
-
-    for(let d=180;!chosen&&d<=12000;d+=90){
-      for(const[dx,dy]of DIRS){
-        const pos={x:origin.x+dx*d,y:origin.y+dy*d};
-        if(valid(pos)){
-          chosen=pos;
-          break;
-        }
-      }
-    }
-
-    if(!chosen)
-      chosen={x:origin.x,y:origin.y-13000-i*500};
-
-    placed.push(playerRect(chosen,w));
-
-    playerPositions.set(key,{
-      x:origin.x,
-      y:origin.y,
-      mx:chosen.x,
-      my:chosen.y
-    });
-
-    return{player:p,index:i,pos:chosen,origin,w};
-  });
+const obstacles=OBST.concat(tp.map(t=>rect(t.x-260,t.z-260,t.x+260,t.z+260))),placed=[];
+return players.map((p,i)=>{
+const n=getName(p),w=clamp(n.length*65,250,1000),origin=toMap(p),key=playerKey(p),saved=playerPositions.get(key);
+const valid=pos=>{const b=playerRect(pos,w);return!obstacles.some(o=>overlaps(b,o,15))&&!placed.some(o=>overlaps(b,o,15))};
+if(saved&&Math.hypot(saved.x-origin.x,saved.y-origin.y)<1){
+const old={x:saved.mx,y:saved.my};
+if(valid(old)){placed.push(playerRect(old,w));return{player:p,index:i,pos:old,origin,w}}
 }
-
+let chosen=valid(origin)?origin:null;
+for(let d=180;!chosen&&d<=12000;d+=90)for(const[dx,dy]of DIRS){
+const pos={x:origin.x+dx*d,y:origin.y+dy*d};
+if(valid(pos)){chosen=pos;break}
+}
+if(!chosen)chosen={x:origin.x,y:origin.y-13000-i*500};
+placed.push(playerRect(chosen,w));
+playerPositions.set(key,{x:origin.x,y:origin.y,mx:chosen.x,my:chosen.y});
+return{player:p,index:i,pos:chosen,origin,w}
+})
+}
 function playerMarker({player:p,index:i,pos,w}){
-  const n=getName(p);
-  const h=Math.max(90,w/2);
-
-  return `<g class="player-marker" data-kind="player" data-index="${i}" tabindex="0" role="button" transform="translate(${pos.x} ${pos.y})">
-    <rect x="${-h}" y="-90" width="${h*2}" height="310" fill="transparent"/>
-    <image href="${face(p)}" x="-90" y="-90" width="180" height="180" preserveAspectRatio="none"/>
-    <rect class="player-name-background" x="${-w/2}" y="100" width="${w}" height="120" rx="28"/>
-    <text class="player-name-label" x="0" y="160" font-size="85" textLength="${w-50}" lengthAdjust="spacingAndGlyphs">${esc(n)}</text>
-  </g>`;
+const n=getName(p),h=Math.max(90,w/2);
+return`<g class="player-marker" data-kind="player" data-index="${i}" tabindex="0" role="button" transform="translate(${pos.x} ${pos.y})"><rect x="${-h}" y="-90" width="${h*2}" height="310" fill="transparent"/><image href="${face(p)}" x="-90" y="-90" width="180" height="180" preserveAspectRatio="none"/><rect class="player-name-background" x="${-w/2}" y="100" width="${w}" height="120" rx="28"/><text class="player-name-label" x="0" y="160" font-size="85" textLength="${w-50}" lengthAdjust="spacingAndGlyphs">${esc(n)}</text></g>`
 }
-
-/* 列車とプレイヤーのマーカーを描画 */
 function renderMarkers(){
-  if(!latest)return;
-
-  const layout=placePlayers(trains);
-
-  set(
-    haloLayer,
-    layout.map(({origin:q,pos})=>
-      q.x===pos.x&&q.y===pos.y
-        ?""
-        :`<line class="player-link" x1="${q.x}" y1="${q.y}" x2="${pos.x}" y2="${pos.y}"/>`
-    ).join("")+
-    layout.map(({origin:q})=>
-      `<g transform="translate(${q.x} ${q.y})">
-        <circle class="player-halo" r="145"/>
-        <circle class="player-halo-core" r="55"/>
-      </g>`
-    ).join("")
-  );
-
-  /* 列車の表示状態だけを反映 */
-  const trainHtml=showTrains
-    ?trains.map(trainMarker).join("")
-    :"";
-
-  /* プレイヤーは列車表示状態に関係なく描画 */
-  const playerHtml=layout.map(playerMarker).join("");
-
-  set(markerLayer,trainHtml+playerHtml);
-
-  ppCount.textContent=players.length;
-
-  set(
-    pList,
-    players.length
-      ?players.map((p,i)=>{
-        const n=getName(p),r=getRole(p);
-
-        return `<button class="player-row" type="button" data-player-index="${i}">
-          <img src="${face(p)}" alt="" loading="lazy">
-          <span class="player-row-info">
-            <span class="player-row-name">${esc(n)}</span>
-            <span class="player-role-badge ${r.className}">${esc(r.label)}</span>
-          </span>
-        </button>`;
-      }).join("")
-      :'<div class="player-empty">現在オンラインのプレイヤーはいません</div>'
-  );
+if(!latest)return;
+const layout=placePlayers(trains);
+set(haloLayer,layout.map(({origin:q,pos})=>q.x===pos.x&&q.y===pos.y?"":`<line class="player-link" x1="${q.x}" y1="${q.y}" x2="${pos.x}" y2="${pos.y}"/>`).join("")+layout.map(({origin:q})=>`<g transform="translate(${q.x} ${q.y})"><circle class="player-halo" r="145"/><circle class="player-halo-core" r="55"/></g>`).join(""));
+set(markerLayer,(showTrains?trains.map(trainMarker).join(""):"")+layout.map(playerMarker).join(""));
+ppCount.textContent=players.length;
+set(pList,players.length?players.map((p,i)=>{const r=getRole(p);return`<button class="player-row" type="button" data-player-index="${i}"><img src="${face(p)}" alt="" loading="lazy"><span class="player-row-info"><span class="player-row-name">${esc(getName(p))}</span><span class="player-role-badge ${r.className}">${esc(r.label)}</span></span></button>`}).join(""):'<div class="player-empty">現在オンラインのプレイヤーはいません</div>')
 }
-
 function openModal(){
-  modal.classList.add("open");
-  document.body.style.overflow="hidden";
-  closeBtn.focus();
+modal.classList.add("open");
+document.body.style.overflow="hidden";
+closeBtn.focus()
 }
-
 function closeModal(){
-  modal.classList.remove("open");
-  document.body.style.overflow="";
-  selectedPlayer=selectedTrain=null;
+modal.classList.remove("open");
+document.body.style.overflow="";
+selectedPlayer=selectedTrain=null
 }
-
 function showPlayer(p){
-  selectedPlayer=getName(p);
-  selectedTrain=null;
-  mTitle.textContent="プレイヤー情報";
-
-  const r=getRole(p),n=selectedPlayer;
-
-  mContent.innerHTML=`
-    <div class="detail-player">
-      <img src="${face(p)}" alt="">
-      <div>
-        <div class="detail-player-name">${esc(n)}</div>
-        <div class="player-role-badge detail-player-role ${r.className}">${esc(r.label)}</div>
-      </div>
-    </div>
-    <div class="detail-grid">
-      ${item("座標 (X, Y, Z)",xyz(coords(p)),1)}
-    </div>
-    <div class="detail-note">在線情報は自動更新されます。</div>`;
-
-  openModal();
+selectedPlayer=getName(p);
+selectedTrain=null;
+mTitle.textContent="プレイヤー情報";
+const r=getRole(p);
+mContent.innerHTML=`<div class="detail-player"><img src="${face(p)}" alt=""><div><div class="detail-player-name">${esc(selectedPlayer)}</div><div class="player-role-badge detail-player-role ${r.className}">${esc(r.label)}</div></div></div><div class="detail-grid">${item("座標 (X, Y, Z)",xyz(coords(p)),1)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;
+openModal()
 }
-
+const DIR_JA={"x+":"東方向（X＋）","x-":"西方向（X−）","z+":"南方向（Z＋）","z-":"北方向（Z−）"};
 function showTrain(t){
-  const c=trainInfo(t);
-  const d={
-    "x+":"東方向（X＋）",
-    "x-":"西方向（X−）",
-    "z+":"南方向（Z＋）",
-    "z-":"北方向（Z−）"
-  };
-
-  selectedTrain=c.id;
-  selectedPlayer=null;
-  mTitle.textContent="列車情報";
-
-  mContent.innerHTML=`
-    <div class="train-summary" style="border-color:${c.type.color}">
-      <span class="train-type" style="background:${c.type.color}">${esc(c.type.name)}</span>
-      <span class="train-destination">${esc(c.destination)} 行</span>
-    </div>
-    <div class="detail-grid">
-      ${item("種別",esc(c.type.name))}
-      ${item("形式",esc(c.model))}
-      ${item("行先",esc(c.destination))}
-      ${item("路線",esc(c.route))}
-      ${item("速度",fmt(speedOf(t),0)+" km/h")}
-      ${item("進行方向",d[c.d]||"不明")}
-      ${item("座標 (X, Y, Z)",xyz(c),1)}
-    </div>
-    <div class="detail-note">在線情報は自動更新されます。</div>`;
-
-  openModal();
+const c=trainInfo(t);
+selectedTrain=c.id;
+selectedPlayer=null;
+mTitle.textContent="列車情報";
+mContent.innerHTML=`<div class="train-summary" style="border-color:${c.type.color}"><span class="train-type" style="background:${c.type.color}">${esc(c.type.name)}</span><span class="train-destination">${esc(c.destination)} 行</span></div><div class="detail-grid">${item("種別",esc(c.type.name))}${item("形式",esc(c.model))}${item("行先",esc(c.destination))}${item("路線",esc(c.route))}${item("速度",fmt(speedOf(t),0)+" km/h")}${item("進行方向",DIR_JA[c.d]||"不明")}${item("座標 (X, Y, Z)",xyz(c),1)}</div><div class="detail-note">在線情報は自動更新されます。</div>`;
+openModal()
 }
-
 function refreshDetail(){
-  if(!modal.classList.contains("open"))return;
-
-  if(selectedPlayer){
-    const p=players.find(x=>getName(x)===selectedPlayer);
-
-    if(p)showPlayer(p);
-    else mContent.innerHTML=
-      '<div class="player-empty">このプレイヤーは現在オンラインではありません。</div>';
-
-  }else if(selectedTrain!==null){
-    const t=trains.find(x=>trainInfo(x).id===selectedTrain);
-
-    if(t)showTrain(t);
-    else mContent.innerHTML=
-      '<div class="player-empty">選択中の列車は現在見つかりません。</div>';
-  }
+if(!modal.classList.contains("open"))return;
+if(selectedPlayer){
+const p=players.find(x=>getName(x)===selectedPlayer);
+if(p)showPlayer(p);
+else mContent.innerHTML='<div class="player-empty">このプレイヤーは現在オンラインではありません。</div>'
+}else if(selectedTrain!==null){
+const t=trains.find(x=>trainInfo(x).id===selectedTrain);
+if(t)showTrain(t);
+else mContent.innerHTML='<div class="player-empty">選択中の列車は現在見つかりません。</div>'
 }
-
+}
 function openMarker(el){
-  const i=Number(el.dataset.index);
-
-  if(el.dataset.kind==="player"&&players[i])
-    showPlayer(players[i]);
-
-  if(el.dataset.kind==="train"&&trains[i])
-    showTrain(trains[i]);
+const i=Number(el.dataset.index);
+if(el.dataset.kind==="player"&&players[i])showPlayer(players[i]);
+if(el.dataset.kind==="train"&&trains[i])showTrain(trains[i])
 }
-
-markerLayer.addEventListener("click",e=>{
-  const el=markerOf(e.target);
-  if(el&&!dragMoved)openMarker(el);
-});
-
+markerLayer.addEventListener("click",e=>{const el=markerOf(e.target);if(el&&!dragMoved)openMarker(el)});
 markerLayer.addEventListener("keydown",e=>{
-  if(e.key!=="Enter"&&e.key!==" ")return;
-
-  const el=markerOf(e.target);
-  if(!el)return;
-
-  e.preventDefault();
-  openMarker(el);
+if(e.key!=="Enter"&&e.key!==" ")return;
+const el=markerOf(e.target);
+if(!el)return;
+e.preventDefault();
+openMarker(el)
 });
-
 pList.addEventListener("click",e=>{
-  const b=(e.target instanceof Element?e.target:e.target?.parentElement)
-    ?.closest("[data-player-index]");
-
-  const p=b&&players[Number(b.dataset.playerIndex)];
-  if(p)showPlayer(p);
+const b=(e.target instanceof Element?e.target:e.target?.parentElement)?.closest("[data-player-index]"),p=b&&players[Number(b.dataset.playerIndex)];
+if(p)showPlayer(p)
 });
-
 function setConnection(ok){
-  connDot.classList.toggle("online",ok);
-  connDot.classList.toggle("offline",!ok);
-  connText.textContent=ok?"サーバー接続中":"サーバーに接続できません";
+connDot.classList.toggle("online",ok);
+connDot.classList.toggle("offline",!ok);
+connText.textContent=ok?"サーバー接続中":"サーバーに接続できません"
 }
-
 async function fetchStatus(){
-  if(isFetching)return;
-  isFetching=true;
-
-  try{
-    const res=await fetch(API_URL,{cache:"no-store"});
-    if(!res.ok)throw Error(`HTTP ${res.status}`);
-
-    const data=await res.json();
-    if(data?.success===false)throw Error(data.error||"API error");
-
-    latest=data;
-
-    const r=data?.data??data?.status??data??{};
-
-    players=list(r.players??r.player??r.onlinePlayers??[]);
-    trains=list(r.trains??r.train??r.carts??[]);
-
-    wtText.textContent=`ワールド時刻：${r.worldTime??r.time??r.world_time??"--"}`;
-    wxText.textContent=`天候：${r.weather??r.worldWeather??r.world_weather??"--"}`;
-    tpsText.textContent=`TPS：${fmt(r.tps??r.TPS??"--",0)}`;
-
-    pcText.textContent=players.length;
-    tcText.textContent=`列車：${trains.length}編成`;
-
-    lastUpd.textContent=`最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
-
-    setConnection(true);
-    lastOk=Date.now();
-
-    if(map.dataset.initialized!=="true"){
-      setInitialView();
-      map.dataset.initialized="true";
-    }else{
-      renderMarkers();
-    }
-
-    refreshDetail();
-
-  }catch(e){
-    console.error("在線データ取得エラー:",e);
-    setConnection(false);
-  }finally{
-    isFetching=false;
-  }
+if(isFetching)return;
+isFetching=true;
+try{
+const res=await fetch(API_URL,{cache:"no-store"});
+if(!res.ok)throw Error(`HTTP ${res.status}`);
+const data=await res.json();
+if(data?.success===false)throw Error(data.error||"API error");
+latest=data;
+const r=data?.data??data?.status??data??{};
+players=list(r.players??r.player??r.onlinePlayers??[]);
+trains=list(r.trains??r.train??r.carts??[]);
+wtText.textContent=`ワールド時刻：${r.worldTime??r.time??r.world_time??"--"}`;
+wxText.textContent=`天候：${r.weather??r.worldWeather??r.world_weather??"--"}`;
+tpsText.textContent=`TPS：${fmt(r.tps??r.TPS??"--",0)}`;
+pcText.textContent=players.length;
+tcText.textContent=`列車：${trains.length}編成`;
+lastUpd.textContent=`最終更新：${new Date().toLocaleTimeString("ja-JP",{hour12:false})}`;
+setConnection(true);
+lastOk=Date.now();
+if(map.dataset.initialized!=="true"){setInitialView();map.dataset.initialized="true"}
+else renderMarkers();
+refreshDetail()
+}catch(e){
+console.error("在線データ取得エラー:",e);
+setConnection(false)
+}finally{isFetching=false}
 }
-
 function scheduleRefresh(){
-  clearTimeout(refreshTimer);
-
-  refreshTimer=setTimeout(async()=>{
-    await fetchStatus();
-    scheduleRefresh();
-  },1000);
+clearTimeout(refreshTimer);
+refreshTimer=setTimeout(async()=>{await fetchStatus();scheduleRefresh()},1000)
 }
-
 function refreshNow(){
-  clearTimeout(refreshTimer);
-  fetchStatus().finally(scheduleRefresh);
+clearTimeout(refreshTimer);
+fetchStatus().finally(scheduleRefresh)
 }
-
-document.addEventListener("visibilitychange",()=>{
-  if(!document.hidden)refreshNow();
-});
-
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshNow()});
 addEventListener("focus",refreshNow);
 addEventListener("online",refreshNow);
-addEventListener("pagehide",()=>clearTimeout(refreshTimer));
-
-const staleTimer=setInterval(()=>{
-  if(lastOk&&Date.now()-lastOk>10000)
-    setConnection(false);
-},3000);
-
-addEventListener("pagehide",()=>clearInterval(staleTimer));
-
+const staleTimer=setInterval(()=>{if(lastOk&&Date.now()-lastOk>10000)setConnection(false)},3000);
+addEventListener("pagehide",()=>{clearTimeout(refreshTimer);clearInterval(staleTimer)});
 function zoomAt(f,cx,cy){
-  const r=map.getBoundingClientRect();
-  if(!r.width||!r.height)return;
-
-  const px=(cx-r.left)/r.width;
-  const py=(cy-r.top)/r.height;
-
-  const wx=view.x+px*view.w;
-  const wy=view.y+py*view.h;
-
-  view.w=clamp(view.w*f,MIN_W,MAX_W);
-  view.h=view.w/dimensions().aspect;
-
-  view.x=wx-px*view.w;
-  view.y=wy-py*view.h;
-
-  applyView();
+const r=map.getBoundingClientRect();
+if(!r.width||!r.height)return;
+const px=(cx-r.left)/r.width,py=(cy-r.top)/r.height,wx=view.x+px*view.w,wy=view.y+py*view.h;
+view.w=clamp(view.w*f,MIN_W,MAX_W);
+view.h=view.w/dimensions().aspect;
+view.x=wx-px*view.w;
+view.y=wy-py*view.h;
+applyView()
 }
-
 function zoomCenter(f){
-  const r=map.getBoundingClientRect();
-  zoomAt(f,r.left+r.width/2,r.top+r.height/2);
+const r=map.getBoundingClientRect();
+zoomAt(f,r.left+r.width/2,r.top+r.height/2)
 }
-
 $("zoomIn").addEventListener("click",()=>zoomCenter(.75));
 $("zoomOut").addEventListener("click",()=>zoomCenter(1.33));
 $("resetView").addEventListener("click",setInitialView);
-
-/* 列車の表示・非表示切替 */
 trainToggle.addEventListener("click",()=>{
-  showTrains=!showTrains;
-
-  trainToggle.textContent=showTrains
-    ?"列車：表示"
-    :"列車：非表示";
-
-  trainToggle.setAttribute("aria-pressed",String(showTrains));
-
-  /* 地図や路線は再生成せず、マーカーだけ更新 */
-  renderMarkers();
+showTrains=!showTrains;
+trainToggle.textContent=showTrains?"列車：表示":"列車：非表示";
+trainToggle.setAttribute("aria-pressed",String(showTrains));
+renderMarkers()
 });
-
-map.addEventListener("wheel",e=>{
-  e.preventDefault();
-  zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY);
-},{passive:false});
-
+map.addEventListener("wheel",e=>{e.preventDefault();zoomAt(e.deltaY<0?.9:1.1,e.clientX,e.clientY)},{passive:false});
 map.addEventListener("pointerdown",e=>{
-  if(e.button!==0||markerOf(e.target))return;
-
-  const t=e.target instanceof Element?e.target:e.target?.parentElement;
-
-  if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
-
-  dragging=true;
-  dragMoved=false;
-
-  dragStart={
-    x:e.clientX,
-    y:e.clientY,
-    vx:view.x,
-    vy:view.y
-  };
-
-  map.classList.add("dragging");
+if(e.button!==0||markerOf(e.target))return;
+const t=e.target instanceof Element?e.target:e.target?.parentElement;
+if(t?.closest(".map-controls")||t?.closest(".player-panel"))return;
+dragging=true;
+dragMoved=false;
+dragStart={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};
+map.classList.add("dragging")
 });
-
 addEventListener("pointermove",e=>{
-  if(!dragging||!dragStart)return;
-
-  const dx=e.clientX-dragStart.x;
-  const dy=e.clientY-dragStart.y;
-  const s=scale();
-
-  if(Math.abs(dx)+Math.abs(dy)>3)
-    dragMoved=true;
-
-  view.x=dragStart.vx-dx*s;
-  view.y=dragStart.vy-dy*s;
-
-  applyView(false);
+if(!dragging||!dragStart)return;
+const dx=e.clientX-dragStart.x,dy=e.clientY-dragStart.y,s=scale();
+if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true;
+view.x=dragStart.vx-dx*s;
+view.y=dragStart.vy-dy*s;
+applyView(false)
 });
-
 function stopDragging(){
-  if(!dragging)return;
-
-  dragging=false;
-  dragStart=null;
-
-  map.classList.remove("dragging");
-
-  renderMarkers();
-
-  setTimeout(()=>dragMoved=false,120);
+if(!dragging)return;
+dragging=false;
+dragStart=null;
+map.classList.remove("dragging");
+renderMarkers();
+setTimeout(()=>dragMoved=false,120)
 }
-
 addEventListener("pointerup",stopDragging);
 addEventListener("pointercancel",stopDragging);
-
 addEventListener("keydown",e=>{
-  if(modal.classList.contains("open")){
-    if(e.key==="Escape")closeModal();
-    return;
-  }
-
-  if(e.target instanceof HTMLElement&&
-     e.target.matches("input,textarea,button,a"))return;
-
-  const s=view.w*.08;
-
-  const m={
-    ArrowUp:[0,-s],
-    ArrowDown:[0,s],
-    ArrowLeft:[-s,0],
-    ArrowRight:[s,0]
-  }[e.key];
-
-  if(m){
-    e.preventDefault();
-    view.x+=m[0];
-    view.y+=m[1];
-    applyView(false);
-  }else if(e.key==="+"||e.key==="="){
-    e.preventDefault();
-    zoomCenter(.75);
-  }else if(e.key==="-"){
-    e.preventDefault();
-    zoomCenter(1.33);
-  }
+if(modal.classList.contains("open")){if(e.key==="Escape")closeModal();return}
+if(e.target instanceof HTMLElement&&e.target.matches("input,textarea,button,a"))return;
+const s=view.w*.08,m={ArrowUp:[0,-s],ArrowDown:[0,s],ArrowLeft:[-s,0],ArrowRight:[s,0]}[e.key];
+if(m){e.preventDefault();view.x+=m[0];view.y+=m[1];applyView(false)}
+else if(e.key==="+"||e.key==="="){e.preventDefault();zoomCenter(.75)}
+else if(e.key==="-"){e.preventDefault();zoomCenter(1.33)}
 });
-
 collapseBtn.addEventListener("click",()=>{
-  pPanel.classList.toggle("collapsed");
-  collapseBtn.textContent=pPanel.classList.contains("collapsed")?"+":"−";
+pPanel.classList.toggle("collapsed");
+collapseBtn.textContent=pPanel.classList.contains("collapsed")?"+":"−"
 });
-
 closeBtn.addEventListener("click",closeModal);
-
-modal.addEventListener("click",e=>{
-  if(e.target===modal)closeModal();
-});
-
+modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
 addEventListener("resize",()=>{
-  cancelAnimationFrame(resizeFrame);
-
-  resizeFrame=requestAnimationFrame(()=>{
-    view.h=view.w/dimensions().aspect;
-    applyView();
-  });
+cancelAnimationFrame(resizeFrame);
+resizeFrame=requestAnimationFrame(()=>{view.h=view.w/dimensions().aspect;applyView()})
 });
-
-
-/* =========================================================
-   駅名・駅名標関連処理
-   このブロックをスクリプトの一番下に配置
-   ========================================================= */
-
 const STATIONS=[
-  ["中市","なかいち",0,-17,"both",220,30],
-  ["大白","おおしろ",0,1051,"wave",220,1098],
-  ["水浜","みずはま",0,2020,"wave",220,2067],
-  ["竹ヶ丘","たけがおか",0,3100,"wave",220,3147],
-  ["草市","くさし",0,4080,"wave",220,4127],
-  ["長立","ながたち",0,5000,"wave",55,5000],
-  ["波丘","なみおか",0,6132,"wave",220,6179],
-
-  ["矢野空港","やのくうこう",0,-1327,"yano",220,-1272],
-  ["矢野","やの",0,-2483,"yano",220,-2428],
-  ["大東","だいとう",0,-3787,"yano",220,-3732],
-  ["浜口","はまぐち",0,-4988,"yano",220,-4933],
-  ["新矢野","しんやの",0,-5989,"yano",220,-5934],
-  ["吉山","よしやま",0,-7323,"yano",220,-7268],
-  ["吉山留置線","よしやまりゅうせん",-9,-7550,"depot",230,-7495],
-
-  ["新草市","しんくさし",124,4498,"kawatei",90,4380,{fontSize:130,readingDy:75,readingSize:68}],
-  ["北ノ宮","きたのみや",600,4498,"kawatei",680,0,{vertical:1,readingX:560,shiftY:-144}],
-  ["依丘空港","よりおかくうこう",1145,4498,"kawatei",1225,0,{vertical:1,readingX:1105,shiftY:-144}],
-  ["芝田町","しばたちょう",1509,4498,"kawatei",1589,0,{vertical:1,readingX:1469,shiftY:-144}],
-  ["鷺川","さぎがわ",1974,4498,"kawatei",2054,0,{vertical:1,readingX:1934,shiftY:-144}],
-  ["依丘","よりおか",2542,4498,"kawatei",2622,0,{vertical:1,readingX:2502,shiftY:-144}],
-  ["依丘車庫","よりおかしゃこ",2680,4492,"depot",2810,4545],
-
-  ["新川","しんかわ",0,7385,"rain",220,7430],
-  ["雨波","あめなみ",0,8761,"rain",220,8806],
-  ["蛙ヶ丘","かえるがおか",-122,10387,"rain",98,10432],
-  ["新雨岡","しんあめおか",-122,11761,"rain",98,11806],
-  ["雨岡","あめおか",-122,13030,"rain",98,13075],
-  ["雨山","あめやま",-122,14627,"rain",98,14672],
-  ["雨山車両センター","あめやましゃりょうセンター",-124,14941,"depot",-300,14986,{a:"end"}],
-  ["中市出庫区","なかいちしゅっこく",13,-404,"depot",230,-360],
-
-  ["高ノ宮","たかのみや",589,4727,"experiment",650,4930,{vertical:1,readingX:790,readingY:4930}],
-  ["高宮製造工場","たかみやせいぞうこうじょう",995,4727,"factory",1080,4930,{vertical:1,readingX:1220,readingY:4930}],
-
-  /* 水山線：草市から分岐 */
-  ["北長立","きたながたち",-10,4612,"mizuyama",-260,4520,{fontSize:112,readingSize:67,readingDy:67}],
-  ["坂川","さかがわ",-388,4758,"mizuyama",-690,4685,{fontSize:112,readingSize:67,readingDy:67}],
-  ["九和","くわ",-606,4477,"mizuyama",-900,4440,{fontSize:112,readingSize:67,readingDy:67}],
-  ["水山","みずやま",-411,4321,"mizuyama",-190,4240,{fontSize:112,readingSize:67,readingDy:67}]
+["中市","なかいち",0,-17,"both",220,30],
+["大白","おおしろ",0,1051,"wave",220,1098],
+["水浜","みずはま",0,2020,"wave",220,2067],
+["竹ヶ丘","たけがおか",0,3100,"wave",220,3147],
+["草市","くさし",0,4080,"wave",220,4127],
+["長立","ながたち",0,5000,"wave",55,5000],
+["波丘","なみおか",0,6132,"wave",220,6179],
+["矢野空港","やのくうこう",0,-1327,"yano",220,-1272],
+["矢野","やの",0,-2483,"yano",220,-2428],
+["大東","だいとう",0,-3787,"yano",220,-3732],
+["浜口","はまぐち",0,-4988,"yano",220,-4933],
+["新矢野","しんやの",0,-5989,"yano",220,-5934],
+["吉山","よしやま",0,-7323,"yano",220,-7268],
+["吉山留置線","よしやまりゅうせん",-9,-7550,"depot",230,-7495],
+["新草市","しんくさし",124,4498,"kawatei",90,4380,{fontSize:130,readingDy:75,readingSize:68}],
+["北ノ宮","きたのみや",600,4498,"kawatei",680,0,{vertical:1,readingX:560,shiftY:-144}],
+["依丘空港","よりおかくうこう",1145,4498,"kawatei",1225,0,{vertical:1,readingX:1105,shiftY:-144}],
+["芝田町","しばたちょう",1509,4498,"kawatei",1589,0,{vertical:1,readingX:1469,shiftY:-144}],
+["鷺川","さぎがわ",1974,4498,"kawatei",2054,0,{vertical:1,readingX:1934,shiftY:-144}],
+["依丘","よりおか",2542,4498,"kawatei",2622,0,{vertical:1,readingX:2502,shiftY:-144}],
+["依丘車庫","よりおかしゃこ",2680,4492,"depot",2810,4545],
+["新川","しんかわ",0,7385,"rain",220,7430],
+["雨波","あめなみ",0,8761,"rain",220,8806],
+["蛙ヶ丘","かえるがおか",-122,10387,"rain",98,10432],
+["新雨岡","しんあめおか",-122,11761,"rain",98,11806],
+["雨岡","あめおか",-122,13030,"rain",98,13075],
+["雨山","あめやま",-122,14627,"rain",98,14672],
+["雨山車両センター","あめやましゃりょうセンター",-124,14941,"depot",-300,14986,{a:"end"}],
+["中市出庫区","なかいちしゅっこく",13,-404,"depot",230,-360],
+["高ノ宮","たかのみや",589,4727,"experiment",650,4930,{vertical:1,readingX:790,readingY:4930}],
+["高宮製造工場","たかみやせいぞうこうじょう",995,4727,"factory",1080,4930,{vertical:1,readingX:1220,readingY:4930}],
+["北長立","きたながたち",-10,4612,"mizuyama",-260,4520,{fontSize:112,readingSize:67,readingDy:67}],
+["坂川","さかがわ",-388,4758,"mizuyama",-690,4685,{fontSize:112,readingSize:67,readingDy:67}],
+["九和","くわ",-606,4477,"mizuyama",-900,4440,{fontSize:112,readingSize:67,readingDy:67}],
+["水山","みずやま",-411,4321,"mizuyama",-190,4240,{fontSize:112,readingSize:67,readingDy:67}]
 ];
-
 const OBST=[];
-
 const STATION_HTML=(()=>{
-  let c="",l="";
-
-  for(const[n,r,x,z,ln,lx,ly,q={}]of STATIONS){
-    c+=`<g transform="translate(${x} ${z})">
-      <circle class="station-dot station-${ln==="both"?"wave":ln}" r="38"/>
-    </g>`;
-
-    OBST.push(rect(x-95,z-95,x+95,z+95));
-
-    if(q.vertical){
-      const fs=125;
-      const rs=72;
-      const sh=q.shiftY||0;
-      const Y=(ly||4498-n.length*fs-18)+sh;
-      const RY=(q.readingY??4498-r.length*rs-18)+sh;
-
-      l+=`<text class="station-label station-label-vertical" x="${lx}" y="${Y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(n)}</text>
-      <text class="station-label station-reading-vertical" x="${q.readingX}" y="${RY}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(r)}</text>`;
-
-      OBST.push(
-        rect(lx-110,Y-100,lx+110,Y+n.length*125+100),
-        rect(q.readingX-80,RY-100,q.readingX+80,RY+r.length*72+100)
-      );
-
-    }else{
-      const fs=q.fontSize||145;
-      const rs=q.readingSize||99;
-      const dy=q.readingDy||100;
-      const w=Math.max(n.length*fs,r.length*rs)+100;
-      const h=fs+dy+rs+70;
-      const e=q.a==="end";
-
-      l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" font-size="${fs}">
-        <tspan>${esc(n)}</tspan>
-        <tspan class="station-reading" x="${lx}" dy="${dy}" font-size="${rs}">${esc(r)}</tspan>
-      </text>`;
-
-      OBST.push(
-        e
-          ?rect(lx-w,ly-fs,lx+30,ly+h)
-          :rect(lx-30,ly-fs,lx+w,ly+h)
-      );
-    }
-  }
-
-  return c+l;
+let c="",l="";
+for(const[n,r,x,z,ln,lx,ly,q={}]of STATIONS){
+c+=`<circle class="station-dot station-${ln==="both"?"wave":ln}" cx="${x}" cy="${z}" r="38"/>`;
+OBST.push(rect(x-95,z-95,x+95,z+95));
+if(q.vertical){
+const fs=125,rs=72,sh=q.shiftY||0,Y=(ly||4498-n.length*fs-18)+sh,RY=(q.readingY??4498-r.length*rs-18)+sh;
+l+=`<text class="station-label station-label-vertical" x="${lx}" y="${Y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(n)}</text><text class="station-label station-reading-vertical" x="${q.readingX}" y="${RY}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(r)}</text>`;
+OBST.push(rect(lx-110,Y-100,lx+110,Y+n.length*125+100),rect(q.readingX-80,RY-100,q.readingX+80,RY+r.length*72+100))
+}else{
+const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100,w=Math.max(n.length*fs,r.length*rs)+100,h=fs+dy+rs+70,e=q.a==="end";
+l+=`<text class="station-label ${e?"station-label-end":""}" x="${lx}" y="${ly}" font-size="${fs}"><tspan>${esc(n)}</tspan> <tspan class="station-reading" x="${lx}" dy="${dy}" font-size="${rs}">${esc(r)}</tspan></text>`;
+OBST.push(e?rect(lx-w,ly-fs,lx+30,ly+h):rect(lx-30,ly-fs,lx+w,ly+h))
+}
+}
+return c+l
 })();
-
-/* 駅名標の生成が完了してからページを初期化 */
-(async()=>{
-  await loadStaff();
-  await fetchStatus();
-  scheduleRefresh();
-})();
-
+(async()=>{await loadStaff();await fetchStatus();scheduleRefresh()})();
 </script>
 </body>
 </html>
