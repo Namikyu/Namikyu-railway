@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -305,10 +304,7 @@ const markerOf=t=>(t instanceof Element?t:t?.parentElement)?.closest("[data-kind
 const item=(l,v,w)=>`<div class="detail-item${w?" wide":""}"><div class="detail-label">${l}</div><div class="detail-value">${v}</div></div>`;
 const playerPositions=new Map,TC=new WeakMap;
 let latest=null,players=[],trains=[],view={x:-5000,y:-5000,w:10000,h:10000},dragging=false,dragStart=null,dragMoved=false,isFetching=false,refreshTimer=null,lastOk=0,resizeFrame=null,selectedPlayer=null,selectedTrain=null,showTrains=true;
-
-/* 水山線は波急波川線の左隣にずらし、並走部分を見分けやすくする */
-const ROUTE_HTML=`<path class="route-line route-wave" d="M0 -17 L0 6132"/><path class="route-line route-yano" d="M0 -17 L0 -7323"/><path class="route-line route-depot" d="M0 -7323 L-9 -7550"/><path class="route-line route-kawatei" d="M0 4080 C0 4330 0 4498 124 4498 L2542 4498"/><path class="route-line route-depot" d="M2542 4498 L2680 4492"/><path class="route-line route-rain" d="M0 6132 L0 8761 C0 9483 -122 9348 -122 10070 L-122 14627"/><path class="route-line route-depot" d="M-122 14627 L-124 14941"/><path class="route-line route-depot" d="M0 -17 L13 -404"/><path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/><path class="route-line route-factory" d="M589 4727 L995 4727"/><path class="route-line route-mizuyama" d="M0 4080 L-75 4288 L-75 4662 Q-75 4758 -132 4758 L-388 4758 L-468 4758 Q-606 4758 -606 4594 L-606 4477 L-606 4244 Q-606 4142 -529 4142 L-497 4142 Q-411 4142 -411 4235 L-411 4321"/><path class="route-line route-depot" d="M-411 4321 L-415 4528"/>`;
-
+const ROUTE_HTML=`<path class="route-line route-wave" d="M0 -17 L0 6132"/><path class="route-line route-yano" d="M0 -17 L0 -7323"/><path class="route-line route-depot" d="M0 -7323 L-9 -7550"/><path class="route-line route-kawatei" d="M0 4080 C0 4330 0 4498 124 4498 L2542 4498"/><path class="route-line route-depot" d="M2542 4498 L2680 4492"/><path class="route-line route-rain" d="M0 6132 L0 8761 C0 9483 -122 9348 -122 10070 L-122 14627"/><path class="route-line route-depot" d="M-122 14627 L-124 14941"/><path class="route-line route-depot" d="M0 -17 L13 -404"/><path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/><path class="route-line route-factory" d="M589 4727 L995 4727"/><path class="route-line route-mizuyama" d="M0 4080 L-10 4288 L-10 4662 Q-10 4758 -132 4758 L-388 4758 L-468 4758 Q-606 4758 -606 4594 L-606 4477 L-606 4244 Q-606 4142 -529 4142 L-497 4142 Q-411 4142 -411 4235 L-411 4321"/><path class="route-line route-depot" d="M-411 4321 L-415 4528"/>`;
 function trainType(g,z,water){
 if(g.includes("ltd"))return{key:"ltd",name:"特急 シティ号",label:"特",color:"#f97316"};
 if(g.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"};
@@ -318,16 +314,16 @@ if(g.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:
 return water?{key:"waterline",name:"普通",label:"普",color:"#888"}:{key:"unknown",name:"不明",label:"不",color:"#222"}
 }
 
-/* 現在位置と進行方向から、終点までに残っている種別変更を表示 */
+/* 現在位置と進行方向から、終点までに残っている種別変更だけを返す */
 function getTypeChange(g,z,d){
 if(!g.includes("sexp")||g.includes("exp")||g.includes("ltd"))return"なし";
 const changes=[];
 if(d==="z-"){
-if(z>6131)changes.push("波丘駅で準急 → 各駅停車");
-if(z>-18)changes.push("中市駅で準急 → 各駅停車")
+if(z>6131)changes.push("波丘から準急");
+if(z>-18)changes.push("中市から各駅停車");
 }else if(d==="z+"){
-if(z<-18)changes.push("中市駅で準急 → 各駅停車");
-if(z<6132)changes.push("波丘駅で準急 → 各駅停車")
+if(z<-18)changes.push("中市から準急");
+if(z<6132)changes.push("波丘から各駅停車");
 }
 return changes.length?changes.join("、"):"なし"
 }
@@ -598,7 +594,6 @@ addEventListener("resize",()=>{
 cancelAnimationFrame(resizeFrame);
 resizeFrame=requestAnimationFrame(()=>{view.h=view.w/dimensions().aspect;applyView()})
 });
-
 const STATIONS=[
 ["中市","なかいち",0,-17,"both",220,30],
 ["大白","おおしろ",0,1051,"wave",220,1098],
@@ -631,9 +626,7 @@ const STATIONS=[
 ["中市出庫区","なかいちしゅっこく",13,-404,"depot",230,-360],
 ["高ノ宮","たかのみや",589,4727,"experiment",650,4930,{vertical:1,readingX:790,readingY:4930}],
 ["高ノ宮製造工場","たかのみやせいぞうこうじょう",995,4727,"factory",1080,4930,{vertical:1,readingX:1220,readingY:4930}],
-
-/* 水山線の並走区間に合わせて北長立の駅マーカー・文字を左へ移動 */
-["北長立","きたながたち",-75,4612,"mizuyama",-436,4594,{fontSize:85,readingSize:55,readingDy:67,readingX:-617}],
+["北長立","きたながたち",-10,4612,"mizuyama",-371,4594,{fontSize:85,readingSize:55,readingDy:67,readingX:-552}],
 ["坂川","さかがわ",-388,4758,"mizuyama",-578,4909,{fontSize:112,readingSize:67,readingDy:67}],
 ["九和","くわ",-606,4477,"mizuyama",-900,4440,{fontSize:112,readingSize:67,readingDy:67}],
 ["水山","みずやま",-411,4321,"mizuyama",-358,4380,{fontSize:112,readingSize:67,readingDy:67}]
