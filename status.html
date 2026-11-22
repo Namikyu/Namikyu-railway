@@ -72,11 +72,7 @@ h2{margin:0;color:#142b49;font-size:22px;font-weight:850}
 .player-name-background{fill:white;fill-opacity:.94;stroke:#dce5ed;stroke-width:1;pointer-events:none}
 .player-name-label{fill:#263e58;stroke:white;stroke-width:3px;paint-order:stroke fill;font-weight:800;text-anchor:middle;dominant-baseline:central;pointer-events:none}
 .compass{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:3;display:grid;grid-template-columns:28px 28px 28px;grid-template-rows:20px 20px 20px;align-items:center;justify-items:center;pointer-events:none;color:#60778e;font-size:10px;font-weight:850;text-shadow:0 1px 3px white}
-.north{grid-column:2;grid-row:1}
-.west{grid-column:1;grid-row:2}
-.center{grid-column:2;grid-row:2;color:#9aabba}
-.east{grid-column:3;grid-row:2}
-.south{grid-column:2;grid-row:3}
+.north{grid-column:2;grid-row:1}.west{grid-column:1;grid-row:2}.center{grid-column:2;grid-row:2;color:#9aabba}.east{grid-column:3;grid-row:2}.south{grid-column:2;grid-row:3}
 .map-controls{position:absolute;right:12px;top:12px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .map-controls button{width:36px;height:36px;border:1px solid #d8e2ec;border-radius:9px;background:#fffffff2;color:#284967;font-size:19px;font-weight:800;cursor:pointer}
 .map-help{position:absolute;right:12px;bottom:9px;z-index:2;padding:6px 9px;border-radius:6px;background:#ffffffdf;color:#8093a5;font-size:9px;font-weight:650;pointer-events:none}
@@ -316,17 +312,12 @@ const stationLabelLayout={
  "新矢野":{x:220,y:-5934},
  "吉山":{x:220,y:-7268},
  "吉山留置線":{x:230,y:-7495},
-
- /* 新草市：横書き。マーカーのすぐ右上 */
- "新草市":{x:155,y:4380,readingDy:70,fontSize:130,readingSize:68},
-
- /* 北ノ宮～依丘：全駅で同じ高さ・同じ文字サイズ */
- "北ノ宮":{x:680,y:4450,vertical:true,readingX:560,readingY:4450},
- "依丘空港":{x:1225,y:4450,vertical:true,readingX:1105,readingY:4450},
- "芝田町":{x:1589,y:4450,vertical:true,readingX:1469,readingY:4450},
- "鷺川":{x:2054,y:4450,vertical:true,readingX:1934,readingY:4450},
- "依丘":{x:2622,y:4450,vertical:true,readingX:2502,readingY:4450},
-
+ "新草市":{x:155,y:4260,readingDy:70,fontSize:130,readingSize:68},
+ "北ノ宮":{x:680,readingX:560,vertical:true},
+ "依丘空港":{x:1225,readingX:1105,vertical:true},
+ "芝田町":{x:1589,readingX:1469,vertical:true},
+ "鷺川":{x:2054,readingX:1934,vertical:true},
+ "依丘":{x:2622,readingX:2502,vertical:true},
  "依丘車庫":{x:2810,y:4545},
  "新川":{x:220,y:7430},
  "雨波":{x:220,y:8806},
@@ -336,8 +327,7 @@ const stationLabelLayout={
  "雨山":{x:98,y:14672},
  "雨山車両センター":{x:-300,y:14986,a:"end"},
  "中市出庫区":{x:230,y:-360},
-
- /* 以下3駅は現在の位置から動かさない */
+ /* この3駅のラベル位置は変更しない */
  "高ノ宮":{x:650,y:4930,vertical:true,readingX:790,readingY:4930},
  "高宮製造工場":{x:1080,y:4930,vertical:true,readingX:1220,readingY:4930}
 };
@@ -356,24 +346,21 @@ function renderRoute(){
  <path class="route-line route-factory" d="M589 4727 L995 4727"/>`);
 
  const circles=stations.map(s=>`<g transform="translate(${s.x} ${s.z})"><circle class="station-dot station-${s.line==="both"?"wave":s.line}" r="38"/></g>`).join("");
-
  const labels=stations.map(s=>{
   const q=stationLabelLayout[s.name];if(!q)return"";
-
   if(q.vertical){
+   /* 川鉄依丘線の駅名は文字サイズ統一。線路の直上に下端をそろえる */
+   const fixed=["北ノ宮","依丘空港","芝田町","鷺川","依丘"].includes(s.name);
+   const y=fixed?4498-s.name.length*125-12:q.y;
+   const ry=fixed?4498-s.reading.length*72-12:q.readingY??q.y;
+   const fs=fixed?125:125,rs=fixed?72:72;
    return`
-   <text class="station-label station-label-vertical" x="${q.x}" y="${q.y}" font-size="125" writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text>
-   <text class="station-label station-reading-vertical" x="${q.readingX}" y="${q.readingY}" font-size="72" writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
+   <text class="station-label station-label-vertical" x="${q.x}" y="${y}" font-size="${fs}" writing-mode="vertical-rl" text-orientation="upright">${esc(s.name)}</text>
+   <text class="station-label station-reading-vertical" x="${q.readingX}" y="${ry}" font-size="${rs}" writing-mode="vertical-rl" text-orientation="upright">${esc(s.reading)}</text>`;
   }
-
   const fs=q.fontSize||145,rs=q.readingSize||99,dy=q.readingDy||100;
-  return`
-  <text class="station-label ${q.a==="end"?"station-label-end":""}" x="${q.x}" y="${q.y}" font-size="${fs}">
-   <tspan>${esc(s.name)}</tspan>
-   <tspan class="station-reading" x="${q.x}" dy="${dy}" font-size="${rs}">${esc(s.reading)}</tspan>
-  </text>`;
+  return`<text class="station-label ${q.a==="end"?"station-label-end":""}" x="${q.x}" y="${q.y}" font-size="${fs}"><tspan>${esc(s.name)}</tspan><tspan class="station-reading" x="${q.x}" dy="${dy}" font-size="${rs}">${esc(s.reading)}</tspan></text>`;
  }).join("");
-
  set(stationLayer,circles+labels);
 }
 
