@@ -310,12 +310,12 @@ const playerPositions=new Map,TC=new WeakMap;
 let latest=null,players=[],trains=[],view={x:-5000,y:-5000,w:10000,h:10000},dragging=false,dragStart=null,dragMoved=false,isFetching=false,refreshTimer=null,lastOk=0,resizeFrame=null,selectedPlayer=null,selectedTrain=null,showTrains=true;
 const ROUTE_HTML=`<path class="route-line route-wave" d="M0 -17 L0 6132"/><path class="route-line route-yano" d="M0 -17 L0 -7323"/><path class="route-line route-depot" d="M0 -7323 L-9 -7550"/><path class="route-line route-kawatei" d="M0 4080 C0 4330 0 4498 124 4498 L2542 4498"/><path class="route-line route-depot" d="M2542 4498 L2680 4492"/><path class="route-line route-rain" d="M0 6132 L0 8761 C0 9483 -122 9348 -122 10070 L-122 14627"/><path class="route-line route-depot" d="M-122 14627 L-124 14941"/><path class="route-line route-depot" d="M0 -17 L13 -404"/><path class="route-line route-experiment" d="M0 4080 L22 4254 L22 4631 Q22 4727 149 4727 L589 4727"/><path class="route-line route-factory" d="M589 4727 L995 4727"/><path class="route-line route-mizuyama" d="M0 4080 L-10 4288 L-10 4662 Q-10 4758 -132 4758 L-388 4758 L-468 4758 Q-606 4758 -606 4594 L-606 4477 L-606 4244 Q-606 4142 -529 4142 L-497 4142 Q-411 4142 -411 4235 L-411 4321"/><path class="route-line route-depot" d="M-411 4321 L-415 4528"/>`;
 function trainType(g,z,water){
-if(g.includes("ltd"))return{key:"ltd",name:"特急",label:"特",color:"#f97316"};
+if(g.includes("ltd"))return{key:"ltd",name:"特急 シティ号",label:"特",color:"#f97316"};
 if(g.includes("exp"))return{key:"exp",name:"急行",label:"急",color:"#dc2626"};
 if(g.includes("sexp"))return z<-18||z>6131?{key:"sexp-local",name:"各駅停車",label:"各",color:"#2878c8"}:{key:"sexp",name:"準急",label:"準",color:"#16a34a"};
 if(g.includes("local2"))return{key:"local2",name:"各駅停車",label:"各",color:"#60a5fa"};
 if(g.includes("local"))return{key:"local",name:"各駅停車",label:"各",color:"#2878c8"};
-return water?{key:"waterline",name:"普通",label:"普",color:"#888"}:{key:"unknown",name:"その他",label:"不",color:"#222"}
+return water?{key:"waterline",name:"普通",label:"普",color:"#888"}:{key:"unknown",name:"不明",label:"不",color:"#222"}
 }
 function trainInfo(t){
 let c=TC.get(t);
