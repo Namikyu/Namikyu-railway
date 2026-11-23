@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#142B49">
+<link rel="icon" type="image/png" href="./icon.png">
+<link rel="apple-touch-icon" href="./icon.png">
 <title>掲示板 | 波急公式サイト</title>
 <style>
 :root {
@@ -23,6 +25,7 @@
 body{margin:0;font-family:"Yu Gothic UI",Meiryo,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
 button,input{font:inherit}
 button{cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
 .app{display:flex;width:100%;height:100vh}
 .sidebar{width:270px;min-width:270px;background:var(--sidebar);color:white;display:flex;flex-direction:column;padding:20px 14px;z-index:10}
 .brand{display:flex;align-items:center;gap:11px;padding:5px 8px 22px;border-bottom:1px solid #ffffff29}
@@ -72,7 +75,7 @@ button{cursor:pointer}
 .auth-primary{background:#2878c8;color:white;border:0;font-weight:bold}
 .auth-google{margin-top:10px;background:var(--input);color:var(--text);border:1px solid var(--border)}
 .auth-close{margin-top:8px;background:var(--input);color:var(--text);border:0}
-.auth-error{color:#e34e58;font-size:13px;overflow-wrap:anywhere}
+.auth-error{color:#e34e58;font-size:13px;overflow-wrap:anywhere;line-height:1.6}
 .auth-link{display:block;background:none;border:0;color:var(--blue);padding:12px 0}
 .overlay{display:none}
 @media(max-width:700px){
@@ -92,7 +95,7 @@ button{cursor:pointer}
 <div class="app">
  <aside class="sidebar" id="sidebar">
   <div class="brand">
-   <img src="icon.png" alt="波急">
+   <img src="./icon.png" alt="波急">
    <div><div class="brand-name">波急掲示板</div><div class="brand-sub">NAMIKYU COMMUNITY</div></div>
   </div>
   <div class="category-title">掲示板カテゴリ</div>
@@ -101,7 +104,13 @@ button{cursor:pointer}
    <button class="channel" data-channel="chat" onclick="selectChannel('chat')"><span class="channel-icon">💬</span>チャット</button>
   </div>
   <div class="sidebar-bottom">
-   <div class="user-area"><div class="avatar" id="user-avatar">?</div><div class="user-info"><div class="user-name" id="user-name">未ログイン</div><div class="user-role" id="user-role">未ログイン</div></div></div>
+   <div class="user-area">
+    <div class="avatar" id="user-avatar">?</div>
+    <div class="user-info">
+     <div class="user-name" id="user-name">未ログイン</div>
+     <div class="user-role" id="user-role">未ログイン</div>
+    </div>
+   </div>
   </div>
  </aside>
  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
@@ -120,11 +129,18 @@ button{cursor:pointer}
     <div class="channel-description" id="channel-description">波急運営からのお知らせを掲載します。</div>
    </div>
    <div class="messages" id="messages">
-    <div class="empty"><div class="empty-icon">📭</div><div class="empty-title">まだ投稿はありません</div><div class="empty-description">ここに投稿が表示されます。<br>ログインすると掲示板を利用できます。</div></div>
+    <div class="empty">
+     <div class="empty-icon">📭</div>
+     <div class="empty-title">まだ投稿はありません</div>
+     <div class="empty-description">ここに投稿が表示されます。<br>ログインすると掲示板を利用できます。</div>
+    </div>
    </div>
    <div class="composer-area">
     <div class="composer-notice" id="composer-notice">投稿・返信にはログインが必要です。</div>
-    <div class="composer"><input type="text" placeholder="メッセージを入力..." disabled aria-label="メッセージ入力"><button class="send-button" disabled>送信</button></div>
+    <div class="composer">
+     <input type="text" placeholder="メッセージを入力..." disabled aria-label="メッセージ入力">
+     <button class="send-button" disabled>送信</button>
+    </div>
    </div>
   </section>
  </main>
@@ -133,20 +149,30 @@ button{cursor:pointer}
 <div class="modal" id="login-modal">
  <div class="modal-box">
   <h2 id="login-title">ログイン</h2>
-  <label class="auth-label" id="name-label" style="display:none">表示名<input id="display-name" class="auth-input" type="text" placeholder="掲示板で使う名前" maxlength="30"></label>
-  <label class="auth-label">メールアドレス<input id="email" class="auth-input" type="email" placeholder="メールアドレス" autocomplete="email"></label>
-  <label class="auth-label">パスワード<input id="password" class="auth-input" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password"></label>
-  <button class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
-  <button class="auth-google" onclick="googleLogin()">Googleでログイン</button>
-  <p class="auth-error" id="login-error"></p>
-  <button class="auth-link" id="mode-button" onclick="toggleAuthMode()">新規登録はこちら</button>
-  <button class="auth-close" onclick="closeLogin()">閉じる</button>
+  <label class="auth-label" id="name-label" style="display:none">表示名
+   <input id="display-name" class="auth-input" type="text" placeholder="掲示板で使う名前" maxlength="30">
+  </label>
+  <label class="auth-label">メールアドレス
+   <input id="email" class="auth-input" type="email" placeholder="メールアドレス" autocomplete="email">
+  </label>
+  <label class="auth-label">パスワード
+   <input id="password" class="auth-input" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password">
+  </label>
+  <button type="button" class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
+  <button type="button" class="auth-google" id="google-button" onclick="googleLogin()">Googleでログイン</button>
+  <p class="auth-error" id="login-error" role="alert"></p>
+  <button type="button" class="auth-link" id="mode-button" onclick="toggleAuthMode()">新規登録はこちら</button>
+  <button type="button" class="auth-close" onclick="closeLogin()">閉じる</button>
  </div>
 </div>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-import{getAuth,GoogleAuthProvider,signInWithPopup,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import{
+ getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,
+ createUserWithEmailAndPassword,signInWithEmailAndPassword,
+ updateProfile,onAuthStateChanged,signOut
+}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 const firebaseConfig={
  apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkD2RDmZQ",
@@ -157,108 +183,195 @@ const firebaseConfig={
  appId:"1:597333464774:web:773305ab5ad97b55d2a9c7",
  measurementId:"G-5EFRPTWRMJ"
 };
-const app=initializeApp(firebaseConfig),auth=getAuth(app),googleProvider=new GoogleAuthProvider();
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const googleProvider=new GoogleAuthProvider();
+googleProvider.setCustomParameters({prompt:"select_account"});
 let authMode="login";
 
 const channelSettings={
- announcement:{name:"運営お知らせ",icon:"📢",description:"波急運営からのお知らせを掲載します。",notice:"ログインするとお知らせへの返信ができます。"},
- chat:{name:"チャット",icon:"💬",description:"メンバー同士で自由に交流できる場所です。",notice:"ログインするとメッセージを送信できます。"}
+ announcement:{
+  name:"運営お知らせ",icon:"📢",
+  description:"波急運営からのお知らせを掲載します。",
+  notice:"ログインするとお知らせへの返信ができます。"
+ },
+ chat:{
+  name:"チャット",icon:"💬",
+  description:"メンバー同士で自由に交流できる場所です。",
+  notice:"ログインするとメッセージを送信できます。"
+ }
 };
 
 function selectChannel(channel){
- const s=channelSettings[channel];if(!s)return;
+ const s=channelSettings[channel];
+ if(!s)return;
  document.getElementById("channel-name").textContent=s.name;
  document.getElementById("channel-icon").textContent=s.icon;
  document.getElementById("channel-description").textContent=s.description;
- document.querySelectorAll(".channel").forEach(b=>b.classList.toggle("active",b.dataset.channel===channel));
- updateComposerNotice();closeSidebar();
+ document.querySelectorAll(".channel").forEach(b=>{
+  b.classList.toggle("active",b.dataset.channel===channel);
+ });
+ updateComposerNotice();
+ closeSidebar();
 }
-function getCurrentChannel(){return document.querySelector(".channel.active")?.dataset.channel||"announcement";}
+
+function getCurrentChannel(){
+ return document.querySelector(".channel.active")?.dataset.channel||"announcement";
+}
+
 function updateComposerNotice(){
- const user=auth.currentUser,channel=getCurrentChannel();
+ const user=auth.currentUser;
+ const channel=getCurrentChannel();
  document.getElementById("composer-notice").textContent=
  !user?"投稿・返信にはログインが必要です。":channelSettings[channel].notice;
 }
-function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open");document.getElementById("overlay").classList.toggle("show");}
-function closeSidebar(){document.getElementById("sidebar").classList.remove("open");document.getElementById("overlay").classList.remove("show");}
+
+function toggleSidebar(){
+ document.getElementById("sidebar").classList.toggle("open");
+ document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeSidebar(){
+ document.getElementById("sidebar").classList.remove("open");
+ document.getElementById("overlay").classList.remove("show");
+}
+
 function openLogin(){
- if(auth.currentUser){logout();return;}
+ if(auth.currentUser){
+  logout();
+  return;
+ }
  document.getElementById("login-modal").classList.add("open");
  document.getElementById("login-error").textContent="";
 }
-function closeLogin(){document.getElementById("login-modal").classList.remove("open");}
+
+function closeLogin(){
+ document.getElementById("login-modal").classList.remove("open");
+}
+
 function toggleAuthMode(){
  authMode=authMode==="login"?"signup":"login";
- document.getElementById("login-title").textContent=authMode==="login"?"ログイン":"新規登録";
- document.getElementById("email-action-button").textContent=authMode==="login"?"ログイン":"アカウントを作成";
- document.getElementById("mode-button").textContent=authMode==="login"?"新規登録はこちら":"ログインはこちら";
- document.getElementById("name-label").style.display=authMode==="signup"?"block":"none";
+ document.getElementById("login-title").textContent=
+  authMode==="login"?"ログイン":"新規登録";
+ document.getElementById("email-action-button").textContent=
+  authMode==="login"?"ログイン":"アカウントを作成";
+ document.getElementById("mode-button").textContent=
+  authMode==="login"?"新規登録はこちら":"ログインはこちら";
+ document.getElementById("name-label").style.display=
+  authMode==="signup"?"block":"none";
  document.getElementById("login-error").textContent="";
 }
+
 function showError(error){
  const messages={
- "auth/invalid-email":"メールアドレスの形式が正しくありません。",
- "auth/email-already-in-use":"このメールアドレスはすでに登録されています。",
- "auth/weak-password":"パスワードは6文字以上にしてください。",
- "auth/invalid-credential":"メールアドレスまたはパスワードが違います。",
- "auth/popup-closed-by-user":"Googleログインがキャンセルされました。",
- "auth/popup-blocked":"ポップアップがブロックされました。",
- "auth/unauthorized-domain":"Firebaseの承認済みドメインにnamikyu.github.ioを追加してください。",
- "auth/network-request-failed":"ネットワークに接続できませんでした。"
+  "auth/invalid-email":"メールアドレスの形式が正しくありません。",
+  "auth/email-already-in-use":"このメールアドレスはすでに登録されています。",
+  "auth/weak-password":"パスワードは6文字以上にしてください。",
+  "auth/invalid-credential":"メールアドレスまたはパスワードが違います。",
+  "auth/unauthorized-domain":"Firebaseの承認済みドメインにnamikyu.github.ioを追加してください。",
+  "auth/operation-not-allowed":"FirebaseでGoogleまたはメール認証を有効にしてください。",
+  "auth/network-request-failed":"ネットワークに接続できませんでした。",
+  "auth/too-many-requests":"試行回数が多すぎます。時間をおいて再度お試しください。",
+  "auth/redirect-cancelled-by-user":"Googleログインがキャンセルされました。",
+  "auth/popup-closed-by-user":"Googleログインがキャンセルされました。",
+  "auth/account-exists-with-different-credential":"このメールアドレスは別のログイン方法で登録されています。"
  };
- document.getElementById("login-error").textContent=messages[error.code]||"認証エラー："+error.message;
+ document.getElementById("login-error").textContent=
+  messages[error.code]||"認証エラー："+(error.message||error.code||"不明なエラー");
 }
+
 async function emailAction(){
- const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,name=document.getElementById("display-name").value.trim(),button=document.getElementById("email-action-button");
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+ const name=document.getElementById("display-name").value.trim();
+ const button=document.getElementById("email-action-button");
+
  try{
   document.getElementById("login-error").textContent="";
   if(!email||!password)throw new Error("メールアドレスとパスワードを入力してください。");
+
+  button.disabled=true;
+  button.textContent="処理中...";
+
   if(authMode==="signup"){
    if(!name)throw new Error("表示名を入力してください。");
    if(name.length>30)throw new Error("表示名は30文字以内にしてください。");
    if(password.length<6)throw new Error("パスワードは6文字以上にしてください。");
-   button.disabled=true;button.textContent="登録中...";
+
    const result=await createUserWithEmailAndPassword(auth,email,password);
    await updateProfile(result.user,{displayName:name});
   }else{
-   button.disabled=true;button.textContent="ログイン中...";
    await signInWithEmailAndPassword(auth,email,password);
   }
+
   closeLogin();
  }catch(error){
   if(error.code)showError(error);
   else document.getElementById("login-error").textContent=error.message;
  }finally{
-  button.disabled=false;button.textContent=authMode==="login"?"ログイン":"アカウントを作成";
+  button.disabled=false;
+  button.textContent=authMode==="login"?"ログイン":"アカウントを作成";
  }
 }
+
+/* Googleログイン：ポップアップを使わず画面遷移で認証 */
 async function googleLogin(){
- try{document.getElementById("login-error").textContent="";await signInWithPopup(auth,googleProvider);closeLogin();}
- catch(error){showError(error);}
+ const button=document.getElementById("google-button");
+
+ try{
+  document.getElementById("login-error").textContent="";
+  button.disabled=true;
+  button.textContent="Googleに接続中...";
+  await signInWithRedirect(auth,googleProvider);
+ }catch(error){
+  showError(error);
+  button.disabled=false;
+  button.textContent="Googleでログイン";
+ }
 }
+
+/* Google認証から戻ってきたときの結果を確認 */
+getRedirectResult(auth).catch(error=>{
+ document.getElementById("login-modal").classList.add("open");
+ showError(error);
+});
+
 async function logout(){
  if(!confirm("ログアウトしますか？"))return;
- try{await signOut(auth);}catch(error){alert("ログアウトに失敗しました。");console.error(error);}
+ try{
+  await signOut(auth);
+ }catch(error){
+  alert("ログアウトに失敗しました。");
+  console.error(error);
+ }
 }
 
 onAuthStateChanged(auth,user=>{
  const button=document.getElementById("login-button");
+
  if(user){
   const name=user.displayName||user.email?.split("@")[0]||"メンバー";
-  button.textContent="ログアウト";button.onclick=logout;
+  button.textContent="ログアウト";
+  button.onclick=logout;
   document.getElementById("user-name").textContent=name;
   document.getElementById("user-role").textContent="メンバー";
   document.getElementById("user-avatar").textContent=Array.from(name)[0]||"?";
  }else{
-  button.textContent="ログイン・新規登録";button.onclick=openLogin;
+  button.textContent="ログイン・新規登録";
+  button.onclick=openLogin;
   document.getElementById("user-name").textContent="未ログイン";
   document.getElementById("user-role").textContent="未ログイン";
   document.getElementById("user-avatar").textContent="?";
  }
+
  updateComposerNotice();
 });
 
-Object.assign(window,{selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleLogin});
+Object.assign(window,{
+ selectChannel,toggleSidebar,closeSidebar,
+ openLogin,closeLogin,toggleAuthMode,emailAction,googleLogin
+});
 </script>
 </body>
 </html>
