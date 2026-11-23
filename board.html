@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -126,6 +127,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   <header class="topbar">
    <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">☰</button><div class="page-title">波急コミュニティ</div>
    <div class="topbar-right">
+    <input class="top-search" id="global-search" type="search" placeholder="投稿を検索..." aria-label="投稿を検索">
+    <button class="top-button" id="users-button" onclick="openUsers()">メンバー</button>
     <button class="top-button home-button" onclick="location.href='./index.html'" aria-label="ホームへ戻る">⌂ <span class="wide-label">ホーム</span></button>
     <button class="top-button" id="theme-button" onclick="toggleTheme()">🌙 ダーク</button>
     <button class="top-button" id="profile-button" style="display:none" onclick="openProfile()">プロフィール</button>
@@ -221,7 +224,7 @@ function toggleTheme(){let t=document.documentElement.dataset.theme==="dark"?"li
 function selectChannel(c){if(!settings[c])return;currentChannel=c;localStorage.setItem("board-channel",c);$("channel-name").textContent=settings[c].name;$("channel-icon").textContent=settings[c].icon;$("channel-description").textContent=settings[c].description;document.querySelectorAll(".channel").forEach(b=>b.classList.toggle("active",b.dataset.channel===c));updateComposer();renderPosts();closeSidebar()}
 function toggleSidebar(){$("sidebar").classList.toggle("open");$("overlay").classList.toggle("show")}
 function closeSidebar(){$("sidebar").classList.remove("open");$("overlay").classList.remove("show")}
-function openLogin(){if(currentUser){openAction("ログアウトしますか？","ログアウトすると、再度ログインが必要になります。", "ログアウト",async()=>signOut(auth));return}$("login-modal").classList.add("open");$("login-error").textContent=""}
+function openLogin(){if(currentUser){openAction("ログアウトしますか？","ログアウトすると、再度ログインが必要になります。","ログアウト",async()=>signOut(auth));return}$("login-modal").classList.add("open");$("login-error").textContent=""}
 function closeLogin(){$("login-modal").classList.remove("open")}
 function toggleAuthMode(){authMode=authMode==="login"?"signup":"login";updateAuthMode()}
 function updateAuthMode(){let s=authMode==="signup";$("login-title").textContent=s?"新規登録":"ログイン";$("auth-description").textContent=s?"メールまたはGoogleで新規登録できます。":"登録済みのメールアドレスとパスワードでログインします。";$("email-action-button").textContent=s?"メールで新規登録":"ログイン";$("google-button").style.display=s?"block":"none";$("google-setup-button").style.display=s?"block":"none";$("mode-button").textContent=s?"ログインはこちら":"新規登録はこちら";$("name-label").style.display=s?"block":"none";$("password").autocomplete=s?"new-password":"current-password";$("login-error").textContent=""}
@@ -245,7 +248,7 @@ function openUsers(){if(!currentUser)return toast("メンバー一覧を見る�
 function closeUsers(){$("users-modal").classList.remove("open")}
 async function writePresence(){if(!currentUser)return;try{await setDoc(doc(db,"presence",currentUser.uid),{uid:currentUser.uid,lastSeen:serverTimestamp(),displayName:nameOf()},{merge:true})}catch(e){console.warn("presence update:",e.message)}}
 function startPresence(){if(presenceTimer)clearInterval(presenceTimer);if(unsubscribePresence)unsubscribePresence();if(!currentUser)return;writePresence();presenceTimer=setInterval(writePresence,30000);unsubscribePresence=onSnapshot(collection(db,"presence"),snap=>{presenceCache={};snap.forEach(d=>presenceCache[d.id]=d.data());if($("users-modal").classList.contains("open"))renderUsers()},()=>{});document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")writePresence()})}
-function mentionInput(input){let v=input.value,pos=input.selectionStart||0,before=v.slice(0,pos),m=before.match(/(?:^|\s)@([\p{L}\p{N}_-]*)$/u);if(!m){hideMentions();return}let term=m[1].toLocaleLowerCase("ja-JP"),matches=userCache.filter(u=>mentionKey(u.name).startsWith(mentionKey(term))).slice(0,7);if(!matches.length){hideMentions();return}mentionTarget={input,start:pos-m[1].length-1,end:pos};let menu=$("mention-menu"),r=input.getBoundingClientRect();menu.style.left=Math.max(8,Math.min(r.left,innerWidth-330))+"px";menu.style.top=Math.max(8,r.top- matches.length*44-10)+"px";menu.innerHTML=matches.map(u=>`<button class="mention-option" type="button" onclick="insertMention('${esc(u.uid)}')">${avatar(u.name,u.photo,"reply-avatar")}<span>${esc(u.name)}</span></button>`).join("");menu.style.display="block"}
+function mentionInput(input){let v=input.value,pos=input.selectionStart||0,before=v.slice(0,pos),m=before.match(/(?:^|\s)@([\p{L}\p{N}_-]*)$/u);if(!m){hideMentions();return}let term=m[1].toLocaleLowerCase("ja-JP"),matches=userCache.filter(u=>mentionKey(u.name).startsWith(mentionKey(term))).slice(0,7);if(!matches.length){hideMentions();return}mentionTarget={input,start:pos-m[1].length-1,end:pos};let menu=$("mention-menu"),r=input.getBoundingClientRect();menu.style.left=Math.max(8,Math.min(r.left,innerWidth-330))+"px";menu.style.top=Math.max(8,r.top-matches.length*44-10)+"px";menu.innerHTML=matches.map(u=>`<button class="mention-option" type="button" onclick="insertMention('${esc(u.uid)}')">${avatar(u.name,u.photo,"reply-avatar")}<span>${esc(u.name)}</span></button>`).join("");menu.style.display="block"}
 function hideMentions(){$("mention-menu").style.display="none";mentionTarget=null}
 function insertMention(uid){if(!mentionTarget)return;let u=userCache.find(x=>x.uid===uid),t=mentionTarget;if(!u)return;let key=String(u.name).replace(/\s+/g,"");let before=t.input.value.slice(0,t.start),after=t.input.value.slice(t.end);t.input.value=before+"@"+key+" "+after;t.input.focus();let pos=(before+"@"+key+" ").length;t.input.setSelectionRange(pos,pos);hideMentions()}
 function startPosts(){if(unsubscribePosts)unsubscribePosts();cleanupReplies();if(!currentUser){cachedPosts=[];renderPosts();return}unsubscribePosts=onSnapshot(collection(db,"posts"),s=>{cachedPosts=s.docs.map(d=>({id:d.id,data:d.data()}));cachedPosts.sort((a,b)=>(b.data.createdAt?.toMillis?.()||0)-(a.data.createdAt?.toMillis?.()||0));renderPosts()},e=>{$("messages").textContent="読み込みエラー："+e.message})}
