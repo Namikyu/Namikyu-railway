@@ -53,16 +53,16 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;curso
 .modal{display:none;position:fixed;inset:0;z-index:100;background:#0009;align-items:center;justify-content:center;padding:20px}
 .modal.open{display:flex}
 .modal-box{background:var(--panel);color:var(--text);width:100%;max-width:420px;max-height:90vh;overflow-y:auto;padding:25px;border-radius:14px}
-.modal-box h2{margin:0 0 20px}
+.modal-box h2{margin:0 0 8px}
+.auth-description{font-size:13px;color:var(--sub);margin:0 0 20px;line-height:1.6}
 .auth-label{display:block;font-size:13px;font-weight:bold;margin-bottom:14px}
 .auth-input{display:block;width:100%;padding:12px;margin-top:7px;border:1px solid var(--border);border-radius:7px;background:var(--input);color:var(--text)}
 .auth-primary,.auth-google,.auth-close{width:100%;padding:12px;border-radius:7px}
 .auth-primary{background:#2878c8;color:white;border:0;font-weight:bold}
 .auth-google{margin-top:10px;background:var(--input);color:var(--text);border:1px solid var(--border)}
 .auth-close{margin-top:8px;background:var(--input);color:var(--text);border:0}
-.auth-error{color:#e34e58;font-size:13px;overflow-wrap:anywhere;line-height:1.6}
+.auth-error{color:#e34e58;font-size:13px;overflow-wrap:anywhere;line-height:1.7;white-space:pre-wrap}
 .auth-link{display:block;background:none;border:0;color:var(--blue);padding:12px 0}
-.overlay{display:none}
 @media(max-width:700px){
 .sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-100%);transition:transform .2s;width:280px}
 .sidebar.open{transform:translateX(0)}
@@ -108,7 +108,8 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;curso
 <div class="modal" id="login-modal">
  <div class="modal-box">
   <h2 id="login-title">ログイン</h2>
-  <label class="auth-label" id="name-label" style="display:none">表示名<input id="display-name" class="auth-input" type="text" placeholder="掲示板で使う名前" maxlength="30"></label>
+  <p class="auth-description" id="auth-description">登録済みのアカウントでログインします。</p>
+  <label class="auth-label" id="name-label" style="display:none">表示名<input id="display-name" class="auth-input" type="text" placeholder="掲示板で使う名前" maxlength="30" autocomplete="nickname"></label>
   <label class="auth-label">メールアドレス<input id="email" class="auth-input" type="email" placeholder="メールアドレス" autocomplete="email"></label>
   <label class="auth-label">パスワード<input id="password" class="auth-input" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password"></label>
   <button type="button" class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
@@ -121,10 +122,10 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;curso
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-import{getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 const firebaseConfig={
- apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkD2RDmZQ",
+ apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhK2D2RDmZQ",
  authDomain:"namikyu-board.firebaseapp.com",
  projectId:"namikyu-board",
  storageBucket:"namikyu-board.firebasestorage.app",
@@ -132,6 +133,7 @@ const firebaseConfig={
  appId:"1:597333464774:web:773305ab5ad97b55d2a9c7",
  measurementId:"G-5EFRPTWRMJ"
 };
+
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const googleProvider=new GoogleAuthProvider();
@@ -170,27 +172,47 @@ function openLogin(){
  document.getElementById("login-error").textContent="";
 }
 function closeLogin(){document.getElementById("login-modal").classList.remove("open")}
-function toggleAuthMode(){
- authMode=authMode==="login"?"signup":"login";
- document.getElementById("login-title").textContent=authMode==="login"?"ログイン":"新規登録";
- document.getElementById("email-action-button").textContent=authMode==="login"?"ログイン":"アカウントを作成";
- document.getElementById("mode-button").textContent=authMode==="login"?"新規登録はこちら":"ログインはこちら";
- document.getElementById("name-label").style.display=authMode==="signup"?"block":"none";
+
+function updateAuthMode(){
+ const signup=authMode==="signup";
+ document.getElementById("login-title").textContent=signup?"新規登録":"ログイン";
+ document.getElementById("auth-description").textContent=signup?"新しいアカウントを作成します。":"登録済みのアカウントでログインします。";
+ document.getElementById("email-action-button").textContent=signup?"アカウントを作成":"ログイン";
+ document.getElementById("google-button").textContent=signup?"Googleで新規登録":"Googleでログイン";
+ document.getElementById("mode-button").textContent=signup?"ログインはこちら":"新規登録はこちら";
+ document.getElementById("name-label").style.display=signup?"block":"none";
+ document.getElementById("password").autocomplete=signup?"new-password":"current-password";
  document.getElementById("login-error").textContent="";
 }
+function toggleAuthMode(){
+ authMode=authMode==="login"?"signup":"login";
+ updateAuthMode();
+}
+
 function showError(error){
  const messages={
  "auth/invalid-email":"メールアドレスの形式が正しくありません。",
- "auth/email-already-in-use":"このメールアドレスはすでに登録されています。",
+ "auth/missing-email":"メールアドレスを入力してください。",
+ "auth/email-already-in-use":"このメールアドレスはすでに登録されています。ログインをお試しください。",
  "auth/weak-password":"パスワードは6文字以上にしてください。",
  "auth/invalid-credential":"メールアドレスまたはパスワードが違います。",
+ "auth/user-not-found":"このメールアドレスのアカウントが見つかりません。新規登録をお試しください。",
+ "auth/wrong-password":"パスワードが正しくありません。",
+ "auth/user-disabled":"このアカウントは無効になっています。運営にお問い合わせください。",
  "auth/unauthorized-domain":"Firebaseの承認済みドメインにnamikyu.github.ioを追加してください。",
- "auth/operation-not-allowed":"FirebaseでGoogleまたはメール認証を有効にしてください。",
- "auth/network-request-failed":"ネットワークに接続できませんでした。",
- "auth/too-many-requests":"試行回数が多すぎます。時間をおいて再度お試しください。",
- "auth/account-exists-with-different-credential":"このメールアドレスは別のログイン方法で登録されています。"
+ "auth/operation-not-allowed":"Firebase ConsoleでGoogle認証とメール/パスワード認証を有効にしてください。",
+ "auth/network-request-failed":"ネットワークに接続できませんでした。通信状態を確認してください。",
+ "auth/too-many-requests":"試行回数が多すぎます。しばらく時間をおいて再度お試しください。",
+ "auth/account-exists-with-different-credential":"このメールアドレスは別のログイン方法で登録されています。",
+ "auth/popup-closed-by-user":"Googleログイン画面が閉じられました。もう一度お試しください。",
+ "auth/popup-blocked":"ポップアップがブロックされました。ブラウザでこのサイトのポップアップを許可してください。",
+ "auth/cancelled-popup-request":"別のログイン画面が開かれています。画面を閉じてから再度お試しください。",
+ "auth/invalid-api-key":"FirebaseのAPIキーが正しくありません。firebaseConfigのapiKeyを確認してください。",
+ "auth/api-key-not-valid.-please-pass-a-valid-api-key.":"FirebaseのAPIキーが無効です。Firebaseのプロジェクト設定を確認してください。",
+ "auth/credential-already-in-use":"この認証情報は別のアカウントで使用されています。"
  };
- document.getElementById("login-error").textContent=messages[error.code]||"認証エラー："+(error.message||error.code||"不明なエラー");
+ const message=messages[error.code]||"認証に失敗しました。時間をおいて再度お試しください。";
+ document.getElementById("login-error").textContent=message+"\nエラーコード："+(error.code||"不明");
  console.error("Firebase認証エラー:",error);
 }
 
@@ -202,64 +224,54 @@ async function emailAction(){
  try{
   document.getElementById("login-error").textContent="";
   if(!email||!password)throw new Error("メールアドレスとパスワードを入力してください。");
-  button.disabled=true;button.textContent="処理中...";
   if(authMode==="signup"){
    if(!name)throw new Error("表示名を入力してください。");
    if(name.length>30)throw new Error("表示名は30文字以内にしてください。");
    if(password.length<6)throw new Error("パスワードは6文字以上にしてください。");
+  }
+  button.disabled=true;button.textContent="処理中...";
+  await setPersistence(auth,browserLocalPersistence);
+  if(authMode==="signup"){
    const result=await createUserWithEmailAndPassword(auth,email,password);
    await updateProfile(result.user,{displayName:name});
-  }else await signInWithEmailAndPassword(auth,email,password);
+  }else{
+   await signInWithEmailAndPassword(auth,email,password);
+  }
   closeLogin();
  }catch(error){
   if(error.code)showError(error);
   else document.getElementById("login-error").textContent=error.message;
  }finally{
-  button.disabled=false;button.textContent=authMode==="login"?"ログイン":"アカウントを作成";
+  button.disabled=false;
+  button.textContent=authMode==="signup"?"アカウントを作成":"ログイン";
  }
 }
 
-/* Googleログイン */
+/* Googleポップアップ認証 */
 async function googleLogin(){
  const button=document.getElementById("google-button");
  try{
   document.getElementById("login-error").textContent="";
   button.disabled=true;button.textContent="Googleに接続中...";
   await setPersistence(auth,browserLocalPersistence);
-  await signInWithRedirect(auth,googleProvider);
+  const result=await signInWithPopup(auth,googleProvider);
+  console.log("Googleログイン成功:",result.user.uid);
+  closeLogin();
  }catch(error){
-  showError(error);button.disabled=false;button.textContent="Googleでログイン";
- }
-}
-
-/* 認証結果の受け取りと確認 */
-async function checkRedirectResult(){
- try{
-  await setPersistence(auth,browserLocalPersistence);
-  const result=await getRedirectResult(auth);
-  console.log("Google認証結果:",result);
-  console.log("Google認証ユーザー:",result?.user||null);
-  if(result?.user){
-   console.log("Googleログイン成功:",result.user.uid);
-   closeLogin();
-  }
- }catch(error){
-  console.error("Google認証結果の取得エラー:",error);
-  document.getElementById("login-modal").classList.add("open");
   showError(error);
+ }finally{
+  button.disabled=false;
+  button.textContent=authMode==="signup"?"Googleで新規登録":"Googleでログイン";
  }
 }
-checkRedirectResult();
 
 async function logout(){
  if(!confirm("ログアウトしますか？"))return;
  try{await signOut(auth)}catch(error){alert("ログアウトに失敗しました。");console.error(error)}
 }
 
-/* ログイン状態の監視 */
 onAuthStateChanged(auth,user=>{
  console.log("Firebaseログイン状態:",user?"ログイン中":"未ログイン");
- if(user)console.log("ログインユーザーUID:",user.uid);
  const button=document.getElementById("login-button");
  if(user){
   const name=user.displayName||user.email?.split("@")[0]||"メンバー";
