@@ -271,6 +271,7 @@ main{padding:7px}
 </div>
 </div>
 <script>
+
 "use strict";
 ["contextmenu","copy","cut","selectstart","dragstart"].forEach(t=>addEventListener(t,e=>e.preventDefault()));
 const API_URL="https://namikyu-status.kou20230831.workers.dev/api/status",MIN_W=1100,MAX_W=28000,GRID=500,$=id=>document.getElementById(id);
@@ -332,9 +333,14 @@ function trainInfo(t){
 let c=TC.get(t);
 if(c)return c;
 const g=tags(t),p=coords(t);
-const water=!g.some(x=>TYPE_TAGS.includes(x))&&p.x>=-656&&p.x<=50&&p.z>=4030&&p.z<=4808;
+const m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name);
+const water=
+!g.some(x=>TYPE_TAGS.includes(x))&&
+p.x>=-656&&p.x<=50&&
+p.z>=4030&&p.z<=4808&&
+m?.[1]==="6971";
 const d=g.includes("z-")?"z-":g.includes("z+")||g.includes("z")?"z+":g.includes("x-")?"x-":"x+";
-const m=KTS.exec(t?.car_type_id)||KTS.exec(t?.car_name),type=trainType(g,p.z,water);
+const type=trainType(g,p.z,water);
 let route="波急波川線";
 if(p.z<-18)route="矢野電鉄線";
 else if(p.z>6131)route="雨急雨波線";
@@ -650,6 +656,3 @@ OBST.push(e?rect(Math.min(lx-w,rx-w),ly-fs,Math.max(lx,rx)+30,ly+h):rect(Math.mi
 return c+l
 })();
 (async()=>{await loadStaff();await fetchStatus();scheduleRefresh()})();
-</script>
-</body>
-</html>
