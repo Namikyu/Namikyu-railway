@@ -1,34 +1,305 @@
-<!DOCTYPE html><html lang=ja><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=theme-color content=#142B49><meta name=color-scheme content="light dark"><link rel=icon href=./icon.png><title>掲示板 | 波急公式サイト</title><script>try{document.documentElement.dataset.theme=localStorage.getItem("board-theme")||"light"}catch(e){}</script><style>:root{color-scheme:light;--bg:#f4f6fa;--panel:#fff;--side:#fff;--text:#172b45;--sub:#718096;--border:#e1e7ef;--b:1px solid var(--border);--blue:#2878c8;--blue2:#eaf3fc;--input:#f5f7fa;--danger:#d9485b;--shadow:0 8px 28px #142b4910;--focus:#2878c8}:root[data-theme=dark]{color-scheme:dark;--bg:#0d1520;--panel:#172333;--side:#111e2e;--text:#e8eef6;--sub:#a5b2c3;--border:#2b3a4d;--blue:#65adf3;--blue2:#1d3852;--input:#223247;--danger:#ff7180;--shadow:0 8px 28px #0003;--focus:#8bc5ff}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,"Yu Gothic UI",Meiryo,sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden}body.auth-pending .app{visibility:hidden}.auth-loading{display:none}body.auth-pending .auth-loading{display:flex;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:var(--bg);color:var(--text);font-size:14px;font-weight:700}.auth-loading-inner{display:flex;align-items:center;gap:12px;padding:18px 22px;border:var(--b);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}.auth-loading-dot{width:9px;height:9px;border-radius:50%;background:var(--blue);animation:authPulse 1s ease-in-out infinite alternate}@keyframes authPulse{from{opacity:.35;transform:scale(.8)}to{opacity:1;transform:scale(1.15)}}button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--focus) 55%,transparent);outline-offset:2px}.app{display:flex;width:100%;height:100dvh}.sidebar{width:264px;min-width:264px;background:var(--side);border-right:var(--b);display:flex;flex-direction:column;padding:20px 14px;z-index:30}.brand{display:flex;align-items:center;gap:11px;padding:5px 8px 22px;border-bottom:var(--b)}.brand img{width:42px;height:42px;object-fit:contain}.brand-name{font-size:19px;font-weight:800;letter-spacing:.01em}.brand-sub{font-size:10px;color:var(--sub);margin-top:3px;letter-spacing:.1em}.category-title{margin:24px 8px 9px;font-size:11px;font-weight:800;color:var(--sub);letter-spacing:.08em}.channel-list{display:flex;flex-direction:column;gap:5px}.channel{padding:12px 13px;border:0;border-radius:10px;background:transparent;color:var(--text);text-align:left;font-size:14px;font-weight:650}.channel:hover{background:var(--input)}.channel.active{background:var(--blue2);color:var(--blue)}.sidebar-bottom{margin-top:auto;border-top:var(--b);padding:14px 5px 0}.profile-click{border:0;background:none;padding:0;color:inherit;display:inline-flex;align-items:center;gap:9px;text-align:left;min-width:0}.user-area{width:100%}.avatar,.post-avatar,.reply-avatar{border-radius:50%;background:var(--blue);display:grid;place-items:center;color:#fff;font-weight:800;overflow:hidden}.avatar{width:40px;height:40px;min-width:40px}.post-avatar,.reply-avatar{width:38px;height:38px;min-width:38px}.reply-avatar{width:29px;height:29px;min-width:29px;font-size:12px}.avatar img,.post-avatar img,.reply-avatar img,.profile-preview img{width:100%;height:100%;object-fit:cover}.user-info{min-width:0}.user-name{font-size:13px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.user-role{font-size:11px;color:var(--sub);margin-top:3px}.main{flex:1;min-width:0;display:flex;flex-direction:column}.topbar{height:66px;min-height:66px;background:var(--panel);border-bottom:var(--b);display:flex;align-items:center;padding:0 clamp(12px,2vw,28px);gap:13px}.menu-button{display:none;border:0;background:transparent;color:var(--text);font-size:23px;padding:7px}.page-title{font-size:17px;font-weight:800;letter-spacing:.01em}.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}.top-button{font-size:12px;font-weight:650;color:var(--text);padding:9px 13px;border:var(--b);border-radius:10px;background:var(--input)}.top-button:hover,.small-button:hover,.attach-button:hover{background:var(--blue2)}.top-button:active,.send-button:active{transform:scale(.97)}.home-button{background:var(--blue);color:#fff;border-color:var(--blue)}.content{flex:1;min-height:0;display:flex;flex-direction:column;max-width:1180px;width:100%;margin:0 auto}.channel-header{background:var(--panel);border-bottom:var(--b);padding:22px clamp(16px,3vw,34px)}.channel-heading{font-size:21px;font-weight:850}.channel-description{margin-top:6px;font-size:13px;color:var(--sub);line-height:1.6}.messages{flex:1;overflow-y:auto;padding:22px clamp(12px,3vw,34px);overscroll-behavior:contain;scrollbar-gutter:stable}.empty{min-height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--sub);gap:8px}.empty-icon{font-size:38px}.empty-title{font-size:17px;font-weight:800;color:var(--text)}.post{background:var(--panel);border:var(--b);border-radius:16px;padding:18px;margin:0 auto 14px;max-width:850px;box-shadow:var(--shadow);will-change:transform,opacity;transition:box-shadow .18s,border-color .18s}.post-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.post-author{font-size:13px;font-weight:800}.post-author:hover{text-decoration:underline}.post-role{font-size:10px;font-weight:800;padding:4px 8px;border-radius:20px;background:var(--input);color:var(--sub)}.role-owner{background:#fff1bd;color:#916000}.role-developer{background:#eee1ff;color:#7540b5}.role-moderator{background:#ffe1ee;color:#bd3974}.post-date{font-size:11px;color:var(--sub);margin-left:auto}.post-content{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.85;margin:15px 0 12px;font-size:14px}.post-image{display:block;max-width:min(100%,680px);max-height:480px;object-fit:contain;border-radius:12px;margin:12px 0;border:var(--b);background:var(--input)}.actions{display:flex;gap:7px;flex-wrap:wrap;padding-top:5px}.small-button{border:var(--b);background:var(--input);color:var(--text);border-radius:9px;padding:7px 11px;font-size:12px;font-weight:650}.small-button.danger{color:var(--danger)}.reply-list{border-top:var(--b);margin-top:15px;padding-top:5px}.reply{padding:11px 0;font-size:13px;line-height:1.7;border-bottom:var(--b)}.reply:last-child{border-bottom:0}.reply-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.reply-date{font-size:10px;color:var(--sub)}.reply-content{margin:5px 0 0 37px;white-space:pre-wrap;overflow-wrap:anywhere}.reply-form{display:flex;gap:8px;margin-top:12px}.reply-form input{flex:1;min-width:0;padding:11px 12px;border:var(--b);border-radius:10px;background:var(--input);color:var(--text);font-size:13px}.no-replies{font-size:12px;color:var(--sub);padding:10px 0}.composer-area{padding:13px clamp(12px,3vw,34px) 18px;background:var(--panel);border-top:var(--b)}.composer-inner{max-width:850px;margin:0 auto}.composer-notice{font-size:11px;color:var(--sub);margin-bottom:8px}.composer{display:flex;align-items:flex-end;gap:9px;background:var(--input);border:var(--b);border-radius:14px;padding:10px}.composer textarea{flex:1;min-width:0;resize:none;max-height:150px;min-height:28px;border:0;outline:0;background:transparent;color:var(--text);font-size:14px;padding:6px;line-height:1.6}.send-button{border:0;border-radius:10px;padding:10px 17px;background:var(--blue);color:#fff;font-weight:800;white-space:nowrap}.attach-button{border:var(--b);border-radius:10px;padding:9px 11px;background:var(--panel);color:var(--text);font-size:12px;white-space:nowrap}.attachment-preview{display:none;align-items:center;gap:10px;margin:8px 0;padding:8px;background:var(--input);border-radius:10px;font-size:12px}.attachment-preview img{width:55px;height:55px;object-fit:cover;border-radius:7px}.attachment-preview button{margin-left:auto}.rules-page{max-width:850px;margin:0 auto 18px;background:var(--panel);border:var(--b);border-radius:16px;padding:clamp(18px,3vw,28px);box-shadow:var(--shadow);line-height:1.85}.rules-page h2{font-size:19px;margin:0 0 8px}.rules-page h3{font-size:15px;margin:22px 0 7px;padding-bottom:6px;border-bottom:var(--b)}.rules-page p,.rules-page li{font-size:13px}.rules-page ul,.rules-page ol{padding-left:1.5em}.rules-page li{margin:5px 0}.rules-note{color:var(--sub);font-size:12px}.modal{display:none;position:fixed;inset:0;z-index:100;background:#07111dcc;backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:18px}.modal.open{display:flex;animation:fade .15s ease}.modal-box{background:var(--panel);color:var(--text);width:100%;max-width:460px;max-height:90dvh;overflow-y:auto;padding:24px;border:var(--b);border-radius:18px;box-shadow:0 24px 80px #0004;animation:rise .18s ease}.modal-box h2{margin:0 0 8px;font-size:20px}.auth-description{font-size:13px;color:var(--sub);margin:0 0 18px;line-height:1.7}.auth-label{display:block;font-size:13px;font-weight:750;margin-bottom:13px}.auth-input{display:block;width:100%;padding:12px;margin-top:7px;border:var(--b);border-radius:10px;background:var(--input);color:var(--text)}.auth-primary,.auth-google,.auth-close{width:100%;padding:12px;border-radius:10px;font-weight:750}.auth-primary{background:var(--blue);color:#fff;border:0}.auth-google{margin-top:9px;background:var(--input);color:var(--text);border:var(--b)}.auth-close{margin-top:8px;background:var(--input);color:var(--text);border:0}.auth-error{color:var(--danger);font-size:13px;overflow-wrap:anywhere;line-height:1.6;white-space:pre-wrap}.auth-link{display:block;background:none;border:0;color:var(--blue);padding:12px 0}.profile-preview{width:90px;height:90px;border-radius:50%;overflow:hidden;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:30px;margin:10px auto 16px}.profile-role-view{text-align:center;margin:0 0 16px}.dialog-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.dialog-actions button{min-width:92px}.toast-region{position:fixed;right:18px;bottom:18px;z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none}.toast{background:var(--text);color:var(--panel);padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);font-size:13px;max-width:min(360px,calc(100vw - 36px));animation:rise .18s ease}.overlay{display:none}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes rise{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}.top-search{width:min(30vw,260px);min-width:120px;padding:9px 12px;border:var(--b);border-radius:10px;background:var(--input);color:var(--text);font-size:12px;transition:border-color .18s,box-shadow .18s}.top-search:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 15%,transparent);outline:0}.offline-dot,.online-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#94a3b8;vertical-align:middle;margin-right:5px}.online-dot{background:#22c55e;box-shadow:0 0 0 3px color-mix(in srgb,#22c55e 15%,transparent)}.user-list{display:grid;gap:8px}.member-row{display:flex;align-items:center;gap:11px;padding:10px;border:var(--b);border-radius:12px;background:var(--input)}.member-row:hover{background:var(--blue2);transform:translateY(-1px)}.member-meta{min-width:0;flex:1}.member-name{font-weight:800;font-size:13px}.member-status{font-size:11px;color:var(--sub);margin-top:3px}.member-role{font-size:10px;color:var(--sub);margin-left:auto}.modal-box.wide{max-width:620px}.search-empty{padding:28px;text-align:center;color:var(--sub)}.mention-menu{position:fixed;z-index:180;display:none;min-width:210px;max-width:min(320px,90vw);max-height:240px;overflow:auto;padding:6px;background:var(--panel);border:var(--b);border-radius:12px;box-shadow:0 14px 40px #0003}.mention-option{display:flex;align-items:center;gap:9px;width:100%;padding:8px;border:0;border-radius:8px;background:transparent;color:var(--text);text-align:left}.mention-option:hover,.mention-option:focus{background:var(--blue2);outline:0}.mention-link{border:0;padding:0;background:transparent;color:var(--blue);font-weight:800;text-decoration:none}.mention-link:hover{text-decoration:underline}.post-content .mention-link,.reply-content .mention-link{font-size:inherit}.post:hover{border-color:color-mix(in srgb,var(--blue) 28%,var(--border));box-shadow:0 10px 30px #142b4918}.send-button,.small-button,.top-button,.channel,.member-row{transition:background .16s,color .16s,border-color .16s,transform .16s,box-shadow .16s}.send-button:disabled{opacity:.6}.post-enter{animation:postEnter .24s cubic-bezier(.2,.75,.25,1) both}@keyframes postEnter{from{opacity:0;transform:translateY(9px) scale(.992)}to{opacity:1;transform:translateY(0) scale(1)}}@media(max-width:760px){.top-search{width:34vw;min-width:90px;padding:8px}.user-list{gap:6px}.sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-105%);transition:transform .2s ease;width:285px;min-width:285px;box-shadow:var(--shadow)}.sidebar.open{transform:translateX(0)}.overlay.show{display:block;position:fixed;inset:0;background:#0008;z-index:20}.menu-button{display:block}.topbar{height:60px;min-height:60px;padding:0 9px;gap:8px}.page-title{font-size:15px}.topbar-right{gap:5px}.top-button{font-size:11px;padding:8px 9px}.channel-header{padding:16px}.channel-heading{font-size:18px}.messages{padding:12px}.post{padding:14px;border-radius:13px}.composer-area{padding:10px}.composer{gap:6px;padding:7px}.attach-button{padding:9px 8px}.send-button{padding:10px 12px}.post-date{width:100%;margin-left:47px}.modal-box{padding:20px}}@media(max-width:390px){.top-button{padding:7px;font-size:10px}.home-button .wide-label{display:none}.composer textarea{font-size:13px}.attach-button{font-size:0}.attach-button::first-letter{font-size:15px}}@media(prefers-reduced-motion:reduce){.post-enter{animation:none}.post,.member-row{will-change:auto}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}</style></head><body class=auth-pending><div class=auth-loading role=status aria-live=polite><div class=auth-loading-inner><span class=auth-loading-dot></span><span>ログイン状態を確認しています...</span></div></div><div class=app><aside class=sidebar id=sidebar><div class=brand><img src=./icon.png alt=波急><div><div class=brand-name>波急掲示板</div><div class=brand-sub>NAMIKYU COMMUNITY</div></div></div><div class=category-title>コミュニティ</div><div class=channel-list><button class="channel active" data-page=announcement onclick="selectChannel('announcement')">📢　運営お知らせ</button><button class=channel data-page=chat onclick="selectChannel('chat')">💬　チャット</button><button class=channel data-page=rules onclick=showRules()>📜　ルール</button></div><div class=sidebar-bottom><button class="profile-click user-area" onclick=openProfile()><div class=avatar id=user-avatar>?</div><div class=user-info><div class=user-name id=user-name>未ログイン</div><div class=user-role id=user-role>未ログイン</div></div></button></div></aside><div class=overlay id=overlay onclick=closeSidebar()></div><main class=main><header class=topbar><button class=menu-button onclick=toggleSidebar() aria-label="メニューを開く">☰</button><div class=page-title>波急コミュニティ</div><div class=topbar-right><input class=top-search id=global-search type=search placeholder="投稿を検索..." aria-label="投稿を検索"><button class=top-button onclick=openUsers()>メンバー</button><button class="top-button home-button" onclick="location.href='./index.html'" aria-label="ホームへ戻る">⌂ <span class=wide-label>ホーム</span></button><button class=top-button id=theme-button onclick=toggleTheme()>🌙 ダーク</button><button class=top-button id=profile-button style=display:none onclick=openProfile()>プロフィール</button><button class=top-button id=login-button onclick=openLogin()>ログイン</button></div></header><section class=content><div class=channel-header><div class=channel-heading><span id=channel-icon>📢</span> <span id=channel-name>運営お知らせ</span></div><div class=channel-description id=channel-description>波急運営からのお知らせを掲載します。</div></div><div class=messages id=messages aria-live=polite><div class=empty><div class=empty-icon>🔒</div><div class=empty-title>ログインしてください</div></div></div><div class=composer-area id=composer-area><div class=composer-inner><div class=composer-notice id=composer-notice>投稿にはログインが必要です。</div><div class=attachment-preview id=attachment-preview><img id=attachment-thumb alt="添付画像のプレビュー"><span id=attachment-name>画像を添付</span><button class=small-button onclick=clearAttachment()>外す</button></div><div class=composer id=composer><input id=post-image type=file accept=image/* hidden><button class=attach-button onclick="document.getElementById('post-image').click()" aria-label="画像を添付">📷 画像</button><textarea id=post-input maxlength=5000 rows=1 placeholder="メッセージを入力..." aria-label="投稿内容"></textarea><button class=send-button id=send-button onclick=sendPost()>送信</button></div></div></div></section></main></div><div class=modal id=login-modal role=dialog aria-modal=true aria-labelledby=login-title><div class=modal-box><h2 id=login-title>ログイン</h2><p class=auth-description id=auth-description>登録済みのアカウントでログインします。</p><label class=auth-label id=name-label style=display:none>表示名<input id=display-name class=auth-input maxlength=30 placeholder="掲示板で使う名前"></label><label class=auth-label>メールアドレス<input id=email class=auth-input type=email autocomplete=email></label><label class=auth-label>パスワード<input id=password class=auth-input type=password autocomplete=current-password></label><button class=auth-primary id=email-action-button onclick=emailAction()>ログイン</button><button class=auth-google id=google-button onclick=googleSignup()>Googleで新規登録</button><button class=auth-google id=google-setup-button onclick=setupGooglePassword()>Googleアカウントの初回パスワード設定</button><p class=auth-error id=login-error role=alert></p><button class=auth-link id=mode-button onclick=toggleAuthMode()>新規登録はこちら</button><button class=auth-close onclick=closeLogin()>閉じる</button></div></div><div class=modal id=profile-modal role=dialog aria-modal=true aria-labelledby=profile-title><div class=modal-box><h2 id=profile-title>プロフィール</h2><div class=profile-preview id=profile-preview>?</div><div class=profile-role-view id=profile-role-view></div><div id=profile-edit-fields><label class=auth-label>アイコン画像<input class=auth-input id=photo-file type=file accept=image/*></label><label class=auth-label>表示名<input class=auth-input id=profile-name maxlength=30 placeholder=表示名></label></div><p class=auth-error id=profile-error role=alert></p><button class=auth-primary id=profile-save onclick=saveProfile()>変更を保存</button><button class=auth-close onclick=closeProfile()>閉じる</button></div></div><div class=modal id=action-modal role=dialog aria-modal=true aria-labelledby=action-title><div class=modal-box><h2 id=action-title>確認</h2><p class=auth-description id=action-description></p><div id=action-editor style=display:none><textarea id=action-text class=auth-input rows=6 maxlength=5000 style=resize:vertical></textarea></div><p class=auth-error id=action-error role=alert></p><div class=dialog-actions><button class=small-button onclick=closeAction()>キャンセル</button><button class=auth-primary id=action-confirm style=width:auto;min-width:100px onclick=runAction()>実行する</button></div></div></div><div class=modal id=users-modal role=dialog aria-modal=true aria-labelledby=users-title><div class="modal-box wide"><h2 id=users-title>メンバー一覧</h2><p class=auth-description id=users-summary>メンバーを検索できます。</p><label class=auth-label>ユーザー検索<input class=auth-input id=users-search type=search placeholder="表示名で検索..."></label><div class=user-list id=users-list><div class=search-empty>読み込み中...</div></div><button class=auth-close onclick=closeUsers()>閉じる</button></div></div><div class=modal id=suspend-modal role=dialog aria-modal=true aria-labelledby=suspend-title><div class=modal-box><h2 id=suspend-title>アカウントを一時凍結</h2><p class=auth-description id=suspend-target-label>対象ユーザー</p><label class=auth-label>凍結期間<select class=auth-input id=suspend-duration><option value=1>1時間<option value=24 selected>24時間<option value=168>7日間<option value=720>30日間</select></label><label class=auth-label>ユーザーに表示するメッセージ<textarea class=auth-input id=suspend-message rows=4 maxlength=500 placeholder="凍結理由や再利用可能になる時期などを入力してください。" style=resize:vertical></textarea></label><p class=auth-error id=suspend-error role=alert></p><div class=dialog-actions><button class=small-button onclick=closeSuspendModal()>キャンセル</button><button class=auth-primary id=suspend-confirm style=width:auto;min-width:110px onclick=confirmSuspend()>凍結する</button></div></div></div><div class=modal id=suspended-modal role=dialog aria-modal=true aria-labelledby=suspended-title><div class=modal-box><h2 id=suspended-title>アカウントは一時凍結中です</h2><p class=auth-description id=suspended-message></p><p class=auth-description id=suspended-until></p><button class=auth-close onclick=closeSuspendedNotice()>閉じる</button></div></div><div class=mention-menu id=mention-menu role=listbox aria-label="メンション候補"></div><div class=toast-region id=toast-region aria-live=polite aria-atomic=true></div><script type=module>
-import{initializeApp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut,EmailAuthProvider,linkWithCredential,getAdditionalUserInfo,getIdTokenResult}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";import{getFirestore,collection,addDoc,onSnapshot,doc,updateDoc,deleteDoc,getDocs,getDoc,setDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-const app=initializeApp({apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkD2RDmZQ",authDomain:"namikyu-board.firebaseapp.com",projectId:"namikyu-board",storageBucket:"namikyu-board.firebasestorage.app",messagingSenderId:"597333464774",appId:"1:597333464774:web:773305ab5ad97b55d2a9c7",measurementId:"G-5EFRPTWRMJ"}),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider,OWNER_UID="kv2lmeIrYrN3J7T4GWTaJau7MtY2",$=id=>document.getElementById(id),qa=s=>document.querySelectorAll(s),lc=s=>String(s).toLocaleLowerCase("ja-JP"),op=id=>$(id).classList.add("open"),cl=id=>$(id).classList.remove("open"),sd=(id,v)=>$(id).style.display=v,tx=(id,v)=>$(id).textContent=v,ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){}};
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#142B49">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="./icon.png">
+<title>掲示板 | 波急公式サイト</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("board-theme")||"light"}catch(e){}</script>
+<style>
+:root{color-scheme:light;--bg:#f4f6fa;--panel:#fff;--side:#fff;--text:#172b45;--sub:#718096;--border:#e1e7ef;--b:1px solid var(--border);--blue:#2878c8;--blue2:#eaf3fc;--input:#f5f7fa;--danger:#d9485b;--shadow:0 8px 28px #142b4910;--focus:#2878c8}
+:root[data-theme=dark]{color-scheme:dark;--bg:#0d1520;--panel:#172333;--side:#111e2e;--text:#e8eef6;--sub:#a5b2c3;--border:#2b3a4d;--blue:#65adf3;--blue2:#1d3852;--input:#223247;--danger:#ff7180;--shadow:0 8px 28px #0003;--focus:#8bc5ff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,"Yu Gothic UI",Meiryo,sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden}
+body.auth-pending .app{visibility:hidden}
+.auth-loading{display:none}
+body.auth-pending .auth-loading{display:flex;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:var(--bg);color:var(--text);font-size:14px;font-weight:700}
+.auth-loading-inner{display:flex;align-items:center;gap:12px;padding:18px 22px;border:var(--b);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}
+.auth-loading-dot{width:9px;height:9px;border-radius:50%;background:var(--blue);animation:authPulse 1s ease-in-out infinite alternate}
+@keyframes authPulse{from{opacity:.35;transform:scale(.8)}to{opacity:1;transform:scale(1.15)}}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--focus) 55%,transparent);outline-offset:2px}
+.app{display:flex;width:100%;height:100dvh}
+.sidebar{width:264px;min-width:264px;background:var(--side);border-right:var(--b);display:flex;flex-direction:column;padding:20px 14px;z-index:30}
+.brand{display:flex;align-items:center;gap:11px;padding:5px 8px 22px;border-bottom:var(--b)}
+.brand img{width:42px;height:42px;object-fit:contain}
+.brand-name{font-size:19px;font-weight:800;letter-spacing:.01em}
+.brand-sub{font-size:10px;color:var(--sub);margin-top:3px;letter-spacing:.1em}
+.category-title{margin:24px 8px 9px;font-size:11px;font-weight:800;color:var(--sub);letter-spacing:.08em}
+.channel-list{display:flex;flex-direction:column;gap:5px}
+.channel{padding:12px 13px;border:0;border-radius:10px;background:transparent;color:var(--text);text-align:left;font-size:14px;font-weight:650}
+.channel:hover{background:var(--input)}
+.channel.active{background:var(--blue2);color:var(--blue)}
+.sidebar-bottom{margin-top:auto;border-top:var(--b);padding:14px 5px 0}
+.profile-click{border:0;background:none;padding:0;color:inherit;display:inline-flex;align-items:center;gap:9px;text-align:left;min-width:0}
+.user-area{width:100%}
+.avatar,.post-avatar,.reply-avatar{border-radius:50%;background:var(--blue);display:grid;place-items:center;color:#fff;font-weight:800;overflow:hidden}
+.avatar{width:40px;height:40px;min-width:40px}
+.post-avatar,.reply-avatar{width:38px;height:38px;min-width:38px}
+.reply-avatar{width:29px;height:29px;min-width:29px;font-size:12px}
+.avatar img,.post-avatar img,.reply-avatar img,.profile-preview img{width:100%;height:100%;object-fit:cover}
+.user-info{min-width:0}
+.user-name{font-size:13px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-role{font-size:11px;color:var(--sub);margin-top:3px}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{height:66px;min-height:66px;background:var(--panel);border-bottom:var(--b);display:flex;align-items:center;padding:0 clamp(12px,2vw,28px);gap:13px}
+.menu-button{display:none;border:0;background:transparent;color:var(--text);font-size:23px;padding:7px}
+.page-title{font-size:17px;font-weight:800;letter-spacing:.01em}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.top-button{font-size:12px;font-weight:650;color:var(--text);padding:9px 13px;border:var(--b);border-radius:10px;background:var(--input)}
+.top-button:hover,.small-button:hover,.attach-button:hover{background:var(--blue2)}
+.top-button:active,.send-button:active{transform:scale(.97)}
+.home-button{background:var(--blue);color:#fff;border-color:var(--blue)}
+.content{flex:1;min-height:0;display:flex;flex-direction:column;max-width:1180px;width:100%;margin:0 auto}
+.channel-header{background:var(--panel);border-bottom:var(--b);padding:22px clamp(16px,3vw,34px)}
+.channel-heading{font-size:21px;font-weight:850}
+.channel-description{margin-top:6px;font-size:13px;color:var(--sub);line-height:1.6}
+.messages{flex:1;overflow-y:auto;padding:22px clamp(12px,3vw,34px);overscroll-behavior:contain;scrollbar-gutter:stable}
+.empty{min-height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--sub);gap:8px}
+.empty-icon{font-size:38px}
+.empty-title{font-size:17px;font-weight:800;color:var(--text)}
+.post{background:var(--panel);border:var(--b);border-radius:16px;padding:18px;margin:0 auto 14px;max-width:850px;box-shadow:var(--shadow);will-change:transform,opacity;transition:box-shadow .18s,border-color .18s}
+.post-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.post-author{font-size:13px;font-weight:800}
+.post-author:hover{text-decoration:underline}
+.post-role{font-size:10px;font-weight:800;padding:4px 8px;border-radius:20px;background:var(--input);color:var(--sub)}
+.role-owner{background:#fff1bd;color:#916000}
+.role-developer{background:#eee1ff;color:#7540b5}
+.role-moderator{background:#ffe1ee;color:#bd3974}
+.post-date{font-size:11px;color:var(--sub);margin-left:auto}
+.post-content{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.85;margin:15px 0 12px;font-size:14px}
+.post-image{display:block;max-width:min(100%,680px);max-height:480px;object-fit:contain;border-radius:12px;margin:12px 0;border:var(--b);background:var(--input)}
+.actions{display:flex;gap:7px;flex-wrap:wrap;padding-top:5px}
+.small-button{border:var(--b);background:var(--input);color:var(--text);border-radius:9px;padding:7px 11px;font-size:12px;font-weight:650}
+.small-button.danger{color:var(--danger)}
+.reply-list{border-top:var(--b);margin-top:15px;padding-top:5px}
+.reply{padding:11px 0;font-size:13px;line-height:1.7;border-bottom:var(--b)}
+.reply:last-child{border-bottom:0}
+.reply-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.reply-date{font-size:10px;color:var(--sub)}
+.reply-content{margin:5px 0 0 37px;white-space:pre-wrap;overflow-wrap:anywhere}
+.reply-form{display:flex;gap:8px;margin-top:12px}
+.reply-form input{flex:1;min-width:0;padding:11px 12px;border:var(--b);border-radius:10px;background:var(--input);color:var(--text);font-size:13px}
+.no-replies{font-size:12px;color:var(--sub);padding:10px 0}
+.composer-area{padding:13px clamp(12px,3vw,34px) 18px;background:var(--panel);border-top:var(--b)}
+.composer-inner{max-width:850px;margin:0 auto}
+.composer-notice{font-size:11px;color:var(--sub);margin-bottom:8px}
+.composer{display:flex;align-items:flex-end;gap:9px;background:var(--input);border:var(--b);border-radius:14px;padding:10px}
+.composer textarea{flex:1;min-width:0;resize:none;max-height:150px;min-height:28px;border:0;outline:0;background:transparent;color:var(--text);font-size:14px;padding:6px;line-height:1.6}
+.send-button{border:0;border-radius:10px;padding:10px 17px;background:var(--blue);color:#fff;font-weight:800;white-space:nowrap}
+.attach-button{border:var(--b);border-radius:10px;padding:9px 11px;background:var(--panel);color:var(--text);font-size:12px;white-space:nowrap}
+.attachment-preview{display:none;align-items:center;gap:10px;margin:8px 0;padding:8px;background:var(--input);border-radius:10px;font-size:12px}
+.attachment-preview img{width:55px;height:55px;object-fit:cover;border-radius:7px}
+.attachment-preview button{margin-left:auto}
+.rules-page{max-width:850px;margin:0 auto 18px;background:var(--panel);border:var(--b);border-radius:16px;padding:clamp(18px,3vw,28px);box-shadow:var(--shadow);line-height:1.85}
+.rules-page h2{font-size:19px;margin:0 0 8px}
+.rules-page h3{font-size:15px;margin:22px 0 7px;padding-bottom:6px;border-bottom:var(--b)}
+.rules-page p,.rules-page li{font-size:13px}
+.rules-page ul,.rules-page ol{padding-left:1.5em}
+.rules-page li{margin:5px 0}
+.rules-note{color:var(--sub);font-size:12px}
+.modal{display:none;position:fixed;inset:0;z-index:100;background:#07111dcc;backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:18px}
+.modal.open{display:flex;animation:fade .15s ease}
+.modal-box{background:var(--panel);color:var(--text);width:100%;max-width:460px;max-height:90dvh;overflow-y:auto;padding:24px;border:var(--b);border-radius:18px;box-shadow:0 24px 80px #0004;animation:rise .18s ease}
+.modal-box h2{margin:0 0 8px;font-size:20px}
+.auth-description{font-size:13px;color:var(--sub);margin:0 0 18px;line-height:1.7}
+.auth-label{display:block;font-size:13px;font-weight:750;margin-bottom:13px}
+.auth-input{display:block;width:100%;padding:12px;margin-top:7px;border:var(--b);border-radius:10px;background:var(--input);color:var(--text)}
+.auth-primary,.auth-google,.auth-close{width:100%;padding:12px;border-radius:10px;font-weight:750}
+.auth-primary{background:var(--blue);color:#fff;border:0}
+.auth-google{margin-top:9px;background:var(--input);color:var(--text);border:var(--b)}
+.auth-close{margin-top:8px;background:var(--input);color:var(--text);border:0}
+.auth-error{color:var(--danger);font-size:13px;overflow-wrap:anywhere;line-height:1.6;white-space:pre-wrap}
+.auth-link{display:block;background:none;border:0;color:var(--blue);padding:12px 0}
+.profile-preview{width:90px;height:90px;border-radius:50%;overflow:hidden;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:30px;margin:10px auto 12px}
+.profile-display-name{text-align:center;font-size:19px;font-weight:800;margin:0 0 12px;overflow-wrap:anywhere}
+.profile-role-view{text-align:center;margin:0 0 16px}
+.dialog-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}
+.dialog-actions button{min-width:92px}
+.toast-region{position:fixed;right:18px;bottom:18px;z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--text);color:var(--panel);padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);font-size:13px;max-width:min(360px,calc(100vw - 36px));animation:rise .18s ease}
+.overlay{display:none}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+.top-search{width:min(30vw,260px);min-width:120px;padding:9px 12px;border:var(--b);border-radius:10px;background:var(--input);color:var(--text);font-size:12px;transition:border-color .18s,box-shadow .18s}
+.top-search:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 15%,transparent);outline:0}
+.offline-dot,.online-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#94a3b8;vertical-align:middle;margin-right:5px}
+.online-dot{background:#22c55e;box-shadow:0 0 0 3px color-mix(in srgb,#22c55e 15%,transparent)}
+.user-list{display:grid;gap:8px}
+.member-row{display:flex;align-items:center;gap:11px;padding:10px;border:var(--b);border-radius:12px;background:var(--input)}
+.member-row:hover{background:var(--blue2);transform:translateY(-1px)}
+.member-meta{min-width:0;flex:1}
+.member-name{font-weight:800;font-size:13px}
+.member-status{font-size:11px;color:var(--sub);margin-top:3px}
+.member-role{font-size:10px;color:var(--sub);margin-left:auto}
+.modal-box.wide{max-width:620px}
+.search-empty{padding:28px;text-align:center;color:var(--sub)}
+.mention-menu{position:fixed;z-index:180;display:none;min-width:210px;max-width:min(320px,90vw);max-height:240px;overflow:auto;padding:6px;background:var(--panel);border:var(--b);border-radius:12px;box-shadow:0 14px 40px #0003}
+.mention-option{display:flex;align-items:center;gap:9px;width:100%;padding:8px;border:0;border-radius:8px;background:transparent;color:var(--text);text-align:left}
+.mention-option:hover,.mention-option:focus{background:var(--blue2);outline:0}
+.mention-link{border:0;padding:0;background:transparent;color:var(--blue);font-weight:800;text-decoration:none}
+.mention-link:hover{text-decoration:underline}
+.post-content .mention-link,.reply-content .mention-link{font-size:inherit}
+.post:hover{border-color:color-mix(in srgb,var(--blue) 28%,var(--border));box-shadow:0 10px 30px #142b4918}
+.send-button,.small-button,.top-button,.channel,.member-row{transition:background .16s,color .16s,border-color .16s,transform .16s,box-shadow .16s}
+.send-button:disabled{opacity:.6}
+.post-enter{animation:postEnter .24s cubic-bezier(.2,.75,.25,1) both}
+@keyframes postEnter{from{opacity:0;transform:translateY(9px) scale(.992)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:760px){.top-search{width:34vw;min-width:90px;padding:8px}.user-list{gap:6px}.sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-105%);transition:transform .2s ease;width:285px;min-width:285px;box-shadow:var(--shadow)}.sidebar.open{transform:translateX(0)}.overlay.show{display:block;position:fixed;inset:0;background:#0008;z-index:20}.menu-button{display:block}.topbar{height:60px;min-height:60px;padding:0 9px;gap:8px}.page-title{font-size:15px}.topbar-right{gap:5px}.top-button{font-size:11px;padding:8px 9px}.channel-header{padding:16px}.channel-heading{font-size:18px}.messages{padding:12px}.post{padding:14px;border-radius:13px}.composer-area{padding:10px}.composer{gap:6px;padding:7px}.attach-button{padding:9px 8px}.send-button{padding:10px 12px}.post-date{width:100%;margin-left:47px}.modal-box{padding:20px}}
+@media(max-width:390px){.top-button{padding:7px;font-size:10px}.home-button .wide-label{display:none}.composer textarea{font-size:13px}.attach-button{font-size:0}.attach-button::first-letter{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.post-enter{animation:none}.post,.member-row{will-change:auto}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body class="auth-pending">
+<div class="auth-loading" role="status" aria-live="polite"><div class="auth-loading-inner"><span class="auth-loading-dot"></span><span>ログイン状態を確認しています...</span></div></div>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+<div class="brand"><img src="./icon.png" alt="波急"><div><div class="brand-name">波急掲示板</div><div class="brand-sub">NAMIKYU COMMUNITY</div></div></div>
+<div class="category-title">コミュニティ</div>
+<div class="channel-list">
+<button class="channel active" data-page="announcement" onclick="selectChannel('announcement')">📢　運営お知らせ</button>
+<button class="channel" data-page="chat" onclick="selectChannel('chat')">💬　チャット</button>
+<button class="channel" data-page="rules" onclick="showRules()">📜　ルール</button>
+</div>
+<div class="sidebar-bottom"><button class="profile-click user-area" onclick="openProfile()"><div class="avatar" id="user-avatar">?</div><div class="user-info"><div class="user-name" id="user-name">未ログイン</div><div class="user-role" id="user-role">未ログイン</div></div></button></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<main class="main">
+<header class="topbar">
+<button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">☰</button>
+<div class="page-title">波急コミュニティ</div>
+<div class="topbar-right">
+<input class="top-search" id="global-search" type="search" placeholder="投稿を検索..." aria-label="投稿を検索">
+<button class="top-button" onclick="openUsers()">メンバー</button>
+<button class="top-button home-button" onclick="location.href='./index.html'" aria-label="ホームへ戻る">⌂ <span class="wide-label">ホーム</span></button>
+<button class="top-button" id="theme-button" onclick="toggleTheme()">🌙 ダーク</button>
+<button class="top-button" id="profile-button" style="display:none" onclick="openProfile()">プロフィール</button>
+<button class="top-button" id="login-button" onclick="openLogin()">ログイン</button>
+</div>
+</header>
+<section class="content">
+<div class="channel-header"><div class="channel-heading"><span id="channel-icon">📢</span> <span id="channel-name">運営お知らせ</span></div><div class="channel-description" id="channel-description">波急運営からのお知らせを掲載します。</div></div>
+<div class="messages" id="messages" aria-live="polite"><div class="empty"><div class="empty-icon">🔒</div><div class="empty-title">ログインしてください</div></div></div>
+<div class="composer-area" id="composer-area">
+<div class="composer-inner">
+<div class="composer-notice" id="composer-notice">投稿にはログインが必要です。</div>
+<div class="attachment-preview" id="attachment-preview"><img id="attachment-thumb" alt="添付画像のプレビュー"><span id="attachment-name">画像を添付</span><button class="small-button" onclick="clearAttachment()">外す</button></div>
+<div class="composer" id="composer">
+<input id="post-image" type="file" accept="image/*" hidden>
+<button class="attach-button" onclick="document.getElementById('post-image').click()" aria-label="画像を添付">📷 画像</button>
+<textarea id="post-input" maxlength="5000" rows="1" placeholder="メッセージを入力..." aria-label="投稿内容"></textarea>
+<button class="send-button" id="send-button" onclick="sendPost()">送信</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+
+<div class="modal" id="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title"><div class="modal-box">
+<h2 id="login-title">ログイン</h2><p class="auth-description" id="auth-description">登録済みのアカウントでログインします。</p>
+<label class="auth-label" id="name-label" style="display:none">表示名<input id="display-name" class="auth-input" maxlength="30" placeholder="掲示板で使う名前"></label>
+<label class="auth-label">メールアドレス<input id="email" class="auth-input" type="email" autocomplete="email"></label>
+<label class="auth-label">パスワード<input id="password" class="auth-input" type="password" autocomplete="current-password"></label>
+<button class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
+<button class="auth-google" id="google-button" onclick="googleSignup()">Googleで新規登録</button>
+<button class="auth-google" id="google-setup-button" onclick="setupGooglePassword()">Googleアカウントの初回パスワード設定</button>
+<p class="auth-error" id="login-error" role="alert"></p>
+<button class="auth-link" id="mode-button" onclick="toggleAuthMode()">新規登録はこちら</button>
+<button class="auth-close" onclick="closeLogin()">閉じる</button>
+</div></div>
+
+<div class="modal" id="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-title"><div class="modal-box">
+<h2 id="profile-title">プロフィール</h2>
+<div class="profile-preview" id="profile-preview">?</div>
+<div class="profile-display-name" id="profile-display-name"></div>
+<div class="profile-role-view" id="profile-role-view"></div>
+<div id="profile-edit-fields">
+<label class="auth-label">アイコン画像<input class="auth-input" id="photo-file" type="file" accept="image/*"></label>
+<label class="auth-label">表示名<input class="auth-input" id="profile-name" maxlength="30" placeholder="表示名"></label>
+</div>
+<p class="auth-error" id="profile-error" role="alert"></p>
+<button class="auth-primary" id="profile-save" onclick="saveProfile()">変更を保存</button>
+<button class="auth-close" onclick="closeProfile()">閉じる</button>
+</div></div>
+
+<div class="modal" id="action-modal" role="dialog" aria-modal="true" aria-labelledby="action-title"><div class="modal-box">
+<h2 id="action-title">確認</h2><p class="auth-description" id="action-description"></p>
+<div id="action-editor" style="display:none"><textarea id="action-text" class="auth-input" rows="6" maxlength="5000" style="resize:vertical"></textarea></div>
+<p class="auth-error" id="action-error" role="alert"></p>
+<div class="dialog-actions"><button class="small-button" onclick="closeAction()">キャンセル</button><button class="auth-primary" id="action-confirm" style="width:auto;min-width:100px" onclick="runAction()">実行する</button></div>
+</div></div>
+
+<div class="modal" id="users-modal" role="dialog" aria-modal="true" aria-labelledby="users-title"><div class="modal-box wide">
+<h2 id="users-title">メンバー一覧</h2><p class="auth-description" id="users-summary">メンバーを検索できます。</p>
+<label class="auth-label">ユーザー検索<input class="auth-input" id="users-search" type="search" placeholder="表示名で検索..."></label>
+<div class="user-list" id="users-list"><div class="search-empty">読み込み中...</div></div>
+<button class="auth-close" onclick="closeUsers()">閉じる</button>
+</div></div>
+
+<div class="modal" id="suspend-modal" role="dialog" aria-modal="true" aria-labelledby="suspend-title"><div class="modal-box">
+<h2 id="suspend-title">アカウントを一時凍結</h2><p class="auth-description" id="suspend-target-label">対象ユーザー</p>
+<label class="auth-label">凍結期間<select class="auth-input" id="suspend-duration"><option value="1">1時間</option><option value="24" selected>24時間</option><option value="168">7日間</option><option value="720">30日間</option></select></label>
+<label class="auth-label">ユーザーに表示するメッセージ<textarea class="auth-input" id="suspend-message" rows="4" maxlength="500" placeholder="凍結理由や再利用可能になる時期などを入力してください。" style="resize:vertical"></textarea></label>
+<p class="auth-error" id="suspend-error" role="alert"></p>
+<div class="dialog-actions"><button class="small-button" onclick="closeSuspendModal()">キャンセル</button><button class="auth-primary" id="suspend-confirm" style="width:auto;min-width:110px" onclick="confirmSuspend()">凍結する</button></div>
+</div></div>
+
+<div class="modal" id="suspended-modal" role="dialog" aria-modal="true" aria-labelledby="suspended-title"><div class="modal-box">
+<h2 id="suspended-title">アカウントは一時凍結中です</h2>
+<p class="auth-description" id="suspended-message"></p>
+<p class="auth-description" id="suspended-until"></p>
+<button class="auth-close" onclick="closeSuspendedNotice()">閉じる</button>
+</div></div>
+
+<div class="mention-menu" id="mention-menu" role="listbox" aria-label="メンション候補"></div>
+<div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut,EmailAuthProvider,linkWithCredential,getAdditionalUserInfo,getIdTokenResult}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import{getFirestore,collection,addDoc,onSnapshot,doc,updateDoc,deleteDoc,getDocs,getDoc,setDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+const app=initializeApp({apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkD2RDmZQ",authDomain:"namikyu-board.firebaseapp.com",projectId:"namikyu-board",storageBucket:"namikyu-board.firebasestorage.app",messagingSenderId:"597333464774",appId:"1:597333464774:web:773305ab5ad97b55d2a9c7",measurementId:"G-5EFRPTWRMJ"});
+const auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider,OWNER_UID="kv2lmeIrYrN3J7T4GWTaJau7MtY2";
+const $=id=>document.getElementById(id),qa=s=>document.querySelectorAll(s),lc=s=>String(s).toLocaleLowerCase("ja-JP"),op=id=>$(id).classList.add("open"),cl=id=>$(id).classList.remove("open"),sd=(id,v)=>$(id).style.display=v,tx=(id,v)=>$(id).textContent=v,ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){}};
 provider.setCustomParameters({prompt:"select_account"});
+
 let am="login",ch=ls("board-channel")||"announcement",cv="posts",cu=null,cp={},roles={},upo=null,cps=[],af=false,asv=0,pi="",pim="",ru=new Map,rc=new Map,rl=new Set,at=null,su=null,vpu="",vn="",stu="",uc=[],pc={},up=null,pt=null,pvh=null,st="",mt=null;
-const settings={announcement:{name:"運営お知らせ",icon:"📢",description:"波急運営からのお知らせを掲載します。"},chat:{name:"チャット",icon:"💬",description:"メンバー同士で自由に交流できる場所です。"}},
-esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),
-si=s=>typeof s==="string"&&s.length<7e5&&/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(s)?s:"",
-ro=u=>u===OWNER_UID?{role:"owner",status:"active"}:roles[u]||{},
-ar=u=>{let r=ro(u);return r.status==="active"?r.role:"member"},
-rn=u=>({owner:"オーナー",developer:"デベロッパー",moderator:"モデレーター"}[ar(u)]||"メンバー"),
-rcl=u=>({owner:"role-owner",developer:"role-developer",moderator:"role-moderator"}[ar(u)]||""),
-ist=()=>["owner","developer","moderator"].includes(ar(cu?.uid)),
-cm=p=>ist()||p.authorUid===cu?.uid&&p.channel==="chat",
-no=()=>cp.displayName||cu?.displayName||cu?.email?.split("@")[0]||"メンバー",
-dt=v=>{let d=v?.toDate?.();if(!d)return"送信直後";let f=Date.now()-d.getTime();if(f<6e4)return"たった今";if(f<36e5)return`${Math.floor(f/6e4)}分前`;if(f<864e5)return`${Math.floor(f/36e5)}時間前`;return d.toLocaleString("ja-JP",{year:"numeric",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})},
-av=(n,p,c="post-avatar",s=si(p))=>`<div class="${c}">${s?`<img src="${s}" alt="">`:esc(Array.from(n||"?")[0])}</div>`,
-pl=(u,n,p,c="post-avatar")=>`<button class="profile-click" onclick="viewProfile('${esc(u)}')">${av(n,p,c)}<span class="post-author">${esc(n||"メンバー")}</span></button>`,
-mk=n=>lc(String(n||"").replace(/\s+/g,"")),
-rt=v=>esc(v).replace(/@([\p{L}\p{N}_-]{1,30})/gu,(a,k)=>{let u=uc.find(x=>mk(x.name)===mk(k));return u?`<button class="mention-link" onclick="viewProfile('${esc(u.uid)}')">@${esc(u.name)}</button>`:a}),
-io=u=>{let t=pc[u]?.lastSeen?.toMillis?.()||0;return !!t&&Date.now()-t<9e4},
-T=m=>{let e=document.createElement("div");e.className="toast";e.textContent=m;$("toast-region").append(e);setTimeout(()=>e.remove(),3500)},
-untilOf=d=>d?.until?.toDate?.()||(d?.until instanceof Date?d.until:null),
-ph=(id,d,m,i,c)=>`<article class="post${c}" id="post-${id}" data-sig=""><div class="post-head">${pl(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${rcl(d.authorUid)}">${rn(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dt(d.createdAt)}</span></div><div class="post-content">${rt(d.content)}</div>${i?`<img class="post-image" src="${i}" alt="投稿画像" loading="lazy">`:""}<div class="actions">${m?`<button class="small-button" onclick="editPost('${id}')">編集</button><button class="small-button danger" onclick="removePost('${id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${id}"></div><div class="reply-form"><input id="reply-input-${id}" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${id}')"><button class="small-button" onclick="sendReply('${id}')">返信</button></div></article>`;
+const settings={announcement:{name:"運営お知らせ",icon:"📢",description:"波急運営からのお知らせを掲載します。"},chat:{name:"チャット",icon:"💬",description:"メンバー同士で自由に交流できる場所です。"}};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const si=s=>typeof s==="string"&&s.length<7e5&&/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(s)?s:"";
+const ro=u=>u===OWNER_UID?{role:"owner",status:"active"}:roles[u]||{};
+const ar=u=>{let r=ro(u);return r.status==="active"?r.role:"member"};
+const rn=u=>({owner:"オーナー",developer:"デベロッパー",moderator:"モデレーター"}[ar(u)]||"メンバー");
+const rcl=u=>({owner:"role-owner",developer:"role-developer",moderator:"role-moderator"}[ar(u)]||"");
+const ist=()=>["owner","developer","moderator"].includes(ar(cu?.uid));
+const cm=p=>ist()||p.authorUid===cu?.uid&&p.channel==="chat";
+const no=()=>cp.displayName||cu?.displayName||cu?.email?.split("@")[0]||"メンバー";
+const dt=v=>{let d=v?.toDate?.();if(!d)return"送信直後";let f=Date.now()-d.getTime();if(f<6e4)return"たった今";if(f<36e5)return`${Math.floor(f/6e4)}分前`;if(f<864e5)return`${Math.floor(f/36e5)}時間前`;return d.toLocaleString("ja-JP",{year:"numeric",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})};
+const av=(n,p,c="post-avatar",s=si(p))=>`<div class="${c}">${s?`<img src="${s}" alt="">`:esc(Array.from(n||"?")[0])}</div>`;
+const pl=(u,n,p,c="post-avatar")=>`<button class="profile-click" onclick="viewProfile('${esc(u)}')">${av(n,p,c)}<span class="post-author">${esc(n||"メンバー")}</span></button>`;
+const mk=n=>lc(String(n||"").replace(/\s+/g,""));
+const rt=v=>esc(v).replace(/@([\p{L}\p{N}_-]{1,30})/gu,(a,k)=>{let u=uc.find(x=>mk(x.name)===mk(k));return u?`<button class="mention-link" onclick="viewProfile('${esc(u.uid)}')">@${esc(u.name)}</button>`:a});
+const io=u=>{let t=pc[u]?.lastSeen?.toMillis?.()||0;return!!t&&Date.now()-t<9e4};
+const T=m=>{let e=document.createElement("div");e.className="toast";e.textContent=m;$("toast-region").append(e);setTimeout(()=>e.remove(),3500)};
+const untilOf=d=>d?.until?.toDate?.()||(d?.until instanceof Date?d.until:null);
+
+function ph(id,d,m,i,c){return`<article class="post${c}" id="post-${id}" data-sig=""><div class="post-head">${pl(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${rcl(d.authorUid)}">${rn(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dt(d.createdAt)}</span></div><div class="post-content">${rt(d.content)}</div>${i?`<img class="post-image" src="${i}" alt="投稿画像" loading="lazy">`:""}<div class="actions">${m?`<button class="small-button" onclick="editPost('${id}')">編集</button><button class="small-button danger" onclick="removePost('${id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${id}"></div><div class="reply-form"><input id="reply-input-${id}" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${id}')"><button class="small-button" onclick="sendReply('${id}')">返信</button></div></article>`}
+
 function applyTheme(){tx("theme-button",(document.documentElement.dataset.theme||"light")==="dark"?"☀️ ホワイト":"🌙 ダーク")}
 function toggleTheme(){let t=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=t;ls("board-theme",t);applyTheme()}
-function selectChannel(c){if(!settings[c])return;cv="posts";ch=c;ls("board-channel",c);tx("channel-name",settings[c].name);tx("channel-icon",settings[c].icon);tx("channel-description",settings[c].description);sd("global-search","");sd("composer-area","");qa(".channel").forEach(b=>b.classList.toggle("active",b.dataset.page===c));updateComposer();renderPosts();closeSidebar()}
+function selectChannel(c){if(!settings[c])return;cv="posts";ch=c;ls("board-channel",c);tx("channel-name",settings[c].name);tx("channel-icon",settings[c].icon);tx("channel-description",settings[c].description);$("global-search").value="";sd("composer-area","");qa(".channel").forEach(b=>b.classList.toggle("active",b.dataset.page===c));updateComposer();renderPosts();closeSidebar()}
 function showRules(){cv="rules";tx("channel-name","利用ルール");tx("channel-icon","📜");tx("channel-description","波急公式掲示板を利用する前に、必ず確認してください。");sd("global-search","none");sd("composer-area","none");qa(".channel").forEach(b=>b.classList.toggle("active",b.dataset.page==="rules"));renderRules();closeSidebar()}
-function renderRules(){$("messages").innerHTML=`<article class="rules-page"><h2>📜 波急掲示板 利用ルール</h2><p class="rules-note">このルールは波急掲示板全体で適用されます。利用するすべてのユーザーは、以下の内容を守ってください。</p><h3>1. 基本ルール</h3><ol><li>他人のアカウントへの不正アクセス、乗っ取り、なりすましは禁止です。<li>他のユーザーへの嫌がらせ、誹謗中傷、脅迫、差別的な発言は禁止です。<li>スパム投稿、同じ内容の連続投稿、無意味な投稿による掲示板の妨害は禁止です。<li>サイトの不具合や脆弱性を悪用する行為は禁止です。<li>運営メンバーからの正当な案内・指示には従ってください。</ol><h3>2. 投稿・チャットについて</h3><ul><li>個人情報や他人のプライバシーを無断で公開しないでください。<li>他人の作品・画像・文章などを、無断で自分のものとして投稿しないでください。<li>不適切な画像、リンク、文章の投稿は禁止です。<li>他のユーザーが不快になる内容や、会話を妨害する行為は控えてください。<li>投稿内容に合ったカテゴリを選んでください。</ul><h3>3. 運営・権限について</h3><ul><li>運営メンバーへの嫌がらせや業務妨害は禁止です。<li>運営メンバーの名前や権限を無断で使用しないでください。<li>運営お知らせなど、権限が必要な操作を不正に行わないでください。</ul><h3>4. 違反行為への対応</h3><p>運営は、違反内容や悪質性に応じて、次の対応を行うことがあります。</p><ul><li><b>警告：</b>サイト上で注意します。<li><b>投稿・返信の削除：</b>問題のある内容を削除します。<li><b>利用制限：</b>投稿・返信などの機能を一時的に制限します。<li><b>アカウント停止：</b>一定期間または無期限で利用を禁止します。</ul><p class="rules-note">重大な違反や悪質な行為については、事前の警告なしで対応する場合があります。</p><h3>5. 最後に</h3><ul><li>すべてのユーザーが安心して利用できる環境づくりにご協力ください。<li>このルールに明記されていない行為でも、運営が不適切と判断した場合は対応することがあります。<li>ルールは必要に応じて変更・追加される場合があります。</ul><p><b>すべての権限と最終的な判断は波急運営が保有します。</b></p></article>`}
+function renderRules(){$("messages").innerHTML=`<article class="rules-page"><h2>📜 波急掲示板 利用ルール</h2><p class="rules-note">このルールは波急掲示板全体で適用されます。利用するすべてのユーザーは、以下の内容を守ってください。</p><h3>1. 基本ルール</h3><ol><li>他人のアカウントへの不正アクセス、乗っ取り、なりすましは禁止です。</li><li>他のユーザーへの嫌がらせ、誹謗中傷、脅迫、差別的な発言は禁止です。</li><li>スパム投稿、同じ内容の連続投稿、無意味な投稿による掲示板の妨害は禁止です。</li><li>サイトの不具合や脆弱性を悪用する行為は禁止です。</li><li>運営メンバーからの正当な案内・指示には従ってください。</li></ol><h3>2. 投稿・チャットについて</h3><ul><li>個人情報や他人のプライバシーを無断で公開しないでください。</li><li>他人の作品・画像・文章などを、無断で自分のものとして投稿しないでください。</li><li>不適切な画像、リンク、文章の投稿は禁止です。</li><li>他のユーザーが不快になる内容や、会話を妨害する行為は控えてください。</li><li>投稿内容に合ったカテゴリを選んでください。</li></ul><h3>3. 運営・権限について</h3><ul><li>運営メンバーへの嫌がらせや業務妨害は禁止です。</li><li>運営メンバーの名前や権限を無断で使用しないでください。</li><li>運営お知らせなど、権限が必要な操作を不正に行わないでください。</li></ul><h3>4. 違反行為への対応</h3><p>運営は、違反内容や悪質性に応じて、次の対応を行うことがあります。</p><ul><li><b>警告：</b>サイト上で注意します。</li><li><b>投稿・返信の削除：</b>問題のある内容を削除します。</li><li><b>利用制限：</b>投稿・返信などの機能を一時的に制限します。</li><li><b>アカウント停止：</b>一定期間または無期限で利用を禁止します。</li></ul><p class="rules-note">重大な違反や悪質な行為については、事前の警告なしで対応する場合があります。</p><h3>5. 最後に</h3><ul><li>すべてのユーザーが安心して利用できる環境づくりにご協力ください。</li><li>このルールに明記されていない行為でも、運営が不適切と判断した場合は対応することがあります。</li><li>ルールは必要に応じて変更・追加される場合があります。</li></ul><p><b>すべての権限と最終的な判断は波急運営が保有します。</b></p></article>`}
 function toggleSidebar(){$("sidebar").classList.toggle("open");$("overlay").classList.toggle("show")}
-function closeSidebar(){cl("sidebar");$("overlay").classList.remove("show")}
+function closeSidebar(){$("sidebar").classList.remove("open");$("overlay").classList.remove("show")}
 function openLogin(){if(cu){openAction("ログアウトしますか？","ログアウトすると、再度ログインが必要になります。","ログアウト",async()=>signOut(auth));return}op("login-modal");tx("login-error","")}
 function closeLogin(){cl("login-modal")}
 function toggleAuthMode(){am=am==="login"?"signup":"login";updateAuthMode()}
@@ -38,8 +309,26 @@ async function emailAction(){let email=$("email").value.trim(),pass=$("password"
 async function googleSignup(){let pass=$("password").value,name=$("display-name").value.trim();try{if(pass.length<6)throw Error("パスワードを6文字以上で入力してください。");if(!name)throw Error("表示名を入力してください。");af=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(!getAdditionalUserInfo(r)?.isNewUser){await signOut(auth);throw Error("このGoogleアカウントは既に登録されています。メールアドレスとパスワードでログインしてください。")}await linkWithCredential(r.user,EmailAuthProvider.credential(r.user.email,pass));await updateProfile(r.user,{displayName:name});await setDoc(doc(db,"profiles",r.user.uid),{displayName:name,photoData:"",updatedAt:serverTimestamp()});await signOut(auth);await signInWithEmailAndPassword(auth,r.user.email,pass);closeLogin()}catch(e){showError(e)}finally{af=false;await syncUser(auth.currentUser)}}
 async function setupGooglePassword(){let pass=$("password").value;try{if(pass.length<6)throw Error("設定するパスワードを6文字以上にしてください。");af=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(r.user.providerData.some(p=>p.providerId==="password")){await signOut(auth);throw Error("このアカウントには既にパスワードが設定されています。ログイン画面からメールアドレスとパスワードでログインしてください。")}await linkWithCredential(r.user,EmailAuthProvider.credential(r.user.email,pass));await signOut(auth);tx("login-error","パスワードを設定しました。メールアドレスとパスワードでログインしてください。");am="login";updateAuthMode()}catch(e){showError(e)}finally{af=false;await syncUser(auth.currentUser)}}
 function updateUserArea(){let n=no(),s=si(cp.photoData);tx("user-name",n);tx("user-role",rn(cu.uid));$("user-avatar").innerHTML=s?`<img src="${s}" alt="">`:esc(Array.from(n)[0]||"?");tx("login-button","ログアウト");$("login-button").onclick=openLogin;sd("profile-button","block")}
+
+/* 凍結状態をサーバーに再確認してから操作する */
+async function accountAvailable(){
+if(!cu||auth.currentUser?.uid!==cu.uid)return false;
+const uid=cu.uid;
+try{
+const s=await getDoc(doc(db,"accountSuspensions",uid));
+if(s.exists()&&suspensionIsActive(s.data())){
+const d=s.data();
+await signOut(auth);
+showSuspendedNotice(d);
+return false;
+}
+return !!cu&&cu.uid===uid&&auth.currentUser?.uid===uid;
+}catch(e){T("アカウント状態を確認できません。操作を中止しました。");return false}
+}
+
 function updateComposer(){let ok=cv==="posts"&&!!cu&&(ch==="chat"||ist());$("post-input").disabled=!ok;$("send-button").disabled=!ok;sd("composer",ok?"flex":"none");tx("composer-notice",!cu?"投稿するにはログインしてください。":ch==="announcement"&&!ist()?"運営メンバーのみ投稿できます。":"画像は1枚まで（圧縮後450KB以内）。Enterで送信、Shift+Enterで改行。")}
 function cleanupReplies(){for(let u of ru.values())u();ru.clear();rc.clear();rl.clear()}
+
 function renderPosts(){
 if(cv==="rules"){renderRules();return}
 const area=$("messages");
@@ -56,18 +345,23 @@ if(node&&node.dataset.sig!==sig){const t=document.createElement("template");t.in
 else if(!node){const t=document.createElement("template");t.innerHTML=ph(p.id,d,m,i," post-enter");node=t.content.firstElementChild;node.dataset.sig=sig;if(cursor)area.insertBefore(node,cursor);else area.appendChild(node)}
 if(cursor&&cursor.parentNode!==area)cursor=area.firstElementChild;
 if(node!==cursor)area.insertBefore(node,cursor);
-cursor=node.nextElementSibling;startReplies(p.id);renderReplies(p.id)}}
+cursor=node.nextElementSibling;startReplies(p.id);renderReplies(p.id)
+}}
 function cleanupRemovedPosts(ids){let keep=new Set(ids);for(let[id,u]of ru)if(!keep.has(id)){u();ru.delete(id);rc.delete(id);rl.delete(id)}for(let n of[...qa("#messages .post")])if(!keep.has(n.id.slice(5)))n.remove()}
+
 async function loadUsers(){try{let s=await getDocs(collection(db,"profiles"));uc=s.docs.map(d=>({uid:d.id,name:d.data().displayName||"メンバー",photo:d.data().photoData||""}));renderUsers()}catch(e){uc=[];$("users-list").innerHTML=`<div class="search-empty">ユーザー一覧を読み込めません。Firestoreルールを確認してください。<br>${esc(e.message)}</div>`}}
 function renderUsers(){let q=lc($("users-search")?.value.trim()||""),rows=uc.filter(u=>lc(u.name).includes(q)).sort((a,b)=>a.name.localeCompare(b.name,"ja"));tx("users-summary",`登録メンバー ${uc.length}人 ・ オンライン ${uc.filter(u=>io(u.uid)).length}人`);$("users-list").innerHTML=rows.map(u=>`<button class="member-row" onclick="viewProfile('${esc(u.uid)}');closeUsers()">${av(u.name,u.photo)}<span class="member-meta"><span class="member-name">${esc(u.name)}</span><span class="member-status">${io(u.uid)?'<span class="online-dot"></span>オンライン':'<span class="offline-dot"></span>オフライン'}</span></span><span class="member-role">${esc(rn(u.uid))}</span></button>`).join("")||'<div class="search-empty">該当するメンバーはいません。</div>'}
 function openUsers(){if(!cu)return T("メンバー一覧を見るにはログインしてください。");op("users-modal");$("users-search").value="";loadUsers()}
 function closeUsers(){cl("users-modal")}
-async function writePresence(){if(!cu)return;try{await setDoc(doc(db,"presence",cu.uid),{uid:cu.uid,lastSeen:serverTimestamp(),displayName:no()},{merge:true})}catch(e){console.warn("presence update:",e.message)}}
+
+async function writePresence(){if(!await accountAvailable())return;try{await setDoc(doc(db,"presence",cu.uid),{uid:cu.uid,lastSeen:serverTimestamp(),displayName:no()},{merge:true})}catch(e){console.warn("presence update:",e.message)}}
 function stopPresence(){if(pt){clearInterval(pt);pt=null}if(up){up();up=null}if(pvh){document.removeEventListener("visibilitychange",pvh);pvh=null}}
 function startPresence(){stopPresence();if(!cu)return;writePresence();pt=setInterval(writePresence,3e4);up=onSnapshot(collection(db,"presence"),s=>{pc={};s.forEach(d=>pc[d.id]=d.data());if($("users-modal").classList.contains("open"))renderUsers()},e=>console.warn("presence listener:",e.message));pvh=()=>{if(document.visibilityState==="visible")writePresence()};document.addEventListener("visibilitychange",pvh)}
+
 function mentionInput(input){let pos=input.selectionStart||0,m=input.value.slice(0,pos).match(/(?:^|\s)@([\p{L}\p{N}_-]*)$/u);if(!m){hideMentions();return}let ms=uc.filter(u=>mk(u.name).startsWith(mk(m[1]))).slice(0,7);if(!ms.length){hideMentions();return}mt={input,start:pos-m[1].length-1,end:pos};let menu=$("mention-menu"),r=input.getBoundingClientRect();menu.style.left=Math.max(8,Math.min(r.left,innerWidth-330))+"px";menu.style.top=Math.max(8,r.top-ms.length*44-10)+"px";menu.innerHTML=ms.map(u=>`<button class="mention-option" type="button" onclick="insertMention('${esc(u.uid)}')">${av(u.name,u.photo,"reply-avatar")}<span>${esc(u.name)}</span></button>`).join("");menu.style.display="block"}
 function hideMentions(){sd("mention-menu","none");mt=null}
 function insertMention(uid){if(!mt)return;let u=uc.find(x=>x.uid===uid),t=mt;if(!u)return;let k=String(u.name).replace(/\s+/g,""),b=t.input.value.slice(0,t.start),a=t.input.value.slice(t.end);t.input.value=b+"@"+k+" "+a;t.input.focus();let p=(b+"@"+k+" ").length;t.input.setSelectionRange(p,p);hideMentions()}
+
 function startPosts(){if(upo){upo();upo=null}cleanupReplies();if(!cu){cps=[];renderPosts();return}upo=onSnapshot(collection(db,"posts"),s=>{cps=s.docs.map(d=>({id:d.id,data:d.data()}));cps.sort((a,b)=>(b.data.createdAt?.toMillis?.()||0)-(a.data.createdAt?.toMillis?.()||0));renderPosts()},e=>{$("messages").textContent="読み込みエラー："+e.message})}
 function startReplies(id){if(ru.has(id))return;ru.set(id,onSnapshot(collection(db,"posts",id,"replies"),s=>{let rows=s.docs.map(d=>({id:d.id,data:d.data()}));rows.sort((a,b)=>(a.data.createdAt?.toMillis?.()||0)-(b.data.createdAt?.toMillis?.()||0));rc.set(id,rows);rl.add(id);renderReplies(id)},e=>{let el=$("replies-"+id);if(el)el.textContent="返信を読み込めません："+e.message}))}
 function renderReplies(id){
@@ -83,52 +377,197 @@ let node=$("reply-"+id+"-"+r.id);
 if(!node||node.dataset.sig!==sig){const t=document.createElement("template");t.innerHTML=`<div class="reply" id="reply-${id}-${r.id}" data-sig=""><div class="reply-head">${pl(d.authorUid,d.authorName,d.authorPhoto,"reply-avatar")}<span class="reply-date">${dt(d.createdAt)}</span>${can?`<button class="small-button danger" onclick="removeReply('${id}','${r.id}')">削除</button>`:""}</div><div class="reply-content">${rt(d.content)}</div></div>`;const f=t.content.firstElementChild;f.dataset.sig=sig;if(node){if(node===cursor)cursor=f;node.replaceWith(f)}else if(cursor)area.insertBefore(f,cursor);else area.appendChild(f);node=f}
 if(cursor&&cursor.parentNode!==area)cursor=area.firstElementChild;
 if(node!==cursor)area.insertBefore(node,cursor);
-cursor=node.nextElementSibling}
+cursor=node.nextElementSibling
+}
 const keep=new Set(rows.map(r=>"reply-"+id+"-"+r.id));
-for(const c of[...area.children])if(c.id&&!keep.has(c.id))c.remove()}
-async function sendPost(){let input=$("post-input"),content=input.value.trim();if(!content&&!pi)return;if(!cu)return;if(ch==="announcement"&&!ist())return T("運営メンバーのみ投稿できます。");let b=$("send-button");b.disabled=true;b.textContent="送信中…";try{await addDoc(collection(db,"posts"),{channel:ch,content,authorUid:cu.uid,authorName:no(),authorPhoto:cp.photoData||"",imageData:pi||"",createdAt:serverTimestamp(),updatedAt:serverTimestamp()});input.value="";input.style.height="auto";clearAttachment();T("投稿しました。")}catch(e){T("投稿できません："+e.message)}finally{b.textContent="送信";updateComposer()}}
-async function sendReply(id){let input=$("reply-input-"+id),content=input?.value.trim();if(!content||!cu)return;let b=input.parentElement.querySelector("button");b.disabled=true;try{await addDoc(collection(db,"posts",id,"replies"),{content,authorUid:cu.uid,authorName:no(),authorPhoto:cp.photoData||"",createdAt:serverTimestamp()});input.value="";T("返信しました。")}catch(e){T("返信できません："+e.message)}finally{b.disabled=false}}
+for(const c of[...area.children])if(c.id&&!keep.has(c.id))c.remove()
+}
+
+async function sendPost(){
+let input=$("post-input"),content=input.value.trim();
+if(!content&&!pi)return;
+if(!cu)return;
+if(ch==="announcement"&&!ist())return T("運営メンバーのみ投稿できます。");
+let b=$("send-button");b.disabled=true;b.textContent="送信中…";
+try{
+if(!await accountAvailable())return;
+if(ch==="announcement"&&!ist())throw Error("運営メンバーのみ投稿できます。");
+await addDoc(collection(db,"posts"),{channel:ch,content,authorUid:cu.uid,authorName:no(),authorPhoto:cp.photoData||"",imageData:pi||"",createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+input.value="";input.style.height="auto";clearAttachment();T("投稿しました。")
+}catch(e){T("投稿できません："+e.message)}
+finally{b.textContent="送信";updateComposer()}
+}
+async function sendReply(id){
+let input=$("reply-input-"+id),content=input?.value.trim();if(!content||!cu)return;
+let b=input.parentElement.querySelector("button");b.disabled=true;
+try{
+if(!await accountAvailable())return;
+await addDoc(collection(db,"posts",id,"replies"),{content,authorUid:cu.uid,authorName:no(),authorPhoto:cp.photoData||"",createdAt:serverTimestamp()});
+input.value="";T("返信しました。")
+}catch(e){T("返信できません："+e.message)}
+finally{b.disabled=false}
+}
+
 function openAction(title,desc,confirm,task,ev=null){tx("action-title",title);tx("action-description",desc);tx("action-confirm",confirm);tx("action-error","");sd("action-editor",ev===null?"none":"block");$("action-text").value=ev??"";at=task;op("action-modal");if(ev!==null)setTimeout(()=>$("action-text").focus(),50)}
 function closeAction(){cl("action-modal");at=null}
 async function runAction(){if(!at)return;let task=at,b=$("action-confirm");b.disabled=true;tx("action-error","");try{await task($("action-text").value);closeAction()}catch(e){tx("action-error",e.message||"処理に失敗しました。")}finally{b.disabled=false}}
-function editPost(id){let p=cps.find(x=>x.id===id);if(!p)return;openAction("投稿を編集","内容を確認して保存してください。","保存",async v=>{let c=v.trim();if(!c&&!p.data.imageData)throw Error("本文または画像が必要です。");await updateDoc(doc(db,"posts",id),{content:c,updatedAt:serverTimestamp()});T("投稿を更新しました。")},p.data.content||"")}
-function removePost(id){openAction("投稿を削除","この投稿を削除します。投稿に付いた返信も表示されなくなります。","削除する",async()=>{await deleteDoc(doc(db,"posts",id));T("投稿を削除しました。")})}
-function removeReply(p,r){openAction("返信を削除","この返信を削除してもよろしいですか？","削除する",async()=>{await deleteDoc(doc(db,"posts",p,"replies",r));T("返信を削除しました。")})}
+
+function editPost(id){let p=cps.find(x=>x.id===id);if(!p)return;openAction("投稿を編集","内容を確認して保存してください。","保存",async v=>{if(!await accountAvailable())throw Error("ログイン状態を確認してください。");let c=v.trim();if(!c&&!p.data.imageData)throw Error("本文または画像が必要です。");await updateDoc(doc(db,"posts",id),{content:c,updatedAt:serverTimestamp()});T("投稿を更新しました。")},p.data.content||"")}
+function removePost(id){openAction("投稿を削除","この投稿を削除します。投稿に付いた返信も表示されなくなります。","削除する",async()=>{if(!await accountAvailable())throw Error("ログイン状態を確認してください。");await deleteDoc(doc(db,"posts",id));T("投稿を削除しました。")})}
+function removeReply(p,r){openAction("返信を削除","この返信を削除してもよろしいですか？","削除する",async()=>{if(!await accountAvailable())throw Error("ログイン状態を確認してください。");await deleteDoc(doc(db,"posts",p,"replies",r));T("返信を削除しました。")})}
 function replyKey(e,id){if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();sendReply(id)}}
+
 async function imageData(file,maxBytes,maxSide){if(!file.type.startsWith("image/"))throw Error("画像ファイルを選択してください。");if(file.size>10485760)throw Error("元画像は10MB以下にしてください。");let bmp=await createImageBitmap(file),s=Math.min(1,maxSide/Math.max(bmp.width,bmp.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(bmp.width*s));c.height=Math.max(1,Math.round(bmp.height*s));c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);bmp.close();for(let q of[.82,.72,.62,.52,.42]){let data=c.toDataURL("image/jpeg",q);if(Math.ceil((data.length-data.indexOf(",")-1)*.75)<=maxBytes)return data}throw Error("画像を圧縮しても容量制限を超えています。別の画像を選んでください。")}
 function clearAttachment(){pi="";sd("attachment-preview","none");$("attachment-thumb").removeAttribute("src")}
-function suspensionIsActive(d){if(!d||d.active!==true)return false;let u=untilOf(d);return !!u&&u.getTime()>Date.now()}
+
+function suspensionIsActive(d){if(!d||d.active!==true)return false;let u=untilOf(d);return!!u&&u.getTime()>Date.now()}
 function suspensionUntilText(d){let u=untilOf(d);return u?u.toLocaleString("ja-JP")+" まで":""}
 function showSuspendedNotice(d){tx("suspended-message",d?.message||"運営によりアカウントが一時凍結されています。");tx("suspended-until","利用再開予定："+suspensionUntilText(d));op("suspended-modal")}
 function closeSuspendedNotice(){cl("suspended-modal")}
 function openSuspendModal(uid){if(!ist()||!uid||uid===OWNER_UID)return T("この操作を行う権限がありません。");stu=uid;tx("suspend-target-label","対象："+(vn||"メンバー"));$("suspend-duration").value="24";$("suspend-message").value="";tx("suspend-error","");op("suspend-modal")}
 function closeSuspendModal(){cl("suspend-modal");stu=""}
-async function confirmSuspend(){if(!ist()||!stu){tx("suspend-error","操作権限がありません。");return}let message=$("suspend-message").value.trim();if(!message){tx("suspend-error","表示するメッセージを入力してください。");return}let h=Number($("suspend-duration").value);if(![1,24,168,720].includes(h)){tx("suspend-error","凍結期間を選択してください。");return}let b=$("suspend-confirm");b.disabled=true;try{await setDoc(doc(db,"accountSuspensions",stu),{active:true,message,until:new Date(Date.now()+h*36e5),updatedAt:serverTimestamp(),updatedBy:cu.uid});T("アカウントを一時凍結しました。");let u=stu;closeSuspendModal();if(vpu===u)await viewProfile(u)}catch(e){tx("suspend-error","凍結できません："+e.message)}finally{b.disabled=false}}
+
+/* 対象ユーザーの過去の投稿と返信を削除する */
+async function purgeUserContent(uid){
+const posts=await getDocs(collection(db,"posts"));
+let deletedPosts=0,deletedReplies=0;
+for(const post of posts.docs){
+const replies=await getDocs(collection(db,"posts",post.id,"replies"));
+const ownPost=post.data().authorUid===uid;
+for(const reply of replies.docs){
+if(ownPost||reply.data().authorUid===uid){
+await deleteDoc(reply.ref);
+deletedReplies++;
+}
+}
+if(ownPost){
+await deleteDoc(post.ref);
+deletedPosts++;
+}
+}
+return{deletedPosts,deletedReplies};
+}
+
+async function confirmSuspend(){
+if(!ist()||!stu){tx("suspend-error","操作権限がありません。");return}
+let uid=stu,message=$("suspend-message").value.trim(),h=Number($("suspend-duration").value);
+if(!message){tx("suspend-error","表示するメッセージを入力してください。");return}
+if(![1,24,168,720].includes(h)){tx("suspend-error","凍結期間を選択してください。");return}
+let b=$("suspend-confirm");b.disabled=true;tx("suspend-error","凍結処理中...");
+try{
+/* 最初に凍結を確定する */
+await setDoc(doc(db,"accountSuspensions",uid),{active:true,message,until:new Date(Date.now()+h*36e5),updatedAt:serverTimestamp(),updatedBy:cu.uid});
+/* 続けて過去の投稿・返信を削除 */
+const result=await purgeUserContent(uid);
+T(`凍結しました。投稿${result.deletedPosts}件・返信${result.deletedReplies}件を削除しました。`);
+closeSuspendModal();
+if(vpu===uid)await viewProfile(uid);
+}catch(e){
+tx("suspend-error","凍結状態は保存されましたが、投稿・返信の削除に失敗しました："+e.message);
+T("凍結状態は保存済みです。削除処理を確認してください。");
+}finally{b.disabled=false}
+}
+
 async function liftSuspension(uid){if(!ist()||!uid)return T("この操作を行う権限がありません。");try{await setDoc(doc(db,"accountSuspensions",uid),{active:false,message:"",updatedAt:serverTimestamp(),updatedBy:cu.uid},{merge:true});T("凍結を解除しました。");if(vpu===uid)await viewProfile(uid)}catch(e){T("凍結を解除できません："+e.message)}}
-function openProfile(){if(!cu)return;pim=cp.photoData||"";tx("profile-title","プロフィール設定");sd("profile-edit-fields","block");$("profile-name").value=no();sd("profile-save","block");tx("profile-error","");updateProfilePreview();setProfileRole(cu.uid);op("profile-modal")}
-async function viewProfile(uid){if(!cu||!uid)return;if(uid===cu.uid)return openProfile();try{let[s,ss]=await Promise.all([getDoc(doc(db,"profiles",uid)),getDoc(doc(db,"accountSuspensions",uid))]),p=s.exists()?s.data():{},susp=ss.exists()?ss.data():{},im=si(p.photoData);vpu=uid;vn=p.displayName||"メンバー";pim=p.photoData||"";tx("profile-title","プロフィール");sd("profile-edit-fields","none");sd("profile-save","none");tx("profile-error","");$("profile-preview").innerHTML=im?`<img src="${im}" alt="">`:esc(Array.from(vn)[0]);$("profile-name").value=vn;setProfileRole(uid);if(ist()&&uid!==OWNER_UID)$("profile-role-view").innerHTML+=suspensionIsActive(susp)?`<div style="margin-top:12px"><span class="post-role role-moderator">一時凍結中</span><p class="auth-description">${esc(susp.message||"メッセージなし")}<br>${esc(suspensionUntilText(susp))}</p><button class="small-button" onclick="liftSuspension('${esc(uid)}')">凍結を解除</button></div>`:`<div style="margin-top:12px"><button class="small-button danger" onclick="openSuspendModal('${esc(uid)}')">アカウントを一時凍結</button></div>`;op("profile-modal")}catch(e){T("プロフィールを読み込めません："+e.message)}}
+
+function openProfile(){
+if(!cu)return;
+pim=cp.photoData||"";
+tx("profile-title","プロフィール設定");
+sd("profile-edit-fields","block");
+sd("profile-display-name","none");
+$("profile-name").value=no();
+sd("profile-save","block");
+tx("profile-error","");
+updateProfilePreview();
+setProfileRole(cu.uid);
+op("profile-modal")
+}
+
+async function viewProfile(uid){
+if(!cu||!uid)return;
+if(uid===cu.uid)return openProfile();
+try{
+let[s,ss]=await Promise.all([getDoc(doc(db,"profiles",uid)),getDoc(doc(db,"accountSuspensions",uid))]);
+let p=s.exists()?s.data():{},susp=ss.exists()?ss.data():{},im=si(p.photoData);
+vpu=uid;vn=p.displayName||"メンバー";pim=p.photoData||"";
+tx("profile-title","プロフィール");
+tx("profile-display-name",vn);
+sd("profile-display-name","block");
+sd("profile-edit-fields","none");
+sd("profile-save","none");
+tx("profile-error","");
+$("profile-preview").innerHTML=im?`<img src="${im}" alt="">`:esc(Array.from(vn)[0]);
+$("profile-name").value=vn;
+setProfileRole(uid);
+if(ist()&&uid!==OWNER_UID){
+$("profile-role-view").innerHTML+=suspensionIsActive(susp)?
+`<div style="margin-top:12px"><span class="post-role role-moderator">一時凍結中</span><p class="auth-description">${esc(susp.message||"メッセージなし")}<br>${esc(suspensionUntilText(susp))}</p><button class="small-button" onclick="liftSuspension('${esc(uid)}')">凍結を解除</button></div>`:
+`<div style="margin-top:12px"><button class="small-button danger" onclick="openSuspendModal('${esc(uid)}')">アカウントを一時凍結</button></div>`;
+}
+op("profile-modal")
+}catch(e){T("プロフィールを読み込めません："+e.message)}
+}
+
 function setProfileRole(uid){$("profile-role-view").innerHTML=`<span class="post-role ${rcl(uid)}">${esc(rn(uid))}</span>`}
 function closeProfile(){cl("profile-modal")}
 function updateProfilePreview(){let n=$("profile-name").value.trim()||"?",s=si(pim);$("profile-preview").innerHTML=s?`<img src="${s}" alt="">`:esc(Array.from(n)[0])}
-async function saveProfile(){let name=$("profile-name").value.trim();try{if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");$("profile-save").disabled=true;await updateProfile(auth.currentUser,{displayName:name});await setDoc(doc(db,"profiles",cu.uid),{displayName:name,photoData:pim||"",updatedAt:serverTimestamp()},{merge:true});cp={displayName:name,photoData:pim||""};updateUserArea();closeProfile();renderPosts();T("プロフィールを更新しました。")}catch(e){tx("profile-error",e.message)}finally{$("profile-save").disabled=false}}
+
+async function saveProfile(){
+let name=$("profile-name").value.trim();
+try{
+if(!cu)throw Error("ログインしてください。");
+if(!name)throw Error("表示名を入力してください。");
+if(name.length>30)throw Error("表示名は30文字以内にしてください。");
+$("profile-save").disabled=true;
+if(!await accountAvailable())throw Error("凍結中のアカウントでは変更できません。");
+await updateProfile(auth.currentUser,{displayName:name});
+await setDoc(doc(db,"profiles",cu.uid),{displayName:name,photoData:pim||"",updatedAt:serverTimestamp()},{merge:true});
+cp={displayName:name,photoData:pim||""};updateUserArea();closeProfile();renderPosts();T("プロフィールを更新しました。")
+}catch(e){tx("profile-error",e.message)}
+finally{$("profile-save").disabled=false}
+}
+
 async function syncUser(user){
 if(su){su();su=null}
 const v=++asv;
-if(!user){cu=null;cp={};roles={};stopPresence();if(upo){upo();upo=null}cleanupReplies();pc={};cps=[];uc=[];tx("user-name","未ログイン");tx("user-role","未ログイン");tx("user-avatar","?");tx("login-button","ログイン");$("login-button").onclick=openLogin;sd("profile-button","none");updateComposer();renderPosts();return}
+if(!user){
+cu=null;cp={};roles={};stopPresence();
+if(upo){upo();upo=null}
+cleanupReplies();pc={};cps=[];uc=[];
+tx("user-name","未ログイン");tx("user-role","未ログイン");tx("user-avatar","?");
+tx("login-button","ログイン");$("login-button").onclick=openLogin;
+sd("profile-button","none");updateComposer();renderPosts();return
+}
 try{
 const token=await getIdTokenResult(user);
 if(v!==asv)return;
-if(token.claims.firebase?.sign_in_provider!=="password"){await signOut(auth);if(!auth.currentUser){tx("login-error","メールアドレスとパスワードでログインしてください。");op("login-modal")}return}
+if(token.claims.firebase?.sign_in_provider!=="password"){
+await signOut(auth);
+if(!auth.currentUser){tx("login-error","メールアドレスとパスワードでログインしてください。");op("login-modal")}
+return
+}
 const ss=await getDoc(doc(db,"accountSuspensions",user.uid));
 if(v!==asv||auth.currentUser?.uid!==user.uid)return;
-if(ss.exists()&&suspensionIsActive(ss.data())){const d=ss.data();await signOut(auth);if(!auth.currentUser)showSuspendedNotice(d);return}
+if(ss.exists()&&suspensionIsActive(ss.data())){
+const d=ss.data();await signOut(auth);if(!auth.currentUser)showSuspendedNotice(d);return
+}
 cu=user;cp={};roles={};updateUserArea();updateComposer();
 const[p,r]=await Promise.all([getDoc(doc(db,"profiles",user.uid)),getDocs(collection(db,"staffRoles"))]);
 if(v!==asv||auth.currentUser?.uid!==user.uid)return;
 cp=p.exists()?p.data():{};roles={};r.forEach(x=>roles[x.id]=x.data());
 updateUserArea();updateComposer();startPosts();startPresence();loadUsers();
-su=onSnapshot(doc(db,"accountSuspensions",user.uid),async s=>{if(!s.exists())return;let d=s.data();if(suspensionIsActive(d)&&auth.currentUser?.uid===user.uid){await signOut(auth);if(!auth.currentUser)showSuspendedNotice(d)}},e=>console.warn("suspension listener:",e.message))
-}catch(e){if(v!==asv)return;console.error(e);$("messages").textContent="アカウント情報を読み込めません："+e.message}}
+su=onSnapshot(doc(db,"accountSuspensions",user.uid),async s=>{
+if(!s.exists())return;
+let d=s.data();
+if(suspensionIsActive(d)&&auth.currentUser?.uid===user.uid){
+await signOut(auth);
+if(!auth.currentUser)showSuspendedNotice(d)
+}
+},e=>console.warn("suspension listener:",e.message))
+}catch(e){if(v!==asv)return;console.error(e);$("messages").textContent="アカウント情報を読み込めません："+e.message}
+}
+
 $("post-input").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();sendPost()}});
 $("global-search").addEventListener("input",e=>{st=e.target.value;renderPosts()});
 $("users-search").addEventListener("input",renderUsers);
@@ -144,4 +583,6 @@ await setPersistence(auth,browserLocalPersistence).catch(()=>{});
 applyTheme();updateAuthMode();selectChannel(settings[ch]?ch:"announcement");
 onAuthStateChanged(auth,async u=>{if(af)return;try{await syncUser(u)}finally{document.body.classList.remove("auth-pending")}});
 Object.assign(window,{openUsers,closeUsers,insertMention,showRules,openSuspendModal,closeSuspendModal,confirmSuspend,liftSuspension,closeSuspendedNotice,selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleSignup,setupGooglePassword,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,clearAttachment,closeAction,runAction});
-</script></body></html>
+</script>
+</body>
+</html>
