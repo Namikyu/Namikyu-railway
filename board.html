@@ -202,6 +202,18 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
  <div class="user-list" id="users-list"><div class="search-empty">読み込み中...</div></div>
  <button class="auth-close" onclick="closeUsers()">閉じる</button>
 </div></div>
+<div class="modal" id="suspend-modal" role="dialog" aria-modal="true" aria-labelledby="suspend-title"><div class="modal-box">
+ <h2 id="suspend-title">アカウントを一時凍結</h2>
+ <p class="auth-description" id="suspend-target-label">対象ユーザー</p>
+ <label class="auth-label">凍結期間<select class="auth-input" id="suspend-duration"><option value="1">1時間</option><option value="24" selected>24時間</option><option value="168">7日間</option><option value="720">30日間</option></select></label>
+ <label class="auth-label">ユーザーに表示するメッセージ<textarea class="auth-input" id="suspend-message" rows="4" maxlength="500" placeholder="凍結理由や再利用可能になる時期などを入力してください。" style="resize:vertical"></textarea></label>
+ <p class="auth-error" id="suspend-error" role="alert"></p>
+ <div class="dialog-actions"><button class="small-button" onclick="closeSuspendModal()">キャンセル</button><button class="auth-primary" id="suspend-confirm" style="width:auto;min-width:110px" onclick="confirmSuspend()">凍結する</button></div>
+</div></div>
+<div class="modal" id="suspended-modal" role="dialog" aria-modal="true" aria-labelledby="suspended-title"><div class="modal-box">
+ <h2 id="suspended-title">アカウントは一時凍結中です</h2><p class="auth-description" id="suspended-message"></p><p class="auth-description" id="suspended-until"></p>
+ <button class="auth-close" onclick="closeSuspendedNotice()">閉じる</button>
+</div></div>
 <div class="mention-menu" id="mention-menu" role="listbox" aria-label="メンション候補"></div>
 <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
 
@@ -216,7 +228,8 @@ const OWNER_UID="kv2lmeIrYrN3J7T4GWTaJau7MtY2";
 const $=id=>document.getElementById(id);
 let authMode="login",currentChannel=localStorage.getItem("board-channel")||"announcement",currentView="posts";
 let currentUser=null,currentProfile={},roles={},unsubscribePosts=null,cachedPosts=[],authFlow=false,authSyncVersion=0;
-let pendingImage="",profileImage="",replyUnsubs=new Map(),replyCache=new Map(),actionTask=null;
+let pendingImage="",profileImage="",replyUnsubs=new Map(),replyCache=new Map(),replyLoaded=new Set(),actionTask=null;
+let suspensionUnsub=null,viewedProfileUid="",suspensionTargetUid="";
 let userCache=[],presenceCache={},unsubscribePresence=null,presenceTimer=null,searchText="",mentionTarget=null;
 const settings={announcement:{name:"運営お知らせ",icon:"📢",description:"波急運営からのお知らせを掲載します。"},chat:{name:"チャット",icon:"💬",description:"メンバー同士で自由に交流できる場所です。"}};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -329,13 +342,13 @@ function renderPosts(){
   const sig=JSON.stringify([d.content,d.authorName,d.authorPhoto,d.channel,d.imageData,d.updatedAt?.toMillis?.(),manage,roleName(d.authorUid),d.createdAt?.toMillis?.()]);
   let node=document.getElementById("post-"+p.id);
   if(node&&node.dataset.sig!==sig){
-   const html=`<article class="post" id="post-${p.id}" data-sig=""><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"><div class="no-replies">返信を読み込み中...</div></div><div class="reply-form"><input id="reply-input-${p.id}" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;
+   const html=`<article class="post" id="post-${p.id}" data-sig=""><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"></div><div class="reply-form"><input id="reply-input-${p.id}" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;
    const t=document.createElement("template");t.innerHTML=html;const replacement=t.content.firstElementChild;replacement.dataset.sig=sig;
    if(node){const wasCursor=node===cursor;node.replaceWith(replacement);if(wasCursor)cursor=replacement;}
    else if(cursor)area.insertBefore(replacement,cursor);else area.appendChild(replacement);
    node=replacement;
   }else if(!node){
-   const html=`<article class="post post-enter" id="post-${p.id}" data-sig=""><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"><div class="no-replies">返信を読み込み中...</div></div><div class="reply-form"><input id="reply-input-${p.id}" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;
+   const html=`<article class="post post-enter" id="post-${p.id}" data-sig=""><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"></div><div class="reply-form"><input id="reply-input-${p.id}" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;
    const t=document.createElement("template");t.innerHTML=html;node=t.content.firstElementChild;node.dataset.sig=sig;
    if(cursor)area.insertBefore(node,cursor);else area.appendChild(node);
   }
@@ -346,7 +359,7 @@ function renderPosts(){
   renderReplies(p.id);
  }
 }
-function cleanupRemovedPosts(ids){let keep=new Set(ids);for(let [id,unsub]of replyUnsubs){if(!keep.has(id)){unsub();replyUnsubs.delete(id);replyCache.delete(id)}}for(let node of [...$("messages").querySelectorAll(".post")])if(!keep.has(node.id.slice(5)))node.remove()}
+function cleanupRemovedPosts(ids){let keep=new Set(ids);for(let [id,unsub]of replyUnsubs){if(!keep.has(id)){unsub();replyUnsubs.delete(id);replyCache.delete(id);replyLoaded.delete(id)}}for(let node of [...$("messages").querySelectorAll(".post")])if(!keep.has(node.id.slice(5)))node.remove()}
 async function loadUsers(){try{let snap=await getDocs(collection(db,"profiles"));userCache=snap.docs.map(d=>({uid:d.id,name:d.data().displayName||"メンバー",photo:d.data().photoData||""}));renderUsers()}catch(e){userCache=[];$("users-list").innerHTML=`<div class="search-empty">ユーザー一覧を読み込めません。Firestoreルールを確認してください。<br>${esc(e.message)}</div>`}}
 function renderUsers(){let q=$("users-search")?.value.trim().toLocaleLowerCase("ja-JP")||"",rows=userCache.filter(u=>u.name.toLocaleLowerCase("ja-JP").includes(q)).sort((a,b)=>a.name.localeCompare(b.name,"ja"));$("users-summary").textContent=`登録メンバー ${userCache.length}人 ・ オンライン ${userCache.filter(u=>isOnline(u.uid)).length}人`;$("users-list").innerHTML=rows.map(u=>`<button class="member-row" onclick="viewProfile('${esc(u.uid)}');closeUsers()">${avatar(u.name,u.photo)}<span class="member-meta"><span class="member-name">${esc(u.name)}</span><span class="member-status">${isOnline(u.uid)?'<span class="online-dot"></span>オンライン':'<span class="offline-dot"></span>オフライン'}</span></span><span class="member-role">${esc(roleName(u.uid))}</span></button>`).join("")||'<div class="search-empty">該当するメンバーはいません。</div>'}
 function openUsers(){if(!currentUser)return toast("メンバー一覧を見るにはログインしてください。");$("users-modal").classList.add("open");$("users-search").value="";loadUsers()}
@@ -357,10 +370,11 @@ function mentionInput(input){let v=input.value,pos=input.selectionStart||0,befor
 function hideMentions(){$("mention-menu").style.display="none";mentionTarget=null}
 function insertMention(uid){if(!mentionTarget)return;let u=userCache.find(x=>x.uid===uid),t=mentionTarget;if(!u)return;let key=String(u.name).replace(/\s+/g,"");let before=t.input.value.slice(0,t.start),after=t.input.value.slice(t.end);t.input.value=before+"@"+key+" "+after;t.input.focus();let pos=(before+"@"+key+" ").length;t.input.setSelectionRange(pos,pos);hideMentions()}
 function startPosts(){if(unsubscribePosts)unsubscribePosts();cleanupReplies();if(!currentUser){cachedPosts=[];renderPosts();return}unsubscribePosts=onSnapshot(collection(db,"posts"),s=>{cachedPosts=s.docs.map(d=>({id:d.id,data:d.data()}));cachedPosts.sort((a,b)=>(b.data.createdAt?.toMillis?.()||0)-(a.data.createdAt?.toMillis?.()||0));renderPosts()},e=>{$("messages").textContent="読み込みエラー："+e.message})}
-function startReplies(id){if(replyUnsubs.has(id))return;let ref=collection(db,"posts",id,"replies");let unsub=onSnapshot(ref,s=>{let rows=s.docs.map(d=>({id:d.id,data:d.data()}));rows.sort((a,b)=>(a.data.createdAt?.toMillis?.()||0)-(b.data.createdAt?.toMillis?.()||0));replyCache.set(id,rows);renderReplies(id)},e=>{let el=$("replies-"+id);if(el)el.textContent="返信を読み込めません："+e.message});replyUnsubs.set(id,unsub)}
+function startReplies(id){if(replyUnsubs.has(id))return;let ref=collection(db,"posts",id,"replies");let unsub=onSnapshot(ref,s=>{let rows=s.docs.map(d=>({id:d.id,data:d.data()}));rows.sort((a,b)=>(a.data.createdAt?.toMillis?.()||0)-(b.data.createdAt?.toMillis?.()||0));replyCache.set(id,rows);replyLoaded.add(id);renderReplies(id)},e=>{let el=$("replies-"+id);if(el)el.textContent="返信を読み込めません："+e.message});replyUnsubs.set(id,unsub)}
 function renderReplies(id){
  const area=$("replies-"+id);if(!area)return;
  const rows=replyCache.get(id)||[];
+ if(!replyLoaded.has(id)){area.innerHTML="";return}
  if(!rows.length){if(area.children.length!==1||!area.firstElementChild?.classList.contains("no-replies"))area.innerHTML='<div class="no-replies">まだ返信はありません。</div>';return}
  if(area.firstElementChild?.classList.contains("no-replies"))area.innerHTML="";
  let cursor=area.firstElementChild;
@@ -396,8 +410,16 @@ async function imageData(file,maxBytes,maxSide){if(!file.type.startsWith("image/
 async function choosePostImage(e){let f=e.target.files?.[0];if(!f)return;try{pendingImage=await imageData(f,450*1024,1280);$("attachment-thumb").src=pendingImage;$("attachment-name").textContent=f.name;$("attachment-preview").style.display="flex"}catch(err){toast(err.message)}e.target.value=""}
 function clearAttachment(){pendingImage="";$("attachment-preview").style.display="none";$("attachment-thumb").removeAttribute("src")}
 
+function suspensionIsActive(data){if(!data||data.active!==true)return false;let until=data.until?.toDate?.()|| (data.until instanceof Date?data.until:null);return !!until&&until.getTime()>Date.now()}
+function suspensionUntilText(data){let until=data?.until?.toDate?.()||(data?.until instanceof Date?data.until:null);return until?until.toLocaleString("ja-JP")+(" まで"):""}
+function showSuspendedNotice(data){$("suspended-message").textContent=data?.message||"運営によりアカウントが一時凍結されています。";$("suspended-until").textContent="利用再開予定："+suspensionUntilText(data);$("suspended-modal").classList.add("open")}
+function closeSuspendedNotice(){$("suspended-modal").classList.remove("open")}
+function openSuspendModal(uid,name){if(!isStaff()||!uid||uid===OWNER_UID)return toast("この操作を行う権限がありません。");suspensionTargetUid=uid;$("suspend-target-label").textContent="対象："+(name||"メンバー");$("suspend-duration").value="24";$("suspend-message").value="";$("suspend-error").textContent="";$("suspend-modal").classList.add("open")}
+function closeSuspendModal(){$("suspend-modal").classList.remove("open");suspensionTargetUid=""}
+async function confirmSuspend(){if(!isStaff()||!suspensionTargetUid)throw Error("操作権限がありません。");let message=$("suspend-message").value.trim();if(!message) return $("suspend-error").textContent="表示するメッセージを入力してください。";let hours=Number($("suspend-duration").value);if(![1,24,168,720].includes(hours))return $("suspend-error").textContent="凍結期間を選択してください。";let btn=$("suspend-confirm");btn.disabled=true;try{await setDoc(doc(db,"accountSuspensions",suspensionTargetUid),{active:true,message,until:new Date(Date.now()+hours*3600000),updatedAt:serverTimestamp(),updatedBy:currentUser.uid});toast("アカウントを一時凍結しました。");closeSuspendModal();if(viewedProfileUid===suspensionTargetUid)await viewProfile(suspensionTargetUid)}catch(e){$("suspend-error").textContent="凍結できません："+e.message}finally{btn.disabled=false}}
+async function liftSuspension(uid){if(!isStaff()||!uid)return toast("この操作を行う権限がありません。");try{await setDoc(doc(db,"accountSuspensions",uid),{active:false,message:"",updatedAt:serverTimestamp(),updatedBy:currentUser.uid},{merge:true});toast("凍結を解除しました。");if(viewedProfileUid===uid)await viewProfile(uid)}catch(e){toast("凍結を解除できません："+e.message)}}
 function openProfile(){if(!currentUser)return;profileImage=currentProfile.photoData||"";$("profile-title").textContent="プロフィール設定";$("profile-edit-fields").style.display="block";$("profile-name").value=nameOf();$("profile-save").style.display="block";$("profile-error").textContent="";updateProfilePreview();setProfileRole(currentUser.uid);$("profile-modal").classList.add("open")}
-async function viewProfile(uid){if(!currentUser||!uid)return;if(uid===currentUser.uid)return openProfile();try{let s=await getDoc(doc(db,"profiles",uid)),p=s.exists()?s.data():{};profileImage=p.photoData||"";$("profile-title").textContent="プロフィール";$("profile-edit-fields").style.display="none";$("profile-save").style.display="none";$("profile-error").textContent="";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(p.displayName||"メンバー")[0]);$("profile-name").value=p.displayName||"メンバー";setProfileRole(uid);$("profile-modal").classList.add("open")}catch(e){toast("プロフィールを読み込めません："+e.message)}}
+async function viewProfile(uid){if(!currentUser||!uid)return;if(uid===currentUser.uid)return openProfile();try{let [s,ss]=await Promise.all([getDoc(doc(db,"profiles",uid)),getDoc(doc(db,"accountSuspensions",uid))]);let p=s.exists()?s.data():{},susp=ss.exists()?ss.data():{};viewedProfileUid=uid;profileImage=p.photoData||"";$("profile-title").textContent="プロフィール";$("profile-edit-fields").style.display="none";$("profile-save").style.display="none";$("profile-error").textContent="";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(p.displayName||"メンバー")[0]);$("profile-name").value=p.displayName||"メンバー";setProfileRole(uid);let controls=$("profile-role-view");if(isStaff()&&uid!==OWNER_UID){let active=suspensionIsActive(susp);controls.innerHTML+=active?`<div style="margin-top:12px"><span class="post-role role-moderator">一時凍結中</span><p class="auth-description">${esc(susp.message||"メッセージなし")}<br>${esc(suspensionUntilText(susp))}</p><button class="small-button" onclick="liftSuspension('${esc(uid)}')">凍結を解除</button></div>`:`<div style="margin-top:12px"><button class="small-button danger" onclick="openSuspendModal('${esc(uid)}','${esc(p.displayName||"メンバー")}')">アカウントを一時凍結</button></div>`}$("profile-modal").classList.add("open")}catch(e){toast("プロフィールを読み込めません："+e.message)}}
 function setProfileRole(uid){$("profile-role-view").innerHTML=`<span class="post-role ${roleClass(uid)}">${esc(roleName(uid))}</span>`}
 function closeProfile(){$("profile-modal").classList.remove("open")}
 function updateProfilePreview(){let n=$("profile-name").value.trim()||"?";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(n)[0])}
@@ -405,6 +427,7 @@ async function saveProfile(){let name=$("profile-name").value.trim();try{if(!nam
 async function syncUser(user){
  const version=++authSyncVersion;
  if(!user){
+  if(suspensionUnsub)suspensionUnsub();suspensionUnsub=null;
   currentUser=null;currentProfile={};roles={};
   if(presenceTimer)clearInterval(presenceTimer);presenceTimer=null;
   if(unsubscribePresence)unsubscribePresence();unsubscribePresence=null;
@@ -422,11 +445,16 @@ async function syncUser(user){
    if(version===authSyncVersion){$("login-error").textContent="メールアドレスとパスワードでログインしてください。";$("login-modal").classList.add("open");}
    return;
   }
+  const suspensionSnap=await getDoc(doc(db,"accountSuspensions",user.uid));
+  if(version!==authSyncVersion||auth.currentUser?.uid!==user.uid)return;
+  if(suspensionSnap.exists()&&suspensionIsActive(suspensionSnap.data())){const data=suspensionSnap.data();await signOut(auth);showSuspendedNotice(data);return;}
   currentUser=user;currentProfile={};roles={};updateUserArea();updateComposer();
   const [p,r]=await Promise.all([getDoc(doc(db,"profiles",user.uid)),getDocs(collection(db,"staffRoles"))]);
   if(version!==authSyncVersion||auth.currentUser?.uid!==user.uid)return;
   currentProfile=p.exists()?p.data():{};roles={};r.forEach(x=>roles[x.id]=x.data());
   updateUserArea();updateComposer();startPosts();startPresence();loadUsers();
+  if(suspensionUnsub)suspensionUnsub();
+  suspensionUnsub=onSnapshot(doc(db,"accountSuspensions",user.uid),async snap=>{if(!snap.exists())return;let data=snap.data();if(suspensionIsActive(data)&&auth.currentUser?.uid===user.uid){await signOut(auth);showSuspendedNotice(data)}},e=>console.warn("suspension listener:",e.message));
  }catch(e){
   if(version!==authSyncVersion)return;
   console.error(e);$("messages").textContent="アカウント情報を読み込めません："+e.message;
@@ -450,7 +478,7 @@ onAuthStateChanged(auth,async u=>{
  await syncUser(u);
  document.body.classList.remove("auth-pending");
 });
-Object.assign(window,{openUsers,closeUsers,insertMention,selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleSignup,setupGooglePassword,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,clearAttachment,closeAction,runAction});
+Object.assign(window,{openUsers,closeUsers,insertMention,showRules,openSuspendModal,closeSuspendModal,confirmSuspend,liftSuspension,closeSuspendedNotice,selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleSignup,setupGooglePassword,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,clearAttachment,closeAction,runAction});
 </script>
 </body>
 </html>
