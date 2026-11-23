@@ -71,6 +71,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .attach-button{border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:var(--panel);color:var(--text);font-size:12px;white-space:nowrap}
 .attachment-preview{display:none;align-items:center;gap:10px;margin:8px 0;padding:8px;background:var(--input);border-radius:10px;font-size:12px}
 .attachment-preview img{width:55px;height:55px;object-fit:cover;border-radius:7px}.attachment-preview button{margin-left:auto}
+
+/* 利用ルール */
+.rules-page{max-width:850px;margin:0 auto 18px;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:clamp(18px,3vw,28px);box-shadow:var(--shadow);line-height:1.85}
+.rules-page h2{font-size:19px;margin:0 0 8px}
+.rules-page h3{font-size:15px;margin:22px 0 7px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.rules-page p,.rules-page li{font-size:13px}
+.rules-page ul,.rules-page ol{padding-left:1.5em}
+.rules-page li{margin:5px 0}
+.rules-note{color:var(--sub);font-size:12px}
 .modal{display:none;position:fixed;inset:0;z-index:100;background:#07111dcc;backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:18px}
 .modal.open{display:flex;animation:fade .15s ease}.modal-box{background:var(--panel);color:var(--text);width:100%;max-width:460px;max-height:90dvh;overflow-y:auto;padding:24px;border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 80px #0004;animation:rise .18s ease}
 .modal-box h2{margin:0 0 8px;font-size:20px}.auth-description{font-size:13px;color:var(--sub);margin:0 0 18px;line-height:1.7}
@@ -123,8 +132,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   <div class="brand"><img src="./icon.png" alt="波急"><div><div class="brand-name">波急掲示板</div><div class="brand-sub">NAMIKYU COMMUNITY</div></div></div>
   <div class="category-title">コミュニティ</div>
   <div class="channel-list">
-   <button class="channel active" data-channel="announcement" onclick="selectChannel('announcement')">📢　運営お知らせ</button>
-   <button class="channel" data-channel="chat" onclick="selectChannel('chat')">💬　チャット</button>
+   <button class="channel active" data-page="announcement" data-channel="announcement" onclick="selectChannel('announcement')">📢　運営お知らせ</button>
+   <button class="channel" data-page="chat" data-channel="chat" onclick="selectChannel('chat')">💬　チャット</button>
+   <button class="channel" data-page="rules" onclick="showRules()">📜　ルール</button>
   </div>
   <div class="sidebar-bottom"><button class="profile-click user-area" onclick="openProfile()"><div class="avatar" id="user-avatar">?</div><div class="user-info"><div class="user-name" id="user-name">未ログイン</div><div class="user-role" id="user-role">未ログイン</div></div></button></div>
  </aside>
@@ -144,7 +154,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   <section class="content">
    <div class="channel-header"><div class="channel-heading"><span id="channel-icon">📢</span> <span id="channel-name">運営お知らせ</span></div><div class="channel-description" id="channel-description">波急運営からのお知らせを掲載します。</div></div>
    <div class="messages" id="messages" aria-live="polite"><div class="empty"><div class="empty-icon">🔒</div><div class="empty-title">ログインしてください</div></div></div>
-   <div class="composer-area"><div class="composer-inner"><div class="composer-notice" id="composer-notice">投稿にはログインが必要です。</div>
+   <div class="composer-area" id="composer-area"><div class="composer-inner"><div class="composer-notice" id="composer-notice">投稿にはログインが必要です。</div>
     <div class="attachment-preview" id="attachment-preview"><img id="attachment-thumb" alt="添付画像のプレビュー"><span id="attachment-name">画像を添付</span><button class="small-button" onclick="clearAttachment()">外す</button></div>
     <div class="composer" id="composer">
      <input id="post-image" type="file" accept="image/*" hidden>
@@ -204,7 +214,7 @@ const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),p
 provider.setCustomParameters({prompt:"select_account"});
 const OWNER_UID="kv2lmeIrYrN3J7T4GWTaJau7MtY2";
 const $=id=>document.getElementById(id);
-let authMode="login",currentChannel=localStorage.getItem("board-channel")||"announcement";
+let authMode="login",currentChannel=localStorage.getItem("board-channel")||"announcement",currentView="posts";
 let currentUser=null,currentProfile={},roles={},unsubscribePosts=null,cachedPosts=[],authFlow=false,authSyncVersion=0;
 let pendingImage="",profileImage="",replyUnsubs=new Map(),replyCache=new Map(),actionTask=null;
 let userCache=[],presenceCache={},unsubscribePresence=null,presenceTimer=null,searchText="",mentionTarget=null;
@@ -227,7 +237,68 @@ function isOnline(uid){let t=presenceCache[uid]?.lastSeen?.toMillis?.()||0;retur
 function toast(message){let el=document.createElement("div");el.className="toast";el.textContent=message;$("toast-region").append(el);setTimeout(()=>el.remove(),3500)}
 function applyTheme(){let t=document.documentElement.dataset.theme||"light";$("theme-button").textContent=t==="dark"?"☀️ ホワイト":"🌙 ダーク"}
 function toggleTheme(){let t=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=t;localStorage.setItem("board-theme",t);applyTheme()}
-function selectChannel(c){if(!settings[c])return;currentChannel=c;localStorage.setItem("board-channel",c);$("channel-name").textContent=settings[c].name;$("channel-icon").textContent=settings[c].icon;$("channel-description").textContent=settings[c].description;document.querySelectorAll(".channel").forEach(b=>b.classList.toggle("active",b.dataset.channel===c));updateComposer();renderPosts();closeSidebar()}
+function selectChannel(c){
+ if(!settings[c])return;
+ currentView="posts";currentChannel=c;localStorage.setItem("board-channel",c);
+ $("channel-name").textContent=settings[c].name;$("channel-icon").textContent=settings[c].icon;
+ $("channel-description").textContent=settings[c].description;
+ $("global-search").style.display="";$("composer-area").style.display="";
+ document.querySelectorAll(".channel").forEach(b=>b.classList.toggle("active",b.dataset.page===c));
+ updateComposer();renderPosts();closeSidebar();
+}
+function showRules(){
+ currentView="rules";
+ $("channel-name").textContent="利用ルール";$("channel-icon").textContent="📜";
+ $("channel-description").textContent="波急公式サイトを利用する前に、必ず確認してください。";
+ $("global-search").style.display="none";$("composer-area").style.display="none";
+ document.querySelectorAll(".channel").forEach(b=>b.classList.toggle("active",b.dataset.page==="rules"));
+ renderRules();closeSidebar();
+}
+function renderRules(){
+ $("messages").innerHTML=`
+ <article class="rules-page">
+  <h2>📜 波急公式サイト 利用ルール</h2>
+  <p class="rules-note">このルールは波急公式サイト内で適用されます。利用するすべてのユーザーは、以下の内容を守ってください。</p>
+  <h3>1. 基本ルール</h3>
+  <ol>
+   <li>他人のアカウントへの不正アクセス、乗っ取り、なりすましは禁止です。</li>
+   <li>他のユーザーへの嫌がらせ、誹謗中傷、脅迫、差別的な発言は禁止です。</li>
+   <li>スパム投稿、同じ内容の連続投稿、無意味な投稿による掲示板の妨害は禁止です。</li>
+   <li>サイトの不具合や脆弱性を悪用する行為は禁止です。</li>
+   <li>運営メンバーからの正当な案内・指示には従ってください。</li>
+  </ol>
+  <h3>2. 投稿・チャットについて</h3>
+  <ul>
+   <li>個人情報や他人のプライバシーを無断で公開しないでください。</li>
+   <li>他人の作品・画像・文章などを、無断で自分のものとして投稿しないでください。</li>
+   <li>不適切な画像、リンク、文章の投稿は禁止です。</li>
+   <li>他のユーザーが不快になる内容や、会話を妨害する行為は控えてください。</li>
+   <li>投稿内容に合ったカテゴリを選んでください。</li>
+  </ul>
+  <h3>3. 運営・権限について</h3>
+  <ul>
+   <li>運営メンバーへの嫌がらせや業務妨害は禁止です。</li>
+   <li>運営メンバーの名前や権限を無断で使用しないでください。</li>
+   <li>運営お知らせなど、権限が必要な操作を不正に行わないでください。</li>
+  </ul>
+  <h3>4. 違反行為への対応</h3>
+  <p>運営は、違反内容や悪質性に応じて、次の対応を行うことがあります。</p>
+  <ul>
+   <li><b>警告：</b>サイト上で注意します。</li>
+   <li><b>投稿・返信の削除：</b>問題のある内容を削除します。</li>
+   <li><b>利用制限：</b>投稿・返信などの機能を一時的に制限します。</li>
+   <li><b>アカウント停止：</b>一定期間または無期限で利用を禁止します。</li>
+  </ul>
+  <p class="rules-note">重大な違反や悪質な行為については、事前の警告なしで対応する場合があります。</p>
+  <h3>5. 最後に</h3>
+  <ul>
+   <li>すべてのユーザーが安心して利用できる環境づくりにご協力ください。</li>
+   <li>このルールに明記されていない行為でも、運営が不適切と判断した場合は対応することがあります。</li>
+   <li>ルールは必要に応じて変更・追加される場合があります。</li>
+  </ul>
+  <p><b>すべての権限と最終的な判断は波急運営が保有します。</b></p>
+ </article>`;
+}
 function toggleSidebar(){$("sidebar").classList.toggle("open");$("overlay").classList.toggle("show")}
 function closeSidebar(){$("sidebar").classList.remove("open");$("overlay").classList.remove("show")}
 function openLogin(){if(currentUser){openAction("ログアウトしますか？","ログアウトすると、再度ログインが必要になります。", "ログアウト",async()=>signOut(auth));return}$("login-modal").classList.add("open");$("login-error").textContent=""}
@@ -239,9 +310,10 @@ async function emailAction(){let email=$("email").value.trim(),pass=$("password"
 async function googleSignup(){let pass=$("password").value,name=$("display-name").value.trim();try{if(pass.length<6)throw Error("パスワードを6文字以上で入力してください。");if(!name)throw Error("表示名を入力してください。");authFlow=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(!getAdditionalUserInfo(r)?.isNewUser){await signOut(auth);throw Error("このGoogleアカウントは既に登録されています。メールアドレスとパスワードでログインしてください。")}await linkWithCredential(r.user,EmailAuthProvider.credential(r.user.email,pass));await updateProfile(r.user,{displayName:name});await setDoc(doc(db,"profiles",r.user.uid),{displayName:name,photoData:"",updatedAt:serverTimestamp()});await signOut(auth);await signInWithEmailAndPassword(auth,r.user.email,pass);closeLogin()}catch(e){showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
 async function setupGooglePassword(){let pass=$("password").value;try{if(pass.length<6)throw Error("設定するパスワードを6文字以上で入力してください。");authFlow=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(r.user.providerData.some(p=>p.providerId==="password")){await signOut(auth);throw Error("このアカウントには既にパスワードが設定されています。ログイン画面からメールアドレスとパスワードでログインしてください。")}await linkWithCredential(r.user,EmailAuthProvider.credential(r.user.email,pass));await signOut(auth);$("login-error").textContent="パスワードを設定しました。メールアドレスとパスワードでログインしてください。";authMode="login";updateAuthMode()}catch(e){showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
 function updateUserArea(){let n=nameOf(),photo=currentProfile.photoData;$("user-name").textContent=n;$("user-role").textContent=roleName(currentUser.uid);$("user-avatar").innerHTML=safeImage(photo)?`<img src="${safeImage(photo)}" alt="">`:esc(Array.from(n)[0]||"?");$("login-button").textContent="ログアウト";$("login-button").onclick=openLogin;$("profile-button").style.display="block"}
-function updateComposer(){let ok=!!currentUser&&(currentChannel==="chat"||isStaff());$("post-input").disabled=!ok;$("send-button").disabled=!ok;$("composer").style.display=ok?"flex":"none";$("composer-notice").textContent=!currentUser?"投稿するにはログインしてください。":currentChannel==="announcement"&&!isStaff()?"運営メンバーのみ投稿できます。":"画像は1枚まで（圧縮後450KB以内）。Enterで送信、Shift+Enterで改行。"}
+function updateComposer(){let ok=currentView==="posts"&&!!currentUser&&(currentChannel==="chat"||isStaff());$("post-input").disabled=!ok;$("send-button").disabled=!ok;$("composer").style.display=ok?"flex":"none";$("composer-notice").textContent=!currentUser?"投稿するにはログインしてください。":currentChannel==="announcement"&&!isStaff()?"運営メンバーのみ投稿できます。":"画像は1枚まで（圧縮後450KB以内）。Enterで送信、Shift+Enterで改行。"}
 function cleanupReplies(){for(let u of replyUnsubs.values())u();replyUnsubs.clear();replyCache.clear()}
 function renderPosts(){
+ if(currentView==="rules"){renderRules();return}
  const area=$("messages"),all=cachedPosts.filter(p=>p.data.channel===currentChannel);
  if(!currentUser){area.innerHTML='<div class="empty"><div class="empty-icon">🔒</div><div class="empty-title">ログインしてください</div><div>ログインすると掲示板を利用できます。</div></div>';cleanupRemovedPosts([]);return}
  const q=searchText.trim().toLocaleLowerCase("ja-JP");
