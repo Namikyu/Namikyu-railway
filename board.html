@@ -35,21 +35,34 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;curso
 .page-title{font-size:18px;font-weight:bold}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
 .login-status,.notice-button{font-size:13px;color:var(--sub);padding:8px 12px;border:1px solid var(--border);border-radius:20px;background:transparent}
-.notice-button{border:0;font-size:20px;color:var(--text)}
 .content{flex:1;min-height:0;display:flex;flex-direction:column}
 .channel-header{background:var(--panel);border-bottom:1px solid var(--border);padding:20px 26px}
 .channel-heading{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:bold}
 .channel-description{margin-top:7px;font-size:13px;color:var(--sub)}
-.messages{flex:1;overflow-y:auto;padding:28px}
-.empty{height:100%;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--sub)}
+.messages{flex:1;overflow-y:auto;padding:25px}
+.empty{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--sub)}
 .empty-icon{font-size:48px;margin-bottom:15px}
 .empty-title{font-size:18px;font-weight:bold;color:var(--text);margin-bottom:8px}
 .empty-description{font-size:13px;line-height:1.8}
+.post{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:17px;margin-bottom:15px}
+.post-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.post-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:white;display:grid;place-items:center;font-weight:bold}
+.post-author{font-size:14px;font-weight:bold}
+.post-role{font-size:11px;color:var(--blue)}
+.post-date{font-size:11px;color:var(--sub);margin-left:auto}
+.post-content{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8;margin:14px 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.small-button{border:1px solid var(--border);background:var(--input);color:var(--text);border-radius:6px;padding:6px 10px;font-size:12px}
+.reply-list{border-top:1px solid var(--border);margin-top:13px;padding-top:10px}
+.reply{padding:8px 0;font-size:13px;line-height:1.7;border-bottom:1px solid var(--border)}
+.reply-author{font-weight:bold}.reply-date{font-size:10px;color:var(--sub);margin-left:7px}
+.reply-form{display:flex;gap:7px;margin-top:10px}
+.reply-form input{flex:1;min-width:0;padding:9px;border:1px solid var(--border);border-radius:6px;background:var(--input);color:var(--text)}
 .composer-area{padding:15px 24px 22px;background:var(--panel);border-top:1px solid var(--border)}
 .composer-notice{font-size:12px;color:var(--sub);margin-bottom:10px}
 .composer{display:flex;align-items:center;gap:10px;background:var(--input);border:1px solid var(--border);border-radius:9px;padding:12px 15px}
 .composer input{flex:1;min-width:0;border:0;outline:none;background:transparent;color:var(--text);font-size:14px}
-.send-button{border:0;border-radius:7px;padding:9px 16px;background:var(--blue);color:white;font-weight:bold;opacity:.5;cursor:not-allowed}
+.send-button{border:0;border-radius:7px;padding:9px 16px;background:var(--blue);color:white;font-weight:bold}
 .modal{display:none;position:fixed;inset:0;z-index:100;background:#0009;align-items:center;justify-content:center;padding:20px}
 .modal.open{display:flex}
 .modal-box{background:var(--panel);color:var(--text);width:100%;max-width:420px;max-height:90vh;overflow-y:auto;padding:25px;border-radius:14px}
@@ -68,7 +81,7 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;curso
 .sidebar.open{transform:translateX(0)}
 .overlay.show{display:block;position:fixed;inset:0;background:#0007;z-index:5}
 .menu-button{display:block}.topbar{padding:0 14px}
-.channel-header{padding:17px}.messages{padding:18px}
+.channel-header{padding:17px}.messages{padding:13px}
 .composer-area{padding:12px}.login-status{font-size:11px;padding:7px 9px}
 }
 </style>
@@ -79,53 +92,49 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;curso
  <div class="brand"><img src="./icon.png" alt="波急"><div><div class="brand-name">波急掲示板</div><div class="brand-sub">NAMIKYU COMMUNITY</div></div></div>
  <div class="category-title">掲示板カテゴリ</div>
  <div class="channel-list">
-  <button class="channel active" data-channel="announcement" onclick="selectChannel('announcement')"><span class="channel-icon">📢</span>運営お知らせ</button>
-  <button class="channel" data-channel="chat" onclick="selectChannel('chat')"><span class="channel-icon">💬</span>チャット</button>
+  <button class="channel active" data-channel="announcement" onclick="selectChannel('announcement')">📢 運営お知らせ</button>
+  <button class="channel" data-channel="chat" onclick="selectChannel('chat')">💬 チャット</button>
  </div>
  <div class="sidebar-bottom"><div class="user-area"><div class="avatar" id="user-avatar">?</div><div class="user-info"><div class="user-name" id="user-name">未ログイン</div><div class="user-role" id="user-role">未ログイン</div></div></div></div>
 </aside>
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 <main class="main">
  <header class="topbar">
-  <button class="menu-button" onclick="toggleSidebar()" aria-label="チャンネル一覧">☰</button>
+  <button class="menu-button" onclick="toggleSidebar()">☰</button>
   <div class="page-title">掲示板</div>
-  <div class="topbar-right">
-   <button class="login-status" id="login-button" onclick="openLogin()">ログイン・新規登録</button>
-   <button class="notice-button" title="通知" aria-label="通知">🔔</button>
-  </div>
+  <div class="topbar-right"><button class="login-status" id="login-button" onclick="openLogin()">ログイン・新規登録</button></div>
  </header>
  <section class="content">
   <div class="channel-header">
    <div class="channel-heading"><span id="channel-icon">📢</span><span id="channel-name">運営お知らせ</span></div>
    <div class="channel-description" id="channel-description">波急運営からのお知らせを掲載します。</div>
   </div>
-  <div class="messages" id="messages"><div class="empty"><div class="empty-icon">📭</div><div class="empty-title">まだ投稿はありません</div><div class="empty-description">ここに投稿が表示されます。<br>ログインすると掲示板を利用できます。</div></div></div>
-  <div class="composer-area"><div class="composer-notice" id="composer-notice">投稿・返信にはログインが必要です。</div><div class="composer"><input type="text" placeholder="メッセージを入力..." disabled aria-label="メッセージ入力"><button class="send-button" disabled>送信</button></div></div>
+  <div class="messages" id="messages"><div class="empty"><div class="empty-icon">📭</div><div class="empty-title">まだ投稿はありません</div><div class="empty-description">ログインすると掲示板を利用できます。</div></div></div>
+  <div class="composer-area"><div class="composer-notice" id="composer-notice">投稿にはログインが必要です。</div><div class="composer" id="composer"><input id="post-input" maxlength="5000" placeholder="メッセージを入力..." disabled><button class="send-button" id="send-button" onclick="sendPost()" disabled>送信</button></div></div>
  </section>
 </main>
 </div>
 
-<div class="modal" id="login-modal">
- <div class="modal-box">
-  <h2 id="login-title">ログイン</h2>
-  <p class="auth-description" id="auth-description">登録済みのアカウントでログインします。</p>
-  <label class="auth-label" id="name-label" style="display:none">表示名<input id="display-name" class="auth-input" type="text" placeholder="掲示板で使う名前" maxlength="30" autocomplete="nickname"></label>
-  <label class="auth-label">メールアドレス<input id="email" class="auth-input" type="email" placeholder="メールアドレス" autocomplete="email"></label>
-  <label class="auth-label">パスワード<input id="password" class="auth-input" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password"></label>
-  <button type="button" class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
-  <button type="button" class="auth-google" id="google-button" onclick="googleLogin()">Googleでログイン</button>
-  <p class="auth-error" id="login-error" role="alert"></p>
-  <button type="button" class="auth-link" id="mode-button" onclick="toggleAuthMode()">新規登録はこちら</button>
-  <button type="button" class="auth-close" onclick="closeLogin()">閉じる</button>
- </div>
-</div>
+<div class="modal" id="login-modal"><div class="modal-box">
+ <h2 id="login-title">ログイン</h2>
+ <p class="auth-description" id="auth-description">登録済みのアカウントでログインします。</p>
+ <label class="auth-label" id="name-label" style="display:none">表示名<input id="display-name" class="auth-input" maxlength="30" placeholder="掲示板で使う名前"></label>
+ <label class="auth-label">メールアドレス<input id="email" class="auth-input" type="email" autocomplete="email"></label>
+ <label class="auth-label">パスワード<input id="password" class="auth-input" type="password" autocomplete="current-password"></label>
+ <button class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
+ <button class="auth-google" id="google-button" onclick="googleLogin()">Googleでログイン</button>
+ <p class="auth-error" id="login-error"></p>
+ <button class="auth-link" id="mode-button" onclick="toggleAuthMode()">新規登録はこちら</button>
+ <button class="auth-close" onclick="closeLogin()">閉じる</button>
+</div></div>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import{getFirestore,collection,addDoc,onSnapshot,doc,updateDoc,deleteDoc,getDocs,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 const firebaseConfig={
- apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkD2RDmZQ",
+ apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkK2D2RDmZQ",
  authDomain:"namikyu-board.firebaseapp.com",
  projectId:"namikyu-board",
  storageBucket:"namikyu-board.firebasestorage.app",
@@ -134,161 +143,213 @@ const firebaseConfig={
  measurementId:"G-5EFRPTWRMJ"
 };
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 const googleProvider=new GoogleAuthProvider();
 googleProvider.setCustomParameters({prompt:"select_account"});
-let authMode="login";
 
-const channelSettings={
- announcement:{name:"運営お知らせ",icon:"📢",description:"波急運営からのお知らせを掲載します。",notice:"ログインするとお知らせへの返信ができます。"},
- chat:{name:"チャット",icon:"💬",description:"メンバー同士で自由に交流できる場所です。",notice:"ログインするとメッセージを送信できます。"}
+const OWNER_UID="kv2lmeIrYrN3J7T4GWTaJau7MtY2";
+let authMode="login",currentChannel="announcement",currentUser=null,unsubscribePosts=null;
+
+const settings={
+ announcement:{name:"運営お知らせ",icon:"📢",description:"波急運営からのお知らせを掲載します。"},
+ chat:{name:"チャット",icon:"💬",description:"メンバー同士で自由に交流できる場所です。"}
 };
 
+const $=id=>document.getElementById(id);
+const isOwner=()=>currentUser?.uid===OWNER_UID;
+const escapeHTML=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dateText=value=>value?.toDate?value.toDate().toLocaleString("ja-JP"):"送信直後";
+
 function selectChannel(channel){
- const s=channelSettings[channel];if(!s)return;
- document.getElementById("channel-name").textContent=s.name;
- document.getElementById("channel-icon").textContent=s.icon;
- document.getElementById("channel-description").textContent=s.description;
+ if(!settings[channel])return;
+ currentChannel=channel;
+ $("channel-name").textContent=settings[channel].name;
+ $("channel-icon").textContent=settings[channel].icon;
+ $("channel-description").textContent=settings[channel].description;
  document.querySelectorAll(".channel").forEach(b=>b.classList.toggle("active",b.dataset.channel===channel));
- updateComposerNotice();closeSidebar();
+ updateComposer();renderPosts();closeSidebar();
 }
-function getCurrentChannel(){return document.querySelector(".channel.active")?.dataset.channel||"announcement"}
-function updateComposerNotice(){
- const user=auth.currentUser,channel=getCurrentChannel();
- document.getElementById("composer-notice").textContent=!user?"投稿・返信にはログインが必要です。":channelSettings[channel].notice;
+
+function updateComposer(){
+ const allowed=!!currentUser&&(currentChannel==="chat"||isOwner());
+ $("post-input").disabled=!allowed;
+ $("send-button").disabled=!allowed;
+ $("composer").style.display=allowed?"flex":"none";
+ $("composer-notice").textContent=!currentUser?"投稿にはログインが必要です。":currentChannel==="announcement"&&!isOwner()?"運営メンバーのみ投稿できます。":"メッセージを入力して送信できます。";
 }
-function toggleSidebar(){
- document.getElementById("sidebar").classList.toggle("open");
- document.getElementById("overlay").classList.toggle("show");
-}
-function closeSidebar(){
- document.getElementById("sidebar").classList.remove("open");
- document.getElementById("overlay").classList.remove("show");
-}
-function openLogin(){
- if(auth.currentUser){logout();return}
- document.getElementById("login-modal").classList.add("open");
- document.getElementById("login-error").textContent="";
-}
-function closeLogin(){document.getElementById("login-modal").classList.remove("open")}
+
+function toggleSidebar(){$("sidebar").classList.toggle("open");$("overlay").classList.toggle("show")}
+function closeSidebar(){$("sidebar").classList.remove("open");$("overlay").classList.remove("show")}
+function openLogin(){if(currentUser){logout();return}$("login-modal").classList.add("open");$("login-error").textContent=""}
+function closeLogin(){$("login-modal").classList.remove("open")}
+function toggleAuthMode(){authMode=authMode==="login"?"signup":"login";updateAuthMode()}
 
 function updateAuthMode(){
  const signup=authMode==="signup";
- document.getElementById("login-title").textContent=signup?"新規登録":"ログイン";
- document.getElementById("auth-description").textContent=signup?"新しいアカウントを作成します。":"登録済みのアカウントでログインします。";
- document.getElementById("email-action-button").textContent=signup?"アカウントを作成":"ログイン";
- document.getElementById("google-button").textContent=signup?"Googleで新規登録":"Googleでログイン";
- document.getElementById("mode-button").textContent=signup?"ログインはこちら":"新規登録はこちら";
- document.getElementById("name-label").style.display=signup?"block":"none";
- document.getElementById("password").autocomplete=signup?"new-password":"current-password";
- document.getElementById("login-error").textContent="";
-}
-function toggleAuthMode(){
- authMode=authMode==="login"?"signup":"login";
- updateAuthMode();
+ $("login-title").textContent=signup?"新規登録":"ログイン";
+ $("auth-description").textContent=signup?"新しいアカウントを作成します。":"登録済みのアカウントでログインします。";
+ $("email-action-button").textContent=signup?"アカウントを作成":"ログイン";
+ $("google-button").textContent=signup?"Googleで新規登録":"Googleでログイン";
+ $("mode-button").textContent=signup?"ログインはこちら":"新規登録はこちら";
+ $("name-label").style.display=signup?"block":"none";
+ $("password").autocomplete=signup?"new-password":"current-password";
+ $("login-error").textContent="";
 }
 
 function showError(error){
  const messages={
  "auth/invalid-email":"メールアドレスの形式が正しくありません。",
- "auth/missing-email":"メールアドレスを入力してください。",
- "auth/email-already-in-use":"このメールアドレスはすでに登録されています。ログインをお試しください。",
+ "auth/email-already-in-use":"このメールアドレスは登録済みです。",
  "auth/weak-password":"パスワードは6文字以上にしてください。",
  "auth/invalid-credential":"メールアドレスまたはパスワードが違います。",
- "auth/user-not-found":"このメールアドレスのアカウントが見つかりません。新規登録をお試しください。",
- "auth/wrong-password":"パスワードが正しくありません。",
- "auth/user-disabled":"このアカウントは無効になっています。運営にお問い合わせください。",
- "auth/unauthorized-domain":"Firebaseの承認済みドメインにnamikyu.github.ioを追加してください。",
- "auth/operation-not-allowed":"Firebase ConsoleでGoogle認証とメール/パスワード認証を有効にしてください。",
- "auth/network-request-failed":"ネットワークに接続できませんでした。通信状態を確認してください。",
- "auth/too-many-requests":"試行回数が多すぎます。しばらく時間をおいて再度お試しください。",
- "auth/account-exists-with-different-credential":"このメールアドレスは別のログイン方法で登録されています。",
- "auth/popup-closed-by-user":"Googleログイン画面が閉じられました。もう一度お試しください。",
- "auth/popup-blocked":"ポップアップがブロックされました。ブラウザでこのサイトのポップアップを許可してください。",
- "auth/cancelled-popup-request":"別のログイン画面が開かれています。画面を閉じてから再度お試しください。",
- "auth/invalid-api-key":"FirebaseのAPIキーが正しくありません。firebaseConfigのapiKeyを確認してください。",
- "auth/api-key-not-valid.-please-pass-a-valid-api-key.":"FirebaseのAPIキーが無効です。Firebaseのプロジェクト設定を確認してください。",
- "auth/credential-already-in-use":"この認証情報は別のアカウントで使用されています。"
+ "auth/unauthorized-domain":"Firebaseの承認済みドメインを確認してください。",
+ "auth/popup-blocked":"ブラウザでポップアップを許可してください。",
+ "auth/popup-closed-by-user":"Googleログイン画面が閉じられました。",
+ "auth/network-request-failed":"ネットワーク接続を確認してください。"
  };
- const message=messages[error.code]||"認証に失敗しました。時間をおいて再度お試しください。";
- document.getElementById("login-error").textContent=message+"\nエラーコード："+(error.code||"不明");
- console.error("Firebase認証エラー:",error);
+ $("login-error").textContent=(messages[error.code]||error.message||"認証に失敗しました。")+"\n"+(error.code||"");
+ console.error(error);
 }
 
 async function emailAction(){
- const email=document.getElementById("email").value.trim();
- const password=document.getElementById("password").value;
- const name=document.getElementById("display-name").value.trim();
- const button=document.getElementById("email-action-button");
+ const email=$("email").value.trim(),password=$("password").value,name=$("display-name").value.trim();
  try{
-  document.getElementById("login-error").textContent="";
-  if(!email||!password)throw new Error("メールアドレスとパスワードを入力してください。");
-  if(authMode==="signup"){
-   if(!name)throw new Error("表示名を入力してください。");
-   if(name.length>30)throw new Error("表示名は30文字以内にしてください。");
-   if(password.length<6)throw new Error("パスワードは6文字以上にしてください。");
-  }
-  button.disabled=true;button.textContent="処理中...";
+  $("login-error").textContent="";
+  if(!email||!password)throw Error("メールアドレスとパスワードを入力してください。");
+  if(authMode==="signup"&&!name)throw Error("表示名を入力してください。");
   await setPersistence(auth,browserLocalPersistence);
   if(authMode==="signup"){
    const result=await createUserWithEmailAndPassword(auth,email,password);
    await updateProfile(result.user,{displayName:name});
-  }else{
-   await signInWithEmailAndPassword(auth,email,password);
-  }
+  }else await signInWithEmailAndPassword(auth,email,password);
   closeLogin();
- }catch(error){
-  if(error.code)showError(error);
-  else document.getElementById("login-error").textContent=error.message;
- }finally{
-  button.disabled=false;
-  button.textContent=authMode==="signup"?"アカウントを作成":"ログイン";
- }
+ }catch(e){showError(e)}
 }
 
-/* Googleポップアップ認証 */
 async function googleLogin(){
- const button=document.getElementById("google-button");
  try{
-  document.getElementById("login-error").textContent="";
-  button.disabled=true;button.textContent="Googleに接続中...";
   await setPersistence(auth,browserLocalPersistence);
-  const result=await signInWithPopup(auth,googleProvider);
-  console.log("Googleログイン成功:",result.user.uid);
+  await signInWithPopup(auth,googleProvider);
   closeLogin();
- }catch(error){
-  showError(error);
- }finally{
-  button.disabled=false;
-  button.textContent=authMode==="signup"?"Googleで新規登録":"Googleでログイン";
- }
+ }catch(e){showError(e)}
 }
 
 async function logout(){
- if(!confirm("ログアウトしますか？"))return;
- try{await signOut(auth)}catch(error){alert("ログアウトに失敗しました。");console.error(error)}
+ if(confirm("ログアウトしますか？"))await signOut(auth);
+}
+
+function renderPosts(posts=[]){
+ const area=$("messages");
+ const filtered=posts.filter(p=>p.data.channel===currentChannel);
+ if(!currentUser){area.innerHTML='<div class="empty"><div class="empty-icon">🔒</div><div class="empty-title">ログインしてください</div></div>';return}
+ if(!filtered.length){area.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div class="empty-title">まだ投稿はありません</div><div class="empty-description">最初の投稿をしてみましょう。</div></div>';return}
+ area.innerHTML=filtered.map(p=>{
+  const d=p.data,owner=isOwner(),mine=d.authorUid===currentUser.uid;
+  const canManage=owner||(mine&&d.channel==="chat");
+  return `<article class="post" id="post-${p.id}">
+   <div class="post-head"><div class="post-avatar">${escapeHTML((d.authorName||"?")[0])}</div>
+   <span class="post-author">${escapeHTML(d.authorName)}</span>
+   <span class="post-role">${d.authorUid===OWNER_UID?"オーナー":"メンバー"}</span>
+   <span class="post-date">${dateText(d.createdAt)}</span></div>
+   <div class="post-content">${escapeHTML(d.content)}</div>
+   <div class="actions">
+    <button class="small-button" onclick="loadReplies('${p.id}')">返信を見る</button>
+    ${canManage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button" onclick="removePost('${p.id}')">削除</button>`:""}
+   </div>
+   <div class="reply-list" id="replies-${p.id}"></div>
+   <div class="reply-form"><input id="reply-input-${p.id}" maxlength="3000" placeholder="返信を入力..."><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div>
+  </article>`;
+ }).join("");
+ filtered.forEach(p=>loadReplies(p.id));
+}
+
+let cachedPosts=[];
+function startPosts(){
+ if(unsubscribePosts)unsubscribePosts();
+ if(!currentUser){cachedPosts=[];renderPosts();return}
+ unsubscribePosts=onSnapshot(collection(db,"posts"),snapshot=>{
+  cachedPosts=snapshot.docs.map(d=>({id:d.id,data:d.data()}));
+  cachedPosts.sort((a,b)=>(b.data.createdAt?.toMillis?.()||0)-(a.data.createdAt?.toMillis?.()||0));
+  renderPosts(cachedPosts);
+ },error=>{$("messages").textContent="投稿の読み込みに失敗しました："+error.message;console.error(error)});
+}
+
+async function sendPost(){
+ const content=$("post-input").value.trim();
+ if(!content||!currentUser)return;
+ if(currentChannel==="announcement"&&!isOwner()){alert("運営メンバーのみ投稿できます。");return}
+ try{
+  await addDoc(collection(db,"posts"),{
+   channel:currentChannel,content,
+   authorUid:currentUser.uid,
+   authorName:currentUser.displayName||currentUser.email?.split("@")[0]||"メンバー",
+   createdAt:serverTimestamp(),updatedAt:serverTimestamp()
+  });
+  $("post-input").value="";
+ }catch(e){alert("投稿できませんでした："+e.message);console.error(e)}
+}
+
+async function loadReplies(postId){
+ const area=$("replies-"+postId);
+ if(!area||!currentUser)return;
+ try{
+  const snap=await getDocs(collection(db,"posts",postId,"replies"));
+  area.innerHTML=snap.docs.map(r=>{
+   const d=r.data();
+   return `<div class="reply"><span class="reply-author">${escapeHTML(d.authorName)}</span><span class="reply-date">${dateText(d.createdAt)}</span><div>${escapeHTML(d.content)}</div></div>`;
+  }).join("")||'<div class="reply">まだ返信はありません。</div>';
+ }catch(e){area.textContent="返信を読み込めませんでした。"}
+}
+
+async function sendReply(postId){
+ const input=$("reply-input-"+postId),content=input?.value.trim();
+ if(!content||!currentUser)return;
+ try{
+  await addDoc(collection(db,"posts",postId,"replies"),{
+   content,authorUid:currentUser.uid,
+   authorName:currentUser.displayName||currentUser.email?.split("@")[0]||"メンバー",
+   createdAt:serverTimestamp()
+  });
+  input.value="";await loadReplies(postId);
+ }catch(e){alert("返信できませんでした："+e.message);console.error(e)}
+}
+
+async function editPost(postId){
+ const post=cachedPosts.find(p=>p.id===postId);
+ if(!post)return;
+ const content=prompt("投稿内容を編集",post.data.content);
+ if(content===null)return;
+ if(!content.trim())return alert("本文を入力してください。");
+ try{
+  await updateDoc(doc(db,"posts",postId),{content:content.trim(),updatedAt:serverTimestamp()});
+ }catch(e){alert("編集できませんでした："+e.message);console.error(e)}
+}
+
+async function removePost(postId){
+ if(!confirm("この投稿を削除しますか？"))return;
+ try{await deleteDoc(doc(db,"posts",postId))}
+ catch(e){alert("削除できませんでした："+e.message);console.error(e)}
 }
 
 onAuthStateChanged(auth,user=>{
- console.log("Firebaseログイン状態:",user?"ログイン中":"未ログイン");
- const button=document.getElementById("login-button");
+ currentUser=user;
+ const button=$("login-button");
  if(user){
   const name=user.displayName||user.email?.split("@")[0]||"メンバー";
   button.textContent="ログアウト";button.onclick=logout;
-  document.getElementById("user-name").textContent=name;
-  document.getElementById("user-role").textContent="メンバー";
-  document.getElementById("user-avatar").textContent=Array.from(name)[0]||"?";
+  $("user-name").textContent=name;
+  $("user-role").textContent=isOwner()?"オーナー":"メンバー";
+  $("user-avatar").textContent=Array.from(name)[0]||"?";
  }else{
   button.textContent="ログイン・新規登録";button.onclick=openLogin;
-  document.getElementById("user-name").textContent="未ログイン";
-  document.getElementById("user-role").textContent="未ログイン";
-  document.getElementById("user-avatar").textContent="?";
+  $("user-name").textContent="未ログイン";
+  $("user-role").textContent="未ログイン";
+  $("user-avatar").textContent="?";
  }
- updateComposerNotice();
+ updateComposer();startPosts();
 });
 
-Object.assign(window,{selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleLogin});
+Object.assign(window,{selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleLogin,sendPost,loadReplies,sendReply,editPost,removePost});
 </script>
 </body>
 </html>
