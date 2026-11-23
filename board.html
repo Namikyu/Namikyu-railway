@@ -138,24 +138,19 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
  <label class="auth-label">メールアドレス<input id="email" class="auth-input" type="email" autocomplete="email"></label>
  <label class="auth-label">パスワード<input id="password" class="auth-input" type="password" autocomplete="current-password"></label>
  <button class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
- <button class="auth-link" id="forgot-button" onclick="openPasswordReset()">パスワードを忘れた場合</button>
  <button class="auth-google" id="google-button" onclick="googleSignup()">Googleで新規登録</button>
  <button class="auth-google" id="google-setup-button" onclick="setupGooglePassword()">Googleアカウントの初回パスワード設定</button>
- <p class="auth-error" id="login-error" role="alert"></p><button class="auth-link" id="mode-button" onclick="toggleAuthMode()">新規登録はこちら</button>
+ <p class="auth-error" id="login-error" role="alert"></p><button class="auth-link" id="forgot-password-link" onclick="openPasswordReset()">パスワードを忘れた場合</button><button class="auth-link" id="mode-button" onclick="toggleAuthMode()">新規登録はこちら</button>
  <button class="auth-close" onclick="closeLogin()">閉じる</button>
 </div></div>
 
-<div class="modal" id="password-reset-modal" role="dialog" aria-modal="true" aria-labelledby="reset-title"><div class="modal-box">
- <h2 id="reset-title">パスワードの再設定</h2>
- <p class="auth-description">登録済みメールアドレスに6桁の確認番号を送信します。番号を確認して新しいパスワードを設定してください。</p>
+<div class="modal" id="password-reset-modal" role="dialog" aria-modal="true" aria-labelledby="password-reset-title"><div class="modal-box">
+ <h2 id="password-reset-title">パスワード再設定</h2>
+ <p class="auth-description">登録したメールアドレスを入力してください。Firebaseから再設定用リンクを送信します。</p>
  <label class="auth-label">メールアドレス<input class="auth-input" id="reset-email" type="email" autocomplete="email" placeholder="登録したメールアドレス"></label>
- <button class="auth-google" id="send-reset-code-button" onclick="sendPasswordCode()">確認番号をメールで送信</button>
- <label class="auth-label">6桁の確認番号<input class="auth-input" id="reset-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456"></label>
- <label class="auth-label">新しいパスワード<input class="auth-input" id="reset-new-password" type="password" autocomplete="new-password" minlength="6" placeholder="6文字以上"></label>
- <label class="auth-label">新しいパスワード（確認）<input class="auth-input" id="reset-new-password-confirm" type="password" autocomplete="new-password" minlength="6" placeholder="もう一度入力"></label>
- <button class="auth-primary" id="reset-password-button" onclick="resetPasswordWithCode()">パスワードを変更</button>
  <p class="auth-error" id="reset-error" role="alert"></p>
- <button class="auth-close" onclick="closePasswordReset()">ログイン画面に戻る</button>
+ <button class="auth-primary" id="reset-send-button" onclick="sendPasswordResetLink()">再設定メールを送信</button>
+ <button class="auth-close" onclick="closePasswordReset()">戻る</button>
 </div></div>
 
 <div class="modal" id="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-title"><div class="modal-box">
@@ -184,11 +179,10 @@ if ("serviceWorker" in navigator) {
  }).catch(() => {});
 }
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut,EmailAuthProvider,linkWithCredential,getAdditionalUserInfo,getIdTokenResult}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut,EmailAuthProvider,linkWithCredential,getAdditionalUserInfo,getIdTokenResult,sendPasswordResetEmail}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 import{getFirestore,collection,addDoc,onSnapshot,doc,updateDoc,deleteDoc,getDocs,getDoc,setDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-import{getFunctions,httpsCallable}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-functions.js";
 const firebaseConfig={apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkD2RDmZQ",authDomain:"namikyu-board.firebaseapp.com",projectId:"namikyu-board",storageBucket:"namikyu-board.firebasestorage.app",messagingSenderId:"597333464774",appId:"1:597333464774:web:773305ab5ad97b55d2a9c7",measurementId:"G-5EFRPTWRMJ"};
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider(),functions=getFunctions(app,"asia-northeast1");
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
 provider.setCustomParameters({prompt:"select_account"});
 const OWNER_UID="kv2lmeIrYrN3J7T4GWTaJau7MtY2";
 const $=id=>document.getElementById(id);
@@ -216,31 +210,11 @@ function toggleSidebar(){$("sidebar").classList.toggle("open");$("overlay").clas
 function closeSidebar(){$("sidebar").classList.remove("open");$("overlay").classList.remove("show")}
 function openLogin(){if(currentUser){openAction("ログアウトしますか？","ログアウトすると、再度ログインが必要になります。", "ログアウト",async()=>signOut(auth));return}$("login-modal").classList.add("open");$("login-error").textContent=""}
 function closeLogin(){$("login-modal").classList.remove("open")}
+function openPasswordReset(){if(authMode!=="login")return;$("reset-email").value=$("email").value.trim();$("reset-error").textContent="";$("password-reset-modal").classList.add("open");setTimeout(()=>$("reset-email").focus(),50)}
+function closePasswordReset(){$("password-reset-modal").classList.remove("open")}
+async function sendPasswordResetLink(){let email=$("reset-email").value.trim(),button=$("reset-send-button");$("reset-error").textContent="";if(!email){$("reset-error").textContent="登録したメールアドレスを入力してください。";return}button.disabled=true;try{auth.languageCode="ja";await sendPasswordResetEmail(auth,email);$("reset-error").style.color="var(--blue)";$("reset-error").textContent="再設定メールを送信しました。受信トレイと迷惑メールフォルダを確認してください。メール内のリンクから新しいパスワードを設定できます。";button.textContent="送信しました"}catch(e){const messages={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/user-not-found":"このメールアドレスのアカウントが見つかりません。","auth/too-many-requests":"短時間に何度も送信されています。しばらく待ってから再試行してください。","auth/network-request-failed":"通信に失敗しました。ネットワークを確認してください。"};$("reset-error").style.color="var(--danger)";$("reset-error").textContent=messages[e.code]||e.message||"メールを送信できませんでした。";console.error(e)}finally{button.disabled=false}}
 function toggleAuthMode(){authMode=authMode==="login"?"signup":"login";updateAuthMode()}
-function updateAuthMode(){let s=authMode==="signup";$("forgot-button").style.display=s?"none":"block";$("login-title").textContent=s?"新規登録":"ログイン";$("auth-description").textContent=s?"メールまたはGoogleで新規登録できます。":"登録済みのメールアドレスとパスワードでログインします。";$("email-action-button").textContent=s?"メールで新規登録":"ログイン";$("google-button").style.display=s?"block":"none";$("google-setup-button").style.display=s?"block":"none";$("mode-button").textContent=s?"ログインはこちら":"新規登録はこちら";$("name-label").style.display=s?"block":"none";$("password").autocomplete=s?"new-password":"current-password";$("login-error").textContent=""}
-function openPasswordReset(){
- if(authMode!=="login")return;
- $("reset-email").value=$("email").value.trim();$("reset-code").value="";$("reset-new-password").value="";$("reset-new-password-confirm").value="";$("reset-error").textContent="";
- $("login-modal").classList.remove("open");$("password-reset-modal").classList.add("open");
-}
-function closePasswordReset(){$("password-reset-modal").classList.remove("open");$("login-modal").classList.add("open")}
-async function sendPasswordCode(){
- let email=$("reset-email").value.trim(),b=$("send-reset-code-button");
- try{if(!email)throw Error("登録したメールアドレスを入力してください。");b.disabled=true;$ ("reset-error").textContent="";
-  const call=httpsCallable(functions,"sendPasswordResetCode");await call({email});
-  $("reset-error").textContent="確認番号を送信しました。メールを確認してください。迷惑メールフォルダもご確認ください。";
- }catch(e){$("reset-error").textContent=e.message||"確認番号を送信できませんでした。";console.error(e)}finally{b.disabled=false}
-}
-async function resetPasswordWithCode(){
- let email=$("reset-email").value.trim(),code=$("reset-code").value.trim(),pass=$("reset-new-password").value,confirm=$("reset-new-password-confirm").value,b=$("reset-password-button");
- try{if(!email)throw Error("メールアドレスを入力してください。");if(!/^\d{6}$/.test(code))throw Error("6桁の確認番号を入力してください。");if(pass.length<6)throw Error("新しいパスワードは6文字以上にしてください。");if(pass!==confirm)throw Error("確認用パスワードが一致しません。");
-  b.disabled=true;$("reset-error").textContent="";
-  const call=httpsCallable(functions,"resetPasswordWithCode");await call({email,code,newPassword:pass});
-  $("reset-error").textContent="パスワードを変更しました。新しいパスワードでログインしてください。";
-  $("email").value=email;$("password").value="";$("reset-code").value="";$("reset-new-password").value="";$("reset-new-password-confirm").value="";
-  setTimeout(()=>{$("password-reset-modal").classList.remove("open");$("login-modal").classList.add("open");$("login-error").textContent="パスワードを変更しました。新しいパスワードでログインしてください。"},1200);
- }catch(e){$("reset-error").textContent=e.message||"パスワードを変更できませんでした。";console.error(e)}finally{b.disabled=false}
-}
+function updateAuthMode(){let s=authMode==="signup";$("forgot-password-link").style.display=s?"none":"block";$("login-title").textContent=s?"新規登録":"ログイン";$("auth-description").textContent=s?"メールまたはGoogleで新規登録できます。":"登録済みのメールアドレスとパスワードでログインします。";$("email-action-button").textContent=s?"メールで新規登録":"ログイン";$("google-button").style.display=s?"block":"none";$("google-setup-button").style.display=s?"block":"none";$("mode-button").textContent=s?"ログインはこちら":"新規登録はこちら";$("name-label").style.display=s?"block":"none";$("password").autocomplete=s?"new-password":"current-password";$("login-error").textContent=""}
 function showError(e){const m={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/email-already-in-use":"このメールアドレスは登録済みです。","auth/weak-password":"パスワードは6文字以上にしてください。","auth/invalid-credential":"メールアドレスまたはパスワードが違います。","auth/account-exists-with-different-credential":"このメールアドレスは別の方法で登録済みです。","auth/unauthorized-domain":"Firebaseの承認済みドメインを確認してください。","auth/popup-blocked":"ブラウザでポップアップを許可してください。","auth/popup-closed-by-user":"Google認証画面が閉じられました。","auth/credential-already-in-use":"このメールアドレスは別のアカウントで使用されています。"};$("login-error").textContent=(m[e.code]||e.message||"認証に失敗しました。")+"\n"+(e.code||"");console.error(e)}
 async function emailAction(){let email=$("email").value.trim(),pass=$("password").value,name=$("display-name").value.trim();try{$("login-error").textContent="";if(!email||!pass)throw Error("メールアドレスとパスワードを入力してください。");if(authMode==="signup"){if(!name)throw Error("表示名を入力してください。");if(pass.length<6)throw Error("パスワードは6文字以上にしてください。");let r=await createUserWithEmailAndPassword(auth,email,pass);await updateProfile(r.user,{displayName:name});await setDoc(doc(db,"profiles",r.user.uid),{displayName:name,photoData:"",updatedAt:serverTimestamp()})}else await signInWithEmailAndPassword(auth,email,pass);closeLogin()}catch(e){showError(e)}}
 async function googleSignup(){let pass=$("password").value,name=$("display-name").value.trim();try{if(pass.length<6)throw Error("パスワードを6文字以上で入力してください。");if(!name)throw Error("表示名を入力してください。");authFlow=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(!getAdditionalUserInfo(r)?.isNewUser){await signOut(auth);throw Error("このGoogleアカウントは既に登録されています。メールアドレスとパスワードでログインしてください。")}await linkWithCredential(r.user,EmailAuthProvider.credential(r.user.email,pass));await updateProfile(r.user,{displayName:name});await setDoc(doc(db,"profiles",r.user.uid),{displayName:name,photoData:"",updatedAt:serverTimestamp()});await signOut(auth);await signInWithEmailAndPassword(auth,r.user.email,pass);closeLogin()}catch(e){showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
@@ -289,7 +263,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSidebar();docu
 await setPersistence(auth,browserLocalPersistence);
 applyTheme();updateAuthMode();selectChannel(settings[currentChannel]?currentChannel:"announcement");
 onAuthStateChanged(auth,u=>{if(!authFlow)syncUser(u)});
-Object.assign(window,{selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleSignup,setupGooglePassword,openPasswordReset,closePasswordReset,sendPasswordCode,resetPasswordWithCode,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,clearAttachment,closeAction,runAction});
+Object.assign(window,{selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,openPasswordReset,closePasswordReset,sendPasswordResetLink,toggleAuthMode,emailAction,googleSignup,setupGooglePassword,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,clearAttachment,closeAction,runAction});
 </script>
 </body>
 </html>
