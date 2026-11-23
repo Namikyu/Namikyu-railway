@@ -1,0 +1,607 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#142B49">
+<title>掲示板 | 波急公式サイト</title>
+
+<style>
+:root {
+  color-scheme: light;
+  --bg: #eef2f7;
+  --panel: #ffffff;
+  --sidebar: #142b49;
+  --sidebar-text: #ffffff;
+  --text: #172b45;
+  --sub: #718096;
+  --border: #dce3ec;
+  --blue: #2878c8;
+  --blue-light: #e8f2fc;
+  --input: #f5f7fa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #101923;
+    --panel: #192635;
+    --sidebar: #101d2d;
+    --sidebar-text: #ffffff;
+    --text: #e8eef6;
+    --sub: #9baabd;
+    --border: #304052;
+    --blue: #58a5ef;
+    --blue-light: #203b56;
+    --input: #243446;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.app {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* サイドバー */
+
+.sidebar {
+  width: 270px;
+  min-width: 270px;
+  background: var(--sidebar);
+  color: var(--sidebar-text);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 5px 8px 22px;
+  border-bottom: 1px solid rgba(255,255,255,.16);
+}
+
+.brand img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.brand-sub {
+  font-size: 11px;
+  opacity: .7;
+  margin-top: 3px;
+}
+
+.category-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 8px 9px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: .08em;
+  opacity: .7;
+}
+
+.channel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.channel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font-size: 14px;
+  transition: background .15s;
+}
+
+.channel:hover {
+  background: rgba(255,255,255,.10);
+}
+
+.channel.active {
+  background: #2878c8;
+  color: white;
+  font-weight: bold;
+}
+
+.channel-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.unread {
+  margin-left: auto;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 20px;
+  background: #e34e58;
+  color: white;
+  font-size: 11px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  border-top: 1px solid rgba(255,255,255,.16);
+  padding: 15px 8px 0;
+}
+
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #2878c8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.user-role {
+  font-size: 11px;
+  opacity: .7;
+  margin-top: 3px;
+}
+
+/* メイン画面 */
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  height: 68px;
+  min-height: 68px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 22px;
+  gap: 14px;
+}
+
+.menu-button {
+  display: none;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 23px;
+}
+
+.page-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-status {
+  font-size: 12px;
+  color: var(--sub);
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.notice-button {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 20px;
+  padding: 8px;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.channel-header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 26px;
+}
+
+.channel-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.channel-description {
+  margin-top: 7px;
+  font-size: 13px;
+  color: var(--sub);
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px;
+}
+
+.empty {
+  height: 100%;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--sub);
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.empty-description {
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* 投稿欄 */
+
+.composer-area {
+  padding: 15px 24px 22px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+}
+
+.composer-notice {
+  font-size: 12px;
+  color: var(--sub);
+  margin-bottom: 10px;
+}
+
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 12px 15px;
+}
+
+.composer input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.composer input::placeholder {
+  color: var(--sub);
+}
+
+.send-button {
+  border: 0;
+  border-radius: 7px;
+  padding: 9px 16px;
+  background: var(--blue);
+  color: white;
+  font-weight: bold;
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* スマートフォン */
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform .2s;
+    width: 280px;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .overlay.show {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 5;
+  }
+
+  .menu-button {
+    display: block;
+  }
+
+  .topbar {
+    padding: 0 14px;
+  }
+
+  .channel-header {
+    padding: 17px;
+  }
+
+  .messages {
+    padding: 18px;
+  }
+
+  .composer-area {
+    padding: 12px;
+  }
+
+  .login-status {
+    font-size: 11px;
+    padding: 7px 9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- チャンネル一覧 -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <img src="icon.png" alt="波急">
+      <div>
+        <div class="brand-name">波急掲示板</div>
+        <div class="brand-sub">NAMIKYU COMMUNITY</div>
+      </div>
+    </div>
+
+    <div class="category-title">
+      <span>掲示板カテゴリ</span>
+    </div>
+
+    <div class="channel-list">
+
+      <button class="channel active"
+        data-channel="announcement"
+        onclick="selectChannel('announcement')">
+        <span class="channel-icon">📢</span>
+        <span>運営お知らせ</span>
+        <span class="unread" id="unread-announcement"></span>
+      </button>
+
+      <button class="channel"
+        data-channel="chat"
+        onclick="selectChannel('chat')">
+        <span class="channel-icon">💬</span>
+        <span>チャット</span>
+        <span class="unread" id="unread-chat"></span>
+      </button>
+
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="user-area">
+        <div class="avatar">?</div>
+        <div>
+          <div class="user-name">未ログイン</div>
+          <div class="user-role">メンバー</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- メイン画面 -->
+  <main class="main">
+
+    <header class="topbar">
+
+      <button class="menu-button"
+        onclick="toggleSidebar()"
+        aria-label="チャンネル一覧を開く">
+        ☰
+      </button>
+
+      <div class="page-title">掲示板</div>
+
+      <div class="topbar-right">
+        <div class="login-status">未ログイン</div>
+        <button class="notice-button"
+          title="通知"
+          aria-label="通知">🔔</button>
+      </div>
+
+    </header>
+
+    <section class="content">
+
+      <div class="channel-header">
+        <div class="channel-heading">
+          <span id="channel-icon">📢</span>
+          <span id="channel-name">運営お知らせ</span>
+        </div>
+
+        <div class="channel-description"
+          id="channel-description">
+          波急運営からのお知らせを掲載します。
+        </div>
+      </div>
+
+      <div class="messages" id="messages">
+
+        <div class="empty">
+          <div class="empty-icon">📭</div>
+          <div class="empty-title">まだ投稿はありません</div>
+          <div class="empty-description">
+            ここに投稿が表示されます。<br>
+            ログインすると掲示板を利用できます。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="composer-area">
+
+        <div class="composer-notice" id="composer-notice">
+          投稿するにはログインが必要です。
+        </div>
+
+        <div class="composer">
+          <input
+            type="text"
+            placeholder="メッセージを入力..."
+            disabled
+            aria-label="メッセージ入力">
+
+          <button class="send-button" disabled>
+            送信
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+const channelSettings = {
+  announcement: {
+    name: "運営お知らせ",
+    icon: "📢",
+    description: "波急運営からのお知らせを掲載します。",
+    notice: "ログインするとお知らせへの返信ができます。"
+  },
+
+  chat: {
+    name: "チャット",
+    icon: "💬",
+    description: "メンバー同士で自由に交流できる場所です。",
+    notice: "ログインするとメッセージを送信できます。"
+  }
+};
+
+function selectChannel(channel) {
+  const settings = channelSettings[channel];
+
+  if (!settings) return;
+
+  document.getElementById("channel-name").textContent =
+    settings.name;
+
+  document.getElementById("channel-icon").textContent =
+    settings.icon;
+
+  document.getElementById("channel-description").textContent =
+    settings.description;
+
+  document.getElementById("composer-notice").textContent =
+    settings.notice;
+
+  document.querySelectorAll(".channel").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.channel === channel
+    );
+  });
+
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeSidebar() {
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+}
+</script>
+
+</body>
+</html>
