@@ -560,7 +560,7 @@ $("delete-account-error").textContent="プロフィール情報を削除して�
 const profileSnap=await getDoc(doc(db,"profiles",user.uid));
 const oldHandle=profileSnap.exists()?profileSnap.data().handle:"";
 const deletes=[deleteDoc(doc(db,"profiles",user.uid)),deleteDoc(doc(db,"presence",user.uid))];
-if(oldHandle){const handleSnap=await getDoc(doc(db,"handles",oldHandle));if(handleSnap.exists()&&handleSnap.data().uid===user.uid)deletes.push(deleteDoc(doc(db,"handles",oldHandle)))}
+if(oldHandle){const handleSnap=await getDoc(doc(db,"handles",hKey(oldHandle)));if(handleSnap.exists()&&handleSnap.data().uid===user.uid)deletes.push(deleteDoc(doc(db,"handles",hKey(oldHandle))))}
 await Promise.all(deletes);
 await deleteUser(user);
 closeDeleteAccount();
