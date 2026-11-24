@@ -57,7 +57,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .post-date{font-size:11px;color:var(--sub);margin-left:auto}.post-content{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.85;margin:15px 0 12px;font-size:14px}
 .post-image{display:block;max-width:min(100%,680px);max-height:480px;object-fit:contain;border-radius:12px;margin:12px 0;border:1px solid var(--border);background:var(--input)}
 .actions{display:flex;gap:7px;flex-wrap:wrap;padding-top:5px}.small-button{border:1px solid var(--border);background:var(--input);color:var(--text);border-radius:9px;padding:7px 11px;font-size:12px;font-weight:650;transition:background .15s}
-.small-button.danger{color:var(--danger)}.reply-list{border-top:1px solid var(--border);margin-top:15px;padding-top:5px}
+.small-button.danger{color:var(--danger)}
+.delete-account-button{display:block;width:100%;margin-top:18px;padding:12px;border:0;border-radius:10px;background:#c6283d;color:#fff;font-weight:800}
+.delete-account-button:hover{background:#a91f32}
+.delete-warning{padding:12px;border-radius:10px;background:color-mix(in srgb,var(--danger) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--danger) 28%,var(--border));color:var(--text);font-size:13px;line-height:1.75;margin:12px 0 16px}.reply-list{border-top:1px solid var(--border);margin-top:15px;padding-top:5px}
 .reply{padding:11px 0;font-size:13px;line-height:1.7;border-bottom:1px solid var(--border)}.reply:last-child{border-bottom:0}
 .reply-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.reply-avatar{width:29px;height:29px;min-width:29px;font-size:12px}.reply-author{font-size:12px;font-weight:800}.reply-date{font-size:10px;color:var(--sub)}
 .reply-content{margin:5px 0 0 37px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -174,7 +177,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
  <label class="auth-label">パスワード<input id="password" class="auth-input" type="password" autocomplete="current-password"></label>
  <button class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
  <button class="auth-google" id="google-button" onclick="googleSignup()">Googleで新規登録</button>
- <button class="auth-google" id="google-setup-button" onclick="setupGooglePassword()">Googleアカウントの初回パスワード設定</button>
+ <button class="auth-google" id="google-setup-button" style="display:none" onclick="completeGoogleSignup()">登録を完了する</button>
  <p class="auth-error" id="login-error" role="alert"></p><button class="auth-link" id="forgot-password-link" onclick="openPasswordReset()">パスワードを忘れた場合</button><button class="auth-link" id="mode-button" onclick="toggleAuthMode()">新規登録はこちら</button>
  <button class="auth-close" onclick="closeLogin()">閉じる</button>
 </div></div>
@@ -194,7 +197,17 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   <label class="auth-label">表示名<input class="auth-input" id="profile-name" maxlength="30" placeholder="表示名"></label>
  </div>
  <p class="auth-error" id="profile-error" role="alert"></p><button class="auth-primary" id="profile-save" onclick="saveProfile()">変更を保存</button>
+ <button class="delete-account-button" id="delete-account-open" onclick="openDeleteAccount()">アカウントを削除</button>
  <button class="auth-close" onclick="closeProfile()">閉じる</button>
+</div></div>
+
+<div class="modal" id="delete-account-modal" role="dialog" aria-modal="true" aria-labelledby="delete-account-title"><div class="modal-box">
+ <h2 id="delete-account-title">アカウントの削除</h2>
+ <p class="auth-description" id="delete-account-description">アカウントを削除すると、波急掲示板にログインできなくなります。</p>
+ <div class="delete-warning" id="delete-account-warning">この操作は取り消せません。削除後は同じアカウントを元に戻せません。</div>
+ <label class="auth-label" id="delete-password-label" style="display:none">現在のパスワード<input class="auth-input" id="delete-account-password" type="password" autocomplete="current-password" placeholder="パスワードを入力"></label>
+ <p class="auth-error" id="delete-account-error" role="alert"></p>
+ <div class="dialog-actions"><button class="small-button" onclick="closeDeleteAccount()">キャンセル</button><button class="delete-account-button" id="delete-account-next" style="width:auto;margin:0" onclick="advanceDeleteAccount()">次へ</button></div>
 </div></div>
 
 <div class="modal" id="action-modal" role="dialog" aria-modal="true" aria-labelledby="action-title"><div class="modal-box">
@@ -227,7 +240,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut,EmailAuthProvider,linkWithCredential,getAdditionalUserInfo,getIdTokenResult,sendPasswordResetEmail}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut,EmailAuthProvider,linkWithCredential,getAdditionalUserInfo,getIdTokenResult,sendPasswordResetEmail,reauthenticateWithCredential,deleteUser}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 import{getFirestore,collection,addDoc,onSnapshot,doc,updateDoc,deleteDoc,getDocs,getDoc,setDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkD2RDmZQ",authDomain:"namikyu-board.firebaseapp.com",projectId:"namikyu-board",storageBucket:"namikyu-board.firebasestorage.app",messagingSenderId:"597333464774",appId:"1:597333464774:web:773305ab5ad97b55d2a9c7",measurementId:"G-5EFRPTWRMJ"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
@@ -235,6 +248,7 @@ provider.setCustomParameters({prompt:"select_account"});
 const OWNER_UID="kv2lmeIrYrN3J7T4GWTaJau7MtY2";
 const $=id=>document.getElementById(id);
 let authMode="login",currentChannel=localStorage.getItem("board-channel")||"announcement",currentView="posts";
+let googlePendingUser=null;
 let currentUser=null,currentProfile={},roles={},unsubscribePosts=null,cachedPosts=[],authFlow=false,authSyncVersion=0;
 let pendingImage="",profileImage="",replyUnsubs=new Map(),replyCache=new Map(),replyLoaded=new Set(),actionTask=null;
 let suspensionUnsub=null,viewedProfileUid="",suspensionTargetUid="";
@@ -323,16 +337,19 @@ function renderRules(){
 function toggleSidebar(){$("sidebar").classList.toggle("open");$("overlay").classList.toggle("show")}
 function closeSidebar(){$("sidebar").classList.remove("open");$("overlay").classList.remove("show")}
 function openLogin(){if(currentUser){openAction("ログアウトしますか？","ログアウトすると、再度ログインが必要になります。", "ログアウト",async()=>signOut(auth));return}$("login-modal").classList.add("open");$("login-error").textContent=""}
-function closeLogin(){$("login-modal").classList.remove("open")}
+function closeLogin(){$("login-modal").classList.remove("open");if(googlePendingUser){let uid=googlePendingUser.uid;googlePendingUser=null;if(auth.currentUser?.uid===uid)signOut(auth).catch(()=>{});authFlow=false;syncUser(null)}}
 function openPasswordReset(){if(authMode!=="login")return;$("reset-email").value=$("email").value.trim();$("reset-error").textContent="";$("reset-error").style.color="var(--danger)";$("reset-send-button").disabled=false;$("reset-send-button").textContent="再設定メールを送信";$("password-reset-modal").classList.add("open");setTimeout(()=>$("reset-email").focus(),50)}
 function closePasswordReset(){$("password-reset-modal").classList.remove("open")}
 async function sendPasswordResetLink(){let email=$("reset-email").value.trim(),button=$("reset-send-button");$("reset-error").textContent="";$("reset-error").style.color="var(--danger)";if(!email){$("reset-error").textContent="登録したメールアドレスを入力してください。";return}button.disabled=true;try{auth.languageCode="ja";await sendPasswordResetEmail(auth,email);$("reset-error").style.color="var(--blue)";$("reset-error").textContent="再設定メールを送信しました。受信トレイと迷惑メールフォルダを確認してください。";button.textContent="送信しました"}catch(e){const m={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/user-not-found":"このメールアドレスのアカウントが見つかりません。","auth/too-many-requests":"短時間に何度も送信されています。しばらく待ってから再試行してください。","auth/network-request-failed":"通信に失敗しました。ネットワークを確認してください。"};$("reset-error").textContent=m[e.code]||e.message||"メールを送信できませんでした。";console.error(e)}finally{button.disabled=false}}
-function toggleAuthMode(){authMode=authMode==="login"?"signup":"login";updateAuthMode()}
-function updateAuthMode(){let s=authMode==="signup";$("forgot-password-link").style.display=s?"none":"block";$("login-title").textContent=s?"新規登録":"ログイン";$("auth-description").textContent=s?"メールまたはGoogleで新規登録できます。":"登録済みのメールアドレスとパスワードでログインします。";$("email-action-button").textContent=s?"メールで新規登録":"ログイン";$("google-button").style.display=s?"block":"none";$("google-setup-button").style.display=s?"block":"none";$("mode-button").textContent=s?"ログインはこちら":"新規登録はこちら";$("name-label").style.display=s?"block":"none";$("password").autocomplete=s?"new-password":"current-password";$("login-error").textContent=""}
+function toggleAuthMode(){if(googlePendingUser)return;authMode=authMode==="login"?"signup":"login";updateAuthMode()}
+function updateAuthMode(){let s=authMode==="signup";$("forgot-password-link").style.display=s?"none":"block";$("login-title").textContent=s?"新規登録":"ログイン";$("auth-description").textContent=s?"メールアドレス・パスワード・表示名を入力するか、Googleで認証してください。":"登録済みのメールアドレスとパスワードでログインします。";$("email-action-button").textContent=s?"メールで新規登録":"ログイン";$("google-button").style.display=s?"block":"none";$("google-setup-button").style.display="none";$("mode-button").style.display="block";$("mode-button").textContent=s?"ログインはこちら":"新規登録はこちら";$("name-label").style.display=s?"block":"none";$("email").parentElement.style.display="block";$("email-action-button").style.display="block";$("password").parentElement.style.display="block";$("password").autocomplete=s?"new-password":"current-password";$("login-error").textContent=""}
+function showGoogleCompletion(user){googlePendingUser=user;authMode="signup";$("login-title").textContent="Google登録の設定";$("auth-description").textContent="Googleの認証が完了しました。掲示板で使う表示名と、波急サイト用のパスワードを設定してください。";$("email").parentElement.style.display="none";$("email-action-button").style.display="none";$("google-button").style.display="none";$("name-label").style.display="block";$("password").parentElement.style.display="block";$("password").value="";$("password").placeholder="6文字以上のパスワード";$("password").autocomplete="new-password";$("google-setup-button").textContent="表示名とパスワードを設定して登録";$("google-setup-button").style.display="block";$("mode-button").style.display="none";$("login-error").textContent="";$("display-name").value=user.displayName||""}
+function resetGoogleCompletion(){googlePendingUser=null;$("password").placeholder="";updateAuthMode()}
 function showError(e){const m={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/email-already-in-use":"このメールアドレスは登録済みです。","auth/weak-password":"パスワードは6文字以上にしてください。","auth/invalid-credential":"メールアドレスまたはパスワードが違います。","auth/account-exists-with-different-credential":"このメールアドレスは別の方法で登録済みです。","auth/unauthorized-domain":"Firebaseの承認済みドメインを確認してください。","auth/popup-blocked":"ブラウザでポップアップを許可してください。","auth/popup-closed-by-user":"Google認証画面が閉じられました。","auth/credential-already-in-use":"このメールアドレスは別のアカウントで使用されています。"};$("login-error").textContent=(m[e.code]||e.message||"認証に失敗しました。")+"\n"+(e.code||"");console.error(e)}
-async function emailAction(){let email=$("email").value.trim(),pass=$("password").value,name=$("display-name").value.trim();try{$("login-error").textContent="";if(!email||!pass)throw Error("メールアドレスとパスワードを入力してください。");if(authMode==="signup"){if(!name)throw Error("表示名を入力してください。");if(pass.length<6)throw Error("パスワードは6文字以上にしてください。");let r=await createUserWithEmailAndPassword(auth,email,pass);await updateProfile(r.user,{displayName:name});await setDoc(doc(db,"profiles",r.user.uid),{displayName:name,photoData:"",updatedAt:serverTimestamp()})}else await signInWithEmailAndPassword(auth,email,pass);closeLogin()}catch(e){showError(e)}}
-async function googleSignup(){let pass=$("password").value,name=$("display-name").value.trim();try{if(pass.length<6)throw Error("パスワードを6文字以上で入力してください。");if(!name)throw Error("表示名を入力してください。");authFlow=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(!getAdditionalUserInfo(r)?.isNewUser){await signOut(auth);throw Error("このGoogleアカウントは既に登録されています。メールアドレスとパスワードでログインしてください。")}await linkWithCredential(r.user,EmailAuthProvider.credential(r.user.email,pass));await updateProfile(r.user,{displayName:name});await setDoc(doc(db,"profiles",r.user.uid),{displayName:name,photoData:"",updatedAt:serverTimestamp()});await signOut(auth);await signInWithEmailAndPassword(auth,r.user.email,pass);closeLogin()}catch(e){showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
-async function setupGooglePassword(){let pass=$("password").value;try{if(pass.length<6)throw Error("設定するパスワードを6文字以上で入力してください。");authFlow=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(r.user.providerData.some(p=>p.providerId==="password")){await signOut(auth);throw Error("このアカウントには既にパスワードが設定されています。ログイン画面からメールアドレスとパスワードでログインしてください。")}await linkWithCredential(r.user,EmailAuthProvider.credential(r.user.email,pass));await signOut(auth);$("login-error").textContent="パスワードを設定しました。メールアドレスとパスワードでログインしてください。";authMode="login";updateAuthMode()}catch(e){showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
+async function emailAction(){let email=$("email").value.trim(),pass=$("password").value,name=$("display-name").value.trim();try{$("login-error").textContent="";if(authMode==="signup"){if(!email||!pass||!name)throw Error("メールアドレス・パスワード・表示名をすべて入力してください。");if(!$("email").checkValidity())throw Error("メールアドレスの形式を確認してください。");if(pass.length<6)throw Error("パスワードは6文字以上にしてください。");let r=await createUserWithEmailAndPassword(auth,email,pass);await updateProfile(r.user,{displayName:name});await setDoc(doc(db,"profiles",r.user.uid),{displayName:name,photoData:"",updatedAt:serverTimestamp()});closeLogin()}else{if(!email||!pass)throw Error("メールアドレスとパスワードを入力してください。");await signInWithEmailAndPassword(auth,email,pass);closeLogin()}}catch(e){showError(e)}}
+async function googleSignup(){if(authMode!=="signup")return;try{$("login-error").textContent="";authFlow=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(r.user.providerData.some(p=>p.providerId==="password")){await signOut(auth);throw Error("このGoogleアカウントは既にパスワード設定済みです。ログイン画面からログインしてください。")}showGoogleCompletion(r.user)}catch(e){if(auth.currentUser&& !googlePendingUser)await signOut(auth).catch(()=>{});showError(e)}finally{authFlow=false;if(!googlePendingUser)await syncUser(auth.currentUser)}}
+async function completeGoogleSignup(){let user=googlePendingUser,pass=$("password").value,name=$("display-name").value.trim();if(!user)return;try{$("login-error").textContent="";if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");if(!pass||pass.length<6)throw Error("パスワードは6文字以上で入力してください。");if(auth.currentUser?.uid!==user.uid)throw Error("Google認証の有効期限が切れました。最初からやり直してください。");authFlow=true;await updateProfile(user,{displayName:name});await setDoc(doc(db,"profiles",user.uid),{displayName:name,photoData:"",updatedAt:serverTimestamp()});await linkWithCredential(user,EmailAuthProvider.credential(user.email,pass));googlePendingUser=null;await signOut(auth);await signInWithEmailAndPassword(auth,user.email,pass);closeLogin();authMode="login";resetGoogleCompletion()}catch(e){showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
+async function setupGooglePassword(){showError(new Error("新規登録画面からGoogleで認証し、表示名とパスワードを設定してください。"))}
 function updateUserArea(){let n=nameOf(),photo=currentProfile.photoData;$("user-name").textContent=n;$("user-role").textContent=roleName(currentUser.uid);$("user-avatar").innerHTML=safeImage(photo)?`<img src="${safeImage(photo)}" alt="">`:esc(Array.from(n)[0]||"?");$("login-button").textContent="ログアウト";$("login-button").onclick=openLogin;$("profile-button").style.display="block"}
 function updateComposer(){let ok=currentView==="posts"&&!!currentUser&&(currentChannel==="chat"||isStaff());$("post-input").disabled=!ok;$("send-button").disabled=!ok;$("composer").style.display=ok?"flex":"none";$("composer-notice").textContent=!currentUser?"投稿するにはログインしてください。":currentChannel==="announcement"&&!isStaff()?"運営メンバーのみ投稿できます。":"画像は1枚まで（圧縮後450KB以内）。Enterで送信、Shift+Enterで改行。"}
 function cleanupReplies(){for(let u of replyUnsubs.values())u();replyUnsubs.clear();replyCache.clear()}
@@ -429,10 +446,105 @@ function openSuspendModal(uid,name){if(!isStaff()||!uid||uid===OWNER_UID)return 
 function closeSuspendModal(){$("suspend-modal").classList.remove("open");suspensionTargetUid=""}
 async function confirmSuspend(){if(!isStaff()||!suspensionTargetUid)throw Error("操作権限がありません。");let message=$("suspend-message").value.trim();if(!message) return $("suspend-error").textContent="表示するメッセージを入力してください。";let hours=Number($("suspend-duration").value);if(![1,24,168,720].includes(hours))return $("suspend-error").textContent="凍結期間を選択してください。";let btn=$("suspend-confirm");btn.disabled=true;try{await setDoc(doc(db,"accountSuspensions",suspensionTargetUid),{active:true,message,until:new Date(Date.now()+hours*3600000),updatedAt:serverTimestamp(),updatedBy:currentUser.uid});toast("アカウントを一時凍結しました。");closeSuspendModal();if(viewedProfileUid===suspensionTargetUid)await viewProfile(suspensionTargetUid)}catch(e){$("suspend-error").textContent="凍結できません："+e.message}finally{btn.disabled=false}}
 async function liftSuspension(uid){if(!isStaff()||!uid)return toast("この操作を行う権限がありません。");try{await setDoc(doc(db,"accountSuspensions",uid),{active:false,message:"",updatedAt:serverTimestamp(),updatedBy:currentUser.uid},{merge:true});toast("凍結を解除しました。");if(viewedProfileUid===uid)await viewProfile(uid)}catch(e){toast("凍結を解除できません："+e.message)}}
-function openProfile(){if(!currentUser)return;profileImage=currentProfile.photoData||"";$("profile-title").textContent="プロフィール設定";$("profile-edit-fields").style.display="block";$("profile-name").value=nameOf();$("profile-save").style.display="block";$("profile-error").textContent="";updateProfilePreview();setProfileRole(currentUser.uid);$("profile-modal").classList.add("open")}
-async function viewProfile(uid){if(!currentUser||!uid)return;if(uid===currentUser.uid)return openProfile();try{let [s,ss]=await Promise.all([getDoc(doc(db,"profiles",uid)),getDoc(doc(db,"accountSuspensions",uid))]);let p=s.exists()?s.data():{},susp=ss.exists()?ss.data():{};viewedProfileUid=uid;profileImage=p.photoData||"";$("profile-title").textContent="プロフィール";$("profile-edit-fields").style.display="none";$("profile-save").style.display="none";$("profile-error").textContent="";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(p.displayName||"メンバー")[0]);$("profile-name").value=p.displayName||"メンバー";setProfileRole(uid);let controls=$("profile-role-view");if(isStaff()&&uid!==OWNER_UID){let active=suspensionIsActive(susp);controls.innerHTML+=active?`<div style="margin-top:12px"><span class="post-role role-moderator">一時凍結中</span><p class="auth-description">${esc(susp.message||"メッセージなし")}<br>${esc(suspensionUntilText(susp))}</p><button class="small-button" onclick="liftSuspension('${esc(uid)}')">凍結を解除</button></div>`:`<div style="margin-top:12px"><button class="small-button danger" onclick="openSuspendModal('${esc(uid)}','${esc(p.displayName||"メンバー")}')">アカウントを一時凍結</button></div>`}$("profile-modal").classList.add("open")}catch(e){toast("プロフィールを読み込めません："+e.message)}}
+function openProfile(){if(!currentUser)return;profileImage=currentProfile.photoData||"";$("profile-title").textContent="プロフィール設定";$("profile-edit-fields").style.display="block";$("profile-name").value=nameOf();$("profile-save").style.display="block";$("delete-account-open").style.display="block";$("profile-error").textContent="";updateProfilePreview();setProfileRole(currentUser.uid);$("profile-modal").classList.add("open")}
+async function viewProfile(uid){if(!currentUser||!uid)return;if(uid===currentUser.uid)return openProfile();try{let [s,ss]=await Promise.all([getDoc(doc(db,"profiles",uid)),getDoc(doc(db,"accountSuspensions",uid))]);let p=s.exists()?s.data():{},susp=ss.exists()?ss.data():{};viewedProfileUid=uid;profileImage=p.photoData||"";$("profile-title").textContent="プロフィール";$("profile-edit-fields").style.display="none";$("profile-save").style.display="none";$("delete-account-open").style.display="none";$("profile-error").textContent="";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(p.displayName||"メンバー")[0]);$("profile-name").value=p.displayName||"メンバー";setProfileRole(uid);let controls=$("profile-role-view");if(isStaff()&&uid!==OWNER_UID){let active=suspensionIsActive(susp);controls.innerHTML+=active?`<div style="margin-top:12px"><span class="post-role role-moderator">一時凍結中</span><p class="auth-description">${esc(susp.message||"メッセージなし")}<br>${esc(suspensionUntilText(susp))}</p><button class="small-button" onclick="liftSuspension('${esc(uid)}')">凍結を解除</button></div>`:`<div style="margin-top:12px"><button class="small-button danger" onclick="openSuspendModal('${esc(uid)}','${esc(p.displayName||"メンバー")}')">アカウントを一時凍結</button></div>`}$("profile-modal").classList.add("open")}catch(e){toast("プロフィールを読み込めません："+e.message)}}
 function setProfileRole(uid){$("profile-role-view").innerHTML=`<span class="post-role ${roleClass(uid)}">${esc(roleName(uid))}</span>`}
 function closeProfile(){$("profile-modal").classList.remove("open")}
+let deleteAccountStage=0;
+function openDeleteAccount(){
+ if(!currentUser)return;
+ deleteAccountStage=1;
+ $("delete-account-title").textContent="アカウントの削除";
+ $("delete-account-description").textContent="本当にアカウントを削除しますか？まず確認を行います。";
+ $("delete-account-warning").textContent="削除すると、このアカウントでは波急掲示板にログインできなくなります。";
+ $("delete-password-label").style.display="none";
+ $("delete-account-password").value="";
+ $("delete-account-error").textContent="";
+ $("delete-account-next").textContent="次へ";
+ $("delete-account-next").disabled=false;
+ $("delete-account-modal").classList.add("open");
+}
+function closeDeleteAccount(){
+ $("delete-account-modal").classList.remove("open");
+ deleteAccountStage=0;
+ $("delete-account-password").value="";
+ $("delete-account-error").textContent="";
+}
+function advanceDeleteAccount(){
+ if(!currentUser)return closeDeleteAccount();
+ if(deleteAccountStage===1){
+  deleteAccountStage=2;
+  $("delete-account-title").textContent="最終確認";
+  $("delete-account-description").textContent="本当に削除してよろしいですか？この操作は取り消せません。";
+  $("delete-account-warning").textContent="2回目の確認です。続行すると、最後にパスワードを入力して本人確認を行います。";
+  $("delete-account-next").textContent="削除を続ける";
+  return;
+ }
+ if(deleteAccountStage===2){
+  deleteAccountStage=3;
+  $("delete-account-title").textContent="パスワードによる本人確認";
+  $("delete-account-description").textContent="安全のため、現在のアカウントのパスワードを入力してください。";
+  $("delete-account-warning").textContent="パスワードが正しく確認できた場合にのみ、アカウントを削除します。";
+  $("delete-password-label").style.display="block";
+  $("delete-account-next").textContent="アカウントを完全に削除";
+  setTimeout(()=>$("delete-account-password").focus(),50);
+  return;
+ }
+ if(deleteAccountStage===3)deleteAccountNow();
+}
+async function deleteAccountContent(uid){
+ // Firestoreは親投稿を削除しても返信サブコレクションを自動削除しないため、先に返信を消す。
+ const postsSnapshot=await getDocs(collection(db,"posts"));
+ let removedReplies=0,removedPosts=0;
+ for(const postSnapshot of postsSnapshot.docs){
+  const postRef=postSnapshot.ref,postData=postSnapshot.data();
+  const repliesSnapshot=await getDocs(collection(db,"posts",postSnapshot.id,"replies"));
+  if(postData.authorUid===uid){
+   // 本人の投稿なら、その投稿に属する返信をすべて削除してから投稿を削除。
+   for(const replySnapshot of repliesSnapshot.docs){await deleteDoc(replySnapshot.ref);removedReplies++;}
+   await deleteDoc(postRef);removedPosts++;
+  }else{
+   // 他人の投稿に本人が書いた返信だけを削除。
+   for(const replySnapshot of repliesSnapshot.docs){
+    if(replySnapshot.data().authorUid===uid){await deleteDoc(replySnapshot.ref);removedReplies++;}
+   }
+  }
+ }
+ console.info("account content cleanup:", {removedPosts,removedReplies});
+}
+async function deleteAccountNow(){
+ const user=auth.currentUser,pass=$("delete-account-password").value,button=$("delete-account-next");
+ if(!user||!currentUser||user.uid!==currentUser.uid){$("delete-account-error").textContent="ログイン状態を確認できません。再度ログインしてください。";return;}
+ if(!user.email){$("delete-account-error").textContent="メールアドレスを確認できません。サポートにお問い合わせください。";return;}
+ if(!pass){$("delete-account-error").textContent="パスワードを入力してください。";return;}
+ button.disabled=true;$("delete-account-error").textContent="本人確認を行っています…";
+ try{
+  const credential=EmailAuthProvider.credential(user.email,pass);
+  await reauthenticateWithCredential(user,credential);
+  $("delete-account-error").textContent="投稿・返信を削除しています…";
+  // コンテンツ削除が完了しなければ、アカウント本体は削除しない。
+  await deleteAccountContent(user.uid);
+  $("delete-account-error").textContent="プロフィール情報を削除しています…";
+  await Promise.all([
+   deleteDoc(doc(db,"profiles",user.uid)),
+   deleteDoc(doc(db,"presence",user.uid))
+  ]);
+  await deleteUser(user);
+  closeDeleteAccount();
+  closeProfile();
+  toast("アカウントと関連する投稿・返信を削除しました。");
+ }catch(e){
+  const messages={
+   "auth/wrong-password":"パスワードが正しくありません。もう一度入力してください。",
+   "auth/invalid-credential":"パスワードが正しくありません。もう一度入力してください。",
+   "auth/too-many-requests":"試行回数が多すぎます。しばらく待ってから再試行してください。",
+   "auth/requires-recent-login":"本人確認の期限が切れています。一度ログアウトして再ログインしてからお試しください。",
+   "auth/network-request-failed":"通信に失敗しました。ネットワークを確認してください。"
+  };
+  $("delete-account-error").textContent=messages[e.code]||("削除できませんでした："+(e.message||e.code||"不明なエラー"));
+  console.error("delete account:",e);
+ }finally{button.disabled=false}
+}
 function updateProfilePreview(){let n=$("profile-name").value.trim()||"?";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(n)[0])}
 async function saveProfile(){let name=$("profile-name").value.trim();try{if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");$("profile-save").disabled=true;await updateProfile(auth.currentUser,{displayName:name});await setDoc(doc(db,"profiles",currentUser.uid),{displayName:name,photoData:profileImage||"",updatedAt:serverTimestamp()},{merge:true});currentProfile={displayName:name,photoData:profileImage||""};updateUserArea();closeProfile();renderPosts();toast("プロフィールを更新しました。")}catch(e){$("profile-error").textContent=e.message}finally{$("profile-save").disabled=false}}
 async function syncUser(user){
@@ -480,8 +592,8 @@ $("post-input").addEventListener("input",e=>{e.target.style.height="auto";e.targ
 $("post-image").addEventListener("change",choosePostImage);
 $("photo-file").addEventListener("change",async e=>{let f=e.target.files?.[0];if(!f)return;try{profileImage=await imageData(f,120*1024,256);updateProfilePreview()}catch(err){$("profile-error").textContent=err.message}e.target.value=""});
 $("profile-name").addEventListener("input",updateProfilePreview);
-document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m){if(m.id==="action-modal")closeAction();else m.classList.remove("open")}}));
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSidebar();document.querySelectorAll(".modal.open").forEach(m=>m.classList.remove("open"));actionTask=null}});
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m){if(m.id==="action-modal")closeAction();else if(m.id==="login-modal")closeLogin();else m.classList.remove("open")}}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSidebar();document.querySelectorAll(".modal.open").forEach(m=>{if(m.id==="login-modal")closeLogin();else m.classList.remove("open")});actionTask=null}});
 await setPersistence(auth,browserLocalPersistence);
 applyTheme();updateAuthMode();selectChannel(settings[currentChannel]?currentChannel:"announcement");
 onAuthStateChanged(auth,async u=>{
@@ -489,7 +601,7 @@ onAuthStateChanged(auth,async u=>{
  await syncUser(u);
  document.body.classList.remove("auth-pending");
 });
-Object.assign(window,{openUsers,closeUsers,insertMention,showRules,openPasswordReset,closePasswordReset,sendPasswordResetLink,openSuspendModal,closeSuspendModal,confirmSuspend,liftSuspension,closeSuspendedNotice,selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleSignup,setupGooglePassword,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,clearAttachment,closeAction,runAction});
+Object.assign(window,{openUsers,closeUsers,insertMention,showRules,openPasswordReset,closePasswordReset,sendPasswordResetLink,openSuspendModal,closeSuspendModal,confirmSuspend,liftSuspension,closeSuspendedNotice,selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleSignup,completeGoogleSignup,setupGooglePassword,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,clearAttachment,closeAction,runAction});
 </script>
 </body>
 </html>
