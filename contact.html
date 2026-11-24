@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="ja" data-theme-static="true">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#142B49">
+<title>お問い合わせ | 波急サーバー</title>
+<link rel="icon" href="./icon.png">
+<link rel="apple-touch-icon" href="./icon.png">
+
+<link rel="stylesheet" href="./theme.css">
+<script src="./theme.js" defer></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:"Yu Gothic UI","Meiryo",sans-serif;
+color:var(--text,#24364b);
+background:var(--page,#eef2f7);
+line-height:1.8
+}
+
+.header{
+min-height:82px;
+padding:12px 5%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+flex-wrap:wrap;
+color:white;
+background:linear-gradient(110deg,#075d9b,#087fc4 55%,#129bd2)
+}
+
+.header a{
+color:white;
+text-decoration:none;
+font-weight:700
+}
+
+.header-title{
+font-size:21px;
+font-weight:800
+}
+
+.header-nav{
+display:flex;
+align-items:center;
+gap:16px;
+flex-wrap:wrap;
+font-size:13px
+}
+
+main{
+width:min(760px,calc(100% - 28px));
+margin:38px auto 55px
+}
+
+.panel{
+padding:clamp(22px,5vw,42px);
+background:var(--panel,#fff);
+border:1px solid var(--border,#dce4ed);
+border-radius:16px;
+box-shadow:0 5px 22px rgba(20,43,73,.07)
+}
+
+h1{
+margin:0 0 8px;
+color:var(--heading,#142b49);
+font-size:clamp(25px,4vw,33px)
+}
+
+.lead{
+margin:0 0 28px;
+color:var(--sub,#64748b);
+font-size:14px
+}
+
+.field{
+margin-top:20px
+}
+
+label{
+display:block;
+margin-bottom:7px;
+font-size:14px;
+font-weight:800;
+color:var(--heading,#142b49)
+}
+
+.required{
+display:inline-block;
+margin-left:7px;
+padding:1px 6px;
+border-radius:4px;
+color:#fff;
+background:#d94b55;
+font-size:10px;
+vertical-align:2px
+}
+
+.optional{
+display:inline-block;
+margin-left:7px;
+padding:1px 6px;
+border-radius:4px;
+color:var(--sub,#64748b);
+background:var(--input,#eef2f7);
+font-size:10px;
+vertical-align:2px
+}
+
+input,select,textarea{
+width:100%;
+padding:12px 13px;
+border:1px solid var(--border,#cbd5e1);
+border-radius:8px;
+background:var(--input-bg,#fff);
+color:var(--text,#24364b);
+font:inherit;
+font-size:14px;
+outline:none;
+transition:border-color .2s,box-shadow .2s
+}
+
+input:focus,select:focus,textarea:focus{
+border-color:#2878c8;
+box-shadow:0 0 0 3px rgba(40,120,200,.13)
+}
+
+textarea{
+min-height:180px;
+resize:vertical
+}
+
+.hint{
+margin:6px 0 0;
+color:var(--sub,#64748b);
+font-size:11px
+}
+
+.consent{
+display:flex;
+align-items:flex-start;
+gap:9px;
+margin-top:23px;
+font-size:13px;
+font-weight:500
+}
+
+.consent input{
+width:17px;
+height:17px;
+margin-top:4px;
+flex-shrink:0
+}
+
+.consent a{
+color:#2878c8
+}
+
+.submit-button{
+width:100%;
+margin-top:24px;
+padding:14px 18px;
+border:0;
+border-radius:9px;
+color:#fff;
+background:linear-gradient(110deg,#142b49,#087fc4);
+font-size:15px;
+font-weight:800;
+cursor:pointer;
+transition:filter .2s,transform .2s
+}
+
+.submit-button:hover{
+filter:brightness(1.1)
+}
+
+.submit-button:active{
+transform:scale(.99)
+}
+
+.submit-button:disabled{
+opacity:.55;
+cursor:not-allowed
+}
+
+.message{
+display:none;
+margin-top:18px;
+padding:13px 15px;
+border-radius:8px;
+font-size:13px;
+font-weight:700;
+overflow-wrap:anywhere
+}
+
+.message.success{
+display:block;
+color:#17643a;
+background:#e5f7ec;
+border:1px solid #b9e7ca
+}
+
+.message.error{
+display:block;
+color:#a32d37;
+background:#fff0f0;
+border:1px solid #f1c4c7
+}
+
+/* スパム対策用の隠し入力欄 */
+.trap{
+position:absolute!important;
+left:-10000px!important;
+width:1px!important;
+height:1px!important;
+overflow:hidden!important
+}
+
+footer{
+padding:22px 12px;
+text-align:center;
+color:var(--sub,#64748b);
+font-size:12px
+}
+
+footer a{
+margin:0 8px;
+color:var(--sub,#64748b);
+text-decoration:none
+}
+
+footer a:hover{
+text-decoration:underline
+}
+
+@media(max-width:600px){
+.header{
+justify-content:center;
+text-align:center
+}
+.header-nav{
+justify-content:center
+}
+main{
+margin-top:20px
+}
+.panel{
+padding:22px 18px
+}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+<a class="header-title" href="./index.html">波急サーバー</a>
+
+<nav class="header-nav">
+<a href="./index.html">ホーム</a>
+<a href="./board.html">掲示板</a>
+<a href="./join.html">サーバー参加</a>
+</nav>
+</header>
+
+<main>
+<section class="panel">
+
+<h1>お問い合わせ</h1>
+
+<p class="lead">
+波急サーバーや公式サイトについてのお問い合わせを受け付けています。
+内容を確認のうえ、必要に応じて運営チームから対応いたします。
+</p>
+
+<form id="contact-form">
+
+<!-- 自動送信スパム対策用。通常の利用者は入力しない -->
+<div class="trap" aria-hidden="true">
+<label for="website">ウェブサイト</label>
+<input id="website" name="website" tabindex="-1" autocomplete="off">
+</div>
+
+<div class="field">
+<label for="name">
+お名前
+<span class="optional">任意</span>
+</label>
+<input
+id="name"
+name="name"
+type="text"
+maxlength="40"
+autocomplete="name"
+placeholder="お名前・ニックネーム">
+</div>
+
+<div class="field">
+<label for="email">
+返信先メールアドレス
+<span class="optional">任意</span>
+</label>
+<input
+id="email"
+name="email"
+type="email"
+maxlength="254"
+autocomplete="email"
+placeholder="example@example.com">
+<p class="hint">返信が必要な場合に入力してください。入力しない場合、運営から返信できないことがあります。</p>
+</div>
+
+<div class="field">
+<label for="category">
+お問い合わせの種類
+<span class="required">必須</span>
+</label>
+<select id="category" name="category" required>
+<option value="">選択してください</option>
+<option value="サーバーへの参加について">サーバーへの参加について</option>
+<option value="サーバー・ワールドについて">サーバー・ワールドについて</option>
+<option value="サイト・アカウントについて">サイト・アカウントについて</option>
+<option value="不具合・トラブルの報告">不具合・トラブルの報告</option>
+<option value="ご意見・ご要望">ご意見・ご要望</option>
+<option value="その他">その他</option>
+</select>
+</div>
+
+<div class="field">
+<label for="content">
+お問い合わせ内容
+<span class="required">必須</span>
+</label>
+<textarea
+id="content"
+name="content"
+maxlength="3000"
+required
+placeholder="お問い合わせ内容を入力してください（3000文字以内）"></textarea>
+<p class="hint">個人情報やパスワードなど、秘密にしたい情報は入力しないでください。</p>
+</div>
+
+<label class="consent">
+<input id="privacy-consent" type="checkbox" required>
+<span>
+<a href="./privacy.html" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>を確認し、入力した情報が問い合わせ対応のために利用・保存されることに同意します。
+</span>
+</label>
+
+<button class="submit-button" id="submit-button" type="submit">
+お問い合わせを送信する
+</button>
+
+<div id="form-message" class="message" role="status" aria-live="polite"></div>
+
+</form>
+</section>
+</main>
+
+<footer>
+<a href="./index.html">トップページ</a>
+<a href="./privacy.html">プライバシーポリシー</a>
+<a href="./terms.html">利用規約</a>
+<br>
+© 波急 運営チーム
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+/* Firebase設定 */
+const firebaseConfig = {
+  apiKey: "AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkD2RDmZQ",
+  authDomain: "namikyu-board.firebaseapp.com",
+  projectId: "namikyu-board",
+  storageBucket: "namikyu-board.firebasestorage.app",
+  messagingSenderId: "597333464774",
+  appId: "1:597333464774:web:773305ab5ad97b55d2a9c7",
+  measurementId: "G-5EFRPTWRMJ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* フォーム要素 */
+const form = document.getElementById("contact-form");
+const submitButton = document.getElementById("submit-button");
+const messageBox = document.getElementById("form-message");
+
+let sending = false;
+
+function showMessage(type, text) {
+  messageBox.className = "message " + type;
+  messageBox.textContent = text;
+}
+
+function validEmail(value) {
+  if (!value) return true;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (sending) return;
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const category = document.getElementById("category").value;
+  const content = document.getElementById("content").value.trim();
+  const consent = document.getElementById("privacy-consent").checked;
+  const honeypot = document.getElementById("website").value;
+
+  /* 隠し項目に入力された場合は送信しない */
+  if (honeypot) {
+    showMessage("error", "送信できませんでした。");
+    return;
+  }
+
+  if (!category || !content) {
+    showMessage("error", "必須項目を入力してください。");
+    return;
+  }
+
+  if (content.length > 3000 || name.length > 40 || email.length > 254) {
+    showMessage("error", "入力できる文字数を超えています。");
+    return;
+  }
+
+  if (!validEmail(email)) {
+    showMessage("error", "メールアドレスの形式を確認してください。");
+    return;
+  }
+
+  if (!consent) {
+    showMessage("error", "プライバシーポリシーへの同意が必要です。");
+    return;
+  }
+
+  sending = true;
+  submitButton.disabled = true;
+  submitButton.textContent = "送信しています…";
+
+  try {
+    await addDoc(collection(db, "contactMessages"), {
+      name: name || "未入力",
+      email: email || "",
+      category: category,
+      content: content,
+      status: "new",
+      createdAt: serverTimestamp()
+    });
+
+    showMessage(
+      "success",
+      "お問い合わせを送信しました。運営チームが内容を確認します。ありがとうございました。"
+    );
+
+    form.reset();
+
+  } catch (error) {
+    console.error("お問い合わせ送信エラー:", error);
+
+    showMessage(
+      "error",
+      "送信に失敗しました。時間をおいて再度お試しください。"
+    );
+
+  } finally {
+    sending = false;
+    submitButton.disabled = false;
+    submitButton.textContent = "お問い合わせを送信する";
+  }
+});
+</script>
+
+</body>
+</html>
