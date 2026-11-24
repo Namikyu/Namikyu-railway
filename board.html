@@ -241,7 +241,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut,EmailAuthProvider,linkWithCredential,getAdditionalUserInfo,getIdTokenResult,sendPasswordResetEmail,reauthenticateWithCredential,deleteUser}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-import{getFirestore,collection,addDoc,onSnapshot,doc,updateDoc,deleteDoc,getDocs,getDoc,setDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+import{getFirestore,collection,collectionGroup,query,where,addDoc,onSnapshot,doc,updateDoc,deleteDoc,getDocs,getDoc,setDoc,writeBatch,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyAw45Gj7Hl9mwOT-Tb1HL7VYxhkD2RDmZQ",authDomain:"namikyu-board.firebaseapp.com",projectId:"namikyu-board",storageBucket:"namikyu-board.firebasestorage.app",messagingSenderId:"597333464774",appId:"1:597333464774:web:773305ab5ad97b55d2a9c7",measurementId:"G-5EFRPTWRMJ"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
 provider.setCustomParameters({prompt:"select_account"});
@@ -492,25 +492,33 @@ function advanceDeleteAccount(){
  }
  if(deleteAccountStage===3)deleteAccountNow();
 }
-async function deleteAccountContent(uid){
- // Firestoreは親投稿を削除しても返信サブコレクションを自動削除しないため、先に返信を消す。
- const postsSnapshot=await getDocs(collection(db,"posts"));
- let removedReplies=0,removedPosts=0;
- for(const postSnapshot of postsSnapshot.docs){
-  const postRef=postSnapshot.ref,postData=postSnapshot.data();
-  const repliesSnapshot=await getDocs(collection(db,"posts",postSnapshot.id,"replies"));
-  if(postData.authorUid===uid){
-   // 本人の投稿なら、その投稿に属する返信をすべて削除してから投稿を削除。
-   for(const replySnapshot of repliesSnapshot.docs){await deleteDoc(replySnapshot.ref);removedReplies++;}
-   await deleteDoc(postRef);removedPosts++;
-  }else{
-   // 他人の投稿に本人が書いた返信だけを削除。
-   for(const replySnapshot of repliesSnapshot.docs){
-    if(replySnapshot.data().authorUid===uid){await deleteDoc(replySnapshot.ref);removedReplies++;}
-   }
-  }
+async function deleteRefsInBatches(refs){
+ // Firestoreの一括書き込み上限に余裕を持たせ、450件ずつ処理。
+ for(let i=0;i<refs.length;i+=450){
+  const batch=writeBatch(db);
+  for(const ref of refs.slice(i,i+450))batch.delete(ref);
+  await batch.commit();
  }
- console.info("account content cleanup:", {removedPosts,removedReplies});
+}
+async function deleteAccountContent(uid){
+ // 全投稿を走査せず、本人の投稿と本人の返信だけを検索する。
+ const [ownPosts,ownReplies]=await Promise.all([
+  getDocs(query(collection(db,"posts"),where("authorUid","==",uid))),
+  getDocs(query(collectionGroup(db,"replies"),where("authorUid","==",uid)))
+ ]);
+ let removedReplies=ownReplies.size,removedPosts=ownPosts.size;
+ // 他人の投稿に書いた本人の返信を先に削除。
+ await deleteRefsInBatches(ownReplies.docs.map(s=>s.ref));
+ // 本人の投稿に付いた他人の返信も削除してから、親投稿を削除。
+ const remainingReplyRefs=[];
+ for(const post of ownPosts.docs){
+  const replies=await getDocs(collection(db,"posts",post.id,"replies"));
+  for(const reply of replies.docs)remainingReplyRefs.push(reply.ref);
+ }
+ removedReplies+=remainingReplyRefs.length;
+ await deleteRefsInBatches(remainingReplyRefs);
+ await deleteRefsInBatches(ownPosts.docs.map(s=>s.ref));
+ console.info("account content cleanup:",{removedPosts,removedReplies});
 }
 async function deleteAccountNow(){
  const user=auth.currentUser,pass=$("delete-account-password").value,button=$("delete-account-next");
