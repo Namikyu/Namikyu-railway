@@ -14,17 +14,17 @@ try{document.documentElement.dataset.theme=localStorage.getItem("board-theme")||
 :root{color-scheme:light;--bg:#f4f6fa;--panel:#fff;--side:#fff;--text:#172b45;--sub:#718096;--border:#e1e7ef;--blue:#2878c8;--blue2:#eaf3fc;--input:#f5f7fa;--danger:#d9485b;--shadow:0 8px 28px #142b4910;--focus:#2878c8}
 :root[data-theme=dark]{color-scheme:dark;--bg:#0d1520;--panel:#172333;--side:#111e2e;--text:#e8eef6;--sub:#a5b2c3;--border:#2b3a4d;--blue:#65adf3;--blue2:#1d3852;--input:#223247;--danger:#ff7180;--shadow:0 8px 28px #0003;--focus:#8bc5ff}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:Inter,"Yu Gothic UI",Meiryo,sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Inter,"Yu Gothic UI",Meiryo,sans-serif;background:var(--bg);color:var(--text);height:100vh;height:100dvh;overflow:hidden}
 body.auth-pending .app{visibility:hidden}
 .auth-loading{display:none}
-body.auth-pending .auth-loading{display:flex;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:var(--bg);color:var(--text);font-size:14px;font-weight:700}
+body.auth-pending .auth-loading{display:flex;position:fixed;top:0;right:0;bottom:0;left:0;z-index:9999;align-items:center;justify-content:center;background:var(--bg);color:var(--text);font-size:14px;font-weight:700}
 .auth-loading-inner{display:flex;align-items:center;gap:12px;padding:18px 22px;border:1px solid var(--border);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}
 .auth-loading-dot{width:9px;height:9px;border-radius:50%;background:var(--blue);animation:authPulse 1s ease-in-out infinite alternate}
 @keyframes authPulse{from{opacity:.35;transform:scale(.8)}to{opacity:1;transform:scale(1.15)}}
 button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}
-button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--focus) 55%,transparent);outline-offset:2px}
-.app{display:flex;width:100%;height:100dvh}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline:3px solid color-mix(in srgb,var(--focus) 55%,transparent);outline-offset:2px}
+.app{display:flex;width:100%;height:100vh;height:100dvh}
 .sidebar{width:264px;min-width:264px;background:var(--side);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 14px;z-index:30}
 .brand{display:flex;align-items:center;gap:11px;padding:5px 8px 22px;border-bottom:1px solid var(--border)}
 .brand img{width:42px;height:42px;object-fit:contain}.brand-name{font-size:19px;font-weight:800;letter-spacing:.01em}.brand-sub{font-size:10px;color:var(--sub);margin-top:3px;letter-spacing:.1em}
@@ -60,7 +60,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .small-button.danger{color:var(--danger)}
 .delete-account-button{display:block;width:100%;margin-top:18px;padding:12px;border:0;border-radius:10px;background:#c6283d;color:#fff;font-weight:800}
 .delete-account-button:hover{background:#a91f32}
-.delete-warning{padding:12px;border-radius:10px;background:color-mix(in srgb,var(--danger) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--danger) 28%,var(--border));color:var(--text);font-size:13px;line-height:1.75;margin:12px 0 16px}.reply-list{border-top:1px solid var(--border);margin-top:15px;padding-top:5px}
+.delete-warning{padding:12px;border-radius:10px;background:var(--input);border:1px solid var(--danger);background:color-mix(in srgb,var(--danger) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--danger) 28%,var(--border));color:var(--text);font-size:13px;line-height:1.75;margin:12px 0 16px}.reply-list{border-top:1px solid var(--border);margin-top:15px;padding-top:5px}
 .reply{padding:11px 0;font-size:13px;line-height:1.7;border-bottom:1px solid var(--border)}.reply:last-child{border-bottom:0}
 .reply-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.reply-avatar{width:29px;height:29px;min-width:29px;font-size:12px}.reply-author{font-size:12px;font-weight:800}.reply-date{font-size:10px;color:var(--sub)}
 .reply-content{margin:5px 0 0 37px;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -81,8 +81,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .rules-page ul,.rules-page ol{padding-left:1.5em}
 .rules-page li{margin:5px 0}
 .rules-note{color:var(--sub);font-size:12px}
-.modal{display:none;position:fixed;inset:0;z-index:100;background:#07111dcc;backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:18px}
-.modal.open{display:flex;animation:fade .15s ease}.modal-box{background:var(--panel);color:var(--text);width:100%;max-width:460px;max-height:90dvh;overflow-y:auto;padding:24px;border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 80px #0004;animation:rise .18s ease}
+.modal{display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:100;background:#07111dcc;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:18px}
+.modal.open{display:flex;animation:fade .15s ease}.modal-box{background:var(--panel);color:var(--text);width:100%;max-width:460px;max-height:90vh;max-height:90dvh;overflow-y:auto;padding:24px;border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 80px #0004;animation:rise .18s ease}
 .modal-box h2{margin:0 0 8px;font-size:20px}.auth-description{font-size:13px;color:var(--sub);margin:0 0 18px;line-height:1.7}
 .auth-label{display:block;font-size:13px;font-weight:750;margin-bottom:13px}.auth-input{display:block;width:100%;padding:12px;margin-top:7px;border:1px solid var(--border);border-radius:10px;background:var(--input);color:var(--text)}
 .auth-primary,.auth-google,.auth-close{width:100%;padding:12px;border-radius:10px;font-weight:750}
@@ -93,27 +93,23 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .dialog-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.dialog-actions button{min-width:92px}
 .toast-region{position:fixed;right:18px;bottom:18px;z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{background:var(--text);color:var(--panel);padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);font-size:13px;max-width:min(360px,calc(100vw - 36px));animation:rise .18s ease}
-.loading-line{height:3px;background:var(--blue);position:absolute;top:0;left:0;animation:loading 1.2s ease-in-out infinite}
 .overlay{display:none}
-@keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fade{from{opacity:0}to{opacity:1}}@keyframes rise{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes loading{0%{width:0;left:0}50%{width:65%;left:18%}100%{width:0;left:100%}}
 .top-search{width:min(30vw,260px);min-width:120px;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--input);color:var(--text);font-size:12px;transition:border-color .18s,box-shadow .18s}
-.top-search:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 15%,transparent);outline:0}
-.online-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px color-mix(in srgb,#22c55e 15%,transparent);vertical-align:middle;margin-right:5px}
+.top-search:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 15%,transparent);outline:0}
+.online-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px #22c55e26;vertical-align:middle;margin-right:5px}
 .offline-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#94a3b8;vertical-align:middle;margin-right:5px}
 .user-list{display:grid;gap:8px}.member-row{display:flex;align-items:center;gap:11px;padding:10px;border:1px solid var(--border);border-radius:12px;background:var(--input);transition:background .16s,transform .16s}.member-row:hover{background:var(--blue2);transform:translateY(-1px)}.member-meta{min-width:0;flex:1}.member-name{font-weight:800;font-size:13px}.member-status{font-size:11px;color:var(--sub);margin-top:3px}.member-role{font-size:10px;color:var(--sub);margin-left:auto}
 .modal-box.wide{max-width:620px}.search-empty{padding:28px;text-align:center;color:var(--sub)}
 .mention-menu{position:fixed;z-index:180;display:none;min-width:210px;max-width:min(320px,90vw);max-height:240px;overflow:auto;padding:6px;background:var(--panel);border:1px solid var(--border);border-radius:12px;box-shadow:0 14px 40px #0003}.mention-option{display:flex;align-items:center;gap:9px;width:100%;padding:8px;border:0;border-radius:8px;background:transparent;color:var(--text);text-align:left}.mention-option:hover,.mention-option:focus{background:var(--blue2);outline:0}.mention-link{border:0;padding:0;background:transparent;color:var(--blue);font-weight:800;text-decoration:none}.mention-link:hover{text-decoration:underline}.post-content .mention-link,.reply-content .mention-link{font-size:inherit}
 .post{content-visibility:auto;contain-intrinsic-size:auto 220px;transition:box-shadow .18s,border-color .18s}.post:hover{border-color:color-mix(in srgb,var(--blue) 28%,var(--border));box-shadow:0 10px 30px #142b4918}
 .send-button,.small-button,.top-button,.channel,.member-row{transition:background .16s,color .16s,border-color .16s,transform .16s,box-shadow .16s}
-.send-button:disabled{opacity:.6}.post-enter{animation:postEnter .24s cubic-bezier(.2,.75,.25,1) both}.post-leave{opacity:0;transform:translateY(-5px) scale(.99);transition:opacity .14s,transform .14s}
+.send-button:disabled{opacity:.6}.post-enter{animation:postEnter .24s cubic-bezier(.2,.75,.25,1) both}
 @keyframes postEnter{from{opacity:0;transform:translateY(9px) scale(.992)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:760px){.top-search{width:34vw;min-width:90px;padding:8px}.topbar-right{gap:4px}.user-list{gap:6px}}
-@media(prefers-reduced-motion:reduce){.post-enter{animation:none}}
 @media(max-width:760px){
 .sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-105%);transition:transform .2s ease;width:285px;min-width:285px;box-shadow:var(--shadow)}
-.sidebar.open{transform:translateX(0)}.overlay.show{display:block;position:fixed;inset:0;background:#0008;z-index:20}
+.sidebar.open{transform:translateX(0)}.overlay.show{display:block;position:fixed;top:0;right:0;bottom:0;left:0;background:#0008;z-index:20}
 .menu-button{display:block}.topbar{height:60px;min-height:60px;padding:0 9px;gap:8px}.page-title{font-size:15px}
 .topbar-right{gap:5px}.top-button{font-size:11px;padding:8px 9px}.channel-header{padding:16px}.channel-heading{font-size:18px}
 .messages{padding:12px}.post{padding:14px;border-radius:13px}.composer-area{padding:10px}.composer{gap:6px;padding:7px}.attach-button{padding:9px 8px}.send-button{padding:10px 12px}
@@ -170,7 +166,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 <div class="modal" id="login-modal" autocomplete="off" role="dialog" aria-modal="true" aria-labelledby="login-title"><div class="modal-box">
 <h2 id="login-title">ログイン</h2><p class="auth-description" id="auth-description">登録済みのアカウントでログインします。</p>
 <label class="auth-label" id="name-label" style="display:none">表示名<input id="display-name" class="auth-input" maxlength="30" placeholder="掲示板で使う名前"></label>
-<label class="auth-label" id="handle-label" style="display:none">ハンドルネーム（必須）<input id="signup-handle" class="auth-input" maxlength="30" autocomplete="off" placeholder="例：namikyu_01"><span class="auth-description">英数字・日本語・_・- が使えます。先頭の @ は入力不要です。</span></label>
+<label class="auth-label" id="handle-label" style="display:none">ハンドルネーム（必須）<input id="signup-handle" class="auth-input" maxlength="30" autocomplete="off" placeholder="ハンドルネーム"><span class="auth-description">英数字（大文字・小文字）・日本語・_・- が使えます。先頭の @ は入力不要です。</span></label>
 <label class="auth-label">メールアドレス<input id="email" class="auth-input" type="email" name="board-login-email" autocomplete="off" data-lpignore="true"></label>
 <label class="auth-label">パスワード<input id="password" class="auth-input" type="password" name="board-login-secret" autocomplete="off" data-lpignore="true"></label>
 <button class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
@@ -181,7 +177,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 </div></div>
 <div class="modal" id="password-reset-modal" role="dialog" aria-modal="true" aria-labelledby="password-reset-title"><div class="modal-box">
 <h2 id="password-reset-title">パスワード再設定</h2>
-<p class="auth-description">登録したメールアドレスを入力してください。Firebaseから再設定用リンクを送信します。</p>
+<p class="auth-description">登録したメールアドレスを入力してください。再設定用のリンクをメールで送信します。</p>
 <label class="auth-label">メールアドレス<input class="auth-input" id="reset-email" type="email" name="board-reset-email" autocomplete="off" placeholder="登録したメールアドレス"></label>
 <p class="auth-error" id="reset-error" role="alert"></p>
 <button class="auth-primary" id="reset-send-button" onclick="sendPasswordResetLink()">再設定メールを送信</button>
@@ -192,7 +188,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 <div id="profile-edit-fields">
 <label class="auth-label">アイコン画像（1枚）<input class="auth-input" id="photo-file" type="file" accept="image/*"></label>
 <label class="auth-label">表示名<input class="auth-input" id="profile-name" name="profile-display-name" autocomplete="off" maxlength="30" placeholder="表示名"></label>
-<label class="auth-label">ハンドルネーム（@から始まる名前）<input class="auth-input" id="profile-handle" maxlength="30" autocomplete="off" placeholder="例：namikyu_01"></label>
+<label class="auth-label">ハンドルネーム（@から始まる名前）<input class="auth-input" id="profile-handle" maxlength="30" autocomplete="off" placeholder="ハンドルネーム"></label>
 <label class="auth-label">自己紹介<textarea class="auth-input" id="profile-bio" rows="3" maxlength="500" placeholder="自己紹介（500文字以内）"></textarea></label>
 <label class="auth-label">Minecraft ゲーマータグ（最大3件・1行に1件）<textarea class="auth-input" id="profile-gamertags" rows="3" maxlength="300" placeholder="ゲーマータグを入力"></textarea></label>
 <label class="auth-label">SNS・ソーシャルリンク（最大3件・1行に1URL）<textarea class="auth-input" id="profile-social" rows="3" maxlength="1500" placeholder="https://..."></textarea></label>
@@ -246,13 +242,15 @@ const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),p
 provider.setCustomParameters({prompt:"select_account"});
 const OWNER_UID="kv2lmeIrYrN3J7T4GWTaJau7MtY2";
 const $=id=>document.getElementById(id);
-let authMode="login",currentChannel=localStorage.getItem("board-channel")||"announcement",currentView="posts";
+const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let authMode="login",currentChannel=ls.get("board-channel")||"announcement",currentView="posts";
 let googlePendingUser=null;
 let currentUser=null,currentProfile={},roles={},unsubscribePosts=null,cachedPosts=[],authFlow=false,authSyncVersion=0;
 let pendingImage="",profileImage="",replyUnsubs=new Map(),replyCache=new Map(),replyLoaded=new Set(),actionTask=null;
 let suspensionUnsub=null,viewedProfileUid="",suspensionTargetUid="";
 let userMap=new Map(),mentionMap=new Map(),userCache=[],presenceCache={},unsubscribePresence=null,presenceTimer=null,searchText="",mentionTarget=null;
 const settings={announcement:{name:"運営お知らせ",icon:"📢",description:"波急運営からのお知らせを掲載します。"},chat:{name:"チャット",icon:"💬",description:"メンバー同士で自由に交流できる場所です。"}};
+const errText=(e,f="しばらくしてからもう一度お試しください。")=>/[\u3040-\u30ff\u4e00-\u9fff]/.test(e?.message||"")?e.message:f;
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const safeImage=s=>typeof s==="string"&&s.startsWith("data:image/jpeg;base64,")&&s.length<700000?s:"";
 const roleOf=uid=>uid===OWNER_UID?{role:"owner",status:"active"}:(roles[uid]||{});
@@ -263,26 +261,25 @@ const isStaff=()=>["owner","developer","moderator"].includes(activeRole(currentU
 const canManage=p=>isStaff()||(p.authorUid===currentUser?.uid&&p.channel==="chat");
 const nameOf=()=>currentProfile.displayName||currentUser?.displayName||currentUser?.email?.split("@")[0]||"メンバー";
 const handleOf=()=>currentProfile.handle||nameOf().replace(/\s+/g,"").slice(0,30);
-function normalizeHandle(value){let v=String(value||"").trim().replace(/^@/,"").normalize("NFKC").replace(/\s+/g,"");if(!/^[\p{L}\p{N}_-]{1,30}$/u.test(v))throw Error("ハンドルネームは1〜30文字で、英数字・日本語・_・- のみ使用できます。");return v.toLocaleLowerCase("ja-JP")}
+function normalizeHandle(value){const v=String(value||"").trim().replace(/^[@＠]/,"").normalize("NFKC").replace(/\s+/g,"");if(!/^[\p{L}\p{N}\p{M}_・-]{1,30}$/u.test(v)||/^__.*__$/.test(v))throw Error("ハンドルネームは1〜30文字で、英数字（大文字・小文字）・日本語・_・- が使えます。");return v}
 function linesToArray(value,max,label){let a=String(value||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(a.length>max)throw Error(label+"は最大"+max+"件までです。");return a}
 function validHttpUrl(value){try{let u=new URL(value);return ["http:","https:"].includes(u.protocol)?u.href:""}catch{return ""}}
 function profileLinksHtml(items){return (items||[]).map(v=>{let u=validHttpUrl(v);return u?`<li><a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(u)}</a></li>`:`<li>${esc(v)}</li>`}).join("")}
 function profileInfoHtml(p){let gam=(p.minecraftGamertags||[]).map(x=>`<li>${esc(x)}</li>`).join("");return `<div class="profile-handle">@${esc(p.handle||"未設定")}</div>${p.bio?`<div class="profile-section profile-bio">${esc(p.bio)}</div>`:""}${gam?`<div class="profile-section"><b>Minecraft ゲーマータグ</b><ul>${gam}</ul></div>`:""}${p.socialLinks?.length?`<div class="profile-section"><b>SNS・ソーシャル</b><ul>${profileLinksHtml(p.socialLinks)}</ul></div>`:""}${p.activityLinks?.length?`<div class="profile-section"><b>Webサイト・活動場所</b><ul>${profileLinksHtml(p.activityLinks)}</ul></div>`:""}`}
-
 const dateText=v=>{let d=v?.toDate?.();if(!d)return"送信直後";let now=Date.now(),diff=now-d.getTime();if(diff<60000)return"たった今";if(diff<3600000)return`${Math.floor(diff/60000)}分前`;if(diff<86400000)return`${Math.floor(diff/3600000)}時間前`;return d.toLocaleString("ja-JP",{year:"numeric",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})};
 function avatar(name,photo,cls="post-avatar"){const s=safeImage(photo);return `<div class="${cls}">${s?`<img src="${s}" alt="">`:esc(Array.from(name||"?")[0])}</div>`}
 const handleOfUid=uid=>userMap.get(uid)?.handle||(uid===currentUser?.uid?currentProfile.handle:"")||"";
-function profileLink(uid,name,photo,cls="post-avatar"){const h=handleOfUid(uid);return `<button class="profile-click" onclick="viewProfile('${esc(uid)}')">${avatar(name,photo,cls)}<span class="post-names"><span class="post-author">${esc(name||"メンバー")}</span>${h?`<span class="post-handle">@${esc(h)}</span>`:""}</span></button>`}
+function profileLink(uid,name,photo,cls="post-avatar"){const h=handleOfUid(uid);let n=String(name||"メンバー");if(h){const t="@"+h.toLowerCase();if(n.toLowerCase().endsWith(t))n=n.slice(0,n.length-t.length).trimEnd()||n}return `<button class="profile-click" onclick="viewProfile('${esc(uid)}')">${avatar(n,photo,cls)}<span class="post-names"><span class="post-author">${esc(n)}</span>${h?`<span class="post-handle">@${esc(h)}</span>`:""}</span></button>`}
 function mentionKey(name){return String(name||"").replace(/^@/,"").replace(/\s+/g,"").toLocaleLowerCase("ja-JP")}
 function setUsers(list){userCache=list;userMap=new Map();mentionMap=new Map();for(const u of list){userMap.set(u.uid,u);const k=mentionKey(u.handle);if(!mentionMap.has(k))mentionMap.set(k,u)}}
-function renderText(value){return esc(value).replace(/@([\p{L}\p{N}_-]{1,30})/gu,(all,key)=>{const u=mentionMap.get(mentionKey(key));return u?`<button class="mention-link" onclick="viewProfile('${esc(u.uid)}')">@${esc(u.handle)}</button>`:all})}
+function renderText(value){return esc(value).replace(/@([\p{L}\p{N}\p{M}_・-]{1,30})/gu,(all,key)=>{const u=mentionMap.get(mentionKey(key));return u?`<button class="mention-link" onclick="viewProfile('${esc(u.uid)}')">@${esc(u.handle)}</button>`:all})}
 function isOnline(uid){let t=presenceCache[uid]?.lastSeen?.toMillis?.()||0;return !!t&&Date.now()-t<90000}
 function toast(message){let el=document.createElement("div");el.className="toast";el.textContent=message;$("toast-region").append(el);setTimeout(()=>el.remove(),3500)}
 function applyTheme(){let t=document.documentElement.dataset.theme||"light";$("theme-button").textContent=t==="dark"?"☀️ ホワイト":"🌙 ダーク"}
-function toggleTheme(){let t=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=t;localStorage.setItem("board-theme",t);applyTheme()}
+function toggleTheme(){let t=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=t;ls.set("board-theme",t);applyTheme()}
 function selectChannel(c){
 if(!settings[c])return;
-currentView="posts";currentChannel=c;localStorage.setItem("board-channel",c);
+currentView="posts";currentChannel=c;ls.set("board-channel",c);
 $("channel-name").textContent=settings[c].name;$("channel-icon").textContent=settings[c].icon;
 $("channel-description").textContent=settings[c].description;
 $("global-search").style.display="";$("composer-area").style.display="";
@@ -348,47 +345,46 @@ function openLogin(){if(currentUser){openAction("ログアウトしますか？"
 function closeLogin(){$("login-modal").classList.remove("open");if(googlePendingUser){let uid=googlePendingUser.uid;googlePendingUser=null;if(auth.currentUser?.uid===uid)signOut(auth).catch(()=>{});authFlow=false;syncUser(null)}}
 function openPasswordReset(){if(authMode!=="login")return;$("reset-email").value=$("email").value.trim();$("reset-error").textContent="";$("reset-error").style.color="var(--danger)";$("reset-send-button").disabled=false;$("reset-send-button").textContent="再設定メールを送信";$("password-reset-modal").classList.add("open");setTimeout(()=>$("reset-email").focus(),50)}
 function closePasswordReset(){$("password-reset-modal").classList.remove("open")}
-async function sendPasswordResetLink(){let email=$("reset-email").value.trim(),button=$("reset-send-button");$("reset-error").textContent="";$("reset-error").style.color="var(--danger)";if(!email){$("reset-error").textContent="登録したメールアドレスを入力してください。";return}button.disabled=true;try{auth.languageCode="ja";await sendPasswordResetEmail(auth,email);$("reset-error").style.color="var(--blue)";$("reset-error").textContent="再設定メールを送信しました。受信トレイと迷惑メールフォルダを確認してください。";button.textContent="送信しました"}catch(e){const m={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/user-not-found":"このメールアドレスのアカウントが見つかりません。","auth/too-many-requests":"短時間に何度も送信されています。しばらく待ってから再試行してください。","auth/network-request-failed":"通信に失敗しました。ネットワークを確認してください。"};$("reset-error").textContent=m[e.code]||e.message||"メールを送信できませんでした。";console.error(e)}finally{button.disabled=false}}
+async function sendPasswordResetLink(){let email=$("reset-email").value.trim(),button=$("reset-send-button");$("reset-error").textContent="";$("reset-error").style.color="var(--danger)";if(!email){$("reset-error").textContent="登録したメールアドレスを入力してください。";return}button.disabled=true;try{auth.languageCode="ja";await sendPasswordResetEmail(auth,email);$("reset-error").style.color="var(--blue)";$("reset-error").textContent="再設定メールを送信しました。受信トレイと迷惑メールフォルダを確認してください。";button.textContent="送信しました"}catch(e){const m={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/user-not-found":"このメールアドレスのアカウントが見つかりません。","auth/too-many-requests":"短時間に何度も送信されています。しばらく待ってから再試行してください。","auth/network-request-failed":"通信に失敗しました。ネットワークを確認してください。"};$("reset-error").textContent=m[e.code]||errText(e,"メールを送信できませんでした。")}finally{button.disabled=false}}
 function toggleAuthMode(){if(googlePendingUser)return;authMode=authMode==="login"?"signup":"login";updateAuthMode()}
 function updateAuthMode(){let s=authMode==="signup";$("forgot-password-link").style.display=s?"none":"block";$("login-title").textContent=s?"新規登録":"ログイン";$("auth-description").textContent=s?"メールアドレス・パスワード・表示名・ハンドルネームを入力するか、Googleで認証してください。":"登録済みのメールアドレスとパスワードでログインします。";$("email-action-button").textContent=s?"メールで新規登録":"ログイン";$("google-button").style.display=s?"block":"none";$("google-setup-button").style.display="none";$("mode-button").style.display="block";$("mode-button").textContent=s?"ログインはこちら":"新規登録はこちら";$("name-label").style.display=s?"block":"none";$("handle-label").style.display=s?"block":"none";$("email").parentElement.style.display="block";$("email-action-button").style.display="block";$("password").parentElement.style.display="block";$("password").autocomplete="off";$("login-error").textContent=""}
 function showGoogleCompletion(user){googlePendingUser=user;authMode="signup";$("login-title").textContent="Google登録の設定";$("auth-description").textContent="Googleの認証が完了しました。表示名・ハンドルネーム・波急サイト用のパスワードを設定してください。";$("email").parentElement.style.display="none";$("email-action-button").style.display="none";$("google-button").style.display="none";$("name-label").style.display="block";$("handle-label").style.display="block";$("password").parentElement.style.display="block";$("password").value="";$("password").placeholder="6文字以上のパスワード";$("password").autocomplete="off";$("google-setup-button").textContent="表示名・ハンドルネーム・パスワードを設定";$("google-setup-button").style.display="block";$("mode-button").style.display="none";$("login-error").textContent="";$("display-name").value=user.displayName||"";$("signup-handle").value=""}
 function resetGoogleCompletion(){googlePendingUser=null;$("password").placeholder="";updateAuthMode()}
-function showError(e){const m={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/email-already-in-use":"このメールアドレスは登録済みです。","auth/weak-password":"パスワードは6文字以上にしてください。","auth/invalid-credential":"メールアドレスまたはパスワードが違います。","auth/account-exists-with-different-credential":"このメールアドレスは別の方法で登録済みです。","auth/unauthorized-domain":"Firebaseの承認済みドメインを確認してください。","auth/popup-blocked":"ブラウザでポップアップを許可してください。","auth/popup-closed-by-user":"Google認証画面が閉じられました。","auth/credential-already-in-use":"このメールアドレスは別のアカウントで使用されています。"};$("login-error").textContent=(m[e.code]||e.message||"認証に失敗しました。")+"\n"+(e.code||"");console.error(e)}
+function showError(e){const m={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/email-already-in-use":"このメールアドレスは登録済みです。","auth/weak-password":"パスワードは6文字以上にしてください。","auth/invalid-credential":"メールアドレスまたはパスワードが違います。","auth/account-exists-with-different-credential":"このメールアドレスは別の方法で登録済みです。","auth/unauthorized-domain":"このページからは認証を利用できません。","auth/popup-blocked":"ブラウザでポップアップを許可してください。","auth/popup-closed-by-user":"Google認証画面が閉じられました。","auth/credential-already-in-use":"このメールアドレスは別のアカウントで使用されています。"};$("login-error").textContent=m[e.code]||errText(e,"認証に失敗しました。")}
+const hKey=h=>String(h).toLocaleLowerCase("ja-JP");
 async function saveProfileTransaction(user,data,autoSuffix=false){
- const profileRef=doc(db,"profiles",user.uid);
- return await runTransaction(db,async tx=>{
-  const profileSnap=await tx.get(profileRef),old=profileSnap.exists()?profileSnap.data():{};
-  const oldHandle=old.handle||"";
-  const base=normalizeHandle(data.handle||data.displayName);
-  let chosen=base,handleRef=doc(db,"handles",chosen),handleSnap=await tx.get(handleRef);
-  if(handleSnap.exists()&&handleSnap.data().uid!==user.uid){
-   if(!autoSuffix)throw Error("このハンドルネームはすでに使用されています。別の名前を選んでください。");
-   let found=false;
-   for(let n=2;n<=100;n++){
-    const suffix=String(n),candidate=base.slice(0,30-suffix.length)+suffix,ref=doc(db,"handles",candidate),snap=await tx.get(ref);
-    if(!snap.exists()||snap.data().uid===user.uid){chosen=candidate;handleRef=ref;handleSnap=snap;found=true;break}
-   }
-   if(!found)throw Error("ハンドルネームを自動設定できませんでした。プロフィール設定から変更してください。");
-  }
-  let oldRef=null,oldSnap=null;
-  if(oldHandle&&oldHandle!==chosen){oldRef=doc(db,"handles",oldHandle);oldSnap=await tx.get(oldRef)}
-  const profileData={displayName:String(data.displayName||"").trim(),handle:chosen,bio:String(data.bio||"").trim(),photoData:data.photoData||"",minecraftGamertags:Array.isArray(data.minecraftGamertags)?data.minecraftGamertags:[],socialLinks:Array.isArray(data.socialLinks)?data.socialLinks:[],activityLinks:Array.isArray(data.activityLinks)?data.activityLinks:[],updatedAt:serverTimestamp()};
-  if(!handleSnap.exists())tx.set(handleRef,{uid:user.uid,createdAt:serverTimestamp()});
-  if(oldRef&&oldSnap?.exists()&&oldSnap.data().uid===user.uid)tx.delete(oldRef);
-  tx.set(profileRef,profileData,{merge:true});
-  return chosen;
- });
+const profileRef=doc(db,"profiles",user.uid);
+return await runTransaction(db,async tx=>{
+const profileSnap=await tx.get(profileRef),old=profileSnap.exists()?profileSnap.data():{},oldHandle=old.handle||"";
+const base=normalizeHandle(data.handle||data.displayName);
+let chosen=base,handleRef=doc(db,"handles",hKey(chosen)),handleSnap=await tx.get(handleRef);
+if(handleSnap.exists()&&handleSnap.data().uid!==user.uid){
+if(!autoSuffix)throw Error("このハンドルネームはすでに使用されています。別の名前を選んでください。");
+let found=false;
+for(let n=2;n<=100;n++){
+const suffix=String(n),cand=Array.from(base).slice(0,30-suffix.length).join("")+suffix,ref=doc(db,"handles",hKey(cand)),snap=await tx.get(ref);
+if(!snap.exists()||snap.data().uid===user.uid){chosen=cand;handleRef=ref;handleSnap=snap;found=true;break}
 }
-function legacyHandleFromName(name,uid){let v=String(name||"").normalize("NFKC").replace(/\\s+/g,"").replace(/[^\\p{L}\\p{N}_-]/gu,"").slice(0,30);return v||("member"+String(uid||"").slice(-6))}
+if(!found)throw Error("ハンドルネームを自動設定できませんでした。プロフィール設定から変更してください。");
+}
+let oldRef=null,oldSnap=null;
+if(oldHandle&&hKey(oldHandle)!==hKey(chosen)){oldRef=doc(db,"handles",hKey(oldHandle));oldSnap=await tx.get(oldRef)}
+const profileData={displayName:String(data.displayName||"").trim(),handle:chosen,bio:String(data.bio||"").trim(),photoData:data.photoData||"",minecraftGamertags:Array.isArray(data.minecraftGamertags)?data.minecraftGamertags:[],socialLinks:Array.isArray(data.socialLinks)?data.socialLinks:[],activityLinks:Array.isArray(data.activityLinks)?data.activityLinks:[],updatedAt:serverTimestamp()};
+if(!handleSnap.exists())tx.set(handleRef,{uid:user.uid,createdAt:serverTimestamp()});
+if(oldRef&&oldSnap?.exists()&&oldSnap.data().uid===user.uid)tx.delete(oldRef);
+tx.set(profileRef,profileData,{merge:true});
+return chosen;
+});
+}
+function legacyHandleFromName(name,uid){const v=Array.from(String(name||"").normalize("NFKC").replace(/\s+/g,"").replace(/[^\p{L}\p{N}\p{M}_・-]/gu,"")).slice(0,30).join("");return v&&!/^__.*__$/.test(v)?v:("member"+String(uid||"").slice(-6))}
 async function ensureLegacyProfile(user,profile){
- const p=profile||{},displayName=String(p.displayName||user.displayName||user.email?.split("@")[0]||"メンバー").trim()||"メンバー";
- const data={displayName,handle:p.handle||legacyHandleFromName(displayName,user.uid),bio:p.bio||"",photoData:p.photoData||"",minecraftGamertags:Array.isArray(p.minecraftGamertags)?p.minecraftGamertags:[],socialLinks:Array.isArray(p.socialLinks)?p.socialLinks:[],activityLinks:Array.isArray(p.activityLinks)?p.activityLinks:[]};
- return await saveProfileTransaction(user,data,true);
+const p=profile||{},displayName=String(p.displayName||user.displayName||user.email?.split("@")[0]||"メンバー").trim()||"メンバー";
+const data={displayName,handle:p.handle||legacyHandleFromName(displayName,user.uid),bio:p.bio||"",photoData:p.photoData||"",minecraftGamertags:Array.isArray(p.minecraftGamertags)?p.minecraftGamertags:[],socialLinks:Array.isArray(p.socialLinks)?p.socialLinks:[],activityLinks:Array.isArray(p.activityLinks)?p.activityLinks:[]};
+return await saveProfileTransaction(user,data,true);
 }
 async function emailAction(){let email=$("email").value.trim(),pass=$("password").value,name=$("display-name").value.trim(),handle=$("signup-handle").value.trim(),created=null;try{$("login-error").textContent="";if(authMode==="signup"){if(!email||!pass||!name||!handle)throw Error("メールアドレス・パスワード・表示名・ハンドルネームをすべて入力してください。");if(!$("email").checkValidity())throw Error("メールアドレスの形式を確認してください。");if(pass.length<6)throw Error("パスワードは6文字以上にしてください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");const normalized=normalizeHandle(handle);let r=await createUserWithEmailAndPassword(auth,email,pass);created=r.user;await updateProfile(r.user,{displayName:name});await saveProfileTransaction(r.user,{displayName:name,handle:normalized,bio:"",photoData:"",minecraftGamertags:[],socialLinks:[],activityLinks:[]},false);closeLogin()}else{if(!email||!pass)throw Error("メールアドレスとパスワードを入力してください。");await signInWithEmailAndPassword(auth,email,pass);closeLogin()}}catch(e){if(created&&auth.currentUser?.uid===created.uid){await deleteUser(created).catch(()=>{});await signOut(auth).catch(()=>{})}showError(e)}}
 async function googleSignup(){if(authMode!=="signup")return;try{$("login-error").textContent="";authFlow=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(r.user.providerData.some(p=>p.providerId==="password")){await signOut(auth);throw Error("このGoogleアカウントは既にパスワード設定済みです。ログイン画面からログインしてください。")}showGoogleCompletion(r.user)}catch(e){if(auth.currentUser&& !googlePendingUser)await signOut(auth).catch(()=>{});showError(e)}finally{authFlow=false;if(!googlePendingUser)await syncUser(auth.currentUser)}}
-async function completeGoogleSignup(){let user=googlePendingUser,pass=$("password").value,name=$("display-name").value.trim(),handle=$("signup-handle").value.trim();if(!user)return;let linked=false;try{$("login-error").textContent="";if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");if(!handle)throw Error("ハンドルネームを入力してください。");const normalized=normalizeHandle(handle);if(!pass||pass.length<6)throw Error("パスワードは6文字以上で入力してください。");if(auth.currentUser?.uid!==user.uid)throw Error("Google認証の有効期限が切れました。最初からやり直してください。");authFlow=true;await updateProfile(user,{displayName:name});await linkWithCredential(user,EmailAuthProvider.credential(user.email,pass));linked=true;await signOut(auth);const signed=await signInWithEmailAndPassword(auth,user.email,pass);await saveProfileTransaction(signed.user,{displayName:name,handle:normalized,bio:"",photoData:"",minecraftGamertags:[],socialLinks:[],activityLinks:[]},false);googlePendingUser=null;closeLogin();authMode="login";resetGoogleCompletion()}catch(e){if(linked){try{let cleanupUser=auth.currentUser;if(!cleanupUser||cleanupUser.uid!==user.uid)cleanupUser=(await signInWithEmailAndPassword(auth,user.email,pass)).user;await deleteUser(cleanupUser)}catch(cleanErr){console.warn("Google signup cleanup:",cleanErr)}await signOut(auth).catch(()=>{});googlePendingUser=null;updateAuthMode()}showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
-async function setupGooglePassword(){showError(new Error("新規登録画面からGoogleで認証し、表示名とパスワードを設定してください。"))}
+async function completeGoogleSignup(){let user=googlePendingUser,pass=$("password").value,name=$("display-name").value.trim(),handle=$("signup-handle").value.trim();if(!user)return;let linked=false;try{$("login-error").textContent="";if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");if(!handle)throw Error("ハンドルネームを入力してください。");const normalized=normalizeHandle(handle);if(!pass||pass.length<6)throw Error("パスワードは6文字以上で入力してください。");if(auth.currentUser?.uid!==user.uid)throw Error("Google認証の有効期限が切れました。最初からやり直してください。");authFlow=true;await updateProfile(user,{displayName:name});await linkWithCredential(user,EmailAuthProvider.credential(user.email,pass));linked=true;await signOut(auth);const signed=await signInWithEmailAndPassword(auth,user.email,pass);await saveProfileTransaction(signed.user,{displayName:name,handle:normalized,bio:"",photoData:"",minecraftGamertags:[],socialLinks:[],activityLinks:[]},false);googlePendingUser=null;closeLogin();authMode="login";resetGoogleCompletion()}catch(e){if(linked){try{let cleanupUser=auth.currentUser;if(!cleanupUser||cleanupUser.uid!==user.uid)cleanupUser=(await signInWithEmailAndPassword(auth,user.email,pass)).user;await deleteUser(cleanupUser)}catch(cleanErr){}await signOut(auth).catch(()=>{});googlePendingUser=null;updateAuthMode()}showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
 function updateUserArea(){let n=nameOf(),photo=currentProfile.photoData;$("user-name").textContent=n;$("user-role").textContent=roleName(currentUser.uid);$("user-avatar").innerHTML=safeImage(photo)?`<img src="${safeImage(photo)}" alt="">`:esc(Array.from(n)[0]||"?");$("login-button").textContent="ログアウト";$("login-button").onclick=openLogin;$("profile-button").style.display="block"}
 function updateComposer(){let ok=currentView==="posts"&&!!currentUser&&(currentChannel==="chat"||isStaff());$("post-input").disabled=!ok;$("send-button").disabled=!ok;$("composer").style.display=ok?"flex":"none";$("composer-notice").textContent=!currentUser?"投稿するにはログインしてください。":currentChannel==="announcement"&&!isStaff()?"運営メンバーのみ投稿できます。":"画像は1枚まで（圧縮後450KB以内）。Enterで送信、Shift+Enterで改行。"}
 function cleanupReplies(){for(let u of replyUnsubs.values())u();replyUnsubs.clear();replyCache.clear()}
@@ -422,17 +418,17 @@ renderReplies(p.id);
 }
 }
 function cleanupRemovedPosts(ids){let keep=new Set(ids);for(let [id,unsub]of replyUnsubs){if(!keep.has(id)){unsub();replyUnsubs.delete(id);replyCache.delete(id);replyLoaded.delete(id)}}for(let node of [...$("messages").querySelectorAll(".post")])if(!keep.has(node.id.slice(5)))node.remove()}
-async function loadUsers(){try{let snap=await getDocs(collection(db,"profiles"));setUsers(snap.docs.map(d=>({uid:d.id,name:d.data().displayName||"メンバー",handle:d.data().handle||String(d.data().displayName||"メンバー").replace(/\s+/g,""),photo:d.data().photoData||""})));renderUsers();renderPosts()}catch(e){setUsers([]);$("users-list").innerHTML=`<div class="search-empty">ユーザー一覧を読み込めません。Firestoreルールを確認してください。<br>${esc(e.message)}</div>`}}
+async function loadUsers(){try{let snap=await getDocs(collection(db,"profiles"));setUsers(snap.docs.map(d=>({uid:d.id,name:d.data().displayName||"メンバー",handle:d.data().handle||String(d.data().displayName||"メンバー").replace(/\s+/g,""),photo:d.data().photoData||""})));renderUsers();renderPosts()}catch(e){setUsers([]);$("users-list").innerHTML=`<div class="search-empty">ユーザー一覧を読み込めません。</div>`}}
 function renderUsers(){let q=$("users-search")?.value.trim().toLocaleLowerCase("ja-JP")||"",rows=userCache.filter(u=>u.name.toLocaleLowerCase("ja-JP").includes(q)||("@"+u.handle).toLocaleLowerCase("ja-JP").includes(q)).sort((a,b)=>a.name.localeCompare(b.name,"ja"));$("users-summary").textContent=`登録メンバー ${userCache.length}人 ・ オンライン ${userCache.filter(u=>isOnline(u.uid)).length}人`;$("users-list").innerHTML=rows.map(u=>`<button class="member-row" onclick="viewProfile('${esc(u.uid)}');closeUsers()">${avatar(u.name,u.photo)}<span class="member-meta"><span class="member-name">${esc(u.name)}</span><span class="member-status">@${esc(u.handle)} ・ ${isOnline(u.uid)?'<span class="online-dot"></span>オンライン':'<span class="offline-dot"></span>オフライン'}</span></span><span class="member-role">${esc(roleName(u.uid))}</span></button>`).join("")||'<div class="search-empty">該当するメンバーはいません。</div>'}
 function openUsers(){if(!currentUser)return toast("メンバー一覧を見るにはログインしてください。");$("users-modal").classList.add("open");$("users-search").value="";loadUsers()}
 function closeUsers(){$("users-modal").classList.remove("open")}
-async function writePresence(){if(!currentUser)return;try{await setDoc(doc(db,"presence",currentUser.uid),{uid:currentUser.uid,lastSeen:serverTimestamp(),displayName:nameOf()},{merge:true})}catch(e){console.warn("presence update:",e.message)}}
+async function writePresence(){if(!currentUser||document.hidden)return;try{await setDoc(doc(db,"presence",currentUser.uid),{uid:currentUser.uid,lastSeen:serverTimestamp(),displayName:nameOf()},{merge:true})}catch(e){}}
 function startPresence(){if(presenceTimer)clearInterval(presenceTimer);if(unsubscribePresence)unsubscribePresence();if(!currentUser)return;writePresence();presenceTimer=setInterval(writePresence,30000);unsubscribePresence=onSnapshot(collection(db,"presence"),snap=>{presenceCache={};snap.forEach(d=>presenceCache[d.id]=d.data());if($("users-modal").classList.contains("open"))renderUsers()},()=>{});if(!window.__pv){window.__pv=1;document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")writePresence()})}}
-function mentionInput(input){let v=input.value,pos=input.selectionStart||0,before=v.slice(0,pos),m=before.match(/(?:^|\s)@([\p{L}\p{N}_-]*)$/u);if(!m){hideMentions();return}let term=m[1].toLocaleLowerCase("ja-JP"),matches=userCache.filter(u=>mentionKey(u.handle).startsWith(mentionKey(term))).slice(0,7);if(!matches.length){hideMentions();return}mentionTarget={input,start:pos-m[1].length-1,end:pos};let menu=$("mention-menu"),r=input.getBoundingClientRect();menu.style.left=Math.max(8,Math.min(r.left,innerWidth-330))+"px";menu.style.top=Math.max(8,r.top-matches.length*44-10)+"px";menu.innerHTML=matches.map(u=>`<button class="mention-option" type="button" onclick="insertMention('${esc(u.uid)}')">${avatar(u.name,u.photo,"reply-avatar")}<span>${esc(u.name)}<small style="display:block;color:var(--sub)">@${esc(u.handle)}</small></span></button>`).join("");menu.style.display="block"}
+function mentionInput(input){let v=input.value,pos=input.selectionStart||0,before=v.slice(0,pos),m=before.match(/(?:^|\s)@([\p{L}\p{N}\p{M}_・-]*)$/u);if(!m){hideMentions();return}let term=m[1].toLocaleLowerCase("ja-JP"),matches=userCache.filter(u=>mentionKey(u.handle).startsWith(mentionKey(term))).slice(0,7);if(!matches.length){hideMentions();return}mentionTarget={input,start:pos-m[1].length-1,end:pos};let menu=$("mention-menu"),r=input.getBoundingClientRect();menu.style.left=Math.max(8,Math.min(r.left,innerWidth-330))+"px";menu.style.top=Math.max(8,r.top-matches.length*44-10)+"px";menu.innerHTML=matches.map(u=>`<button class="mention-option" type="button" onclick="insertMention('${esc(u.uid)}')">${avatar(u.name,u.photo,"reply-avatar")}<span>${esc(u.name)}<small style="display:block;color:var(--sub)">@${esc(u.handle)}</small></span></button>`).join("");menu.style.display="block"}
 function hideMentions(){$("mention-menu").style.display="none";mentionTarget=null}
 function insertMention(uid){if(!mentionTarget)return;let u=userCache.find(x=>x.uid===uid),t=mentionTarget;if(!u)return;let key=String(u.handle);let before=t.input.value.slice(0,t.start),after=t.input.value.slice(t.end);t.input.value=before+"@"+key+" "+after;t.input.focus();let pos=(before+"@"+key+" ").length;t.input.setSelectionRange(pos,pos);hideMentions()}
-function startPosts(){if(unsubscribePosts)unsubscribePosts();cleanupReplies();if(!currentUser){cachedPosts=[];renderPosts();return}unsubscribePosts=onSnapshot(collection(db,"posts"),s=>{cachedPosts=s.docs.map(d=>({id:d.id,data:d.data()}));cachedPosts.sort((a,b)=>(b.data.createdAt?.toMillis?.()||0)-(a.data.createdAt?.toMillis?.()||0));renderPosts()},e=>{$("messages").textContent="読み込みエラー："+e.message})}
-function startReplies(id){if(replyUnsubs.has(id))return;let ref=collection(db,"posts",id,"replies");let unsub=onSnapshot(ref,s=>{let rows=s.docs.map(d=>({id:d.id,data:d.data()}));rows.sort((a,b)=>(a.data.createdAt?.toMillis?.()||0)-(b.data.createdAt?.toMillis?.()||0));replyCache.set(id,rows);replyLoaded.add(id);renderReplies(id)},e=>{let el=$("replies-"+id);if(el)el.textContent="返信を読み込めません："+e.message});replyUnsubs.set(id,unsub)}
+function startPosts(){if(unsubscribePosts)unsubscribePosts();cleanupReplies();if(!currentUser){cachedPosts=[];renderPosts();return}unsubscribePosts=onSnapshot(collection(db,"posts"),s=>{cachedPosts=s.docs.map(d=>({id:d.id,data:d.data()}));cachedPosts.sort((a,b)=>(b.data.createdAt?.toMillis?.()||0)-(a.data.createdAt?.toMillis?.()||0));renderPosts()},e=>{$("messages").textContent="読み込みエラー："+errText(e)})}
+function startReplies(id){if(replyUnsubs.has(id))return;let ref=collection(db,"posts",id,"replies");let unsub=onSnapshot(ref,s=>{let rows=s.docs.map(d=>({id:d.id,data:d.data()}));rows.sort((a,b)=>(a.data.createdAt?.toMillis?.()||0)-(b.data.createdAt?.toMillis?.()||0));replyCache.set(id,rows);replyLoaded.add(id);renderReplies(id)},e=>{let el=$("replies-"+id);if(el)el.textContent="返信を読み込めません："+errText(e)});replyUnsubs.set(id,unsub)}
 function renderReplies(id){
 const area=$("replies-"+id);if(!area)return;
 const rows=replyCache.get(id)||[];
@@ -458,18 +454,19 @@ cursor=node.nextElementSibling;
 const keep=new Set(rows.map(r=>"reply-"+id+"-"+r.id));
 for(const child of [...area.children])if(child.id&&!keep.has(child.id))child.remove();
 }
-async function sendPost(){let input=$("post-input"),content=input.value.trim();if(!content&&!pendingImage)return;if(!currentUser)return;if(currentChannel==="announcement"&&!isStaff())return toast("運営メンバーのみ投稿できます。");let btn=$("send-button");btn.disabled=true;btn.textContent="送信中…";try{await addDoc(collection(db,"posts"),{channel:currentChannel,content,authorUid:currentUser.uid,authorName:nameOf(),authorPhoto:currentProfile.photoData||"",imageData:pendingImage||"",createdAt:serverTimestamp(),updatedAt:serverTimestamp()});input.value="";input.style.height="auto";clearAttachment();toast("投稿しました。")}catch(e){toast("投稿できません："+e.message)}finally{btn.textContent="送信";updateComposer()}}
-async function sendReply(id){let input=$("reply-input-"+id),content=input?.value.trim();if(!content||!currentUser)return;let button=input.parentElement.querySelector("button");button.disabled=true;try{await addDoc(collection(db,"posts",id,"replies"),{content,authorUid:currentUser.uid,authorName:nameOf(),authorPhoto:currentProfile.photoData||"",createdAt:serverTimestamp()});input.value="";toast("返信しました。")}catch(e){toast("返信できません："+e.message)}finally{button.disabled=false}}
+async function sendPost(){let input=$("post-input"),content=input.value.trim();if(!content&&!pendingImage)return;if(!currentUser)return;if(currentChannel==="announcement"&&!isStaff())return toast("運営メンバーのみ投稿できます。");let btn=$("send-button");btn.disabled=true;btn.textContent="送信中…";try{await addDoc(collection(db,"posts"),{channel:currentChannel,content,authorUid:currentUser.uid,authorName:nameOf(),authorPhoto:currentProfile.photoData||"",imageData:pendingImage||"",createdAt:serverTimestamp(),updatedAt:serverTimestamp()});input.value="";input.style.height="auto";clearAttachment();toast("投稿しました。")}catch(e){toast("投稿できません："+errText(e))}finally{btn.textContent="送信";updateComposer()}}
+async function sendReply(id){let input=$("reply-input-"+id),content=input?.value.trim();if(!content||!currentUser)return;let button=input.parentElement.querySelector("button");button.disabled=true;try{await addDoc(collection(db,"posts",id,"replies"),{content,authorUid:currentUser.uid,authorName:nameOf(),authorPhoto:currentProfile.photoData||"",createdAt:serverTimestamp()});input.value="";toast("返信しました。")}catch(e){toast("返信できません："+errText(e))}finally{button.disabled=false}}
 function openAction(title,description,confirmText,task,editorValue=null){$("action-title").textContent=title;$("action-description").textContent=description;$("action-confirm").textContent=confirmText;$("action-error").textContent="";$("action-editor").style.display=editorValue===null?"none":"block";$("action-text").value=editorValue??"";actionTask=task;$("action-modal").classList.add("open");if(editorValue!==null)setTimeout(()=>$("action-text").focus(),50)}
 function closeAction(){$("action-modal").classList.remove("open");actionTask=null}
-async function runAction(){if(!actionTask)return;let task=actionTask,button=$("action-confirm");button.disabled=true;$("action-error").textContent="";try{await task($("action-text").value);closeAction()}catch(e){$("action-error").textContent=e.message||"処理に失敗しました。"}finally{button.disabled=false}}
+async function runAction(){if(!actionTask)return;let task=actionTask,button=$("action-confirm");button.disabled=true;$("action-error").textContent="";try{await task($("action-text").value);closeAction()}catch(e){$("action-error").textContent=errText(e,"処理に失敗しました。")}finally{button.disabled=false}}
 function editPost(id){let p=cachedPosts.find(x=>x.id===id);if(!p)return;openAction("投稿を編集","内容を確認して保存してください。","保存",async value=>{let c=value.trim();if(!c&&!p.data.imageData)throw Error("本文または画像が必要です。");await updateDoc(doc(db,"posts",id),{content:c,updatedAt:serverTimestamp()});toast("投稿を更新しました。")},p.data.content||"")}
 function removePost(id){openAction("投稿を削除","この投稿を削除します。投稿に付いた返信も表示されなくなります。","削除する",async()=>{await deleteDoc(doc(db,"posts",id));toast("投稿を削除しました。")})}
 function removeReply(postId,replyId){openAction("返信を削除","この返信を削除してもよろしいですか？","削除する",async()=>{await deleteDoc(doc(db,"posts",postId,"replies",replyId));toast("返信を削除しました。")})}
 function replyKey(e,id){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendReply(id)}}
 function postKey(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendPost()}}
-async function imageData(file,maxBytes,maxSide){if(!file.type.startsWith("image/"))throw Error("画像ファイルを選択してください。");if(file.size>10*1024*1024)throw Error("元画像は10MB以下にしてください。");let bmp=await createImageBitmap(file),scale=Math.min(1,maxSide/Math.max(bmp.width,bmp.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(bmp.width*scale));c.height=Math.max(1,Math.round(bmp.height*scale));c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);bmp.close();for(let q of [.82,.72,.62,.52,.42]){let data=c.toDataURL("image/jpeg",q),bytes=Math.ceil((data.length-data.indexOf(",")-1)*.75);if(bytes<=maxBytes)return data}throw Error("画像を圧縮しても容量制限を超えています。別の画像を選んでください。")}
-async function choosePostImage(e){let f=e.target.files?.[0];if(!f)return;try{pendingImage=await imageData(f,450*1024,1280);$("attachment-thumb").src=pendingImage;$("attachment-name").textContent=f.name;$("attachment-preview").style.display="flex"}catch(err){toast(err.message)}e.target.value=""}
+function loadBitmap(file){return (window.createImageBitmap?createImageBitmap(file).catch(()=>null):Promise.resolve(null)).then(b=>b||new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);res(im)};im.onerror=()=>{URL.revokeObjectURL(u);rej(Error("画像を読み込めませんでした。"))};im.src=u}))}
+async function imageData(file,maxBytes,maxSide){if(!file.type.startsWith("image/"))throw Error("画像ファイルを選択してください。");if(file.size>10*1024*1024)throw Error("元画像は10MB以下にしてください。");const bmp=await loadBitmap(file),w=bmp.naturalWidth||bmp.width,h=bmp.naturalHeight||bmp.height,scale=Math.min(1,maxSide/Math.max(w,h)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(w*scale));c.height=Math.max(1,Math.round(h*scale));const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(bmp,0,0,c.width,c.height);if(bmp.close)bmp.close();for(let q of [.82,.72,.62,.52,.42]){let data=c.toDataURL("image/jpeg",q),bytes=Math.ceil((data.length-data.indexOf(",")-1)*.75);if(bytes<=maxBytes)return data}throw Error("画像を圧縮しても容量制限を超えています。別の画像を選んでください。")}
+async function choosePostImage(e){let f=e.target.files?.[0];if(!f)return;try{pendingImage=await imageData(f,450*1024,1280);$("attachment-thumb").src=pendingImage;$("attachment-name").textContent=f.name;$("attachment-preview").style.display="flex"}catch(err){toast(errText(err,"画像を読み込めませんでした。"))}e.target.value=""}
 function clearAttachment(){pendingImage="";$("attachment-preview").style.display="none";$("attachment-thumb").removeAttribute("src")}
 function suspensionIsActive(data){if(!data||data.active!==true)return false;let until=data.until?.toDate?.()|| (data.until instanceof Date?data.until:null);return !!until&&until.getTime()>Date.now()}
 function suspensionUntilText(data){let until=data?.until?.toDate?.()||(data?.until instanceof Date?data.until:null);return until?until.toLocaleString("ja-JP")+(" まで"):""}
@@ -477,10 +474,10 @@ function showSuspendedNotice(data){$("suspended-message").textContent=data?.mess
 function closeSuspendedNotice(){$("suspended-modal").classList.remove("open")}
 function openSuspendModal(uid,name){if(!isStaff()||!uid||uid===OWNER_UID)return toast("この操作を行う権限がありません。");suspensionTargetUid=uid;$("suspend-target-label").textContent="対象："+(name||"メンバー");$("suspend-duration").value="24";$("suspend-message").value="";$("suspend-error").textContent="";$("suspend-modal").classList.add("open")}
 function closeSuspendModal(){$("suspend-modal").classList.remove("open");suspensionTargetUid=""}
-async function confirmSuspend(){if(!isStaff()||!suspensionTargetUid)throw Error("操作権限がありません。");let message=$("suspend-message").value.trim();if(!message) return $("suspend-error").textContent="表示するメッセージを入力してください。";let hours=Number($("suspend-duration").value);if(![1,24,168,720].includes(hours))return $("suspend-error").textContent="凍結期間を選択してください。";let btn=$("suspend-confirm");btn.disabled=true;try{await setDoc(doc(db,"accountSuspensions",suspensionTargetUid),{active:true,message,until:new Date(Date.now()+hours*3600000),updatedAt:serverTimestamp(),updatedBy:currentUser.uid});toast("アカウントを一時凍結しました。");closeSuspendModal();if(viewedProfileUid===suspensionTargetUid)await viewProfile(suspensionTargetUid)}catch(e){$("suspend-error").textContent="凍結できません："+e.message}finally{btn.disabled=false}}
-async function liftSuspension(uid){if(!isStaff()||!uid)return toast("この操作を行う権限がありません。");try{await setDoc(doc(db,"accountSuspensions",uid),{active:false,message:"",updatedAt:serverTimestamp(),updatedBy:currentUser.uid},{merge:true});toast("凍結を解除しました。");if(viewedProfileUid===uid)await viewProfile(uid)}catch(e){toast("凍結を解除できません："+e.message)}}
+async function confirmSuspend(){if(!isStaff()||!suspensionTargetUid)throw Error("操作権限がありません。");let message=$("suspend-message").value.trim();if(!message) return $("suspend-error").textContent="表示するメッセージを入力してください。";let hours=Number($("suspend-duration").value);if(![1,24,168,720].includes(hours))return $("suspend-error").textContent="凍結期間を選択してください。";let btn=$("suspend-confirm");btn.disabled=true;try{await setDoc(doc(db,"accountSuspensions",suspensionTargetUid),{active:true,message,until:new Date(Date.now()+hours*3600000),updatedAt:serverTimestamp(),updatedBy:currentUser.uid});toast("アカウントを一時凍結しました。");closeSuspendModal();if(viewedProfileUid===suspensionTargetUid)await viewProfile(suspensionTargetUid)}catch(e){$("suspend-error").textContent="凍結できません："+errText(e)}finally{btn.disabled=false}}
+async function liftSuspension(uid){if(!isStaff()||!uid)return toast("この操作を行う権限がありません。");try{await setDoc(doc(db,"accountSuspensions",uid),{active:false,message:"",updatedAt:serverTimestamp(),updatedBy:currentUser.uid},{merge:true});toast("凍結を解除しました。");if(viewedProfileUid===uid)await viewProfile(uid)}catch(e){toast("凍結を解除できません："+errText(e))}}
 function openProfile(){if(!currentUser)return;profileImage=currentProfile.photoData||"";$("profile-title").textContent="プロフィール設定";$("profile-edit-fields").style.display="block";$("profile-view-data").style.display="none";$("profile-name").value=nameOf();$("profile-handle").value=currentProfile.handle||nameOf().replace(/\s+/g,"");$("profile-bio").value=currentProfile.bio||"";$("profile-gamertags").value=(currentProfile.minecraftGamertags||[]).join("\n");$("profile-social").value=(currentProfile.socialLinks||[]).join("\n");$("profile-activity").value=(currentProfile.activityLinks||[]).join("\n");$("profile-save").style.display="block";$("delete-account-open").style.display="block";$("profile-error").textContent="";updateProfilePreview();setProfileRole(currentUser.uid);$("profile-modal").classList.add("open")}
-async function viewProfile(uid){if(!currentUser||!uid)return;if(uid===currentUser.uid)return openProfile();try{let [s,ss]=await Promise.all([getDoc(doc(db,"profiles",uid)),getDoc(doc(db,"accountSuspensions",uid))]);let p=s.exists()?s.data():{},susp=ss.exists()?ss.data():{};viewedProfileUid=uid;profileImage=p.photoData||"";$("profile-title").textContent=p.displayName||"プロフィール";$("profile-edit-fields").style.display="none";$("profile-view-data").style.display="block";$("profile-view-data").innerHTML=profileInfoHtml({...p,handle:p.handle||String(p.displayName||"メンバー").replace(/\s+/g,"")});$("profile-save").style.display="none";$("delete-account-open").style.display="none";$("profile-error").textContent="";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(p.displayName||"メンバー")[0]);$("profile-name").value=p.displayName||"メンバー";setProfileRole(uid);let controls=$("profile-role-view");if(isStaff()&&uid!==OWNER_UID){let active=suspensionIsActive(susp);controls.innerHTML+=active?`<div style="margin-top:12px"><span class="post-role role-moderator">一時凍結中</span><p class="auth-description">${esc(susp.message||"メッセージなし")}<br>${esc(suspensionUntilText(susp))}</p><button class="small-button" onclick="liftSuspension('${esc(uid)}')">凍結を解除</button></div>`:`<div style="margin-top:12px"><button class="small-button danger" onclick="openSuspendModal('${esc(uid)}','${esc(p.displayName||"メンバー")}')">アカウントを一時凍結</button></div>`}$("profile-modal").classList.add("open")}catch(e){toast("プロフィールを読み込めません："+e.message)}}
+async function viewProfile(uid){if(!currentUser||!uid)return;if(uid===currentUser.uid)return openProfile();try{let [s,ss]=await Promise.all([getDoc(doc(db,"profiles",uid)),isStaff()?getDoc(doc(db,"accountSuspensions",uid)).catch(()=>null):null]);let p=s.exists()?s.data():{},susp=ss?.exists()?ss.data():{};viewedProfileUid=uid;profileImage=p.photoData||"";$("profile-title").textContent=p.displayName||"プロフィール";$("profile-edit-fields").style.display="none";$("profile-view-data").style.display="block";$("profile-view-data").innerHTML=profileInfoHtml({...p,handle:p.handle||String(p.displayName||"メンバー").replace(/\s+/g,"")});$("profile-save").style.display="none";$("delete-account-open").style.display="none";$("profile-error").textContent="";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(p.displayName||"メンバー")[0]);$("profile-name").value=p.displayName||"メンバー";setProfileRole(uid);let controls=$("profile-role-view");if(isStaff()&&uid!==OWNER_UID){let active=suspensionIsActive(susp);controls.innerHTML+=active?`<div style="margin-top:12px"><span class="post-role role-moderator">一時凍結中</span><p class="auth-description">${esc(susp.message||"メッセージなし")}<br>${esc(suspensionUntilText(susp))}</p><button class="small-button" onclick="liftSuspension('${esc(uid)}')">凍結を解除</button></div>`:`<div style="margin-top:12px"><button class="small-button danger" onclick="openSuspendModal('${esc(uid)}','${esc(p.displayName||"メンバー")}')">アカウントを一時凍結</button></div>`}$("profile-modal").classList.add("open")}catch(e){toast("プロフィールを読み込めません："+errText(e))}}
 function setProfileRole(uid){$("profile-role-view").innerHTML=`<span class="post-role ${roleClass(uid)}">${esc(roleName(uid))}</span>`}
 function closeProfile(){$("profile-modal").classList.remove("open")}
 let deleteAccountStage=0;
@@ -547,7 +544,6 @@ for(const reply of replies.docs)remainingReplyRefs.push(reply.ref);
 removedReplies+=remainingReplyRefs.length;
 await deleteRefsInBatches(remainingReplyRefs);
 await deleteRefsInBatches(ownPosts.docs.map(s=>s.ref));
-console.info("account content cleanup:",{removedPosts,removedReplies});
 }
 async function deleteAccountNow(){
 const user=auth.currentUser,pass=$("delete-account-password").value,button=$("delete-account-next");
@@ -578,12 +574,11 @@ const messages={
 "auth/requires-recent-login":"本人確認の期限が切れています。一度ログアウトして再ログインしてからお試しください。",
 "auth/network-request-failed":"通信に失敗しました。ネットワークを確認してください。"
 };
-$("delete-account-error").textContent=messages[e.code]||("削除できませんでした："+(e.message||e.code||"不明なエラー"));
-console.error("delete account:",e);
+$("delete-account-error").textContent=messages[e.code]||"削除できませんでした。しばらくしてからもう一度お試しください。";
 }finally{button.disabled=false}
 }
 function updateProfilePreview(){let n=$("profile-name").value.trim()||"?";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(n)[0])}
-async function saveProfile(){let name=$("profile-name").value.trim(),handle=$("profile-handle").value.trim();try{if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");if(!handle)throw Error("ハンドルネームを入力してください。");let bio=$("profile-bio").value.trim();if(bio.length>500)throw Error("自己紹介は500文字以内にしてください。");let minecraftGamertags=linesToArray($("profile-gamertags").value,3,"ゲーマータグ"),socialLinks=linesToArray($("profile-social").value,3,"SNSリンク"),activityLinks=linesToArray($("profile-activity").value,3,"Webサイト・活動場所リンク");if(minecraftGamertags.some(x=>x.length>100))throw Error("ゲーマータグは1件100文字以内にしてください。");for(let u of [...socialLinks,...activityLinks]){if(!validHttpUrl(u))throw Error("リンクは https:// または http:// から始まるURLを入力してください。");if(u.length>500)throw Error("リンクURLは500文字以内にしてください。")}$("profile-save").disabled=true;const chosen=await saveProfileTransaction(currentUser,{displayName:name,handle,bio,photoData:profileImage||"",minecraftGamertags,socialLinks,activityLinks},false);await updateProfile(auth.currentUser,{displayName:name});currentProfile={displayName:name,handle:chosen,bio,photoData:profileImage||"",minecraftGamertags,socialLinks,activityLinks};setUsers([...userCache.filter(u=>u.uid!==currentUser.uid),{uid:currentUser.uid,name,handle:chosen,photo:profileImage||""}]);updateUserArea();renderUsers();closeProfile();renderPosts();toast("プロフィールを更新しました。")}catch(e){$("profile-error").textContent=e.message}finally{$("profile-save").disabled=false}}
+async function saveProfile(){let name=$("profile-name").value.trim(),handle=$("profile-handle").value.trim();try{if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");if(!handle)throw Error("ハンドルネームを入力してください。");let bio=$("profile-bio").value.trim();if(bio.length>500)throw Error("自己紹介は500文字以内にしてください。");let minecraftGamertags=linesToArray($("profile-gamertags").value,3,"ゲーマータグ"),socialLinks=linesToArray($("profile-social").value,3,"SNSリンク"),activityLinks=linesToArray($("profile-activity").value,3,"Webサイト・活動場所リンク");if(minecraftGamertags.some(x=>x.length>100))throw Error("ゲーマータグは1件100文字以内にしてください。");for(let u of [...socialLinks,...activityLinks]){if(!validHttpUrl(u))throw Error("リンクは https:// または http:// から始まるURLを入力してください。");if(u.length>500)throw Error("リンクURLは500文字以内にしてください。")}$("profile-save").disabled=true;const chosen=await saveProfileTransaction(currentUser,{displayName:name,handle,bio,photoData:profileImage||"",minecraftGamertags,socialLinks,activityLinks},false);await updateProfile(auth.currentUser,{displayName:name});currentProfile={displayName:name,handle:chosen,bio,photoData:profileImage||"",minecraftGamertags,socialLinks,activityLinks};setUsers([...userCache.filter(u=>u.uid!==currentUser.uid),{uid:currentUser.uid,name,handle:chosen,photo:profileImage||""}]);updateUserArea();renderUsers();closeProfile();renderPosts();toast("プロフィールを更新しました。")}catch(e){$("profile-error").textContent=errText(e,"保存できませんでした。")}finally{$("profile-save").disabled=false}}
 async function syncUser(user){
 const version=++authSyncVersion;
 if(!user){
@@ -605,22 +600,21 @@ await signOut(auth);
 if(version===authSyncVersion){$("login-error").textContent="メールアドレスとパスワードでログインしてください。";$("login-modal").classList.add("open");}
 return;
 }
-const suspensionSnap=await getDoc(doc(db,"accountSuspensions",user.uid));
+const suspensionSnap=await getDoc(doc(db,"accountSuspensions",user.uid)).catch(()=>null);
 if(version!==authSyncVersion||auth.currentUser?.uid!==user.uid)return;
-if(suspensionSnap.exists()&&suspensionIsActive(suspensionSnap.data())){const data=suspensionSnap.data();await signOut(auth);showSuspendedNotice(data);return;}
+if(suspensionSnap?.exists()&&suspensionIsActive(suspensionSnap.data())){const data=suspensionSnap.data();await signOut(auth);showSuspendedNotice(data);return;}
 currentUser=user;currentProfile={};roles={};updateUserArea();updateComposer();
-const [p,r]=await Promise.all([getDoc(doc(db,"profiles",user.uid)),getDocs(collection(db,"staffRoles"))]);
+const [p,r]=await Promise.all([getDoc(doc(db,"profiles",user.uid)).catch(()=>null),getDocs(collection(db,"staffRoles")).catch(()=>null)]);
 if(version!==authSyncVersion||auth.currentUser?.uid!==user.uid)return;
-currentProfile=p.exists()?p.data():{};roles={};r.forEach(x=>roles[x.id]=x.data());
-await ensureLegacyProfile(user,currentProfile);
-const refreshed=await getDoc(doc(db,"profiles",user.uid));currentProfile=refreshed.exists()?refreshed.data():currentProfile;
+currentProfile=p?.exists()?p.data():{};roles={};r?.forEach(x=>roles[x.id]=x.data());
+if(!currentProfile.handle){try{await ensureLegacyProfile(user,currentProfile);const refreshed=await getDoc(doc(db,"profiles",user.uid));if(refreshed.exists())currentProfile=refreshed.data()}catch(e){}}
 if(version!==authSyncVersion||auth.currentUser?.uid!==user.uid)return;
 updateUserArea();updateComposer();startPosts();startPresence();loadUsers();
 if(suspensionUnsub)suspensionUnsub();
-suspensionUnsub=onSnapshot(doc(db,"accountSuspensions",user.uid),async snap=>{if(!snap.exists())return;let data=snap.data();if(suspensionIsActive(data)&&auth.currentUser?.uid===user.uid){await signOut(auth);showSuspendedNotice(data)}},e=>console.warn("suspension listener:",e.message));
+suspensionUnsub=onSnapshot(doc(db,"accountSuspensions",user.uid),async snap=>{if(!snap.exists())return;let data=snap.data();if(suspensionIsActive(data)&&auth.currentUser?.uid===user.uid){await signOut(auth);showSuspendedNotice(data)}},()=>{});
 }catch(e){
 if(version!==authSyncVersion)return;
-console.error(e);$("messages").textContent="アカウント情報を読み込めません："+e.message;
+$("messages").textContent="アカウント情報を読み込めません："+errText(e);
 }
 }
 $("post-input").addEventListener("keydown",postKey);
@@ -630,18 +624,20 @@ document.addEventListener("input",e=>{if(e.target.matches("#post-input,.reply-fo
 document.addEventListener("click",e=>{if(!e.target.closest("#mention-menu")&&!e.target.matches("#post-input,.reply-form input"))hideMentions()});
 $("post-input").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,150)+"px"});
 $("post-image").addEventListener("change",choosePostImage);
-$("photo-file").addEventListener("change",async e=>{let f=e.target.files?.[0];if(!f)return;try{profileImage=await imageData(f,120*1024,256);updateProfilePreview()}catch(err){$("profile-error").textContent=err.message}e.target.value=""});
+$("photo-file").addEventListener("change",async e=>{let f=e.target.files?.[0];if(!f)return;try{profileImage=await imageData(f,120*1024,256);updateProfilePreview()}catch(err){$("profile-error").textContent=errText(err,"画像を読み込めませんでした。")}e.target.value=""});
 $("profile-name").addEventListener("input",updateProfilePreview);
 document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m){if(m.id==="action-modal")closeAction();else if(m.id==="login-modal")closeLogin();else m.classList.remove("open")}}));
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSidebar();document.querySelectorAll(".modal.open").forEach(m=>{if(m.id==="login-modal")closeLogin();else m.classList.remove("open")});actionTask=null}});
-await setPersistence(auth,browserLocalPersistence);
+setPersistence(auth,browserLocalPersistence).catch(()=>{}).then(()=>{
 applyTheme();updateAuthMode();selectChannel(settings[currentChannel]?currentChannel:"announcement");
 onAuthStateChanged(auth,async u=>{
 if(authFlow)return;
-await syncUser(u);
-document.body.classList.remove("auth-pending");
+try{await syncUser(u)}finally{document.body.classList.remove("auth-pending")}
 });
-Object.assign(window,{openUsers,closeUsers,insertMention,showRules,openPasswordReset,closePasswordReset,sendPasswordResetLink,openSuspendModal,closeSuspendModal,confirmSuspend,liftSuspension,closeSuspendedNotice,selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleSignup,completeGoogleSignup,setupGooglePassword,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,openDeleteAccount,closeDeleteAccount,advanceDeleteAccount,deleteAccountNow,clearAttachment,closeAction,runAction});
+});
+Object.assign(window,{openUsers,closeUsers,insertMention,showRules,openPasswordReset,closePasswordReset,sendPasswordResetLink,openSuspendModal,closeSuspendModal,confirmSuspend,liftSuspension,closeSuspendedNotice,selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleSignup,completeGoogleSignup,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,openDeleteAccount,closeDeleteAccount,advanceDeleteAccount,deleteAccountNow,clearAttachment,closeAction,runAction});
 </script>
+<script nomodule>document.body.classList.remove("auth-pending");document.getElementById("messages").innerHTML='<div class="empty"><div class="empty-title">お使いのブラウザは対応していません</div><div>ブラウザを最新版に更新してください。</div></div>'</script>
+<script>setTimeout(function(){var b=document.body;if(b.classList.contains("auth-pending")){b.classList.remove("auth-pending");var m=document.getElementById("messages");if(m&&!m.querySelector(".post"))m.innerHTML='<div class="empty"><div class="empty-title">読み込みに失敗しました</div><div>ページを再読み込みしてください。</div></div>'}},20000)</script>
 </body>
 </html>
