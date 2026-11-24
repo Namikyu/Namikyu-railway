@@ -168,7 +168,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 <label class="auth-label" id="name-label" style="display:none">表示名<input id="display-name" class="auth-input" maxlength="30" placeholder="掲示板で使う名前"></label>
 <label class="auth-label" id="handle-label" style="display:none">ハンドルネーム（必須）<input id="signup-handle" class="auth-input" maxlength="30" autocomplete="off" placeholder="ハンドルネーム"><span class="auth-description">英数字（大文字・小文字）・日本語・_・- が使えます。先頭の @ は入力不要です。</span></label>
 <label class="auth-label">メールアドレス<input id="email" class="auth-input" type="email" name="board-login-email" autocomplete="off" data-lpignore="true"></label>
-<label class="auth-label">パスワード<input id="password" class="auth-input" type="password" name="board-login-secret" autocomplete="off" data-lpignore="true"></label>
+<label class="auth-label">パスワード<input id="password" class="auth-input" type="text" name="board-login-secret" autocomplete="off" data-lpignore="true"></label>
 <button class="auth-primary" id="email-action-button" onclick="emailAction()">ログイン</button>
 <button class="auth-google" id="google-button" onclick="googleSignup()">Googleで新規登録</button>
 <button class="auth-google" id="google-setup-button" style="display:none" onclick="completeGoogleSignup()">登録を完了する</button>
@@ -203,7 +203,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 <h2 id="delete-account-title">アカウントの削除</h2>
 <p class="auth-description" id="delete-account-description">アカウントを削除すると、波急掲示板にログインできなくなります。</p>
 <div class="delete-warning" id="delete-account-warning">この操作は取り消せません。削除後は同じアカウントを元に戻せません。</div>
-<label class="auth-label" id="delete-password-label" style="display:none">現在のパスワード<input class="auth-input" id="delete-account-password" type="password" name="account-delete-check" autocomplete="off" data-lpignore="true" placeholder="パスワードを入力"></label>
+<label class="auth-label" id="delete-password-label" style="display:none">現在のパスワード<input class="auth-input" id="delete-account-password" type="text" name="account-delete-check" autocomplete="off" data-lpignore="true" placeholder="パスワードを入力"></label>
 <p class="auth-error" id="delete-account-error" role="alert"></p>
 <div class="dialog-actions"><button class="small-button" onclick="closeDeleteAccount()">キャンセル</button><button class="delete-account-button" id="delete-account-next" style="width:auto;margin:0" onclick="advanceDeleteAccount()">次へ</button></div>
 </div></div>
@@ -389,7 +389,7 @@ function updateUserArea(){let n=nameOf(),photo=currentProfile.photoData;$("user-
 function updateComposer(){let ok=currentView==="posts"&&!!currentUser&&(currentChannel==="chat"||isStaff());$("post-input").disabled=!ok;$("send-button").disabled=!ok;$("composer").style.display=ok?"flex":"none";$("composer-notice").textContent=!currentUser?"投稿するにはログインしてください。":currentChannel==="announcement"&&!isStaff()?"運営メンバーのみ投稿できます。":"画像は1枚まで（圧縮後450KB以内）。Enterで送信、Shift+Enterで改行。"}
 function cleanupReplies(){for(let u of replyUnsubs.values())u();replyUnsubs.clear();replyCache.clear()}
 const tpl=document.createElement("template");
-function makePost(p,d,manage,img,sig,enter){tpl.innerHTML=`<article class="post${enter?" post-enter":""}" id="post-${p.id}"><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy" decoding="async">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"></div><div class="reply-form"><input id="reply-input-${p.id}" name="board-reply-text" type="text" autocomplete="off" data-lpignore="true" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;const n=tpl.content.firstElementChild;n.dataset.sig=sig;return n}
+function makePost(p,d,manage,img,sig,enter){tpl.innerHTML=`<article class="post${enter?" post-enter":""}" id="post-${p.id}"><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy" decoding="async">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"></div><div class="reply-form"><input id="reply-input-${p.id}" name="board-reply-text" type="text" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;const n=tpl.content.firstElementChild;n.dataset.sig=sig;return n}
 function renderPosts(){
 if(currentView==="rules"){renderRules();return}
 const area=$("messages"),all=cachedPosts.filter(p=>p.data.channel===currentChannel);
@@ -617,6 +617,10 @@ if(version!==authSyncVersion)return;
 $("messages").textContent="アカウント情報を読み込めません："+errText(e);
 }
 }
+const PW_AREAS=[["password","login-modal"],["delete-account-password","delete-account-modal"]];
+function syncPw(){for(const[i,m]of PW_AREAS){const el=$(i),on=$(m).classList.contains("open")&&el.offsetParent!==null;if(on&&el.type!=="password")el.type="password";else if(!on&&el.type!=="text"){el.type="text";el.value=""}}}
+{const mo=new MutationObserver(syncPw);for(const[,m]of PW_AREAS)mo.observe($(m),{attributes:true,subtree:true,attributeFilter:["class","style"]});syncPw()}
+document.querySelectorAll("input:not([type=password]):not([type=file]),textarea").forEach(el=>{if(el.closest("#login-modal,#password-reset-modal,#delete-account-modal"))return;for(const[k,v]of[["autocomplete","off"],["data-lpignore","true"],["data-1p-ignore","true"],["data-bwignore","true"],["data-form-type","other"]])el.setAttribute(k,v)});
 $("post-input").addEventListener("keydown",postKey);
 let sq=0;$("global-search").addEventListener("input",e=>{searchText=e.target.value;sq||(sq=requestAnimationFrame(()=>{sq=0;renderPosts()}))});
 $("users-search").addEventListener("input",renderUsers);
