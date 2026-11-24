@@ -122,6 +122,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 @media(max-width:390px){.top-button{padding:7px;font-size:10px}.home-button .wide-label{display:none}.composer textarea{font-size:13px}.attach-button{font-size:0}.attach-button::first-letter{font-size:15px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 .profile-data{font-size:13px;line-height:1.8;color:var(--text);overflow-wrap:anywhere}.profile-data .profile-section{margin:12px 0}.profile-data .profile-section b{display:block;margin-bottom:4px}.profile-data a{color:var(--blue);text-decoration:underline}.profile-data ul{margin:3px 0;padding-left:20px}.profile-data .profile-handle{color:var(--sub);font-weight:700;margin-bottom:8px}.profile-data .profile-bio{white-space:pre-wrap}
+.post-names{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+.post-handle{font-size:11px;font-weight:600;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
 </head>
 <body class="auth-pending">
@@ -249,7 +251,7 @@ let googlePendingUser=null;
 let currentUser=null,currentProfile={},roles={},unsubscribePosts=null,cachedPosts=[],authFlow=false,authSyncVersion=0;
 let pendingImage="",profileImage="",replyUnsubs=new Map(),replyCache=new Map(),replyLoaded=new Set(),actionTask=null;
 let suspensionUnsub=null,viewedProfileUid="",suspensionTargetUid="";
-let userCache=[],presenceCache={},unsubscribePresence=null,presenceTimer=null,searchText="",mentionTarget=null;
+let userMap=new Map(),mentionMap=new Map(),userCache=[],presenceCache={},unsubscribePresence=null,presenceTimer=null,searchText="",mentionTarget=null;
 const settings={announcement:{name:"運営お知らせ",icon:"📢",description:"波急運営からのお知らせを掲載します。"},chat:{name:"チャット",icon:"💬",description:"メンバー同士で自由に交流できる場所です。"}};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const safeImage=s=>typeof s==="string"&&s.startsWith("data:image/jpeg;base64,")&&s.length<700000?s:"";
@@ -268,10 +270,12 @@ function profileLinksHtml(items){return (items||[]).map(v=>{let u=validHttpUrl(v
 function profileInfoHtml(p){let gam=(p.minecraftGamertags||[]).map(x=>`<li>${esc(x)}</li>`).join("");return `<div class="profile-handle">@${esc(p.handle||"未設定")}</div>${p.bio?`<div class="profile-section profile-bio">${esc(p.bio)}</div>`:""}${gam?`<div class="profile-section"><b>Minecraft ゲーマータグ</b><ul>${gam}</ul></div>`:""}${p.socialLinks?.length?`<div class="profile-section"><b>SNS・ソーシャル</b><ul>${profileLinksHtml(p.socialLinks)}</ul></div>`:""}${p.activityLinks?.length?`<div class="profile-section"><b>Webサイト・活動場所</b><ul>${profileLinksHtml(p.activityLinks)}</ul></div>`:""}`}
 
 const dateText=v=>{let d=v?.toDate?.();if(!d)return"送信直後";let now=Date.now(),diff=now-d.getTime();if(diff<60000)return"たった今";if(diff<3600000)return`${Math.floor(diff/60000)}分前`;if(diff<86400000)return`${Math.floor(diff/3600000)}時間前`;return d.toLocaleString("ja-JP",{year:"numeric",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})};
-function avatar(name,photo,cls="post-avatar"){return `<div class="${cls}">${safeImage(photo)?`<img src="${safeImage(photo)}" alt="">`:esc(Array.from(name||"?")[0])}</div>`}
-function profileLink(uid,name,photo,cls="post-avatar"){return `<button class="profile-click" onclick="viewProfile('${esc(uid)}')">${avatar(name,photo,cls)}<span class="post-author">${esc(name||"メンバー")}</span></button>`}
+function avatar(name,photo,cls="post-avatar"){const s=safeImage(photo);return `<div class="${cls}">${s?`<img src="${s}" alt="">`:esc(Array.from(name||"?")[0])}</div>`}
+const handleOfUid=uid=>userMap.get(uid)?.handle||(uid===currentUser?.uid?currentProfile.handle:"")||"";
+function profileLink(uid,name,photo,cls="post-avatar"){const h=handleOfUid(uid);return `<button class="profile-click" onclick="viewProfile('${esc(uid)}')">${avatar(name,photo,cls)}<span class="post-names"><span class="post-author">${esc(name||"メンバー")}</span>${h?`<span class="post-handle">@${esc(h)}</span>`:""}</span></button>`}
 function mentionKey(name){return String(name||"").replace(/^@/,"").replace(/\s+/g,"").toLocaleLowerCase("ja-JP")}
-function renderText(value){let safe=esc(value);return safe.replace(/@([\p{L}\p{N}_-]{1,30})/gu,(all,key)=>{let u=userCache.find(x=>mentionKey(x.handle)===mentionKey(key));return u?`<button class="mention-link" onclick="viewProfile('${esc(u.uid)}')">@${esc(u.handle)}</button>`:all})}
+function setUsers(list){userCache=list;userMap=new Map();mentionMap=new Map();for(const u of list){userMap.set(u.uid,u);const k=mentionKey(u.handle);if(!mentionMap.has(k))mentionMap.set(k,u)}}
+function renderText(value){return esc(value).replace(/@([\p{L}\p{N}_-]{1,30})/gu,(all,key)=>{const u=mentionMap.get(mentionKey(key));return u?`<button class="mention-link" onclick="viewProfile('${esc(u.uid)}')">@${esc(u.handle)}</button>`:all})}
 function isOnline(uid){let t=presenceCache[uid]?.lastSeen?.toMillis?.()||0;return !!t&&Date.now()-t<90000}
 function toast(message){let el=document.createElement("div");el.className="toast";el.textContent=message;$("toast-region").append(el);setTimeout(()=>el.remove(),3500)}
 function applyTheme(){let t=document.documentElement.dataset.theme||"light";$("theme-button").textContent=t==="dark"?"☀️ ホワイト":"🌙 ダーク"}
@@ -388,6 +392,8 @@ async function setupGooglePassword(){showError(new Error("新規登録画面か�
 function updateUserArea(){let n=nameOf(),photo=currentProfile.photoData;$("user-name").textContent=n;$("user-role").textContent=roleName(currentUser.uid);$("user-avatar").innerHTML=safeImage(photo)?`<img src="${safeImage(photo)}" alt="">`:esc(Array.from(n)[0]||"?");$("login-button").textContent="ログアウト";$("login-button").onclick=openLogin;$("profile-button").style.display="block"}
 function updateComposer(){let ok=currentView==="posts"&&!!currentUser&&(currentChannel==="chat"||isStaff());$("post-input").disabled=!ok;$("send-button").disabled=!ok;$("composer").style.display=ok?"flex":"none";$("composer-notice").textContent=!currentUser?"投稿するにはログインしてください。":currentChannel==="announcement"&&!isStaff()?"運営メンバーのみ投稿できます。":"画像は1枚まで（圧縮後450KB以内）。Enterで送信、Shift+Enterで改行。"}
 function cleanupReplies(){for(let u of replyUnsubs.values())u();replyUnsubs.clear();replyCache.clear()}
+const tpl=document.createElement("template");
+function makePost(p,d,manage,img,sig,enter){tpl.innerHTML=`<article class="post${enter?" post-enter":""}" id="post-${p.id}"><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy" decoding="async">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"></div><div class="reply-form"><input id="reply-input-${p.id}" name="board-reply-text" type="text" autocomplete="off" data-lpignore="true" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;const n=tpl.content.firstElementChild;n.dataset.sig=sig;return n}
 function renderPosts(){
 if(currentView==="rules"){renderRules();return}
 const area=$("messages"),all=cachedPosts.filter(p=>p.data.channel===currentChannel);
@@ -400,18 +406,13 @@ area.querySelectorAll(":scope > .empty").forEach(el=>el.remove());
 let cursor=area.querySelector(":scope > .post");
 for(const p of list){
 const d=p.data,manage=canManage(d),img=safeImage(d.imageData);
-const sig=JSON.stringify([d.content,d.authorName,d.authorPhoto,d.channel,d.imageData,d.updatedAt?.toMillis?.(),manage,roleName(d.authorUid),d.createdAt?.toMillis?.()]);
+const sig=JSON.stringify([d.content,d.authorName,(d.authorPhoto||"").length,d.channel,(d.imageData||"").length,d.updatedAt?.toMillis?.(),manage,roleName(d.authorUid),d.createdAt?.toMillis?.(),handleOfUid(d.authorUid)]);
 let node=document.getElementById("post-"+p.id);
-if(node&&node.dataset.sig!==sig){
-const html=`<article class="post" id="post-${p.id}" data-sig=""><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy" decoding="async">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"></div><div class="reply-form"><input id="reply-input-${p.id}" name="board-reply-text" type="text" autocomplete="off" data-lpignore="true" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;
-const t=document.createElement("template");t.innerHTML=html;const replacement=t.content.firstElementChild;replacement.dataset.sig=sig;
-if(node){const wasCursor=node===cursor;node.replaceWith(replacement);if(wasCursor)cursor=replacement;}
-else if(cursor)area.insertBefore(replacement,cursor);else area.appendChild(replacement);
-node=replacement;
-}else if(!node){
-const html=`<article class="post post-enter" id="post-${p.id}" data-sig=""><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy" decoding="async">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"></div><div class="reply-form"><input id="reply-input-${p.id}" name="board-reply-text" type="text" autocomplete="off" data-lpignore="true" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;
-const t=document.createElement("template");t.innerHTML=html;node=t.content.firstElementChild;node.dataset.sig=sig;
-if(cursor)area.insertBefore(node,cursor);else area.appendChild(node);
+if(!node||node.dataset.sig!==sig){
+const fresh=makePost(p,d,manage,img,sig,!node);
+if(node){const wasCursor=node===cursor;node.replaceWith(fresh);if(wasCursor)cursor=fresh}
+else if(cursor)area.insertBefore(fresh,cursor);else area.appendChild(fresh);
+node=fresh;
 }
 if(cursor&&cursor.parentNode!==area)cursor=area.firstElementChild;
 if(node!==cursor)area.insertBefore(node,cursor);
@@ -421,7 +422,7 @@ renderReplies(p.id);
 }
 }
 function cleanupRemovedPosts(ids){let keep=new Set(ids);for(let [id,unsub]of replyUnsubs){if(!keep.has(id)){unsub();replyUnsubs.delete(id);replyCache.delete(id);replyLoaded.delete(id)}}for(let node of [...$("messages").querySelectorAll(".post")])if(!keep.has(node.id.slice(5)))node.remove()}
-async function loadUsers(){try{let snap=await getDocs(collection(db,"profiles"));userCache=snap.docs.map(d=>({uid:d.id,name:d.data().displayName||"メンバー",handle:d.data().handle||String(d.data().displayName||"メンバー").replace(/\s+/g,""),photo:d.data().photoData||""}));renderUsers()}catch(e){userCache=[];$("users-list").innerHTML=`<div class="search-empty">ユーザー一覧を読み込めません。Firestoreルールを確認してください。<br>${esc(e.message)}</div>`}}
+async function loadUsers(){try{let snap=await getDocs(collection(db,"profiles"));setUsers(snap.docs.map(d=>({uid:d.id,name:d.data().displayName||"メンバー",handle:d.data().handle||String(d.data().displayName||"メンバー").replace(/\s+/g,""),photo:d.data().photoData||""})));renderUsers();renderPosts()}catch(e){setUsers([]);$("users-list").innerHTML=`<div class="search-empty">ユーザー一覧を読み込めません。Firestoreルールを確認してください。<br>${esc(e.message)}</div>`}}
 function renderUsers(){let q=$("users-search")?.value.trim().toLocaleLowerCase("ja-JP")||"",rows=userCache.filter(u=>u.name.toLocaleLowerCase("ja-JP").includes(q)||("@"+u.handle).toLocaleLowerCase("ja-JP").includes(q)).sort((a,b)=>a.name.localeCompare(b.name,"ja"));$("users-summary").textContent=`登録メンバー ${userCache.length}人 ・ オンライン ${userCache.filter(u=>isOnline(u.uid)).length}人`;$("users-list").innerHTML=rows.map(u=>`<button class="member-row" onclick="viewProfile('${esc(u.uid)}');closeUsers()">${avatar(u.name,u.photo)}<span class="member-meta"><span class="member-name">${esc(u.name)}</span><span class="member-status">@${esc(u.handle)} ・ ${isOnline(u.uid)?'<span class="online-dot"></span>オンライン':'<span class="offline-dot"></span>オフライン'}</span></span><span class="member-role">${esc(roleName(u.uid))}</span></button>`).join("")||'<div class="search-empty">該当するメンバーはいません。</div>'}
 function openUsers(){if(!currentUser)return toast("メンバー一覧を見るにはログインしてください。");$("users-modal").classList.add("open");$("users-search").value="";loadUsers()}
 function closeUsers(){$("users-modal").classList.remove("open")}
@@ -441,7 +442,7 @@ if(area.firstElementChild?.classList.contains("no-replies"))area.innerHTML="";
 let cursor=area.firstElementChild;
 for(const r of rows){
 const d=r.data,can=isStaff()||d.authorUid===currentUser?.uid;
-const sig=JSON.stringify([d.content,d.authorName,d.authorPhoto,d.createdAt?.toMillis?.(),can,roleName(d.authorUid)]);
+const sig=JSON.stringify([d.content,d.authorName,(d.authorPhoto||"").length,d.createdAt?.toMillis?.(),can,roleName(d.authorUid),handleOfUid(d.authorUid)]);
 let node=document.getElementById("reply-"+id+"-"+r.id);
 if(!node||node.dataset.sig!==sig){
 const html=`<div class="reply" id="reply-${id}-${r.id}" data-sig=""><div class="reply-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto,"reply-avatar")}<span class="reply-date">${dateText(d.createdAt)}</span>${can?`<button class="small-button danger" onclick="removeReply('${id}','${r.id}')">削除</button>`:""}</div><div class="reply-content">${renderText(d.content)}</div></div>`;
@@ -582,7 +583,7 @@ console.error("delete account:",e);
 }finally{button.disabled=false}
 }
 function updateProfilePreview(){let n=$("profile-name").value.trim()||"?";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(n)[0])}
-async function saveProfile(){let name=$("profile-name").value.trim(),handle=$("profile-handle").value.trim();try{if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");if(!handle)throw Error("ハンドルネームを入力してください。");let bio=$("profile-bio").value.trim();if(bio.length>500)throw Error("自己紹介は500文字以内にしてください。");let minecraftGamertags=linesToArray($("profile-gamertags").value,3,"ゲーマータグ"),socialLinks=linesToArray($("profile-social").value,3,"SNSリンク"),activityLinks=linesToArray($("profile-activity").value,3,"Webサイト・活動場所リンク");if(minecraftGamertags.some(x=>x.length>100))throw Error("ゲーマータグは1件100文字以内にしてください。");for(let u of [...socialLinks,...activityLinks]){if(!validHttpUrl(u))throw Error("リンクは https:// または http:// から始まるURLを入力してください。");if(u.length>500)throw Error("リンクURLは500文字以内にしてください。")}$("profile-save").disabled=true;const chosen=await saveProfileTransaction(currentUser,{displayName:name,handle,bio,photoData:profileImage||"",minecraftGamertags,socialLinks,activityLinks},false);await updateProfile(auth.currentUser,{displayName:name});currentProfile={displayName:name,handle:chosen,bio,photoData:profileImage||"",minecraftGamertags,socialLinks,activityLinks};userCache=userCache.filter(u=>u.uid!==currentUser.uid);userCache.push({uid:currentUser.uid,name,handle:chosen,photo:profileImage||""});updateUserArea();renderUsers();closeProfile();renderPosts();toast("プロフィールを更新しました。")}catch(e){$("profile-error").textContent=e.message}finally{$("profile-save").disabled=false}}
+async function saveProfile(){let name=$("profile-name").value.trim(),handle=$("profile-handle").value.trim();try{if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");if(!handle)throw Error("ハンドルネームを入力してください。");let bio=$("profile-bio").value.trim();if(bio.length>500)throw Error("自己紹介は500文字以内にしてください。");let minecraftGamertags=linesToArray($("profile-gamertags").value,3,"ゲーマータグ"),socialLinks=linesToArray($("profile-social").value,3,"SNSリンク"),activityLinks=linesToArray($("profile-activity").value,3,"Webサイト・活動場所リンク");if(minecraftGamertags.some(x=>x.length>100))throw Error("ゲーマータグは1件100文字以内にしてください。");for(let u of [...socialLinks,...activityLinks]){if(!validHttpUrl(u))throw Error("リンクは https:// または http:// から始まるURLを入力してください。");if(u.length>500)throw Error("リンクURLは500文字以内にしてください。")}$("profile-save").disabled=true;const chosen=await saveProfileTransaction(currentUser,{displayName:name,handle,bio,photoData:profileImage||"",minecraftGamertags,socialLinks,activityLinks},false);await updateProfile(auth.currentUser,{displayName:name});currentProfile={displayName:name,handle:chosen,bio,photoData:profileImage||"",minecraftGamertags,socialLinks,activityLinks};setUsers([...userCache.filter(u=>u.uid!==currentUser.uid),{uid:currentUser.uid,name,handle:chosen,photo:profileImage||""}]);updateUserArea();renderUsers();closeProfile();renderPosts();toast("プロフィールを更新しました。")}catch(e){$("profile-error").textContent=e.message}finally{$("profile-save").disabled=false}}
 async function syncUser(user){
 const version=++authSyncVersion;
 if(!user){
