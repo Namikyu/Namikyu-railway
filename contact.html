@@ -102,17 +102,6 @@ font-size:10px;
 vertical-align:2px
 }
 
-.optional{
-display:inline-block;
-margin-left:7px;
-padding:1px 6px;
-border-radius:4px;
-color:var(--sub,#64748b);
-background:var(--input,#eef2f7);
-font-size:10px;
-vertical-align:2px
-}
-
 input,select,textarea{
 width:100%;
 padding:12px 13px;
@@ -213,7 +202,6 @@ background:#fff0f0;
 border:1px solid #f1c4c7
 }
 
-/* スパム対策用の隠し入力欄 */
 .trap{
 position:absolute!important;
 left:-10000px!important;
@@ -276,12 +264,11 @@ padding:22px 18px
 
 <p class="lead">
 波急サーバーや公式サイトについてのお問い合わせを受け付けています。
-内容を確認のうえ、必要に応じて運営チームから対応いたします。
+内容を確認のうえ、必要に応じて運営チームから入力されたメールアドレス宛てに返信いたします。
 </p>
 
 <form id="contact-form">
 
-<!-- 自動送信スパム対策用。通常の利用者は入力しない -->
 <div class="trap" aria-hidden="true">
 <label for="website">ウェブサイト</label>
 <input id="website" name="website" tabindex="-1" autocomplete="off">
@@ -290,7 +277,6 @@ padding:22px 18px
 <div class="field">
 <label for="name">
 お名前
-<span class="optional">任意</span>
 </label>
 <input
 id="name"
@@ -299,12 +285,13 @@ type="text"
 maxlength="40"
 autocomplete="name"
 placeholder="お名前・ニックネーム">
+<p class="hint">ニックネームでも構いません。</p>
 </div>
 
 <div class="field">
 <label for="email">
 返信先メールアドレス
-<span class="optional">任意</span>
+<span class="required">必須</span>
 </label>
 <input
 id="email"
@@ -312,8 +299,9 @@ name="email"
 type="email"
 maxlength="254"
 autocomplete="email"
+required
 placeholder="example@example.com">
-<p class="hint">返信が必要な場合に入力してください。入力しない場合、運営から返信できないことがあります。</p>
+<p class="hint">運営チームからの返信に使用します。入力間違いがないか確認してください。</p>
 </div>
 
 <div class="field">
@@ -408,7 +396,6 @@ function showMessage(type, text) {
 }
 
 function validEmail(value) {
-  if (!value) return true;
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
@@ -424,18 +411,21 @@ form.addEventListener("submit", async (event) => {
   const consent = document.getElementById("privacy-consent").checked;
   const honeypot = document.getElementById("website").value;
 
-  /* 隠し項目に入力された場合は送信しない */
   if (honeypot) {
     showMessage("error", "送信できませんでした。");
     return;
   }
 
-  if (!category || !content) {
+  if (!email || !category || !content) {
     showMessage("error", "必須項目を入力してください。");
     return;
   }
 
-  if (content.length > 3000 || name.length > 40 || email.length > 254) {
+  if (
+    content.length > 3000 ||
+    name.length > 40 ||
+    email.length > 254
+  ) {
     showMessage("error", "入力できる文字数を超えています。");
     return;
   }
@@ -457,7 +447,7 @@ form.addEventListener("submit", async (event) => {
   try {
     await addDoc(collection(db, "contactMessages"), {
       name: name || "未入力",
-      email: email || "",
+      email: email,
       category: category,
       content: content,
       status: "new",
@@ -466,7 +456,7 @@ form.addEventListener("submit", async (event) => {
 
     showMessage(
       "success",
-      "お問い合わせを送信しました。運営チームが内容を確認します。ありがとうございました。"
+      "お問い合わせを送信しました。運営チームが内容を確認し、必要に応じて入力されたメールアドレス宛てに返信いたします。ありがとうございました。"
     );
 
     form.reset();
