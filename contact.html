@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#142B49">
-<title>お問い合わせ | 波急サーバー</title>
+<title>ご意見・ご感想 | 波急サーバー</title>
 <link rel="icon" href="./icon.png">
 <link rel="apple-touch-icon" href="./icon.png">
 
@@ -260,11 +260,12 @@ padding:22px 18px
 <main>
 <section class="panel">
 
-<h1>お問い合わせ</h1>
+<h1>ご意見・ご感想</h1>
 
 <p class="lead">
-波急サーバーや公式サイトについてのお問い合わせを受け付けています。
-内容を確認のうえ、必要に応じて運営チームから入力されたメールアドレス宛てに返信いたします。
+波急サーバーや公式サイトをより良くするため、皆さまからのご意見・ご感想を募集しています。
+改善してほしい点、新しい機能の提案、不具合の報告など、ぜひお気軽にお寄せください。
+いただいた内容は運営チームで確認し、今後の運営やサービス改善の参考にさせていただきます。
 </p>
 
 <form id="contact-form">
@@ -290,7 +291,7 @@ placeholder="お名前・ニックネーム">
 
 <div class="field">
 <label for="email">
-返信先メールアドレス
+メールアドレス
 <span class="required">必須</span>
 </label>
 <input
@@ -301,28 +302,28 @@ maxlength="254"
 autocomplete="email"
 required
 placeholder="example@example.com">
-<p class="hint">運営チームからの返信に使用します。入力間違いがないか確認してください。</p>
+<p class="hint">内容の確認が必要な場合の連絡先として使用します。通常、個別の返信は行っておりません。</p>
 </div>
 
 <div class="field">
 <label for="category">
-お問い合わせの種類
+ご意見の種類
 <span class="required">必須</span>
 </label>
 <select id="category" name="category" required>
 <option value="">選択してください</option>
-<option value="サーバーへの参加について">サーバーへの参加について</option>
-<option value="サーバー・ワールドについて">サーバー・ワールドについて</option>
-<option value="サイト・アカウントについて">サイト・アカウントについて</option>
-<option value="不具合・トラブルの報告">不具合・トラブルの報告</option>
-<option value="ご意見・ご要望">ご意見・ご要望</option>
+<option value="サーバー・ワールドへのご意見">サーバー・ワールドへのご意見</option>
+<option value="公式サイトへのご意見">公式サイトへのご意見</option>
+<option value="新機能・改善の提案">新機能・改善の提案</option>
+<option value="不具合・問題の報告">不具合・問題の報告</option>
+<option value="ご感想・応援メッセージ">ご感想・応援メッセージ</option>
 <option value="その他">その他</option>
 </select>
 </div>
 
 <div class="field">
 <label for="content">
-お問い合わせ内容
+ご意見・ご感想
 <span class="required">必須</span>
 </label>
 <textarea
@@ -330,19 +331,19 @@ id="content"
 name="content"
 maxlength="3000"
 required
-placeholder="お問い合わせ内容を入力してください（3000文字以内）"></textarea>
+placeholder="波急へのご意見・ご感想・ご要望などを入力してください（3000文字以内）"></textarea>
 <p class="hint">個人情報やパスワードなど、秘密にしたい情報は入力しないでください。</p>
 </div>
 
 <label class="consent">
 <input id="privacy-consent" type="checkbox" required>
 <span>
-<a href="./privacy.html" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>を確認し、入力した情報が問い合わせ対応のために利用・保存されることに同意します。
+<a href="./privacy.html" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>を確認し、入力した情報がご意見の確認・サービス改善のために利用・保存されることに同意します。
 </span>
 </label>
 
 <button class="submit-button" id="submit-button" type="submit">
-お問い合わせを送信する
+ご意見を送信する
 </button>
 
 <div id="form-message" class="message" role="status" aria-live="polite"></div>
@@ -456,13 +457,13 @@ form.addEventListener("submit", async (event) => {
 
     showMessage(
       "success",
-      "お問い合わせを送信しました。運営チームが内容を確認し、必要に応じて入力されたメールアドレス宛てに返信いたします。ありがとうございました。"
+      "ご意見・ご感想を送信しました。いただいた内容は運営チームで確認し、今後の波急の運営やサービス改善の参考にさせていただきます。ご協力ありがとうございました。"
     );
 
     form.reset();
 
   } catch (error) {
-    console.error("お問い合わせ送信エラー:", error);
+    console.error("ご意見送信エラー:", error);
 
     showMessage(
       "error",
@@ -472,7 +473,7 @@ form.addEventListener("submit", async (event) => {
   } finally {
     sending = false;
     submitButton.disabled = false;
-    submitButton.textContent = "お問い合わせを送信する";
+    submitButton.textContent = "ご意見を送信する";
   }
 });
 </script>
