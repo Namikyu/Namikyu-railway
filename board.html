@@ -16,6 +16,12 @@ try{document.documentElement.dataset.theme=localStorage.getItem("board-theme")||
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:Inter,"Yu Gothic UI",Meiryo,sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden}
+body.auth-pending .app{visibility:hidden}
+.auth-loading{display:none}
+body.auth-pending .auth-loading{display:flex;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:var(--bg);color:var(--text);font-size:14px;font-weight:700}
+.auth-loading-inner{display:flex;align-items:center;gap:12px;padding:18px 22px;border:1px solid var(--border);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}
+.auth-loading-dot{width:9px;height:9px;border-radius:50%;background:var(--blue);animation:authPulse 1s ease-in-out infinite alternate}
+@keyframes authPulse{from{opacity:.35;transform:scale(.8)}to{opacity:1;transform:scale(1.15)}}
 button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}
 button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--focus) 55%,transparent);outline-offset:2px}
 .app{display:flex;width:100%;height:100dvh}
@@ -44,7 +50,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .messages{flex:1;overflow-y:auto;padding:22px clamp(12px,3vw,34px);overscroll-behavior:contain;scrollbar-gutter:stable}
 .empty{min-height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--sub);gap:8px}
 .empty-icon{font-size:38px}.empty-title{font-size:17px;font-weight:800;color:var(--text)}
-.post{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;margin:0 auto 14px;max-width:850px;box-shadow:var(--shadow);animation:appear .22s ease both}
+.post{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;margin:0 auto 14px;max-width:850px;box-shadow:var(--shadow)}
 .post-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.post-avatar,.reply-avatar{width:38px;height:38px;min-width:38px;border-radius:50%;background:var(--blue);color:white;display:grid;place-items:center;font-weight:800;overflow:hidden}
 .post-author{font-size:13px;font-weight:800}.post-author:hover{text-decoration:underline}.post-role{font-size:10px;font-weight:800;padding:4px 8px;border-radius:20px;background:var(--input);color:var(--sub)}
 .role-owner{background:#fff1bd;color:#916000}.role-developer{background:#eee1ff;color:#7540b5}.role-moderator{background:#ffe1ee;color:#bd3974}
@@ -65,6 +71,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .attach-button{border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:var(--panel);color:var(--text);font-size:12px;white-space:nowrap}
 .attachment-preview{display:none;align-items:center;gap:10px;margin:8px 0;padding:8px;background:var(--input);border-radius:10px;font-size:12px}
 .attachment-preview img{width:55px;height:55px;object-fit:cover;border-radius:7px}.attachment-preview button{margin-left:auto}
+
+/* 利用ルール */
+.rules-page{max-width:850px;margin:0 auto 18px;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:clamp(18px,3vw,28px);box-shadow:var(--shadow);line-height:1.85}
+.rules-page h2{font-size:19px;margin:0 0 8px}
+.rules-page h3{font-size:15px;margin:22px 0 7px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.rules-page p,.rules-page li{font-size:13px}
+.rules-page ul,.rules-page ol{padding-left:1.5em}
+.rules-page li{margin:5px 0}
+.rules-note{color:var(--sub);font-size:12px}
 .modal{display:none;position:fixed;inset:0;z-index:100;background:#07111dcc;backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:18px}
 .modal.open{display:flex;animation:fade .15s ease}.modal-box{background:var(--panel);color:var(--text);width:100%;max-width:460px;max-height:90dvh;overflow-y:auto;padding:24px;border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 80px #0004;animation:rise .18s ease}
 .modal-box h2{margin:0 0 8px;font-size:20px}.auth-description{font-size:13px;color:var(--sub);margin:0 0 18px;line-height:1.7}
@@ -82,6 +97,22 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 @keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fade{from{opacity:0}to{opacity:1}}@keyframes rise{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes loading{0%{width:0;left:0}50%{width:65%;left:18%}100%{width:0;left:100%}}
+
+/* 追加UI：検索・ユーザー一覧・オンライン・メンション */
+.top-search{width:min(30vw,260px);min-width:120px;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--input);color:var(--text);font-size:12px;transition:border-color .18s,box-shadow .18s}
+.top-search:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 15%,transparent);outline:0}
+.online-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px color-mix(in srgb,#22c55e 15%,transparent);vertical-align:middle;margin-right:5px}
+.offline-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#94a3b8;vertical-align:middle;margin-right:5px}
+.user-list{display:grid;gap:8px}.member-row{display:flex;align-items:center;gap:11px;padding:10px;border:1px solid var(--border);border-radius:12px;background:var(--input);transition:background .16s,transform .16s}.member-row:hover{background:var(--blue2);transform:translateY(-1px)}.member-meta{min-width:0;flex:1}.member-name{font-weight:800;font-size:13px}.member-status{font-size:11px;color:var(--sub);margin-top:3px}.member-role{font-size:10px;color:var(--sub);margin-left:auto}
+.modal-box.wide{max-width:620px}.search-empty{padding:28px;text-align:center;color:var(--sub)}
+.mention-menu{position:fixed;z-index:180;display:none;min-width:210px;max-width:min(320px,90vw);max-height:240px;overflow:auto;padding:6px;background:var(--panel);border:1px solid var(--border);border-radius:12px;box-shadow:0 14px 40px #0003}.mention-option{display:flex;align-items:center;gap:9px;width:100%;padding:8px;border:0;border-radius:8px;background:transparent;color:var(--text);text-align:left}.mention-option:hover,.mention-option:focus{background:var(--blue2);outline:0}.mention-link{border:0;padding:0;background:transparent;color:var(--blue);font-weight:800;text-decoration:none}.mention-link:hover{text-decoration:underline}.post-content .mention-link,.reply-content .mention-link{font-size:inherit}
+.post{will-change:transform,opacity;transition:box-shadow .18s,border-color .18s}.post:hover{border-color:color-mix(in srgb,var(--blue) 28%,var(--border));box-shadow:0 10px 30px #142b4918}
+.send-button,.small-button,.top-button,.channel,.member-row{transition:background .16s,color .16s,border-color .16s,transform .16s,box-shadow .16s}
+.send-button:disabled{opacity:.6}.post-enter{animation:postEnter .24s cubic-bezier(.2,.75,.25,1) both}.post-leave{opacity:0;transform:translateY(-5px) scale(.99);transition:opacity .14s,transform .14s}
+@keyframes postEnter{from{opacity:0;transform:translateY(9px) scale(.992)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:760px){.top-search{width:34vw;min-width:90px;padding:8px}.topbar-right{gap:4px}.user-list{gap:6px}}
+@media(prefers-reduced-motion:reduce){.post-enter{animation:none}.post,.member-row{will-change:auto}}
+
 @media(max-width:760px){
  .sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-105%);transition:transform .2s ease;width:285px;min-width:285px;box-shadow:var(--shadow)}
  .sidebar.open{transform:translateX(0)}.overlay.show{display:block;position:fixed;inset:0;background:#0008;z-index:20}
@@ -94,14 +125,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
-<body>
+<body class="auth-pending">
+<div class="auth-loading" role="status" aria-live="polite"><div class="auth-loading-inner"><span class="auth-loading-dot"></span><span>ログイン状態を確認しています...</span></div></div>
 <div class="app">
  <aside class="sidebar" id="sidebar">
   <div class="brand"><img src="./icon.png" alt="波急"><div><div class="brand-name">波急掲示板</div><div class="brand-sub">NAMIKYU COMMUNITY</div></div></div>
   <div class="category-title">コミュニティ</div>
   <div class="channel-list">
-   <button class="channel active" data-channel="announcement" onclick="selectChannel('announcement')">📢　運営お知らせ</button>
-   <button class="channel" data-channel="chat" onclick="selectChannel('chat')">💬　チャット</button>
+   <button class="channel active" data-page="announcement" data-channel="announcement" onclick="selectChannel('announcement')">📢　運営お知らせ</button>
+   <button class="channel" data-page="chat" data-channel="chat" onclick="selectChannel('chat')">💬　チャット</button>
+   <button class="channel" data-page="rules" onclick="showRules()">📜　ルール</button>
   </div>
   <div class="sidebar-bottom"><button class="profile-click user-area" onclick="openProfile()"><div class="avatar" id="user-avatar">?</div><div class="user-info"><div class="user-name" id="user-name">未ログイン</div><div class="user-role" id="user-role">未ログイン</div></div></button></div>
  </aside>
@@ -110,6 +143,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   <header class="topbar">
    <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">☰</button><div class="page-title">波急コミュニティ</div>
    <div class="topbar-right">
+    <input class="top-search" id="global-search" type="search" placeholder="投稿を検索..." aria-label="投稿を検索">
+    <button class="top-button" id="users-button" onclick="openUsers()">メンバー</button>
     <button class="top-button home-button" onclick="location.href='./index.html'" aria-label="ホームへ戻る">⌂ <span class="wide-label">ホーム</span></button>
     <button class="top-button" id="theme-button" onclick="toggleTheme()">🌙 ダーク</button>
     <button class="top-button" id="profile-button" style="display:none" onclick="openProfile()">プロフィール</button>
@@ -119,7 +154,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   <section class="content">
    <div class="channel-header"><div class="channel-heading"><span id="channel-icon">📢</span> <span id="channel-name">運営お知らせ</span></div><div class="channel-description" id="channel-description">波急運営からのお知らせを掲載します。</div></div>
    <div class="messages" id="messages" aria-live="polite"><div class="empty"><div class="empty-icon">🔒</div><div class="empty-title">ログインしてください</div></div></div>
-   <div class="composer-area"><div class="composer-inner"><div class="composer-notice" id="composer-notice">投稿にはログインが必要です。</div>
+   <div class="composer-area" id="composer-area"><div class="composer-inner"><div class="composer-notice" id="composer-notice">投稿にはログインが必要です。</div>
     <div class="attachment-preview" id="attachment-preview"><img id="attachment-thumb" alt="添付画像のプレビュー"><span id="attachment-name">画像を添付</span><button class="small-button" onclick="clearAttachment()">外す</button></div>
     <div class="composer" id="composer">
      <input id="post-image" type="file" accept="image/*" hidden>
@@ -143,7 +178,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
  <p class="auth-error" id="login-error" role="alert"></p><button class="auth-link" id="forgot-password-link" onclick="openPasswordReset()">パスワードを忘れた場合</button><button class="auth-link" id="mode-button" onclick="toggleAuthMode()">新規登録はこちら</button>
  <button class="auth-close" onclick="closeLogin()">閉じる</button>
 </div></div>
-
 <div class="modal" id="password-reset-modal" role="dialog" aria-modal="true" aria-labelledby="password-reset-title"><div class="modal-box">
  <h2 id="password-reset-title">パスワード再設定</h2>
  <p class="auth-description">登録したメールアドレスを入力してください。Firebaseから再設定用リンクを送信します。</p>
@@ -169,15 +203,29 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
  <p class="auth-error" id="action-error" role="alert"></p>
  <div class="dialog-actions"><button class="small-button" onclick="closeAction()">キャンセル</button><button class="auth-primary" id="action-confirm" style="width:auto;min-width:100px" onclick="runAction()">実行する</button></div>
 </div></div>
+
+<div class="modal" id="users-modal" role="dialog" aria-modal="true" aria-labelledby="users-title"><div class="modal-box wide">
+ <h2 id="users-title">メンバー一覧</h2><p class="auth-description" id="users-summary">メンバーを検索できます。</p>
+ <label class="auth-label">ユーザー検索<input class="auth-input" id="users-search" type="search" placeholder="表示名で検索..."></label>
+ <div class="user-list" id="users-list"><div class="search-empty">読み込み中...</div></div>
+ <button class="auth-close" onclick="closeUsers()">閉じる</button>
+</div></div>
+<div class="modal" id="suspend-modal" role="dialog" aria-modal="true" aria-labelledby="suspend-title"><div class="modal-box">
+ <h2 id="suspend-title">アカウントを一時凍結</h2>
+ <p class="auth-description" id="suspend-target-label">対象ユーザー</p>
+ <label class="auth-label">凍結期間<select class="auth-input" id="suspend-duration"><option value="1">1時間</option><option value="24" selected>24時間</option><option value="168">7日間</option><option value="720">30日間</option></select></label>
+ <label class="auth-label">ユーザーに表示するメッセージ<textarea class="auth-input" id="suspend-message" rows="4" maxlength="500" placeholder="凍結理由や再利用可能になる時期などを入力してください。" style="resize:vertical"></textarea></label>
+ <p class="auth-error" id="suspend-error" role="alert"></p>
+ <div class="dialog-actions"><button class="small-button" onclick="closeSuspendModal()">キャンセル</button><button class="auth-primary" id="suspend-confirm" style="width:auto;min-width:110px" onclick="confirmSuspend()">凍結する</button></div>
+</div></div>
+<div class="modal" id="suspended-modal" role="dialog" aria-modal="true" aria-labelledby="suspended-title"><div class="modal-box">
+ <h2 id="suspended-title">アカウントは一時凍結中です</h2><p class="auth-description" id="suspended-message"></p><p class="auth-description" id="suspended-until"></p>
+ <button class="auth-close" onclick="closeSuspendedNotice()">閉じる</button>
+</div></div>
+<div class="mention-menu" id="mention-menu" role="listbox" aria-label="メンション候補"></div>
 <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
 
 <script type="module">
-// 以前の通知版で登録された通知専用Service Workerがあれば解除します。
-if ("serviceWorker" in navigator) {
- navigator.serviceWorker.getRegistrations().then(registrations => {
-  registrations.filter(r => [r.active?.scriptURL,r.waiting?.scriptURL,r.installing?.scriptURL].some(u => u && u.endsWith("/firebase-messaging-sw.js"))).forEach(r => r.unregister());
- }).catch(() => {});
-}
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,browserLocalPersistence,setPersistence,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut,EmailAuthProvider,linkWithCredential,getAdditionalUserInfo,getIdTokenResult,sendPasswordResetEmail}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 import{getFirestore,collection,addDoc,onSnapshot,doc,updateDoc,deleteDoc,getDocs,getDoc,setDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
@@ -186,9 +234,11 @@ const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),p
 provider.setCustomParameters({prompt:"select_account"});
 const OWNER_UID="kv2lmeIrYrN3J7T4GWTaJau7MtY2";
 const $=id=>document.getElementById(id);
-let authMode="login",currentChannel=localStorage.getItem("board-channel")||"announcement";
-let currentUser=null,currentProfile={},roles={},unsubscribePosts=null,cachedPosts=[],authFlow=false;
-let pendingImage="",profileImage="",replyUnsubs=new Map(),replyCache=new Map(),actionTask=null;
+let authMode="login",currentChannel=localStorage.getItem("board-channel")||"announcement",currentView="posts";
+let currentUser=null,currentProfile={},roles={},unsubscribePosts=null,cachedPosts=[],authFlow=false,authSyncVersion=0;
+let pendingImage="",profileImage="",replyUnsubs=new Map(),replyCache=new Map(),replyLoaded=new Set(),actionTask=null;
+let suspensionUnsub=null,viewedProfileUid="",suspensionTargetUid="";
+let userCache=[],presenceCache={},unsubscribePresence=null,presenceTimer=null,searchText="",mentionTarget=null;
 const settings={announcement:{name:"運営お知らせ",icon:"📢",description:"波急運営からのお知らせを掲載します。"},chat:{name:"チャット",icon:"💬",description:"メンバー同士で自由に交流できる場所です。"}};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const safeImage=s=>typeof s==="string"&&s.startsWith("data:image/jpeg;base64,")&&s.length<700000?s:"";
@@ -202,17 +252,81 @@ const nameOf=()=>currentProfile.displayName||currentUser?.displayName||currentUs
 const dateText=v=>{let d=v?.toDate?.();if(!d)return"送信直後";let now=Date.now(),diff=now-d.getTime();if(diff<60000)return"たった今";if(diff<3600000)return`${Math.floor(diff/60000)}分前`;if(diff<86400000)return`${Math.floor(diff/3600000)}時間前`;return d.toLocaleString("ja-JP",{year:"numeric",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})};
 function avatar(name,photo,cls="post-avatar"){return `<div class="${cls}">${safeImage(photo)?`<img src="${safeImage(photo)}" alt="">`:esc(Array.from(name||"?")[0])}</div>`}
 function profileLink(uid,name,photo,cls="post-avatar"){return `<button class="profile-click" onclick="viewProfile('${esc(uid)}')">${avatar(name,photo,cls)}<span class="post-author">${esc(name||"メンバー")}</span></button>`}
+function mentionKey(name){return String(name||"").replace(/\s+/g,"").toLocaleLowerCase("ja-JP")}
+function renderText(value){let safe=esc(value);return safe.replace(/@([\p{L}\p{N}_-]{1,30})/gu,(all,key)=>{let u=userCache.find(x=>mentionKey(x.name)===mentionKey(key));return u?`<button class="mention-link" onclick="viewProfile('${esc(u.uid)}')">@${esc(u.name)}</button>`:all})}
+function isOnline(uid){let t=presenceCache[uid]?.lastSeen?.toMillis?.()||0;return !!t&&Date.now()-t<90000}
 function toast(message){let el=document.createElement("div");el.className="toast";el.textContent=message;$("toast-region").append(el);setTimeout(()=>el.remove(),3500)}
 function applyTheme(){let t=document.documentElement.dataset.theme||"light";$("theme-button").textContent=t==="dark"?"☀️ ホワイト":"🌙 ダーク"}
 function toggleTheme(){let t=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=t;localStorage.setItem("board-theme",t);applyTheme()}
-function selectChannel(c){if(!settings[c])return;currentChannel=c;localStorage.setItem("board-channel",c);$("channel-name").textContent=settings[c].name;$("channel-icon").textContent=settings[c].icon;$("channel-description").textContent=settings[c].description;document.querySelectorAll(".channel").forEach(b=>b.classList.toggle("active",b.dataset.channel===c));updateComposer();renderPosts();closeSidebar()}
+function selectChannel(c){
+ if(!settings[c])return;
+ currentView="posts";currentChannel=c;localStorage.setItem("board-channel",c);
+ $("channel-name").textContent=settings[c].name;$("channel-icon").textContent=settings[c].icon;
+ $("channel-description").textContent=settings[c].description;
+ $("global-search").style.display="";$("composer-area").style.display="";
+ document.querySelectorAll(".channel").forEach(b=>b.classList.toggle("active",b.dataset.page===c));
+ updateComposer();renderPosts();closeSidebar();
+}
+function showRules(){
+ currentView="rules";
+ $("channel-name").textContent="利用ルール";$("channel-icon").textContent="📜";
+ $("channel-description").textContent="波急公式サイトを利用する前に、必ず確認してください。";
+ $("global-search").style.display="none";$("composer-area").style.display="none";
+ document.querySelectorAll(".channel").forEach(b=>b.classList.toggle("active",b.dataset.page==="rules"));
+ renderRules();closeSidebar();
+}
+function renderRules(){
+ $("messages").innerHTML=`
+ <article class="rules-page">
+  <h2>📜 波急公式サイト 利用ルール</h2>
+  <p class="rules-note">このルールは波急公式サイト内で適用されます。利用するすべてのユーザーは、以下の内容を守ってください。</p>
+  <h3>1. 基本ルール</h3>
+  <ol>
+   <li>他人のアカウントへの不正アクセス、乗っ取り、なりすましは禁止です。</li>
+   <li>他のユーザーへの嫌がらせ、誹謗中傷、脅迫、差別的な発言は禁止です。</li>
+   <li>スパム投稿、同じ内容の連続投稿、無意味な投稿による掲示板の妨害は禁止です。</li>
+   <li>サイトの不具合や脆弱性を悪用する行為は禁止です。</li>
+   <li>運営メンバーからの正当な案内・指示には従ってください。</li>
+  </ol>
+  <h3>2. 投稿・チャットについて</h3>
+  <ul>
+   <li>個人情報や他人のプライバシーを無断で公開しないでください。</li>
+   <li>他人の作品・画像・文章などを、無断で自分のものとして投稿しないでください。</li>
+   <li>不適切な画像、リンク、文章の投稿は禁止です。</li>
+   <li>他のユーザーが不快になる内容や、会話を妨害する行為は控えてください。</li>
+   <li>投稿内容に合ったカテゴリを選んでください。</li>
+  </ul>
+  <h3>3. 運営・権限について</h3>
+  <ul>
+   <li>運営メンバーへの嫌がらせや業務妨害は禁止です。</li>
+   <li>運営メンバーの名前や権限を無断で使用しないでください。</li>
+   <li>運営お知らせなど、権限が必要な操作を不正に行わないでください。</li>
+  </ul>
+  <h3>4. 違反行為への対応</h3>
+  <p>運営は、違反内容や悪質性に応じて、次の対応を行うことがあります。</p>
+  <ul>
+   <li><b>警告：</b>サイト上で注意します。</li>
+   <li><b>投稿・返信の削除：</b>問題のある内容を削除します。</li>
+   <li><b>利用制限：</b>投稿・返信などの機能を一時的に制限します。</li>
+   <li><b>アカウント停止：</b>一定期間または無期限で利用を禁止します。</li>
+  </ul>
+  <p class="rules-note">重大な違反や悪質な行為については、事前の警告なしで対応する場合があります。</p>
+  <h3>5. 最後に</h3>
+  <ul>
+   <li>すべてのユーザーが安心して利用できる環境づくりにご協力ください。</li>
+   <li>このルールに明記されていない行為でも、運営が不適切と判断した場合は対応することがあります。</li>
+   <li>ルールは必要に応じて変更・追加される場合があります。</li>
+  </ul>
+  <p><b>すべての権限と最終的な判断は波急運営が保有します。</b></p>
+ </article>`;
+}
 function toggleSidebar(){$("sidebar").classList.toggle("open");$("overlay").classList.toggle("show")}
 function closeSidebar(){$("sidebar").classList.remove("open");$("overlay").classList.remove("show")}
 function openLogin(){if(currentUser){openAction("ログアウトしますか？","ログアウトすると、再度ログインが必要になります。", "ログアウト",async()=>signOut(auth));return}$("login-modal").classList.add("open");$("login-error").textContent=""}
 function closeLogin(){$("login-modal").classList.remove("open")}
-function openPasswordReset(){if(authMode!=="login")return;$("reset-email").value=$("email").value.trim();$("reset-error").textContent="";$("password-reset-modal").classList.add("open");setTimeout(()=>$("reset-email").focus(),50)}
+function openPasswordReset(){if(authMode!=="login")return;$("reset-email").value=$("email").value.trim();$("reset-error").textContent="";$("reset-error").style.color="var(--danger)";$("reset-send-button").disabled=false;$("reset-send-button").textContent="再設定メールを送信";$("password-reset-modal").classList.add("open");setTimeout(()=>$("reset-email").focus(),50)}
 function closePasswordReset(){$("password-reset-modal").classList.remove("open")}
-async function sendPasswordResetLink(){let email=$("reset-email").value.trim(),button=$("reset-send-button");$("reset-error").textContent="";if(!email){$("reset-error").textContent="登録したメールアドレスを入力してください。";return}button.disabled=true;try{auth.languageCode="ja";await sendPasswordResetEmail(auth,email);$("reset-error").style.color="var(--blue)";$("reset-error").textContent="再設定メールを送信しました。受信トレイと迷惑メールフォルダを確認してください。メール内のリンクから新しいパスワードを設定できます。";button.textContent="送信しました"}catch(e){const messages={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/user-not-found":"このメールアドレスのアカウントが見つかりません。","auth/too-many-requests":"短時間に何度も送信されています。しばらく待ってから再試行してください。","auth/network-request-failed":"通信に失敗しました。ネットワークを確認してください。"};$("reset-error").style.color="var(--danger)";$("reset-error").textContent=messages[e.code]||e.message||"メールを送信できませんでした。";console.error(e)}finally{button.disabled=false}}
+async function sendPasswordResetLink(){let email=$("reset-email").value.trim(),button=$("reset-send-button");$("reset-error").textContent="";$("reset-error").style.color="var(--danger)";if(!email){$("reset-error").textContent="登録したメールアドレスを入力してください。";return}button.disabled=true;try{auth.languageCode="ja";await sendPasswordResetEmail(auth,email);$("reset-error").style.color="var(--blue)";$("reset-error").textContent="再設定メールを送信しました。受信トレイと迷惑メールフォルダを確認してください。";button.textContent="送信しました"}catch(e){const m={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/user-not-found":"このメールアドレスのアカウントが見つかりません。","auth/too-many-requests":"短時間に何度も送信されています。しばらく待ってから再試行してください。","auth/network-request-failed":"通信に失敗しました。ネットワークを確認してください。"};$("reset-error").textContent=m[e.code]||e.message||"メールを送信できませんでした。";console.error(e)}finally{button.disabled=false}}
 function toggleAuthMode(){authMode=authMode==="login"?"signup":"login";updateAuthMode()}
 function updateAuthMode(){let s=authMode==="signup";$("forgot-password-link").style.display=s?"none":"block";$("login-title").textContent=s?"新規登録":"ログイン";$("auth-description").textContent=s?"メールまたはGoogleで新規登録できます。":"登録済みのメールアドレスとパスワードでログインします。";$("email-action-button").textContent=s?"メールで新規登録":"ログイン";$("google-button").style.display=s?"block":"none";$("google-setup-button").style.display=s?"block":"none";$("mode-button").textContent=s?"ログインはこちら":"新規登録はこちら";$("name-label").style.display=s?"block":"none";$("password").autocomplete=s?"new-password":"current-password";$("login-error").textContent=""}
 function showError(e){const m={"auth/invalid-email":"メールアドレスの形式が正しくありません。","auth/email-already-in-use":"このメールアドレスは登録済みです。","auth/weak-password":"パスワードは6文字以上にしてください。","auth/invalid-credential":"メールアドレスまたはパスワードが違います。","auth/account-exists-with-different-credential":"このメールアドレスは別の方法で登録済みです。","auth/unauthorized-domain":"Firebaseの承認済みドメインを確認してください。","auth/popup-blocked":"ブラウザでポップアップを許可してください。","auth/popup-closed-by-user":"Google認証画面が閉じられました。","auth/credential-already-in-use":"このメールアドレスは別のアカウントで使用されています。"};$("login-error").textContent=(m[e.code]||e.message||"認証に失敗しました。")+"\n"+(e.code||"");console.error(e)}
@@ -220,16 +334,80 @@ async function emailAction(){let email=$("email").value.trim(),pass=$("password"
 async function googleSignup(){let pass=$("password").value,name=$("display-name").value.trim();try{if(pass.length<6)throw Error("パスワードを6文字以上で入力してください。");if(!name)throw Error("表示名を入力してください。");authFlow=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(!getAdditionalUserInfo(r)?.isNewUser){await signOut(auth);throw Error("このGoogleアカウントは既に登録されています。メールアドレスとパスワードでログインしてください。")}await linkWithCredential(r.user,EmailAuthProvider.credential(r.user.email,pass));await updateProfile(r.user,{displayName:name});await setDoc(doc(db,"profiles",r.user.uid),{displayName:name,photoData:"",updatedAt:serverTimestamp()});await signOut(auth);await signInWithEmailAndPassword(auth,r.user.email,pass);closeLogin()}catch(e){showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
 async function setupGooglePassword(){let pass=$("password").value;try{if(pass.length<6)throw Error("設定するパスワードを6文字以上で入力してください。");authFlow=true;await setPersistence(auth,browserLocalPersistence);let r=await signInWithPopup(auth,provider);if(r.user.providerData.some(p=>p.providerId==="password")){await signOut(auth);throw Error("このアカウントには既にパスワードが設定されています。ログイン画面からメールアドレスとパスワードでログインしてください。")}await linkWithCredential(r.user,EmailAuthProvider.credential(r.user.email,pass));await signOut(auth);$("login-error").textContent="パスワードを設定しました。メールアドレスとパスワードでログインしてください。";authMode="login";updateAuthMode()}catch(e){showError(e)}finally{authFlow=false;await syncUser(auth.currentUser)}}
 function updateUserArea(){let n=nameOf(),photo=currentProfile.photoData;$("user-name").textContent=n;$("user-role").textContent=roleName(currentUser.uid);$("user-avatar").innerHTML=safeImage(photo)?`<img src="${safeImage(photo)}" alt="">`:esc(Array.from(n)[0]||"?");$("login-button").textContent="ログアウト";$("login-button").onclick=openLogin;$("profile-button").style.display="block"}
-function updateComposer(){let ok=!!currentUser&&(currentChannel==="chat"||isStaff());$("post-input").disabled=!ok;$("send-button").disabled=!ok;$("composer").style.display=ok?"flex":"none";$("composer-notice").textContent=!currentUser?"投稿するにはログインしてください。":currentChannel==="announcement"&&!isStaff()?"運営メンバーのみ投稿できます。":"画像は1枚まで（圧縮後450KB以内）。Enterで送信、Shift+Enterで改行。"}
+function updateComposer(){let ok=currentView==="posts"&&!!currentUser&&(currentChannel==="chat"||isStaff());$("post-input").disabled=!ok;$("send-button").disabled=!ok;$("composer").style.display=ok?"flex":"none";$("composer-notice").textContent=!currentUser?"投稿するにはログインしてください。":currentChannel==="announcement"&&!isStaff()?"運営メンバーのみ投稿できます。":"画像は1枚まで（圧縮後450KB以内）。Enterで送信、Shift+Enterで改行。"}
 function cleanupReplies(){for(let u of replyUnsubs.values())u();replyUnsubs.clear();replyCache.clear()}
-function renderPosts(){let area=$("messages"),list=cachedPosts.filter(p=>p.data.channel===currentChannel);if(!currentUser){area.innerHTML='<div class="empty"><div class="empty-icon">🔒</div><div class="empty-title">ログインしてください</div><div>ログインすると掲示板を利用できます。</div></div>';return}if(!list.length){area.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div class="empty-title">まだ投稿はありません</div><div>最初の投稿をしてみましょう。</div></div>';return}
-let existing=new Set(list.map(p=>p.id));for(let [id,unsub]of replyUnsubs){if(!existing.has(id)){unsub();replyUnsubs.delete(id);replyCache.delete(id)}}
-area.innerHTML=list.map(p=>{let d=p.data,manage=canManage(d),img=safeImage(d.imageData);return `<article class="post" id="post-${p.id}"><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${esc(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"><div class="no-replies">返信を読み込み中...</div></div><div class="reply-form"><input id="reply-input-${p.id}" maxlength="3000" placeholder="返信を書く..." aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`}).join("");
-list.forEach(p=>startReplies(p.id))}
+function renderPosts(){
+ if(currentView==="rules"){renderRules();return}
+ const area=$("messages"),all=cachedPosts.filter(p=>p.data.channel===currentChannel);
+ if(!currentUser){area.innerHTML='<div class="empty"><div class="empty-icon">🔒</div><div class="empty-title">ログインしてください</div><div>ログインすると掲示板を利用できます。</div></div>';cleanupRemovedPosts([]);return}
+ const q=searchText.trim().toLocaleLowerCase("ja-JP");
+ const list=all.filter(p=>!q||String(p.data.content||"").toLocaleLowerCase("ja-JP").includes(q)||String(p.data.authorName||"").toLocaleLowerCase("ja-JP").includes(q));
+ if(!list.length){area.innerHTML=`<div class="empty"><div class="empty-icon">${q?"🔎":"📭"}</div><div class="empty-title">${q?"検索結果がありません":"まだ投稿はありません"}</div><div>${q?"別のキーワードで検索してください":"最初の投稿をしてみましょう。"}</div></div>`;cleanupRemovedPosts([]);return}
+ cleanupRemovedPosts(list.map(p=>p.id));
+ // 投稿が存在する場合は、初期表示用の「ログインしてください」「まだ投稿はありません」
+ // などの案内を取り除いてから投稿カードを並べる。
+ area.querySelectorAll(":scope > .empty").forEach(el=>el.remove());
+ let cursor=area.querySelector(":scope > .post");
+ for(const p of list){
+  const d=p.data,manage=canManage(d),img=safeImage(d.imageData);
+  const sig=JSON.stringify([d.content,d.authorName,d.authorPhoto,d.channel,d.imageData,d.updatedAt?.toMillis?.(),manage,roleName(d.authorUid),d.createdAt?.toMillis?.()]);
+  let node=document.getElementById("post-"+p.id);
+  if(node&&node.dataset.sig!==sig){
+   const html=`<article class="post" id="post-${p.id}" data-sig=""><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"></div><div class="reply-form"><input id="reply-input-${p.id}" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;
+   const t=document.createElement("template");t.innerHTML=html;const replacement=t.content.firstElementChild;replacement.dataset.sig=sig;
+   if(node){const wasCursor=node===cursor;node.replaceWith(replacement);if(wasCursor)cursor=replacement;}
+   else if(cursor)area.insertBefore(replacement,cursor);else area.appendChild(replacement);
+   node=replacement;
+  }else if(!node){
+   const html=`<article class="post post-enter" id="post-${p.id}" data-sig=""><div class="post-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto)}<span class="post-role ${roleClass(d.authorUid)}">${roleName(d.authorUid)}</span><span class="post-date" title="${esc(d.createdAt?.toDate?.().toLocaleString("ja-JP")||"")}">${dateText(d.createdAt)}</span></div><div class="post-content">${renderText(d.content)}</div>${img?`<img class="post-image" src="${img}" alt="投稿画像" loading="lazy">`:""}<div class="actions">${manage?`<button class="small-button" onclick="editPost('${p.id}')">編集</button><button class="small-button danger" onclick="removePost('${p.id}')">削除</button>`:""}</div><div class="reply-list" id="replies-${p.id}"></div><div class="reply-form"><input id="reply-input-${p.id}" maxlength="3000" placeholder="返信を書く...（@でメンション）" aria-label="返信を書く" onkeydown="replyKey(event,'${p.id}')"><button class="small-button" onclick="sendReply('${p.id}')">返信</button></div></article>`;
+   const t=document.createElement("template");t.innerHTML=html;node=t.content.firstElementChild;node.dataset.sig=sig;
+   if(cursor)area.insertBefore(node,cursor);else area.appendChild(node);
+  }
+  if(cursor&&cursor.parentNode!==area)cursor=area.firstElementChild;
+  if(node!==cursor)area.insertBefore(node,cursor);
+  cursor=node.nextElementSibling;
+  startReplies(p.id);
+  renderReplies(p.id);
+ }
+}
+function cleanupRemovedPosts(ids){let keep=new Set(ids);for(let [id,unsub]of replyUnsubs){if(!keep.has(id)){unsub();replyUnsubs.delete(id);replyCache.delete(id);replyLoaded.delete(id)}}for(let node of [...$("messages").querySelectorAll(".post")])if(!keep.has(node.id.slice(5)))node.remove()}
+async function loadUsers(){try{let snap=await getDocs(collection(db,"profiles"));userCache=snap.docs.map(d=>({uid:d.id,name:d.data().displayName||"メンバー",photo:d.data().photoData||""}));renderUsers()}catch(e){userCache=[];$("users-list").innerHTML=`<div class="search-empty">ユーザー一覧を読み込めません。Firestoreルールを確認してください。<br>${esc(e.message)}</div>`}}
+function renderUsers(){let q=$("users-search")?.value.trim().toLocaleLowerCase("ja-JP")||"",rows=userCache.filter(u=>u.name.toLocaleLowerCase("ja-JP").includes(q)).sort((a,b)=>a.name.localeCompare(b.name,"ja"));$("users-summary").textContent=`登録メンバー ${userCache.length}人 ・ オンライン ${userCache.filter(u=>isOnline(u.uid)).length}人`;$("users-list").innerHTML=rows.map(u=>`<button class="member-row" onclick="viewProfile('${esc(u.uid)}');closeUsers()">${avatar(u.name,u.photo)}<span class="member-meta"><span class="member-name">${esc(u.name)}</span><span class="member-status">${isOnline(u.uid)?'<span class="online-dot"></span>オンライン':'<span class="offline-dot"></span>オフライン'}</span></span><span class="member-role">${esc(roleName(u.uid))}</span></button>`).join("")||'<div class="search-empty">該当するメンバーはいません。</div>'}
+function openUsers(){if(!currentUser)return toast("メンバー一覧を見るにはログインしてください。");$("users-modal").classList.add("open");$("users-search").value="";loadUsers()}
+function closeUsers(){$("users-modal").classList.remove("open")}
+async function writePresence(){if(!currentUser)return;try{await setDoc(doc(db,"presence",currentUser.uid),{uid:currentUser.uid,lastSeen:serverTimestamp(),displayName:nameOf()},{merge:true})}catch(e){console.warn("presence update:",e.message)}}
+function startPresence(){if(presenceTimer)clearInterval(presenceTimer);if(unsubscribePresence)unsubscribePresence();if(!currentUser)return;writePresence();presenceTimer=setInterval(writePresence,30000);unsubscribePresence=onSnapshot(collection(db,"presence"),snap=>{presenceCache={};snap.forEach(d=>presenceCache[d.id]=d.data());if($("users-modal").classList.contains("open"))renderUsers()},()=>{});document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")writePresence()})}
+function mentionInput(input){let v=input.value,pos=input.selectionStart||0,before=v.slice(0,pos),m=before.match(/(?:^|\s)@([\p{L}\p{N}_-]*)$/u);if(!m){hideMentions();return}let term=m[1].toLocaleLowerCase("ja-JP"),matches=userCache.filter(u=>mentionKey(u.name).startsWith(mentionKey(term))).slice(0,7);if(!matches.length){hideMentions();return}mentionTarget={input,start:pos-m[1].length-1,end:pos};let menu=$("mention-menu"),r=input.getBoundingClientRect();menu.style.left=Math.max(8,Math.min(r.left,innerWidth-330))+"px";menu.style.top=Math.max(8,r.top- matches.length*44-10)+"px";menu.innerHTML=matches.map(u=>`<button class="mention-option" type="button" onclick="insertMention('${esc(u.uid)}')">${avatar(u.name,u.photo,"reply-avatar")}<span>${esc(u.name)}</span></button>`).join("");menu.style.display="block"}
+function hideMentions(){$("mention-menu").style.display="none";mentionTarget=null}
+function insertMention(uid){if(!mentionTarget)return;let u=userCache.find(x=>x.uid===uid),t=mentionTarget;if(!u)return;let key=String(u.name).replace(/\s+/g,"");let before=t.input.value.slice(0,t.start),after=t.input.value.slice(t.end);t.input.value=before+"@"+key+" "+after;t.input.focus();let pos=(before+"@"+key+" ").length;t.input.setSelectionRange(pos,pos);hideMentions()}
 function startPosts(){if(unsubscribePosts)unsubscribePosts();cleanupReplies();if(!currentUser){cachedPosts=[];renderPosts();return}unsubscribePosts=onSnapshot(collection(db,"posts"),s=>{cachedPosts=s.docs.map(d=>({id:d.id,data:d.data()}));cachedPosts.sort((a,b)=>(b.data.createdAt?.toMillis?.()||0)-(a.data.createdAt?.toMillis?.()||0));renderPosts()},e=>{$("messages").textContent="読み込みエラー："+e.message})}
-function startReplies(id){if(replyUnsubs.has(id))return;let ref=collection(db,"posts",id,"replies");let unsub=onSnapshot(ref,s=>{let rows=s.docs.map(d=>({id:d.id,data:d.data()}));rows.sort((a,b)=>(a.data.createdAt?.toMillis?.()||0)-(b.data.createdAt?.toMillis?.()||0));replyCache.set(id,rows);renderReplies(id)},e=>{let el=$("replies-"+id);if(el)el.textContent="返信を読み込めません："+e.message});replyUnsubs.set(id,unsub)}
-function renderReplies(id){let area=$("replies-"+id);if(!area)return;let rows=replyCache.get(id)||[];area.innerHTML=rows.map(r=>{let d=r.data,can=isStaff()||d.authorUid===currentUser?.uid;return `<div class="reply"><div class="reply-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto,"reply-avatar")}<span class="reply-date">${dateText(d.createdAt)}</span>${can?`<button class="small-button danger" onclick="removeReply('${id}','${r.id}')">削除</button>`:""}</div><div class="reply-content">${esc(d.content)}</div></div>`}).join("")||'<div class="no-replies">まだ返信はありません。</div>'}
-async function sendPost(){let input=$("post-input"),content=input.value.trim();if(!content&&!pendingImage)return;if(!currentUser)return;if(currentChannel==="announcement"&&!isStaff())return toast("運営メンバーのみ投稿できます。");let btn=$("send-button");btn.disabled=true;try{let created=await addDoc(collection(db,"posts"),{channel:currentChannel,content,authorUid:currentUser.uid,authorName:nameOf(),authorPhoto:currentProfile.photoData||"",imageData:pendingImage||"",createdAt:serverTimestamp(),updatedAt:serverTimestamp()});input.value="";input.style.height="auto";clearAttachment();toast("投稿しました。")}catch(e){toast("投稿できません："+e.message)}finally{updateComposer()}}
+function startReplies(id){if(replyUnsubs.has(id))return;let ref=collection(db,"posts",id,"replies");let unsub=onSnapshot(ref,s=>{let rows=s.docs.map(d=>({id:d.id,data:d.data()}));rows.sort((a,b)=>(a.data.createdAt?.toMillis?.()||0)-(b.data.createdAt?.toMillis?.()||0));replyCache.set(id,rows);replyLoaded.add(id);renderReplies(id)},e=>{let el=$("replies-"+id);if(el)el.textContent="返信を読み込めません："+e.message});replyUnsubs.set(id,unsub)}
+function renderReplies(id){
+ const area=$("replies-"+id);if(!area)return;
+ const rows=replyCache.get(id)||[];
+ if(!replyLoaded.has(id)){area.innerHTML="";return}
+ if(!rows.length){if(area.children.length!==1||!area.firstElementChild?.classList.contains("no-replies"))area.innerHTML='<div class="no-replies">まだ返信はありません。</div>';return}
+ if(area.firstElementChild?.classList.contains("no-replies"))area.innerHTML="";
+ let cursor=area.firstElementChild;
+ for(const r of rows){
+  const d=r.data,can=isStaff()||d.authorUid===currentUser?.uid;
+  const sig=JSON.stringify([d.content,d.authorName,d.authorPhoto,d.createdAt?.toMillis?.(),can,roleName(d.authorUid)]);
+  let node=document.getElementById("reply-"+id+"-"+r.id);
+  if(!node||node.dataset.sig!==sig){
+   const html=`<div class="reply" id="reply-${id}-${r.id}" data-sig=""><div class="reply-head">${profileLink(d.authorUid,d.authorName,d.authorPhoto,"reply-avatar")}<span class="reply-date">${dateText(d.createdAt)}</span>${can?`<button class="small-button danger" onclick="removeReply('${id}','${r.id}')">削除</button>`:""}</div><div class="reply-content">${renderText(d.content)}</div></div>`;
+   const t=document.createElement("template");t.innerHTML=html;const fresh=t.content.firstElementChild;fresh.dataset.sig=sig;
+   if(node){const wasCursor=node===cursor;node.replaceWith(fresh);if(wasCursor)cursor=fresh;}
+   else if(cursor)area.insertBefore(fresh,cursor);else area.appendChild(fresh);
+   node=fresh;
+  }
+  if(cursor&&cursor.parentNode!==area)cursor=area.firstElementChild;
+  if(node!==cursor)area.insertBefore(node,cursor);
+  cursor=node.nextElementSibling;
+ }
+ const keep=new Set(rows.map(r=>"reply-"+id+"-"+r.id));
+ for(const child of [...area.children])if(child.id&&!keep.has(child.id))child.remove();
+}
+async function sendPost(){let input=$("post-input"),content=input.value.trim();if(!content&&!pendingImage)return;if(!currentUser)return;if(currentChannel==="announcement"&&!isStaff())return toast("運営メンバーのみ投稿できます。");let btn=$("send-button");btn.disabled=true;btn.textContent="送信中…";try{let created=await addDoc(collection(db,"posts"),{channel:currentChannel,content,authorUid:currentUser.uid,authorName:nameOf(),authorPhoto:currentProfile.photoData||"",imageData:pendingImage||"",createdAt:serverTimestamp(),updatedAt:serverTimestamp()});input.value="";input.style.height="auto";clearAttachment();toast("投稿しました。")}catch(e){toast("投稿できません："+e.message)}finally{btn.textContent="送信";updateComposer()}}
 async function sendReply(id){let input=$("reply-input-"+id),content=input?.value.trim();if(!content||!currentUser)return;let button=input.parentElement.querySelector("button");button.disabled=true;try{let created=await addDoc(collection(db,"posts",id,"replies"),{content,authorUid:currentUser.uid,authorName:nameOf(),authorPhoto:currentProfile.photoData||"",createdAt:serverTimestamp()});input.value="";toast("返信しました。")}catch(e){toast("返信できません："+e.message)}finally{button.disabled=false}}
 function openAction(title,description,confirmText,task,editorValue=null){$("action-title").textContent=title;$("action-description").textContent=description;$("action-confirm").textContent=confirmText;$("action-error").textContent="";$("action-editor").style.display=editorValue===null?"none":"block";$("action-text").value=editorValue??"";actionTask=task;$("action-modal").classList.add("open");if(editorValue!==null)setTimeout(()=>$("action-text").focus(),50)}
 function closeAction(){$("action-modal").classList.remove("open");actionTask=null}
@@ -243,17 +421,61 @@ async function imageData(file,maxBytes,maxSide){if(!file.type.startsWith("image/
 async function choosePostImage(e){let f=e.target.files?.[0];if(!f)return;try{pendingImage=await imageData(f,450*1024,1280);$("attachment-thumb").src=pendingImage;$("attachment-name").textContent=f.name;$("attachment-preview").style.display="flex"}catch(err){toast(err.message)}e.target.value=""}
 function clearAttachment(){pendingImage="";$("attachment-preview").style.display="none";$("attachment-thumb").removeAttribute("src")}
 
+function suspensionIsActive(data){if(!data||data.active!==true)return false;let until=data.until?.toDate?.()|| (data.until instanceof Date?data.until:null);return !!until&&until.getTime()>Date.now()}
+function suspensionUntilText(data){let until=data?.until?.toDate?.()||(data?.until instanceof Date?data.until:null);return until?until.toLocaleString("ja-JP")+(" まで"):""}
+function showSuspendedNotice(data){$("suspended-message").textContent=data?.message||"運営によりアカウントが一時凍結されています。";$("suspended-until").textContent="利用再開予定："+suspensionUntilText(data);$("suspended-modal").classList.add("open")}
+function closeSuspendedNotice(){$("suspended-modal").classList.remove("open")}
+function openSuspendModal(uid,name){if(!isStaff()||!uid||uid===OWNER_UID)return toast("この操作を行う権限がありません。");suspensionTargetUid=uid;$("suspend-target-label").textContent="対象："+(name||"メンバー");$("suspend-duration").value="24";$("suspend-message").value="";$("suspend-error").textContent="";$("suspend-modal").classList.add("open")}
+function closeSuspendModal(){$("suspend-modal").classList.remove("open");suspensionTargetUid=""}
+async function confirmSuspend(){if(!isStaff()||!suspensionTargetUid)throw Error("操作権限がありません。");let message=$("suspend-message").value.trim();if(!message) return $("suspend-error").textContent="表示するメッセージを入力してください。";let hours=Number($("suspend-duration").value);if(![1,24,168,720].includes(hours))return $("suspend-error").textContent="凍結期間を選択してください。";let btn=$("suspend-confirm");btn.disabled=true;try{await setDoc(doc(db,"accountSuspensions",suspensionTargetUid),{active:true,message,until:new Date(Date.now()+hours*3600000),updatedAt:serverTimestamp(),updatedBy:currentUser.uid});toast("アカウントを一時凍結しました。");closeSuspendModal();if(viewedProfileUid===suspensionTargetUid)await viewProfile(suspensionTargetUid)}catch(e){$("suspend-error").textContent="凍結できません："+e.message}finally{btn.disabled=false}}
+async function liftSuspension(uid){if(!isStaff()||!uid)return toast("この操作を行う権限がありません。");try{await setDoc(doc(db,"accountSuspensions",uid),{active:false,message:"",updatedAt:serverTimestamp(),updatedBy:currentUser.uid},{merge:true});toast("凍結を解除しました。");if(viewedProfileUid===uid)await viewProfile(uid)}catch(e){toast("凍結を解除できません："+e.message)}}
 function openProfile(){if(!currentUser)return;profileImage=currentProfile.photoData||"";$("profile-title").textContent="プロフィール設定";$("profile-edit-fields").style.display="block";$("profile-name").value=nameOf();$("profile-save").style.display="block";$("profile-error").textContent="";updateProfilePreview();setProfileRole(currentUser.uid);$("profile-modal").classList.add("open")}
-async function viewProfile(uid){if(!currentUser||!uid)return;if(uid===currentUser.uid)return openProfile();try{let s=await getDoc(doc(db,"profiles",uid)),p=s.exists()?s.data():{};profileImage=p.photoData||"";$("profile-title").textContent="プロフィール";$("profile-edit-fields").style.display="none";$("profile-save").style.display="none";$("profile-error").textContent="";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(p.displayName||"メンバー")[0]);$("profile-name").value=p.displayName||"メンバー";setProfileRole(uid);$("profile-modal").classList.add("open")}catch(e){toast("プロフィールを読み込めません："+e.message)}}
+async function viewProfile(uid){if(!currentUser||!uid)return;if(uid===currentUser.uid)return openProfile();try{let [s,ss]=await Promise.all([getDoc(doc(db,"profiles",uid)),getDoc(doc(db,"accountSuspensions",uid))]);let p=s.exists()?s.data():{},susp=ss.exists()?ss.data():{};viewedProfileUid=uid;profileImage=p.photoData||"";$("profile-title").textContent="プロフィール";$("profile-edit-fields").style.display="none";$("profile-save").style.display="none";$("profile-error").textContent="";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(p.displayName||"メンバー")[0]);$("profile-name").value=p.displayName||"メンバー";setProfileRole(uid);let controls=$("profile-role-view");if(isStaff()&&uid!==OWNER_UID){let active=suspensionIsActive(susp);controls.innerHTML+=active?`<div style="margin-top:12px"><span class="post-role role-moderator">一時凍結中</span><p class="auth-description">${esc(susp.message||"メッセージなし")}<br>${esc(suspensionUntilText(susp))}</p><button class="small-button" onclick="liftSuspension('${esc(uid)}')">凍結を解除</button></div>`:`<div style="margin-top:12px"><button class="small-button danger" onclick="openSuspendModal('${esc(uid)}','${esc(p.displayName||"メンバー")}')">アカウントを一時凍結</button></div>`}$("profile-modal").classList.add("open")}catch(e){toast("プロフィールを読み込めません："+e.message)}}
 function setProfileRole(uid){$("profile-role-view").innerHTML=`<span class="post-role ${roleClass(uid)}">${esc(roleName(uid))}</span>`}
 function closeProfile(){$("profile-modal").classList.remove("open")}
 function updateProfilePreview(){let n=$("profile-name").value.trim()||"?";$("profile-preview").innerHTML=safeImage(profileImage)?`<img src="${safeImage(profileImage)}" alt="">`:esc(Array.from(n)[0])}
 async function saveProfile(){let name=$("profile-name").value.trim();try{if(!name)throw Error("表示名を入力してください。");if(name.length>30)throw Error("表示名は30文字以内にしてください。");$("profile-save").disabled=true;await updateProfile(auth.currentUser,{displayName:name});await setDoc(doc(db,"profiles",currentUser.uid),{displayName:name,photoData:profileImage||"",updatedAt:serverTimestamp()},{merge:true});currentProfile={displayName:name,photoData:profileImage||""};updateUserArea();closeProfile();renderPosts();toast("プロフィールを更新しました。")}catch(e){$("profile-error").textContent=e.message}finally{$("profile-save").disabled=false}}
-async function syncUser(user){if(!user){currentUser=null;currentProfile={};roles={};if(unsubscribePosts)unsubscribePosts();cleanupReplies();$("user-name").textContent="未ログイン";$("user-role").textContent="未ログイン";$("user-avatar").textContent="?";$("login-button").textContent="ログイン";$("login-button").onclick=openLogin;$("profile-button").style.display="none";updateComposer();startPosts();return}
-try{let token=await getIdTokenResult(user);if(token.claims.firebase?.sign_in_provider!=="password"){await signOut(auth);$("login-error").textContent="メールアドレスとパスワードでログインしてください。";$("login-modal").classList.add("open");return}
-currentUser=user;let [p,r]=await Promise.all([getDoc(doc(db,"profiles",user.uid)),getDocs(collection(db,"staffRoles"))]);currentProfile=p.exists()?p.data():{};roles={};r.forEach(x=>roles[x.id]=x.data());updateUserArea();updateComposer();startPosts()
-}catch(e){console.error(e);$("messages").textContent="アカウント情報を読み込めません："+e.message}}
+async function syncUser(user){
+ const version=++authSyncVersion;
+ if(!user){
+  if(suspensionUnsub)suspensionUnsub();suspensionUnsub=null;
+  currentUser=null;currentProfile={};roles={};
+  if(presenceTimer)clearInterval(presenceTimer);presenceTimer=null;
+  if(unsubscribePresence)unsubscribePresence();unsubscribePresence=null;
+  if(unsubscribePosts)unsubscribePosts();unsubscribePosts=null;cleanupReplies();
+  presenceCache={};cachedPosts=[];
+  $("user-name").textContent="未ログイン";$("user-role").textContent="未ログイン";$("user-avatar").textContent="?";
+  $("login-button").textContent="ログイン";$("login-button").onclick=openLogin;$("profile-button").style.display="none";
+  updateComposer();renderPosts();return;
+ }
+ try{
+  const token=await getIdTokenResult(user);
+  if(version!==authSyncVersion)return;
+  if(token.claims.firebase?.sign_in_provider!=="password"){
+   await signOut(auth);
+   if(version===authSyncVersion){$("login-error").textContent="メールアドレスとパスワードでログインしてください。";$("login-modal").classList.add("open");}
+   return;
+  }
+  const suspensionSnap=await getDoc(doc(db,"accountSuspensions",user.uid));
+  if(version!==authSyncVersion||auth.currentUser?.uid!==user.uid)return;
+  if(suspensionSnap.exists()&&suspensionIsActive(suspensionSnap.data())){const data=suspensionSnap.data();await signOut(auth);showSuspendedNotice(data);return;}
+  currentUser=user;currentProfile={};roles={};updateUserArea();updateComposer();
+  const [p,r]=await Promise.all([getDoc(doc(db,"profiles",user.uid)),getDocs(collection(db,"staffRoles"))]);
+  if(version!==authSyncVersion||auth.currentUser?.uid!==user.uid)return;
+  currentProfile=p.exists()?p.data():{};roles={};r.forEach(x=>roles[x.id]=x.data());
+  updateUserArea();updateComposer();startPosts();startPresence();loadUsers();
+  if(suspensionUnsub)suspensionUnsub();
+  suspensionUnsub=onSnapshot(doc(db,"accountSuspensions",user.uid),async snap=>{if(!snap.exists())return;let data=snap.data();if(suspensionIsActive(data)&&auth.currentUser?.uid===user.uid){await signOut(auth);showSuspendedNotice(data)}},e=>console.warn("suspension listener:",e.message));
+ }catch(e){
+  if(version!==authSyncVersion)return;
+  console.error(e);$("messages").textContent="アカウント情報を読み込めません："+e.message;
+ }
+}
 $("post-input").addEventListener("keydown",postKey);
+$("global-search").addEventListener("input",e=>{searchText=e.target.value;renderPosts()});
+$("users-search").addEventListener("input",renderUsers);
+document.addEventListener("input",e=>{if(e.target.matches("#post-input,.reply-form input"))mentionInput(e.target)});
+document.addEventListener("click",e=>{if(!e.target.closest("#mention-menu")&&!e.target.matches("#post-input,.reply-form input"))hideMentions()});
 $("post-input").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,150)+"px"});
 $("post-image").addEventListener("change",choosePostImage);
 $("photo-file").addEventListener("change",async e=>{let f=e.target.files?.[0];if(!f)return;try{profileImage=await imageData(f,120*1024,256);updateProfilePreview()}catch(err){$("profile-error").textContent=err.message}e.target.value=""});
@@ -262,8 +484,12 @@ document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSidebar();document.querySelectorAll(".modal.open").forEach(m=>m.classList.remove("open"));actionTask=null}});
 await setPersistence(auth,browserLocalPersistence);
 applyTheme();updateAuthMode();selectChannel(settings[currentChannel]?currentChannel:"announcement");
-onAuthStateChanged(auth,u=>{if(!authFlow)syncUser(u)});
-Object.assign(window,{selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,openPasswordReset,closePasswordReset,sendPasswordResetLink,toggleAuthMode,emailAction,googleSignup,setupGooglePassword,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,clearAttachment,closeAction,runAction});
+onAuthStateChanged(auth,async u=>{
+ if(authFlow)return;
+ await syncUser(u);
+ document.body.classList.remove("auth-pending");
+});
+Object.assign(window,{openUsers,closeUsers,insertMention,showRules,openPasswordReset,closePasswordReset,sendPasswordResetLink,openSuspendModal,closeSuspendModal,confirmSuspend,liftSuspension,closeSuspendedNotice,selectChannel,toggleSidebar,closeSidebar,openLogin,closeLogin,toggleAuthMode,emailAction,googleSignup,setupGooglePassword,toggleTheme,sendPost,sendReply,replyKey,editPost,removePost,removeReply,openProfile,viewProfile,closeProfile,saveProfile,clearAttachment,closeAction,runAction});
 </script>
 </body>
 </html>
